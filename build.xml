@@ -1,8 +1,11 @@
 <project name="enclojure" xmlns:ivy="antlib:org.apache.ivy.ant" default="build-all">
     
     <property file="${basedir}${file.separator}build-support${file.separator}build.properties"/>
-        
-    <target name="load-ivy">
+	<property name="bld-dir" value="${basedir}${file.separator}build-support${file.separator}" />
+	<property name="deps-zip" value="${bld-dir}deps.zip" />
+	<available file="${deps-zip}" property="dependancies.downloaded" />
+	  
+	<target name="load-ivy">
         <mkdir dir="${ivy.jar.dir}" />
         <path id="ivy.lib.path">
             <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
@@ -11,7 +14,15 @@
     	         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
     </target>
          
-    <target name="buildlist" depends="load-ivy">			
+	<target name="init-deps" unless="dependancies.downloaded">
+		<mkdir dir="${bld-dir}" />
+		<get src="http://cloud.github.com/downloads/EricThorsen/enclojure/deps.zip"
+			dest="${bld-dir}deps.zip" 
+			verbose="true" />
+			<unzip src="${bld-dir}deps.zip"	dest="${bld-dir}" />
+	</target>	
+	
+    <target name="buildlist" depends="load-ivy,init-deps">			
         <ivy:buildlist reference="build-path">
             <fileset dir="src" includes="**/build.xml"/>
         </ivy:buildlist>

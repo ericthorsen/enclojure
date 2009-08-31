@@ -34,5 +34,11 @@
                 <artifact pattern="${ivy.settings.dir}${file.separator}..${file.separator}repository${file.separator}[module]${file.separator}${dist.path}${file.separator}[organisation].[artifact].[ext]" />
             </filesystem>
         </chain>
+		<chain name="public" returnFirst="true" latest="latest-time">
+			<url name="github-deps">
+				<ivy pattern="${ivy.settings.dir}${file.separator}..${file.separator}ivy.xml" />               
+				<artifact pattern="http://cloud.github.com/downloads/EricThorsen/enclojure/[artifact].zip" />
+			</url>
+		</chain>
 	</resolvers>
 </ivysettings>
