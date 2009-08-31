@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+    <info organisation="org.enclojure" module="repl-server"/>
+    <dependencies>
+        <dependency org="Clojure" name="clojure" rev="1.0.0"/>
+        <dependency org="Clojure-contrib" name="clojure-contrib" rev="1.0.0"/>
+    </dependencies>
+</ivy-module>

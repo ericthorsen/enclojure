@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="zip-default-project" default="default" basedir=".">
+    <target name="zip-project">
+        <echo>Finally doing something?</echo>
+       <!-- <ant antfile="../../org.enclojure.ide.netbeans/ClojureProjectTemplate/build.xml" target="clean" /> -->
+        <zip destfile="./src/org/enclojure/ide/nb/editor/ClojureProjectTemplate.zip"
+            basedir="../../org.enclojure.ide.netbeans/ClojureProjectTemplate/"
+            excludes="build/**,**/.DS_Store,**/private/**,**/dist/**" />
+    </target>
+	<!-- -->
+</project>
