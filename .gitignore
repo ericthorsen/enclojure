@@ -1,0 +1,14 @@
+.DS\_Store
+.svn
+dist-artifacts
+lib-artifacts
+build-artifacts
+src/enclojure.plugin.netbeans/release/*
+build-support/libs/*
+build-support/deps.zip
+__MACOSX
+.ivy-cache
+*.class
+*.jar
+*.war
+build/*
