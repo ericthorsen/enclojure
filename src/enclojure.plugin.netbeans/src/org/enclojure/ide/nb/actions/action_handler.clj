@@ -9,6 +9,9 @@
   (:require [org.enclojure.commons.meta-utils :as meta-utils]
     [org.enclojure.commons.logging :as logging]
     [org.enclojure.ide.analyze.symbol-nav :as symbol-nav]
+    [org.enclojure.ide.nb.editor.completion.file-mapping :as file-mapping]
+    [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
+    [org.enclojure.ide.common.classpath-utils :as classpath-utils]
     [org.enclojure.ide.nb.editor.utils :as editor-utils])
   (:import 
     (org.openide.cookies EditorCookie)
@@ -140,15 +143,36 @@ the resulting file's ns is refered on successful load"
           (.requestFocusInWindow editor-pane)
           (.RequestReplFocus repl-tc))))))
 
-(defn goto-declaration-action []
-  (when-let [editor-pane (current-editor-pane)]
-    (when-let [id-sym (symbol-nav/resolve-identifier-at
-                        (.getDocument editor-pane)
-                        (.getCaretPosition editor-pane))]
-      (let [{:keys [file line]} (meta id-sym)]
-        (log Level/INFO "goto-declaration-action :id " id-sym " :file " file " :l " line)
-        (when (and file line)
-          (editor-utils/open-editor-file-at-line file (max (dec line) 0)))))))
+(defn goto-declaration-action
+  "Attempt to location the definition of a symbol using the 
+completion support system (static analysis) so that the code does not need to
+be loaded"
+  []
+  (let [editor-pane (current-editor-pane)
+        document (.getDocument editor-pane)
+        file (editor-utils/from-doc-to-file document)
+        {:keys [ns-use-refer unqualified-to-qualified-map]
+            :as completion-info } (file-mapping/ensure-completion-info file)
+        id (symbol-nav/get-identifier-at document
+                  (.getCaretPosition editor-pane))]
+    (when id
+      (let [[alias sym] (.split (str id) "/")
+            ns-list (if sym ;there was an alias
+                      [(unqualified-to-qualified-map alias)]
+                      ns-use-refer)]        
+      (log Level/INFO " got id " id)
+      (log Level/INFO " using " ns-list)
+        (let [[file [sym & _]]
+              (some #(let [{:keys [symbols source-file] :as ns-syms}
+                                  (symbol-caching/from-symbol-cache (str %))]
+                       (when-let [sym (symbols (symbol (or sym alias)))]
+                         [source-file sym]))
+                  ns-list)]
+          (log Level/INFO "in file " file " found " sym)
+          (when-let [full-path (classpath-utils/find-resource file)]
+            (editor-utils/open-editor-file-at-line full-path
+              (max (dec (:line sym)) 0)))
+          )))))
 
 (defn get-pref-file-path []
   (let [env (into {} (System/getenv)) home (if (env "HOME")
