@@ -5,7 +5,15 @@
 	<property name="deps-zip" value="${bld-dir}deps.zip" />
 	<available file="${deps-zip}" property="dependancies.downloaded" />
 	  
-	<target name="load-ivy">
+	<target name="download-ivy" unless="skip.download">
+    	<mkdir dir="${ivy.jar.dir}"/>
+		<!-- download Ivy from web site so that it can be used even without any special installation -->
+		<echo message="installing ivy..."/>
+    	<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+    		 dest="${ivy.jar.file}" usetimestamp="true"/>
+    </target>
+	
+	<target name="load-ivy" depends="download-ivy">
         <mkdir dir="${ivy.jar.dir}" />
         <path id="ivy.lib.path">
             <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
@@ -31,6 +39,7 @@
     <target name="build-all" depends="buildlist"
   			description="compile, jar and publish all projects in the right order">
         <subant target="jar" buildpathref="build-path" />
+		<ant dir="src/enclojure.plugin.netbeans" target="default" />
     </target>
 
     <target name="publish-all" depends="buildlist"

@@ -5,6 +5,7 @@ lib-artifacts
 build-artifacts
 src/enclojure.plugin.netbeans/release/*
 build-support/libs/*
+nbproject/private/*
 build-support/deps.zip
 __MACOSX
 .ivy-cache
