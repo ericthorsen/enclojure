@@ -2,12 +2,13 @@
 <!-- You may freely edit this file. See harness/README in the NetBeans platform -->
 <!-- for some information on what you could do (e.g. targets to override). -->
 <!-- If you delete this file and reopen the project it will be recreated. -->
-<project name="enclojure.plugin.netbeans" default="nbm" basedir=".">
+<project name="enclojure.plugin.netbeans" default="default" basedir=".">
     <description>Builds, tests, and runs the project org.enclojure.ide.nb.editor.</description>
-    <property name="user.properties.file" value="${user.home}${file.separator}.netbeans${file.separator}6.7${file.separator}build.properties" />
+    <!-- <property name="user.properties.file" value="${user.home}${file.separator}.netbeans${file.separator}6.7${file.separator}build.properties" />-->
+    <import file="nbproject/build-impl.xml"/>
     <property name="clojure-version" value="-1.0.0" />
 
-    <import file="clojure-build.xml"/> 
+    <!-- <import file="clojure-build.xml"/> -->
 
 	<!-- For ivy support -->
 <!--	<property file="build.properties"/> -->
@@ -57,4 +58,5 @@
     <target name="init"
         depends="copylibs,zip.project.template,zip.clojure.1.0.platform,zip.clojure${clojure-version}.platform,harness.init">
     </target>
+    <target name="default" depends="init,nbm" />
 </project>
