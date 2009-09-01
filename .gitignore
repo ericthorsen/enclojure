@@ -4,6 +4,7 @@ dist-artifacts
 lib-artifacts
 build-artifacts
 src/enclojure.plugin.netbeans/release/*
+src/enclojure.plugin.netbeans/build/*
 build-support/libs/*
 nbproject/private/*
 build-support/deps.zip
