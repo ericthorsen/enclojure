@@ -114,7 +114,7 @@
     (dosync
         (alter history-ref
             #(add-history-item %1 %2) form))
-    (log Level/INFO "b4 = " n " after " (count (:history-list @history-ref)))
+    (log Level/FINE "b4 = " n " after " (count (:history-list @history-ref)))
     {:added (not= n (count (:history-list @history-ref)))
      :history @history-ref}))
   
@@ -142,7 +142,7 @@
     (let [{:keys [repl-fn repl-panel] print-pretty
            'clojure.contrib.pprint/*print-pretty*} (get-repl-config repl-id)          
           expr (build-expr print-pretty ns-node expr)]
-      (log Level/INFO "\neval expr:\n" expr)
+      (log Level/FINE "\neval expr:\n" expr)
       (.resultReceived repl-panel (._replEditorPane repl-panel) "\n")
       (if repl-fn
         (repl-fn expr)
@@ -164,7 +164,7 @@
                    (str "(eval '(clojure.contrib.pprint/pprint (do " expr "\n)))")
                  (str " " expr " \n")))
           ]
-      (log Level/INFO "\neval expr:\n" expr)
+      (log Level/FINE "\neval expr:\n" expr)
       (.resultReceived repl-panel (._replEditorPane repl-panel) "\n")
       (if repl-fn
         (repl-fn expr)
@@ -175,7 +175,7 @@
 (defn set-print-pretty
   [repl-id repl-pane new-val]
   (let [bv (boolean new-val)]
-    (log Level/INFO "set pretty print to " bv)
+    (log Level/FINE "set pretty print to " bv)
   (update-repl repl-id 'clojure.contrib.pprint/*print-pretty* bv)
   (evaluate-in-repl repl-id
     (str "(set! clojure.contrib.pprint/*print-pretty* " bv ")"))

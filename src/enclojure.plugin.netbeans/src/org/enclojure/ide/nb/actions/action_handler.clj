@@ -146,7 +146,7 @@ the resulting file's ns is refered on successful load"
                         (.getDocument editor-pane)
                         (.getCaretPosition editor-pane))]
       (let [{:keys [file line]} (meta id-sym)]
-        (log Level/INFO ":id " id-sym " :file " file " :l " line)
+        (log Level/INFO "goto-declaration-action :id " id-sym " :file " file " :l " line)
         (when (and file line)
           (editor-utils/open-editor-file-at-line file (max (dec line) 0)))))))
 

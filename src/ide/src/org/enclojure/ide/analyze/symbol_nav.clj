@@ -27,7 +27,10 @@ functions can be called for either case."}
     [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.ide.navigator.token-nav :as token-nav]
     )
-  (:import (javax.swing.text Element Document)))
+  (:import (javax.swing.text Element Document)
+    (java.util.logging Level Logger)))
+
+(defrt #^{:private true} log (get-ns-logfn))
 
 ;Make it uniform to work with strings or Documents
 (defmulti unify-doc-str class)
@@ -104,11 +107,14 @@ functions can be called for either case."}
   (let [namesp (token-nav/get-namespace document)
         id (get-identifier-at document offset)]
     (when (and namesp id)
-      (ns-resolve (find-ns (symbol namesp))
-        (symbol
-            (if (= \. (last id)) ; In case it is a ctor, strip off the trailing .
-                (subs id 0 (dec (count id)))
-            id))))))
+      (if-let [ns-local (find-ns (symbol namesp))]
+                (ns-resolve ns-local
+                    (symbol
+                        (if (= \. (last id)) ; In case it is a ctor, strip off the trailing .
+                            (subs id 0 (dec (count id)))
+                        id)))
+        (log Level/WARNING "Could not locate namespace " namesp " perhaps it is not loaded?")
+        ))))
 
 (defn get-row-start-from-line
   [doc line]
