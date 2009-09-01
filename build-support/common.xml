@@ -161,7 +161,7 @@
         <replace file="${build-script}" token=".>" value="/>" summary="yes" />
     </target>
 
-    <target name="compile-clojure" depends="init, copy-clojure-files, copy-properties-files, create-build-script">
+    <target name="compile-clojure" depends="init, copy-clojure-files, copy-properties-files, create-build-script" unless="clojure-no-aot">
         <java failonerror="true" classname="clojure.lang.Compile">
           <classpath>
               <path location="${classes.dir}"/>
