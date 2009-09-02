@@ -74,20 +74,6 @@
              (map #(.findResource % n)
                (classpath-for-source))))))
 
-;(defn find-resource-using-class-jdi [n]
-;  "Assumes find-resource failed.  It's possible I may just get the source file
-;in which case I will have to step search through the classpath roots to attempt
-;to locate the file."
-;  (let [ext (first (filter #(.endsWith n %) [".java" ".clj"]))
-;        classname (if ext
-;                    (.substring n 0 (.lastIndexOf n ext))
-;                    n)]
-;    (when @*vm*
-;      (when-first [f (.classesByName @*vm* classname)]
-;        (try
-;        (first (.sourcePaths f "Clojure"))
-;          (catch com.sun.jdi.AbsentInformationException e))))))
-
 (defn clear-file-cache []
   (let [cpy @*url-file-cache*]
     (sync nil
@@ -243,8 +229,7 @@
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
                         (apply str (interpose java.io.File/pathSeparator
                                      (map #(.locate l % nil false)
-                                       ["modules/ext/org.enclojure.repl-server.jar"
-                                        "modules/ext/org.enclojure.commons.jar"
+                                       ["modules/ext/org.enclojure.repl-server.jar"                                        
                                         ])))))
 
 (defn get-repl-classpath [#^Project p]
