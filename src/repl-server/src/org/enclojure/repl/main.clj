@@ -13,9 +13,8 @@
 
 ;Requiring org.enclojure.commons.meta-utils so that load-string-with-dbg can be
 ;sent through repl
-(ns org.enclojure.repl.main
-  (:require org.enclojure.repl.meta-utils clojure.main)
-  (:use clojure.contrib.pprint)
+(ns org.enclojure.repl.main  
+  (:use clojure.contrib.pprint clojure.main)
   ;(:gen-class)
   (:import (java.net Socket ServerSocket)
     (java.io InputStreamReader DataOutputStream DataInputStream

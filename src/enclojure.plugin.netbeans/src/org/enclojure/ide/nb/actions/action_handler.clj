@@ -151,15 +151,16 @@ be loaded"
   (let [editor-pane (current-editor-pane)
         document (.getDocument editor-pane)
         file (editor-utils/from-doc-to-file document)
-        {:keys [ns-use-refer unqualified-to-qualified-map]
+        {:keys [ns-use-refer unqualified-to-qualified-map this-ns]
             :as completion-info } (file-mapping/ensure-completion-info file)
         id (symbol-nav/get-identifier-at document
                   (.getCaretPosition editor-pane))]
     (when id
       (let [[alias sym] (.split (str id) "/")
-            ns-list (if sym ;there was an alias
+            ns-list
+            (conj (if sym ;there was an alias
                       [(unqualified-to-qualified-map alias)]
-                      ns-use-refer)]        
+                      ns-use-refer) this-ns)]
       (log Level/INFO " got id " id)
       (log Level/INFO " using " ns-list)
         (let [[file [sym & _]]

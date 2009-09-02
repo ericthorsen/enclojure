@@ -2,8 +2,8 @@
 <ivy-module version="2.0">
     <info organisation="org.enclojure" module="repl-client"/>
     <dependencies>
-	    <dependency org="org.enclojure" name="commons" rev="latest.integration"/>
- 	    <dependency org="org.enclojure" name="repl-server" rev="latest.integration"/>  
+	<dependency org="org.enclojure" name="commons" rev="latest.integration"/>
+ 	<dependency org="org.enclojure" name="repl-server" rev="latest.integration"/>  
         <dependency org="Clojure" name="clojure" rev="1.0.0"/>
         <dependency org="Clojure-contrib" name="clojure-contrib" rev="1.0.0"/>
         <dependency org="Apache" name="commons-exec" rev="1.0.0"/>

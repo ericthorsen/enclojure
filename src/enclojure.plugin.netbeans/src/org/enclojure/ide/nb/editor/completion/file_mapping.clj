@@ -256,6 +256,7 @@ to generate responses to completion queries"
                             (parser/get-unique-words f))]
       {
      :file file
+     :this-ns (symbol-caching/-file-cache- file)
      :java-packages java-packages
      :java-classes java-classes
      :ns-use-refer ns-use-refer
