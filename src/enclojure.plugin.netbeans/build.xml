@@ -8,8 +8,6 @@
  	<import file="nbproject/build-impl.xml"/>
     <property name="clojure-version" value="-1.0.0" />
 
-    <!-- <import file="clojure-build.xml"/> -->
-
 	<!-- For ivy support -->
 <!--	<property file="build.properties"/> -->
 	<property name="workdir" value="${basedir}${file.separator}..${file.separator}..${file.separator}" />
