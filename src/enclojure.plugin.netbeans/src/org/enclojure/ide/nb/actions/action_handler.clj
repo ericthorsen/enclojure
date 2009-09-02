@@ -170,9 +170,10 @@ be loaded"
                          [source-file sym]))
                   ns-list)]
           (log Level/INFO "in file " file " found " sym)
-          (when-let [full-path (classpath-utils/find-resource file)]
+          (when-let [full-path (if (.exists (File. file)) file
+                                 (classpath-utils/find-resource file))]
             (editor-utils/open-editor-file-at-line full-path
-              (max (dec (:line sym)) 0)))
+              (max (- (:line sym) 2) 0)))
           )))))
 
 (defn get-pref-file-path []
