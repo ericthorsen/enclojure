@@ -121,7 +121,8 @@
     repl-tc))
 
 (defn connect-external-repl [repl-id host port]
-  (create-repltc repl-id true #(create-repl-client-with-back-channel host port)))
+  (create-repltc repl-id true
+    #(create-repl-client-with-back-channel host port)))
 
 (defn create-ide-repltc
   [repl-id]

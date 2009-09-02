@@ -22,7 +22,8 @@ import org.openide.util.Exceptions;
 public class ConnectExternalReplDialog extends javax.swing.JDialog {
 
     static final Var connectExternalRepl =
-      RT.var("org.enclojure.ide.nb.editor.repl-tc", "connect-external-repl");
+      RT.var("org.enclojure.ide.nb.editor.repl-tc"
+                , "connect-external-repl");
 
     /** Creates new form ConnectExternalReplDialog */
     public ConnectExternalReplDialog(java.awt.Frame parent, boolean modal) {
@@ -40,7 +41,6 @@ public class ConnectExternalReplDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -68,10 +68,6 @@ public class ConnectExternalReplDialog extends javax.swing.JDialog {
         jLabel3.setText(org.openide.util.NbBundle.getMessage(ConnectExternalReplDialog.class, "ConnectExternalReplDialog.jLabel3.text")); // NOI18N
 
         connectButton.setText(org.openide.util.NbBundle.getMessage(ConnectExternalReplDialog.class, "ConnectExternalReplDialog.connectButton.text")); // NOI18N
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${insets}"), connectButton, org.jdesktop.beansbinding.BeanProperty.create("alignmentX"));
-        bindingGroup.addBinding(binding);
-
         connectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 connectButtonActionPerformed(evt);
@@ -85,7 +81,7 @@ public class ConnectExternalReplDialog extends javax.swing.JDialog {
             }
         });
 
-        errorLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13));
+        errorLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         errorLabel.setForeground(new java.awt.Color(255, 0, 0));
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText(org.openide.util.NbBundle.getMessage(ConnectExternalReplDialog.class, "ConnectExternalReplDialog.errorLabel.text")); // NOI18N
@@ -95,32 +91,27 @@ public class ConnectExternalReplDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, errorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(errorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE))
+                        .add(jLabel1)
+                        .add(54, 54, 54)
+                        .add(replName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
+                        .add(jLabel2)
+                        .add(18, 18, 18)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
-                                .add(jLabel1)
-                                .add(54, 54, 54)
-                                .add(replName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE))
+                                .add(connectButton)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(cancelButton))
                             .add(layout.createSequentialGroup()
-                                .add(jLabel2)
-                                .add(18, 18, 18)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(layout.createSequentialGroup()
-                                        .add(connectButton)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                        .add(cancelButton))
-                                    .add(layout.createSequentialGroup()
-                                        .add(replServerHost, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 164, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                        .add(jLabel3)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(replServerPort, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))))
+                                .add(replServerHost, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 164, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(jLabel3)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(replServerPort, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -143,8 +134,6 @@ public class ConnectExternalReplDialog extends javax.swing.JDialog {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(errorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
         );
-
-        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -193,7 +182,6 @@ public class ConnectExternalReplDialog extends javax.swing.JDialog {
     private javax.swing.JTextField replName;
     private javax.swing.JTextField replServerHost;
     private javax.swing.JTextField replServerPort;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
 }
