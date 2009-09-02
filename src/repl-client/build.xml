@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.enclojure.repl-client" default="jar" basedir=".">
+    <property file="build.properties"/>
+    <property file="${basedir}${file.separator}..${file.separator}..${file.separator}build-support${file.separator}build.properties"/>
+	<import file="${common.dir}${file.separator}common.xml"/>
+</project>
