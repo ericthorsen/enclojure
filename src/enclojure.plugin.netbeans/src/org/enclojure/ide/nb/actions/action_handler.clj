@@ -87,29 +87,18 @@ text or top level form"
     (log Level/INFO "paste-eval expression in ns " nsname)
     (execute-expr project expr nsnode put-expr-in-repl-and-repl)))
 
-;(defn eval-expr-action [nodes]
-;  (let [pane (current-editor-pane nodes)
-;        p (ReplTopComponent/GetProjectFromActivatedNodes nodes)
-;        expr (.getSelectedText pane)
-;        expr (if (and expr (pos? (.length expr)))
-;               expr
-;               (get-top-form-text pane))
-;        nsnode (get-namespace-node pane)
-;        nsname (get-namespace pane)]
-;    (execute-expr p expr nsnode)))
-
 (defn load-file-action [nodes]
   (let [ec (editor-cookie nodes)
         _ (when ec (.saveDocument ec))
         pane (current-editor-pane nodes)
-        p (ReplTopComponent/GetProjectFromActivatedNodes nodes)
-        repl-tc (find-active-repl p)
-        {:keys [external local]} (get-repl-config (.ReplName repl-tc))
-        nsnode (get-namespace-node pane)
-        nsname (get-namespace pane)]
+        p (ReplTopComponent/GetProjectFromActivatedNodes nodes)]
+    (when-let[repl-tc (find-active-repl p)]
+      (let [{:keys [external local]} (get-repl-config (.ReplName repl-tc))
+            nsnode (get-namespace-node pane)
+            nsname (get-namespace pane)]
       (execute-expr p
         (load-with-debug
-            (.getText pane) nsname) nsnode)))
+            (.getText pane) nsname) nsnode)))))
 
 (defn load-namespace-action
   "loads the file 'file-name'.  If :refer-ns-after-load is true in *settings*
