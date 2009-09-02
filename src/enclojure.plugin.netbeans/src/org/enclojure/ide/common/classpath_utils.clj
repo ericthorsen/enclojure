@@ -26,6 +26,7 @@
     ;(org.netbeans.api.project.ui OpenProjects)
     (org.netbeans.api.java.classpath
             ClassPath
+            ClassPath$PathConversionMode
             GlobalPathRegistryEvent
             GlobalPathRegistry
             GlobalPathRegistryListener)
@@ -103,29 +104,6 @@
   (let [k (.getURL file-object)]
       (let [f (resource-to-temp-file file-object)]
         (.toURL (.toURI f)))))
-
-;(defn file-url-for [n]
-;  ; ignore partial path requests for now..
-;  (when (or (.endsWith n ".java")
-;          (.endsWith n ".clj"))
-;    ; do the filtering here...
-;      (if-let [entry (@*url-file-cache* n)]
-;        (:source-file entry)
-;        (when-let [r (or (check-explicit-path n)
-;                      (find-resource n))]
-;                      (when-let [f (find-resource-using-class-jdi n)]
-;                        (find-resource f)))
-;          (let [u (.getURL r)
-;                p (.getProtocol u)]
-;            (let [src (if (= "jar" p)
-;                        (create-temp-file-for-resource r)
-;                        u)]
-;              (sync nil
-;                (alter  *url-file-cache*
-;                  (fn [cache]
-;                    (assoc cache n {:lookup n :url u :source-file src}))))
-;          src))))))
-
 
 (defn resource-name-from-full-path [fp]
   "Given an explicit path, locates the resource portion based on the open projects source roots"
@@ -212,10 +190,17 @@
         (recur (next source-groups) (first source-groups) (conj ret (.getRootFolder source-group)))
         (distinct ret)))))
 
-(defn get-classpath-from-source [source]
+(defn get-classpath-from-source2 [source]
   (str (ClassPath/getClassPath source ClassPath/SOURCE)
     java.io.File/pathSeparator
     (ClassPath/getClassPath source ClassPath/EXECUTE)))
+
+(defn get-classpath-from-source [source]
+  (str (ClassPath/getClassPath source ClassPath/SOURCE)
+    java.io.File/pathSeparator
+    (.toString
+        (ClassPath/getClassPath source ClassPath/EXECUTE)
+      ClassPath$PathConversionMode/FAIL)))
 
 (defn get-project-classpath [#^Project p]
   (when p
