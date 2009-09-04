@@ -24,7 +24,8 @@
  		<copy file="${projects.root}commons${file.separator}${dist.path}${file.separator}org.enclojure.commons.jar" tofile="release/modules/ext/org.enclojure.commons.jar" />
  		<copy file="${projects.root}ide${file.separator}${dist.path}${file.separator}org.enclojure.ide.jar" tofile="release/modules/ext/org.enclojure.ide.jar" />
  		<copy file="${projects.root}repl-server${file.separator}${dist.path}${file.separator}org.enclojure.repl-server.jar" tofile="release/modules/ext/org.enclojure.repl-server.jar" />
- 	</target>
+		<copy file="${projects.root}repl-client${file.separator}${dist.path}${file.separator}org.enclojure.repl-client.jar" tofile="release/modules/ext/org.enclojure.repl-client.jar" /> 
+	</target>
 
     <target name="zip.project.template">
 	 <zip destfile="./src/org/enclojure/ide/nb/editor/ClojureProjectTemplate.zip"

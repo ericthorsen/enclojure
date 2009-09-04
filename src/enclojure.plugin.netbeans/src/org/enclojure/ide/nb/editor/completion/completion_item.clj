@@ -90,14 +90,15 @@
                     ; (:search-scope search-info)
                     ; (:search-delim search-info)
                      (:name item))
+        the-doc (.getDocument component)
+        max-end (.getLength the-doc)
         start (get-in search-info [:input :start])
-        end (get-in search-info [:input :end])
+        end (min (get-in search-info [:input :end]) max-end)
         inlen (get-in search-info [:input :length])
         cpos (+ (get-in search-info [:input :start])
                (count final-text))]
                 (.remove (.getDocument component) start inlen)
             (.insertString (.getDocument component) start (str final-text "") nil)))
-
 
 (defn get-final-text [item search-info]
   (str (:prepend-text search-info) (:search-scope search-info)

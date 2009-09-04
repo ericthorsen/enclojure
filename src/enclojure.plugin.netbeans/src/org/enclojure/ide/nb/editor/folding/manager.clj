@@ -83,14 +83,16 @@
     folds
     new-forms
     #^FoldHierarchyTransaction tran]
-    (let [basedoc (-> fold-operation .getHierarchy .getComponent .getDocument)]
+    (let [basedoc (-> fold-operation .getHierarchy .getComponent .getDocument)
+          max-length (.getLength basedoc)]
       (try
         (doseq [{:keys [start end symbol-type name argslist form] :as form-data} new-forms]
           (when (and start end)
-            (let [new-fold (.addToHierarchy fold-operation
+            (let [end-is (min end max-length)
+                  new-fold (.addToHierarchy fold-operation
                              (FoldType. (str symbol-type))
                              (fold-text form-data)
-                             false start end 0 (- end start) nil tran)]
+                             false start end-is 0 (- end-is start) nil tran)]
               (dosync
                 (alter folds conj new-fold)))))
         (catch Throwable t

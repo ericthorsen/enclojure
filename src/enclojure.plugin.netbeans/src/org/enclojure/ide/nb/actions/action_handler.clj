@@ -87,29 +87,18 @@ text or top level form"
     (log Level/INFO "paste-eval expression in ns " nsname)
     (execute-expr project expr nsnode put-expr-in-repl-and-repl)))
 
-;(defn eval-expr-action [nodes]
-;  (let [pane (current-editor-pane nodes)
-;        p (ReplTopComponent/GetProjectFromActivatedNodes nodes)
-;        expr (.getSelectedText pane)
-;        expr (if (and expr (pos? (.length expr)))
-;               expr
-;               (get-top-form-text pane))
-;        nsnode (get-namespace-node pane)
-;        nsname (get-namespace pane)]
-;    (execute-expr p expr nsnode)))
-
 (defn load-file-action [nodes]
   (let [ec (editor-cookie nodes)
         _ (when ec (.saveDocument ec))
         pane (current-editor-pane nodes)
-        p (ReplTopComponent/GetProjectFromActivatedNodes nodes)
-        repl-tc (find-active-repl p)
-        {:keys [external local]} (get-repl-config (.ReplName repl-tc))
-        nsnode (get-namespace-node pane)
-        nsname (get-namespace pane)]
+        p (ReplTopComponent/GetProjectFromActivatedNodes nodes)]
+    (when-let[repl-tc (find-active-repl p)]
+      (let [{:keys [external local]} (get-repl-config (.ReplName repl-tc))
+            nsnode (get-namespace-node pane)
+            nsname (get-namespace pane)]
       (execute-expr p
         (load-with-debug
-            (.getText pane) nsname) nsnode)))
+            (.getText pane) nsname) nsnode)))))
 
 (defn load-namespace-action
   "loads the file 'file-name'.  If :refer-ns-after-load is true in *settings*
@@ -151,15 +140,16 @@ be loaded"
   (let [editor-pane (current-editor-pane)
         document (.getDocument editor-pane)
         file (editor-utils/from-doc-to-file document)
-        {:keys [ns-use-refer unqualified-to-qualified-map]
+        {:keys [ns-use-refer unqualified-to-qualified-map this-ns]
             :as completion-info } (file-mapping/ensure-completion-info file)
         id (symbol-nav/get-identifier-at document
                   (.getCaretPosition editor-pane))]
     (when id
       (let [[alias sym] (.split (str id) "/")
-            ns-list (if sym ;there was an alias
+            ns-list
+            (conj (if sym ;there was an alias
                       [(unqualified-to-qualified-map alias)]
-                      ns-use-refer)]        
+                      ns-use-refer) this-ns)]
       (log Level/INFO " got id " id)
       (log Level/INFO " using " ns-list)
         (let [[file [sym & _]]
@@ -169,9 +159,10 @@ be loaded"
                          [source-file sym]))
                   ns-list)]
           (log Level/INFO "in file " file " found " sym)
-          (when-let [full-path (classpath-utils/find-resource file)]
+          (when-let [full-path (if (.exists (File. file)) file
+                                 (classpath-utils/find-resource file))]
             (editor-utils/open-editor-file-at-line full-path
-              (max (dec (:line sym)) 0)))
+              (max (- (:line sym) 2) 0)))
           )))))
 
 (defn get-pref-file-path []

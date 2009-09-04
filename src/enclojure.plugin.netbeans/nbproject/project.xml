@@ -487,6 +487,10 @@
                 <runtime-relative-path>ext/org.enclojure.repl-server.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/org.enclojure.repl-server.jar</binary-origin>
             </class-path-extension>
+           <class-path-extension>
+                <runtime-relative-path>ext/org.enclojure.repl-client.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/org.enclojure.repl-client.jar</binary-origin>
+            </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/org.enclojure.ide.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/org.enclojure.ide.jar</binary-origin>

@@ -16,6 +16,7 @@
 )
 
 (ns org.enclojure.ide.common.classpath-utils
+  (:require [org.enclojure.ide.repl.classpaths :as classpaths])
   (:import (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
              GlobalPathRegistryEvent GlobalPathRegistryListener)
     (org.netbeans.modules.java.classpath ClassPathAccessor)
@@ -26,6 +27,7 @@
     ;(org.netbeans.api.project.ui OpenProjects)
     (org.netbeans.api.java.classpath
             ClassPath
+            ClassPath$PathConversionMode
             GlobalPathRegistryEvent
             GlobalPathRegistry
             GlobalPathRegistryListener)
@@ -74,20 +76,6 @@
              (map #(.findResource % n)
                (classpath-for-source))))))
 
-;(defn find-resource-using-class-jdi [n]
-;  "Assumes find-resource failed.  It's possible I may just get the source file
-;in which case I will have to step search through the classpath roots to attempt
-;to locate the file."
-;  (let [ext (first (filter #(.endsWith n %) [".java" ".clj"]))
-;        classname (if ext
-;                    (.substring n 0 (.lastIndexOf n ext))
-;                    n)]
-;    (when @*vm*
-;      (when-first [f (.classesByName @*vm* classname)]
-;        (try
-;        (first (.sourcePaths f "Clojure"))
-;          (catch com.sun.jdi.AbsentInformationException e))))))
-
 (defn clear-file-cache []
   (let [cpy @*url-file-cache*]
     (sync nil
@@ -117,29 +105,6 @@
   (let [k (.getURL file-object)]
       (let [f (resource-to-temp-file file-object)]
         (.toURL (.toURI f)))))
-
-;(defn file-url-for [n]
-;  ; ignore partial path requests for now..
-;  (when (or (.endsWith n ".java")
-;          (.endsWith n ".clj"))
-;    ; do the filtering here...
-;      (if-let [entry (@*url-file-cache* n)]
-;        (:source-file entry)
-;        (when-let [r (or (check-explicit-path n)
-;                      (find-resource n))]
-;                      (when-let [f (find-resource-using-class-jdi n)]
-;                        (find-resource f)))
-;          (let [u (.getURL r)
-;                p (.getProtocol u)]
-;            (let [src (if (= "jar" p)
-;                        (create-temp-file-for-resource r)
-;                        u)]
-;              (sync nil
-;                (alter  *url-file-cache*
-;                  (fn [cache]
-;                    (assoc cache n {:lookup n :url u :source-file src}))))
-;          src))))))
-
 
 (defn resource-name-from-full-path [fp]
   "Given an explicit path, locates the resource portion based on the open projects source roots"
@@ -226,10 +191,33 @@
         (recur (next source-groups) (first source-groups) (conj ret (.getRootFolder source-group)))
         (distinct ret)))))
 
-(defn get-classpath-from-source [source]
+
+(defn build-classpath-set
+  [source-group cp-type]
+    (classpaths/build-classpath-str
+      (reduce #(conj %1
+                 (str (FileUtil/normalizeFile
+                        (FileUtil/toFile (.getRoot %2)))))
+        [] (filter #(.getRoot %)
+             (.entries (ClassPath/getClassPath source-group cp-type))))))
+
+(defn get-classpath-from-source2 [source]
   (str (ClassPath/getClassPath source ClassPath/SOURCE)
     java.io.File/pathSeparator
     (ClassPath/getClassPath source ClassPath/EXECUTE)))
+
+(defn get-classpath-from-source3 [source]
+  (str (ClassPath/getClassPath source ClassPath/SOURCE)
+    java.io.File/pathSeparator
+    (.toString
+        (ClassPath/getClassPath source ClassPath/EXECUTE)
+      ClassPath$PathConversionMode/FAIL)))
+
+(defn get-classpath-from-source [source]
+  (str (build-classpath-set source ClassPath/SOURCE)
+    java.io.File/pathSeparator
+    (build-classpath-set source ClassPath/EXECUTE)))
+
 
 (defn get-project-classpath [#^Project p]
   (when p
@@ -243,12 +231,13 @@
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
                         (apply str (interpose java.io.File/pathSeparator
                                      (map #(.locate l % nil false)
-                                       ["modules/ext/org.enclojure.repl-server.jar"
-                                        "modules/ext/org.enclojure.commons.jar"
+                                       ["modules/ext/org.enclojure.repl-server.jar"                                        
                                         ])))))
 
 (defn get-repl-classpath [#^Project p]
-  (str (classpath-for-repl) java.io.File/pathSeparator (get-project-classpath p)))
+  (let [cp (str (classpath-for-repl) java.io.File/pathSeparator (get-project-classpath p))]    
+    cp))
+
 
 
         
