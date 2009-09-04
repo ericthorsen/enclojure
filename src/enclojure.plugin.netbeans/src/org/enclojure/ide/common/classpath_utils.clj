@@ -16,6 +16,7 @@
 )
 
 (ns org.enclojure.ide.common.classpath-utils
+  (:require [org.enclojure.ide.repl.classpaths :as classpaths])
   (:import (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
              GlobalPathRegistryEvent GlobalPathRegistryListener)
     (org.netbeans.modules.java.classpath ClassPathAccessor)
@@ -190,17 +191,33 @@
         (recur (next source-groups) (first source-groups) (conj ret (.getRootFolder source-group)))
         (distinct ret)))))
 
+
+(defn build-classpath-set
+  [source-group cp-type]
+    (classpaths/build-classpath-str
+      (reduce #(conj %1
+                 (str (FileUtil/normalizeFile
+                        (FileUtil/toFile (.getRoot %2)))))
+        [] (filter #(.getRoot %)
+             (.entries (ClassPath/getClassPath source-group cp-type))))))
+
 (defn get-classpath-from-source2 [source]
   (str (ClassPath/getClassPath source ClassPath/SOURCE)
     java.io.File/pathSeparator
     (ClassPath/getClassPath source ClassPath/EXECUTE)))
 
-(defn get-classpath-from-source [source]
+(defn get-classpath-from-source3 [source]
   (str (ClassPath/getClassPath source ClassPath/SOURCE)
     java.io.File/pathSeparator
     (.toString
         (ClassPath/getClassPath source ClassPath/EXECUTE)
       ClassPath$PathConversionMode/FAIL)))
+
+(defn get-classpath-from-source [source]
+  (str (build-classpath-set source ClassPath/SOURCE)
+    java.io.File/pathSeparator
+    (build-classpath-set source ClassPath/EXECUTE)))
+
 
 (defn get-project-classpath [#^Project p]
   (when p
@@ -218,7 +235,9 @@
                                         ])))))
 
 (defn get-repl-classpath [#^Project p]
-  (str (classpath-for-repl) java.io.File/pathSeparator (get-project-classpath p)))
+  (let [cp (str (classpath-for-repl) java.io.File/pathSeparator (get-project-classpath p))]    
+    cp))
+
 
 
         
