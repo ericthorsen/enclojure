@@ -29,7 +29,7 @@ slf4j lib convenience functions."}
 debug, error, trace, warn and info.
 NOTE: the def-logging-fn must be called in your file in order to use these macros.
 It creates a logger using the namespace bound to *ns* at compile time."
-  ([level msg]    
+  ([level msg]
     `(~@(list '. '--logger--) (~level #^String ~msg)))
   ([level fmt obj]    
     `(~@(list '. '--logger--) (~level #^String ~fmt ~obj)))
@@ -45,7 +45,9 @@ It creates a logger using the namespace bound to *ns* at compile time."
     `(~@(list '. '--logger--)
        (~level #^String ~msg #^Throwable ~throwable))))
 
-(defmacro make-level-macros
+(defmacro #^{:private true}  make-level-macros
+  "Macro to define the convenience functions for this module.
+Users do not call this directly."
   [level]
   (let [t# (symbol (str level "-throwable"))]
       `(do         
@@ -67,7 +69,7 @@ It creates a logger using the namespace bound to *ns* at compile time."
                (let [s# (quote ~level)]
                  `(log-throwable ~s# ~msg# ~throwable#)))))))
 
-
+; Define the convenience macros
 (make-level-macros debug)
 (make-level-macros error)
 (make-level-macros trace)

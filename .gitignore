@@ -10,6 +10,7 @@ nbproject/private/*
 build-support/deps.zip
 __MACOSX
 .ivy-cache
+ivy-cache
 *.class
 *.jar
 *.war
