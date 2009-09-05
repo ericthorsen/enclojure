@@ -11,8 +11,6 @@
  ;* Author: Eric Thorsen, Narayan Singhal
  )
 
-;Requiring org.enclojure.commons.meta-utils so that load-string-with-dbg can be
-;sent through repl
 (ns org.enclojure.repl.main  
   (:use clojure.contrib.pprint clojure.main)
   ;(:gen-class)
@@ -22,6 +20,13 @@
     (java.util.concurrent CountDownLatch)))
 
 (def *print-stack-trace-on-error* false)
+
+(defn load-string-with-dbg
+  "Load a string using the source-path and file name for debug info."
+  [str-data source-path file]
+  (clojure.lang.Compiler/load
+    #^java.io.Reader (java.io.StringReader. str-data)
+        #^String source-path #^String file))
 
 (defn get-root-cause [throwable]
   (loop [cause throwable]

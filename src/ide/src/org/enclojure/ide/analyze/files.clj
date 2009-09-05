@@ -16,12 +16,12 @@
 )
 
 (ns org.enclojure.ide.analyze.files
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
-    clojure.main)
+  (:use clojure.main)
   (:require [clojure.set :as set]
     [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.ide.analyze.core :as analyze.core]
+    [org.enclojure.commons.c-slf4j :as logger]
+    [org.enclojure.commons.meta-utils :as meta-utils]
     )
    (:import (java.util.logging Level)
      (org.enclojure.ide CharCountingPushbackReader)
@@ -35,22 +35,24 @@
      (org.enclojure.ide.asm.tree ClassNode FieldNode MethodNode)
      ))
 
-(defrt #^{:private true} log (get-ns-logfn))
-(defn- publish-stack-trace [logfn throwable]
+; setup logging
+(logger/ensure-logger)
+
+(defn- publish-stack-trace [throwable]
   (let [root-cause
             (loop [cause throwable]
                 (if-let [cause (.getCause cause)]
                     (recur cause) cause))]
     (binding [*out* (StringWriter.)]
       (.printStackTrace root-cause (PrintWriter. *out*))
-      (log Level/SEVERE (str *out*)))))
+      (logger/error (str *out*)))))
 
 (defmacro #^{:private true}
     with-exception-handling [& body]
     `(try
       ~@body
        (catch Throwable t#
-         (publish-stack-trace log t#))))
+         (publish-stack-trace t#))))
 ;-------------------------------------------------------------------
 ; file analysis/parsing clojure sources and jar sniffing
 ;-------------------------------------------------------------------
@@ -61,7 +63,7 @@
 
 (defmethod analyze-file :default
   [file type]
-  (log Level/WARNING "analyze-file default!!!!!!! file:" file " type:" type))
+  (logger/warn "analyze-file default!!!!!!! file:" file " type:" type))
 
 (defn slurp-stream [istream]
     (let [sb (StringBuilder.)]
@@ -132,8 +134,8 @@
                 (if (not eos) parsed-forms
                   (recur parsed-forms (pos-fn))))))))
        (catch Throwable t
-        (log Level/WARNING "Exception for type " type " attrs " additional-attribs)
-        (publish-stack-trace log t))))
+        (logger/warn "Exception for type " type " attrs " additional-attribs)
+        (publish-stack-trace t))))
 
 (defn test-pull-forms [file]
     (with-open [f (java.io.FileInputStream. #^String file)]
@@ -143,7 +145,7 @@
 (defmethod analyze-file "clj"
   [istream type additional-attribs]
   ;{:post [(every? #{:ext :lib :orgname :symbols :source-file} (keys %))]}
-  ;(log Level/WARNING "analyze-file clj")
+  ;(logger/warn "analyze-file clj")
   (merge additional-attribs
     {:symbols
         (pull-forms istream additional-attribs)}))
@@ -168,7 +170,7 @@
 
 (defmethod analyze-file javax.swing.text.AbstractDocument
   [document]
-  (log Level/WARNING "analyze-file AbstractDocument - " document)
+  (logger/warn "analyze-file AbstractDocument - " document)
   (parser/get-top-level-form-data
     (.tokenSequence (TokenHierarchy/get document))
     (parser/get-doc-text-fn document)))
@@ -250,13 +252,13 @@
 (defmethod  analyze-file "class"
   ([#^InputStream istream type jar]
     ;{:post [(every? #{:package :super :source :access :symbols} (keys %))]}
- ;   (log Level/WARNING "analyze-file class")
+ ;   (logger/warn "analyze-file class")
     (try
         (let [cnode (ClassNode.)
               reader (ClassReader. istream)]
           (.accept reader cnode -flags-)
           (when-not (pos? (bit-and (.access cnode) Opcodes/ACC_PRIVATE))
-              {:package (package-name-from-class (.name cnode))
+              {:package (meta-utils/package-name-from-class (.name cnode))
                :super (.superName cnode)
                :source (.sourceFile cnode)
                :access (.access cnode)
@@ -264,6 +266,6 @@
                             (get-field-data cnode))}
           ))
       (catch Throwable t
-        (publish-stack-trace log t)))))
+        (publish-stack-trace t)))))
 
 

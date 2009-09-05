@@ -16,7 +16,9 @@
 )
 (ns org.enclojure.ide.nb.clojure.project.create
   (:refer-clojure :exclude (replace))
-  (:require [org.enclojure.ide.preferences.platform-options :as platform-options])
+  (:require 
+    [org.enclojure.ide.preferences.platform-options :as platform-options]
+    )
   (:use clojure.xml)
     (:import (java.util.zip ZipEntry ZipInputStream)
     (java.io ByteArrayInputStream LineNumberReader InputStreamReader PrintWriter
@@ -169,8 +171,7 @@
                    (File. (str (.getPath (.. FileUtil (toFile root))) 
                             (. java.io.File separatorChar) "src")))
         package-path (root-directory package)
-        tag-map (package-tags package)]
-    ;(log :severe (str "process-entry: " (list 'make-package-path root-src package)))
+        tag-map (package-tags package)]    
     (make-package-path root-src package)                   
     (transform-file istr 
       (.. FileUtil 

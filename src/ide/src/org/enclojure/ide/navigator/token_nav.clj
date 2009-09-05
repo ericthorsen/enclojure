@@ -16,14 +16,16 @@
 )
 
 (ns org.enclojure.ide.navigator.token-nav
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
-    org.enclojure.ide.ClojureLexer)
+  (:use org.enclojure.ide.ClojureLexer)
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import (javax.swing JEditorPane)
     (java.util.logging Level)
     (org.netbeans.api.lexer TokenHierarchy TokenSequence Token)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (def start-tokens [:map-start :vec-start :list-start])
 (def end-tokens [:map-end :vec-end :list-end])
@@ -210,7 +212,7 @@
                   (recur brace-stack offset forms  (next-token))))
           forms))
       (catch Throwable t
-        (log Level/WARNING (.getMessage t)))))
+        (logger/warn (.getMessage t)))))
   ([#^org.netbeans.api.lexer.TokenSequence token-seq]
       (let [next-token #(.moveNext token-seq)]
         (.moveStart token-seq)

@@ -19,35 +19,36 @@ slf4j lib convenience functions."}
  (:import (org.slf4j Logger LoggerFactory))
  )
 
+(defmacro ensure-logger []
+   (let [nsym# (str (ns-name *ns*))]
+    `(~@(list 'defonce (with-meta '--logger-- {:private true}))
+           (org.slf4j.LoggerFactory/getLogger ~nsym#))))
+
 (defmacro log
   "macro to call log passing in a level.  Users should use the convenience macros:
 debug, error, trace, warn and info.
 NOTE: the def-logging-fn must be called in your file in order to use these macros.
 It creates a logger using the namespace bound to *ns* at compile time."
-  ([level msg]
+  ([level msg]    
     `(~@(list '. '--logger--) (~level #^String ~msg)))
-  ([level fmt obj]
+  ([level fmt obj]    
     `(~@(list '. '--logger--) (~level #^String ~fmt ~obj)))
-  ([level fmt obj1 obj2]
+  ([level fmt obj1 obj2]    
     `(~@(list '. '--logger--) (~level #^String ~fmt ~obj1 ~obj2)))
-  ([level fmt obj1 obj2 & objs]
+  ([level fmt obj1 obj2 & objs]    
     `(~@(list '. '--logger--)
       (~level #^String ~fmt ~obj1 ~obj2))))
 
 (defmacro log-throwable
   ([level msg throwable]
+    (ensure-logger)
     `(~@(list '. '--logger--)
        (~level #^String ~msg #^Throwable ~throwable))))
-
-(defmacro def-logging-fn []
-   (let [nsym# (str (ns-name *ns*))]
-    `(~@(list 'def (with-meta '--logger-- {:private true}))
-           (org.slf4j.LoggerFactory/getLogger ~nsym#))))
 
 (defmacro make-level-macros
   [level]
   (let [t# (symbol (str level "-throwable"))]
-      `(do
+      `(do         
          (defmacro ~level
              ([msg#]
                 (let [s# (quote ~level)]

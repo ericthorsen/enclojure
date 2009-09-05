@@ -16,8 +16,6 @@
 )
 
 (ns org.enclojure.ide.nb.editor.completion.completion-provider
-  (:use org.enclojure.commons.meta-utils
-        org.enclojure.commons.logging)
   (:import (org.netbeans.spi.editor.completion CompletionResultSet
              CompletionItem CompletionProvider CompletionDocumentation
              CompletionTask)
@@ -28,11 +26,14 @@
     (javax.swing JToolTip)
     (org.netbeans.api.lexer TokenHierarchy TokenSequence Token)
     (java.awt.event ActionEvent))
-  (:require [org.enclojure.ide.nb.editor.completion.completion-item :as completion-item]
-        [org.enclojure.ide.nb.editor.completion.completion-task :as completion-task]        
+  (:require
+    [org.enclojure.ide.nb.editor.completion.completion-item :as completion-item]
+    [org.enclojure.ide.nb.editor.completion.completion-task :as completion-task]
+    [org.enclojure.commons.c-slf4j :as logger]
     ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defn create-task
   [query-type #^JTextComponent component]
@@ -44,7 +45,7 @@
       CompletionProvider/COMPLETION_QUERY_TYPE  0))
 
 (defn task-canceled [provider]
-  (log Level/WARNING "CompletionProvider task canceled???"))
+  (logger/warn "CompletionProvider task canceled???"))
 
 ;(defn token-sequence-from-chars [#^CharSequence char-data]
 ;    (.tokenSequence

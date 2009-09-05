@@ -16,7 +16,10 @@
 )
 
 (ns org.enclojure.ide.common.classpath-utils
-  (:require [org.enclojure.ide.repl.classpaths :as classpaths])
+  (:require
+    [org.enclojure.ide.repl.classpaths :as classpaths]
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
              GlobalPathRegistryEvent GlobalPathRegistryListener)
     (org.netbeans.modules.java.classpath ClassPathAccessor)
@@ -40,6 +43,9 @@
       PrintStream PrintWriter OutputStream ByteArrayOutputStream)
     (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType
       ClassType)))
+
+; setup logging
+(logger/ensure-logger)
 
 (def *url-file-cache* (ref {}))
 
@@ -194,12 +200,18 @@
 
 (defn build-classpath-set
   [source-group cp-type]
-    (classpaths/build-classpath-str
-      (reduce #(conj %1
-                 (str (FileUtil/normalizeFile
-                        (FileUtil/toFile (.getRoot %2)))))
-        [] (filter #(.getRoot %)
-             (.entries (ClassPath/getClassPath source-group cp-type))))))
+  (let [cp (ClassPath/getClassPath source-group cp-type)
+        base-str (.toString cp ClassPath$PathConversionMode/FAIL)]
+    (str base-str
+      java.io.File/pathSeparator
+      (classpaths/build-classpath-str
+        (reduce #(conj %1
+                   (str (FileUtil/normalizeFile
+                          (FileUtil/toFile (.getRoot %2)))))
+          [] (filter #(let [url (-> % .getURL)]
+                        (when (= "file" (.getProtocol url))
+                          (.isDirectory (File. (.toURI url)))))
+               (.entries cp)))))))
 
 (defn get-classpath-from-source2 [source]
   (str (ClassPath/getClassPath source ClassPath/SOURCE)
@@ -218,14 +230,17 @@
     java.io.File/pathSeparator
     (build-classpath-set source ClassPath/EXECUTE)))
 
-
+(def proj (atom nil))
 (defn get-project-classpath [#^Project p]
   (when p
+    (swap! proj (fn [_] p))
     (loop [sources (get-source-files p) ret ""]
       (if-let [source (first sources)]
         (recur (next sources)
           (str ret java.io.File/pathSeparator (get-classpath-from-source source)))
-        (when ret (.substring ret 1))))))
+        (when ret 
+          (logger/info "Returning {}" ret)
+          (.substring ret 1))))))
 
 (defn classpath-for-repl []
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]

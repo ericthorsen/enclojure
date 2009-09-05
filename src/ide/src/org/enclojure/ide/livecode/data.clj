@@ -16,12 +16,16 @@
 )
 
 (ns org.enclojure.ide.livecode.data
-    (:use org.enclojure.commons.meta-utils
-        org.enclojure.commons.logging)
-  (:require [org.enclojure.ide.livecode.changes :as changes])
+  (:require 
+    [org.enclojure.ide.livecode.changes :as changes]
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import
     (javax.swing.tree TreeModel TreePath)
     ))
+
+; setup logging
+(logger/ensure-logger)
 
 ; reference to a map keyed my namespace.
 ; each value contains a reference to the namespaces symbol data

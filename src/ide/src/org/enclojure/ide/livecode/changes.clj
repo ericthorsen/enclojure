@@ -16,10 +16,13 @@
 )
 
 (ns org.enclojure.ide.livecode.changes
-    (:use org.enclojure.commons.meta-utils
-        org.enclojure.commons.logging))
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
+  )
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (def -prev-ns-hashes- (atom {}))
 

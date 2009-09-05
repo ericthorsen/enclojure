@@ -31,7 +31,7 @@
     (java.util Vector)))
 
 ; setup logging
-(logger/def-logging-fn)
+(logger/ensure-logger)
 
 (defn- get-pref-file-path
   "Given a config category, returns a path for storing/retrieving config data for the given category"

@@ -15,9 +15,7 @@
 ;*******************************************************************************
 )
 
-(ns org.enclojure.ide.nb.editor.completion.patterns
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
+(ns org.enclojure.ide.nb.editor.completion.patterns  
   (:import
     (java.util Collection)
     (java.util.logging Level)
@@ -29,10 +27,12 @@
     [org.enclojure.ide.nb.editor.utils :as editor-utils]
     [org.enclojure.ide.nb.editor.completion.file-mapping :as file-mapping]
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]
+    [org.enclojure.commons.c-slf4j :as logger]
     [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
     ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 ; What if I defined a set of known top level forms for dealing with incomplete
 ; expressions?

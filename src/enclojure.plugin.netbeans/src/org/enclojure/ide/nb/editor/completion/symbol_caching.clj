@@ -16,14 +16,14 @@
 )
 
 (ns org.enclojure.ide.nb.editor.completion.symbol-caching
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
-    clojure.main)
+  (:use clojure.main)
   (:require [clojure.set :as set]
     [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]
     [org.enclojure.ide.nb.classpaths.resource-tracking :as resource-tracking]
     [org.enclojure.ide.analyze.core :as analyze.core]
+    [org.enclojure.commons.c-slf4j :as logger]
+    [org.enclojure.commons.meta-utils :as meta-utils]
     [org.enclojure.ide.analyze.files :as analyze.files]
     )
   (:import (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
@@ -49,15 +49,15 @@
       PrintStream PrintWriter OutputStream ByteArrayOutputStream)
     (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType ClassType)))
 
-(defrt #^{:private true} log (get-ns-logfn))
-
+; setup logging
+(logger/ensure-logger)
 (.setLevel (Logger/getLogger "org.enclojure.ide.nb.editor.completion.symbol-caching")
   Level/WARNING)
 
 (def -reader-queues- (ref {}))
 (def -path-listener- (ref nil))
 
-(defn- publish-stack-trace [logfn throwable]
+(defn- publish-stack-trace [throwable]
   (let [root-cause
             (loop [cause throwable]
                 (if-let [cause (.getCause cause)]
@@ -66,14 +66,14 @@
       (.printStackTrace #^Throwable root-cause (PrintWriter. *out*))
       (when (not= root-cause throwable)
          (.printStackTrace #^Throwable throwable (PrintWriter. *out*)))
-      (log Level/SEVERE (str *out*)))))
+      (logger/error (str *out*)))))
 
 (defmacro #^{:private true}
     with-exception-handling [& body]
     `(try
       ~@body
        (catch Throwable t#
-        (publish-stack-trace log t#))))
+        (publish-stack-trace t#))))
 
 ;------------------------------------------------------------------------------
 ; validators
@@ -81,7 +81,7 @@
 (defn validate-symbol-cache
   "validator for the structure of the symbo cache"
   ([cache]
-    ;(log Level/INFO "validating " cache)
+    ;(logger/info "validating " cache)
     (when (not= (count cache) (count (filter string? (keys cache))))
       (throw (Exception. "All keys in the symbol cache must be strings")))
     (let [r (reduce (fn [l [k {syms :symbols}]]
@@ -281,18 +281,18 @@
                   (:ext (first args))]))
 
 (defmethod analyze :default [& args]
-    (log Level/WARNING "analyze default!!!!!!! " (apply str (interpose " " args))))
+    (logger/warn "analyze default!!!!!!! " (apply str (interpose " " args))))
 
 (defn analyze-clj-update-cache
   [{:keys [source name] :as args} istream file-key]
   (try ; At this level, I need to look inside the file for the 
-    (let [k (ns-from-file file-key)]
-      (log Level/FINE "analyze :clj  " source)
+    (let [k (meta-utils/ns-from-file file-key)]
+      (logger/debug "analyze :clj  " source)
       (let [symbols (analyze.files/analyze-file istream "clj" {:source-file file-key})
             ns (ffirst (symbol-meta/get-namespace-node symbols))
             existing-forms (from-symbol-cache (str ns))
             new-symbols (merge existing-forms symbols)]
- ;       (log Level/FINE "analyze :clj  namespace is " ns)
+ ;       (logger/debug "analyze :clj  namespace is " ns)
         ; I have the file name, the namespace within the file and all the forms.
         ; Need to update the file cache as well as the symbol cache since
         ; the clojure soure may be in several different files.
@@ -304,7 +304,7 @@
          (update-caches (str ns) new-symbols))
         (from-symbol-cache (str ns))))
     (catch Throwable t
-            (publish-stack-trace log t))))
+            (publish-stack-trace t))))
 
 (defn is-clj-data-in-cache? [filename ns]
   (and 
@@ -313,24 +313,24 @@
 
 (defmethod analyze [java.util.jar.JarEntry "clj"]
   [{:keys [jar source name lib] :as args}]
-;  (log Level/WARNING "analyze [java.util.jar.JarEntry clj]")
+;  (logger/warn "analyze [java.util.jar.JarEntry clj]")
   (try
-    (let [k (ns-from-file (.getName #^JarEntry source))]
-      (log Level/FINE "analyze :clj  looking up " k " "
+    (let [k (meta-utils/ns-from-file (.getName #^JarEntry source))]
+      (logger/debug "analyze :clj  looking up " k " "
         (if (symbols-from-symbol-cache k) "yes" "no"))
     (if (symbols-from-symbol-cache k)
       (from-symbol-cache k)
      (with-open [istream (.getInputStream #^JarFile jar #^JarEntry source)]
            (analyze-clj-update-cache args istream (.getName #^JarEntry source)))))
     (catch Throwable t
-            (publish-stack-trace log t))))
+            (publish-stack-trace t))))
 
 (defmethod analyze [java.io.File "clj"]
   [{:keys [source name force-update?] :as args}]
-;  (log Level/WARNING "analyze [java.io.File clj]")
+;  (logger/warn "analyze [java.io.File clj]")
   (try
-    (let [k (ns-from-file (.getName #^File source))]
-      (log Level/FINE "analyze :clj  looking up " k " "
+    (let [k (meta-utils/ns-from-file (.getName #^File source))]
+      (logger/debug "analyze :clj  looking up " k " "
         (if (symbols-from-symbol-cache k) "yes" "no"))
     (if (or (and (not force-update?)
               (symbols-from-symbol-cache k)))
@@ -339,7 +339,7 @@
            (analyze-clj-update-cache args istream 
              (.getPath #^File source)))))
     (catch Throwable t
-            (publish-stack-trace log t))))
+            (publish-stack-trace t))))
 
 ;(defmethod analyze [org.openide.filesystems.FileObject "clj"]
 ;  [args]
@@ -351,14 +351,14 @@
 
 (defmethod analyze [java.util.jar.JarEntry "class"]
   [{:keys [jar source ext lib] :as args}]
-  ;(log Level/WARNING "analyze [java.util.jar.JarEntry \"class\"]")
+  ;(logger/warn "analyze [java.util.jar.JarEntry \"class\"]")
   (try
-    (let [k (classname-from-file (.getName #^JarEntry source))]
+    (let [k (meta-utils/classname-from-file (.getName #^JarEntry source))]
       ; If it is a clojure compiled class we will skip it
       (when-not (is-clojure-compiled-class k)
- ;       (log Level/FINE "analyze :class  looking up " k " " (if (symbols-from-symbol-cache k) "yes" "no"))
+ ;       (logger/debug "analyze :class  looking up " k " " (if (symbols-from-symbol-cache k) "yes" "no"))
             (or (symbols-from-symbol-cache k)
-            (log Level/FINE "analyze :class " source)
+            (logger/debug "analyze :class " source)
               (let [forms (with-open [istream (.getInputStream #^JarFile jar  #^JarEntry source)]
                                 (analyze.files/analyze-file istream ext jar))]
                 (when-not (expected-keys? forms)
@@ -368,11 +368,11 @@
                 (dosync
                   (update-caches k
                     (assoc forms
-                      :ext ext :lib lib :package (package-name-from-class k))))
+                      :ext ext :lib lib :package (meta-utils/package-name-from-class k))))
                 forms
                   ))))
     (catch Throwable t
-        (publish-stack-trace log t))))
+        (publish-stack-trace t))))
 ;                    (commute
 ;                        -symbol-data-cache-
 ;                            assoc k
@@ -383,7 +383,7 @@
 (defn reparse-file
   "Given a java.io.File with a full path, attempt to reparse and update the code data"
   [file]
-  (log Level/FINE "reparse " file)
+  (logger/debug "reparse " file)
   (analyze {:source file :name (.getPath file)
             :force-update? true :ext "clj"}))
 
@@ -412,7 +412,7 @@
     (or (nil? key-val)
         (and (string? key-val)
           (not (pos? (count (.trim key-val))))))
-    (log Level/SEVERE "null or empty key for " args))
+    (logger/error "null or empty key for " args))
   (str key-val))
 
 (defmulti path-key
@@ -443,11 +443,11 @@
 
 (defn process-jar
   ([#^File jar-file parse-now-pred? ignore-pred? source-root n]
-    (log Level/FINE "process jar " jar-file)
+    (logger/debug "process jar " jar-file)
     (let [lib (.getPath jar-file)]
     (try
       (with-open [jr #^JarFile (JarFile. jar-file)]
-        (log Level/FINE "Processing entries in jar " jar-file)
+        (logger/debug "Processing entries in jar " jar-file)
         (loop [entries  (take n (enumeration-seq (.entries jr))) classes {}]
           (if-let [entry #^JarEntry (first entries)]
             (let [ename (.getName entry)
@@ -459,10 +459,10 @@
                   sufx (.lastIndexOf ename (int \.))
                   ext (when (not= -1 sufx) (subs ename (inc sufx)))]
               (if (parse-now-pred? ename)
-                    (log Level/FINE "Parse now -> " ekey "match " (parse-now-pred? ename)
+                    (logger/debug "Parse now -> " ekey "match " (parse-now-pred? ename)
                       " :name " ename " :isdir? " isdir? " path " path
                       " sufx " sufx " :ext " ext)
-                (log Level/FINE "Store key only -> " ekey "match " (parse-now-pred? ename)
+                (logger/debug "Store key only -> " ekey "match " (parse-now-pred? ename)
                   " :name " ename " :isdir? " isdir? " path " path
                       " sufx " sufx " :ext " ext))
                 (recur (rest entries)
@@ -488,21 +488,21 @@
                         (or isdir? (#{"clj" "class"} ext))
                             (let [more-args (when (= ext "class")
                                                 [:package
-                                                  (package-name-from-class ekey)])
+                                                  (meta-utils/package-name-from-class ekey)])
                                   new-data (apply assoc
                                              (if (and parse-now-pred? (parse-now-pred? ename))
                                                 (analyze {:root source-root :jar jr :source entry
                                                           :ext ext :lib lib :name (.getName entry)}) {})
                                              :ext ext :lib lib :orgname ename more-args)]
                                         (if (not (expected-keys? new-data))
-                                            (log Level/SEVERE
+                                            (logger/error
                                                  (apply str "New forms during process-jar for " ekey " had unexpected keys: "
                                                     (interpose "," (filter #(not (-sym-cache-val-keys- %)) (keys new-data)))))
                                          (assoc classes ekey new-data)))
                        :else classes))) classes)))
-      ;(log Level/FINE "Completed processing entries in jar " jar-file)
+      ;(logger/debug "Completed processing entries in jar " jar-file)
        (catch Throwable t
-        (publish-stack-trace log t)))))
+        (publish-stack-trace t)))))
     ([jar-file parse-pred? ignore-pred?] (process-jar jar-file parse-pred? ignore-pred? nil Integer/MAX_VALUE))
     ([jar-file] (process-jar jar-file nil nil Integer/MAX_VALUE)))
 
@@ -542,13 +542,13 @@
   (fn ([& args ] (class (first args)))))
 
 (defmethod process-path :default [path-data & args]
-  (log Level/FINE "process-path default!!! " (class path-data))
+  (logger/debug "process-path default!!! " (class path-data))
   )
 
 (defmethod process-path org.netbeans.api.java.classpath.ClassPath$Entry
   ;"traverses a set of jars and calls analyze on them"
   [classpath-entry]
-  ;(log Level/FINE "process-path ClassPath$Entry" classpath-entry)
+  ;(logger/debug "process-path ClassPath$Entry" classpath-entry)
   (with-exception-handling
     (if classpath-entry
         (let [url (.getURL #^ClassPath$Entry classpath-entry)
@@ -567,11 +567,11 @@
 (defmethod process-path org.openide.filesystems.JarFileSystem
   ;"traverses a set of jars and calls analyze on them"
   [#^JarFileSystem jar-file-system classpath-entry]
-    (log Level/FINE "process-path JarFileSystem " (.getDisplayName #^JarFileSystem jar-file-system))
+    (logger/debug "process-path JarFileSystem " (.getDisplayName #^JarFileSystem jar-file-system))
   (when-not (was-file-processed? (.getDisplayName #^JarFileSystem jar-file-system))
       (with-exception-handling
         ; Keep the results but make sure all the keys are in the file map so they get cached.
-        (log Level/FINE "process-path JarFileSystem (not cached)" (.getDisplayName #^JarFileSystem jar-file-system))
+        (logger/debug "process-path JarFileSystem (not cached)" (.getDisplayName #^JarFileSystem jar-file-system))
         (let [new-data
               (process-jar (.getJarFile jar-file-system)     
                 (get-regex-any-matcher-pred
@@ -582,7 +582,7 @@
               filtered (select-keys new-data
                          (filter #(not (is-clojure-compiled-class %))
                            (keys new-data)))]
-    (log Level/INFO "!!!!!!!!!!!! process-path JarFileSystem " (.getDisplayName jar-file-system)
+    (logger/info "!!!!!!!!!!!! process-path JarFileSystem " (.getDisplayName jar-file-system)
       " adding " (count (keys new-data)))
         (dosync
           (update-caches filtered)
@@ -594,11 +594,11 @@
 
 (defn analyze-class2
   [istream]
-  ;(log Level/FINE "analyze-file class")
+  ;(logger/debug "analyze-file class")
     (with-open [i istream]
     (let [cnode (org.enclojure.ide.navigator.CljClassVisitor.)]
         (.accept (ClassReader. #^java.io.InputStream istream) cnode analyze.files/-flags-) cnode)))
-        ;(log Level/FINE "analyze-file class success!!!!!!!!!!")
+        ;(logger/debug "analyze-file class success!!!!!!!!!!")
 
 
 (defn get-paths [type]
@@ -614,7 +614,7 @@
 (defn get-nav-data-for 
   "Get the symbol data for a given file."
   [file]
-  (log Level/INFO "Navigator loading " file)
+  (logger/info "Navigator loading " file)
   (:symbols
         (from-symbol-cache
                 (cache-lookup-ns-from-file (.getPath file)))))
@@ -640,8 +640,8 @@
                 (with-open [s (.getInputStream jr %1)]
                     (analyze-class2 s)))
            (catch Throwable t
-               (log Level/SEVERE "error reading " (.getName %1))
-             (publish-stack-trace log t)))
+               (logger/error "error reading " (.getName %1))
+             (publish-stack-trace t)))
             (take how-many
                 (enumeration-seq (.entries jr)))))))
 
@@ -662,9 +662,9 @@
 
 (defn reset-all []
   (clear-caches)
-  (log Level/FINE "loading boot path")
+  (logger/debug "loading boot path")
   (reload-boot-path-all)
-  (log Level/FINE "loading compile path")
+  (logger/debug "loading compile path")
   (reload-compile-path-all))
   
 (defn seeit [tt]

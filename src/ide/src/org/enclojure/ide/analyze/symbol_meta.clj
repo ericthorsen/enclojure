@@ -16,15 +16,17 @@
 )
 
 (ns org.enclojure.ide.analyze.symbol-meta
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
-    clojure.main)
+  (:use clojure.main)
   (:import (java.util.logging Level))
-  (:require [clojure.set :as set]
-    [org.enclojure.ide.navigator.parser :as parser])
+  (:require
+    [clojure.set :as set]
+    [org.enclojure.ide.navigator.parser :as parser]
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import  (java.util.logging Level)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 ;(def sample-ns-record
 ;  {:symbols
 ; {rename-keys
@@ -380,13 +382,10 @@
 (defn symbol-type? [item symtype]
   (= symtype (:symbol-type item)))
 
-(defn- do-filter [ns-data filter-func]
-  ;(log "FILTERING " (:package ns-data))
-  (reduce  (fn [m [sym forms]]
-           ;  (log "filter sym-> " sym)
+(defn- do-filter [ns-data filter-func]  
+  (reduce  (fn [m [sym forms]]           
              (let [valid-funcs
-                        (filter filter-func forms)]
-            ;   (log "filter funcs-> " valid-funcs)
+                        (filter filter-func forms)]            
                (if (pos? (count valid-funcs))
                  (assoc m sym
                    (concat (m sym) valid-funcs)) m)))

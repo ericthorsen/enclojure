@@ -12,10 +12,10 @@
 
 (ns org.enclojure.ide.analyze
   (:require [clojure.contrib.repl-utils :as ru]
-    [net.n01se.clojure-compiler :as cc])
-      (:import (java.io File LineNumberReader InputStreamReader PushbackReader)
-           (java.lang.reflect Modifier Method Constructor)
-           (clojure.lang RT Compiler Compiler$C)))
+    )
+  (:import (java.io File LineNumberReader InputStreamReader PushbackReader)
+    (java.lang.reflect Modifier Method Constructor)
+    (clojure.lang RT Compiler Compiler$C)))
 
 (defn find-ns-in [text]
   (let [s text

@@ -16,14 +16,17 @@
 )
 
 (ns org.enclojure.ide.nb.classpaths.executors
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)  
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import 
     (java.util.logging Level)
     (java.util.concurrent LinkedBlockingQueue CountDownLatch
-      Executors ExecutorService TimeUnit BlockingQueue ThreadPoolExecutor)))
+      Executors ExecutorService TimeUnit BlockingQueue ThreadPoolExecutor)
+    ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defmulti thread-pool-executor
   [& args]

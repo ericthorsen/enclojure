@@ -9,5 +9,6 @@
         <dependency org="Apache" name="commons-logging" rev="1.1.1"/>
         <dependency org="Apache" name="log4j" rev="1.2.15"/>
         <dependency org="slf4j" name="slf4j-api" rev="1.5.8"/>
+        <dependency org="slf4j" name="slf4j-jdk14" rev="1.5.8"/>
     </dependencies>
 </ivy-module>

@@ -15,15 +15,17 @@
 ;*******************************************************************************
 )
 (ns org.enclojure.ide.analyze.core
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import (java.util.logging Level)
     (java.io StringWriter PrintWriter)
     ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
-(defn- publish-stack-trace [logfn throwable]
+(defn- publish-stack-trace [throwable]
   (let [root-cause
             (loop [cause throwable]
                 (if-let [cause (.getCause cause)]
@@ -32,14 +34,14 @@
       (.printStackTrace root-cause (PrintWriter. *out*))
       (when (not= root-cause throwable)
          (.printStackTrace throwable (PrintWriter. *out*)))
-      (log Level/SEVERE (str *out*)))))
+      (logger/error (str *out*)))))
 
 (defmacro #^{:private true}
     with-exception-handling [& body]
     `(try
       ~@body
        (catch Throwable t#
-        (publish-stack-trace log t#))))
+        (publish-stack-trace t#))))
 
 ;-------------------------------------------------------------------
 ; Helpers for handling various clojure forms as data.

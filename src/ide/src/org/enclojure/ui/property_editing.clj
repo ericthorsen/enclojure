@@ -15,16 +15,18 @@
 ;*******************************************************************************
 )
 (ns org.enclojure.ui.property-editing
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
-    (:import (javax.swing Icon ImageIcon DefaultListModel)
-      (java.util.logging Level)
-      (java.beans PropertyEditor PropertyEditorManager)
-      (javax.swing JTable JComboBox JFrame JScrollBar DefaultCellEditor JScrollPane)
-      (javax.swing.table AbstractTableModel TableModel)
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
+  (:import (javax.swing Icon ImageIcon DefaultListModel)
+    (java.util.logging Level)
+    (java.beans PropertyEditor PropertyEditorManager)
+    (javax.swing JTable JComboBox JFrame JScrollBar DefaultCellEditor JScrollPane)
+    (javax.swing.table AbstractTableModel TableModel)
     ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defn editable-table
   "<columns> is a list of column definitions which can be just an atom used

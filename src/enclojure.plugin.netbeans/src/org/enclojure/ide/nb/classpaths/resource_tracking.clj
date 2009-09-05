@@ -16,10 +16,11 @@
 )
 
 (ns org.enclojure.ide.nb.classpaths.resource-tracking
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
-  (:require [clojure.set :as set]
-    [org.enclojure.ide.navigator.parser :as parser])
+  (:require
+    [clojure.set :as set]
+    [org.enclojure.ide.navigator.parser :as parser]
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
              GlobalPathRegistryEvent GlobalPathRegistryListener)
     (clojure.asm Opcodes)    
@@ -36,7 +37,8 @@
     (java.io File FileWriter IOException StringReader StringWriter
       PrintStream PrintWriter OutputStream ByteArrayOutputStream)))
     
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (def -source-roots- (ref {}))
 

@@ -15,14 +15,19 @@
 ;*******************************************************************************
 )
 (ns org.enclojure.ide.preferences.utils
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
-  (:import (org.openide.util NbPreferences)
-      (java.io File OutputStreamWriter FileOutputStream)
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
+  (:import
+    (org.openide.util NbPreferences)
+    (java.io File OutputStreamWriter FileOutputStream)
     (java.util.logging Level)
-        (java.util.prefs Preferences)))
+    (java.util.prefs Preferences)
+    ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
+
 ;------------------------------------------------------
 ; Using clojure data structures on disk
 ;------------------------------------------------------

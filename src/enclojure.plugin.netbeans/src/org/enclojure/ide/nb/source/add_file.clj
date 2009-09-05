@@ -11,9 +11,10 @@
 )
 
 (ns org.enclojure.ide.nb.source.add-file
-    (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
-  (:require [org.enclojure.ui.controls :as controls]
+  (:require
+    [org.enclojure.ui.controls :as controls]
+    [org.enclojure.commons.c-slf4j :as logger]
+    [org.enclojure.commons.meta-utils :as meta-utils]
     )
   (:import
     (java.io File)
@@ -32,11 +33,11 @@
     (org.netbeans.api.java.project JavaProjectConstants)
     ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (def -properties-
   {:namespace "namespace"})
-
 
 (defn make-key-listener
   [func]
@@ -109,7 +110,7 @@ source roots is a map from didplay name to the root file object."
 
 (defn ns-from-root-file-object
   [source-root-str full-file-path]
-  (ns-from-file
+  (meta-utils/ns-from-file
     (subs full-file-path
        (+ 1 (count source-root-str)))))
 
@@ -151,11 +152,11 @@ source roots is a map from didplay name to the root file object."
   (boolean
     (let [root-name (.getSelectedItem (.sourceRootsComboBox file-pane))
           root ((:source-roots proj-info) root-name)
-          pkg-dir (root-resource
+          pkg-dir (meta-utils/root-resource
                     (str (.getItem
                            (.getEditor
                              (.packagesComboBox file-pane)))))
-          fname (file-from-ns (.getText (.filenameTextField file-pane)))]
+          fname (meta-utils/file-from-ns (.getText (.filenameTextField file-pane)))]
       (.setText (.createdFileTextField file-pane)
         (str (.getPath root)
           File/separator pkg-dir
@@ -257,7 +258,7 @@ source roots is a map from didplay name to the root file object."
             (find-inx (seq roots-array) #(= "Source Packages" %))
           0))
     (set-combo-box-to (.packagesComboBox file-pane)
-            (or (when ns (ns-from-file ns)) ""))
+            (or (when ns (meta-utils/ns-from-file ns)) ""))
     (.setText (.filenameTextField file-pane) "new-ns")
     (update-created-file project-info file-pane)
     (validate-document file-pane wizard-descriptor
@@ -292,7 +293,7 @@ source roots is a map from didplay name to the root file object."
         base-path (subs full-path 0 (.indexOf full-path file))
         target-folder (FileUtil/createFolder (File. base-path))
         data-folder (DataFolder/findFolder target-folder)]
-    (log "file " file)
+    (logger/debug "file " file)
     (doto wizard-descriptor
       (.setTargetName file)
       (.setTargetFolder data-folder))

@@ -19,11 +19,12 @@
      (when (not *compile-files*)
        ~@body)))
 
-(defn load-string-with-dbg 
-  "Load a string using the source-path and file name for debug info."
-  [str-data source-path file]
-  (clojure.lang.Compiler/load #^java.io.Reader (java.io.StringReader. str-data) 
-        #^String source-path #^String file))
+;(defn load-string-with-dbg 
+;  "Load a string using the source-path and file name for debug info."
+;  [str-data source-path file]
+;  (clojure.lang.Compiler/load
+;    #^java.io.Reader (java.io.StringReader. str-data)
+;        #^String source-path #^String file))
 
 (defn root-resource
   "Returns the root directory path for a lib"

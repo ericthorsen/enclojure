@@ -16,18 +16,19 @@
 )
 
 (ns org.enclojure.ide.nb.classpaths.listeners
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
-    clojure.main)
-  (:require [clojure.set :as set]
+  (:use clojure.main)
+  (:require
+    [clojure.set :as set]
     [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]
     [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
     [org.enclojure.ide.nb.classpaths.resource-tracking :as resource-tracking]
     [org.enclojure.ide.analyze.core :as analyze.core]
+    [org.enclojure.commons.c-slf4j :as logger]
     [org.enclojure.ide.analyze.files :as analyze.files]
     )
-  (:import (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
+  (:import
+    (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
              GlobalPathRegistryEvent GlobalPathRegistryListener)
     (clojure.lang LineNumberingPushbackReader)
     (clojure.asm Opcodes)
@@ -62,14 +63,16 @@
       FileUtil JarFileSystem URLMapper)
     (java.io File FileWriter IOException StringReader StringWriter
       PrintStream PrintWriter OutputStream ByteArrayOutputStream)
-    (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType ClassType)))
+    (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType ClassType)
+    ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (def -reader-queues- (ref {}))
 (def -path-listener- (ref nil))
 
-(defn- publish-stack-trace [logfn throwable]
+(defn- publish-stack-trace [throwable]
   (let [root-cause
             (loop [cause throwable]
                 (if-let [cause (.getCause cause)]
@@ -78,14 +81,14 @@
       (.printStackTrace root-cause (PrintWriter. *out*))
       (when (not= root-cause throwable)
          (.printStackTrace throwable (PrintWriter. *out*)))
-      (log Level/SEVERE (str *out*)))))
+      (logger/error (str *out*)))))
 
 (defmacro #^{:private true}
     with-exception-handling [& body]
     `(try
       ~@body
        (catch Throwable t#
-        (publish-stack-trace log t#))))
+        (publish-stack-trace t#))))
 
 (defn new-queue
   ([take-fn thread-label executor-service agent-data]
@@ -104,14 +107,14 @@
                          (tfn)
                          (Thread/yield)
                          (catch java.lang.InterruptedException i
-                           (log Level/FINE "shutting down queue " thread-label))
+                           (logger/debug "shutting down queue " thread-label))
                          (catch Throwable t
-                           (publish-stack-trace log t)))
+                           (publish-stack-trace t)))
                        (recur))
                      (catch java.lang.InterruptedException i
-                       (log Level/FINE "shutting down queue " thread-label))
+                       (logger/debug "shutting down queue " thread-label))
                      (catch Throwable t
-                       (publish-stack-trace log t))))
+                       (publish-stack-trace t))))
                  thread-label)]
     (.start thread)
     {:stopfn #(.interrupt thread) :queue queue :name thread-label})))
@@ -125,7 +128,7 @@
 
 (defmethod add-class-path :default
   [classpath cp-type]
-  (log Level/WARNING "add-class-path multi-method... no dispath for source type " cp-type " ignoring..."))
+  (logger/warn "add-class-path multi-method... no dispath for source type " cp-type " ignoring..."))
 
 (defmethod add-class-path "classpath/source"
   [classpath cp-type]
@@ -133,7 +136,7 @@
     (resource-tracking/add-source-roots classpath)
     (when-let [roots (.getRoots classpath)]
       (doseq [item (seq roots)]
-      (log Level/FINE "add-class-path :source to path Queue " item)
+      (logger/debug "add-class-path :source to path Queue " item)
       (.put (:queue
                  (:path-reader-queue @-reader-queues-)) [item])))))
 
@@ -144,7 +147,7 @@
       (resource-tracking/add-source-roots classpath)
       (when-let [entries (.entries classpath)]
         (doseq [item (seq entries)]
-          (log Level/FINE "add-class-path :compile to path Queue " item)
+          (logger/debug "add-class-path :compile to path Queue " item)
             (.put (:queue
                          (:path-reader-queue @-reader-queues-)) [item])))))
 
@@ -153,7 +156,7 @@
     (with-exception-handling
       (when-let [entries (.entries classpath)]
         (doseq [item (seq entries)]
-          (log Level/FINE "add-class-path :boot to path Queue " item)
+          (logger/debug "add-class-path :boot to path Queue " item)
             (.put (:queue
                     (:path-reader-queue @-reader-queues-)) [item])))))
 
@@ -171,13 +174,13 @@
         rem-path-queue (new-queue rem-class-path "rem-classpaths" 4 nil)
         queue-entries-fn
            (fn [queue evt]
-             ;(log Level/FINE "queueing paths of type " (.getId evt))
+             ;(logger/debug "queueing paths of type " (.getId evt))
              (try
                (let [cp-type (.getId evt)]
                 (doseq [path (.getChangedPaths evt)]
-                  (log Level/FINE "path listener queueing " path)
+                  (logger/debug "path listener queueing " path)
                     (.put queue [path cp-type])))
-             (catch Throwable t (publish-stack-trace log t))))
+             (catch Throwable t (publish-stack-trace t))))
         add-paths-thread-pool (Executors/newFixedThreadPool 2)
         rem-paths-thread-pool (Executors/newFixedThreadPool 2)
         listener-proxy
@@ -213,55 +216,55 @@
     (try
       (let [data (apply proc-fn inputs)] data)
         (catch Throwable t
-            (log Level/FINE metastr " nocache. inputs " inputs)
-          (publish-stack-trace log t)))))
+            (logger/debug metastr " nocache. inputs " inputs)
+          (publish-stack-trace t)))))
 
 (defn get-cache-handlerfn [key-fn proc-fn metastr]
   (fn [data-cache & inputs]
     (with-exception-handling
       (let [tkey (apply key-fn inputs)]
-        ;(log Level/FINE metastr " key " tkey)
+        ;(logger/debug metastr " key " tkey)
         (if-let [ret (@data-cache tkey)]
           (do
-            (log Level/FINE metastr " key cached.  Returning data for " tkey)
+            (logger/debug metastr " key cached.  Returning data for " tkey)
             ret)
           (do
-            ;(log Level/FINE metastr " NOT key cached. Processing data for " tkey)
+            ;(logger/debug metastr " NOT key cached. Processing data for " tkey)
             (let [data (apply proc-fn inputs)]
-          ;(log Level/FINE "count " (count @data-cache) " adding " tkey)
+          ;(logger/debug "count " (count @data-cache) " adding " tkey)
             (dosync
                 (commute data-cache assoc
                   tkey {:key tkey :processed-data data}))
-           ;(log Level/FINE metastr " data stored for " tkey ". count = " (count @data-cache))
+           ;(logger/debug metastr " data stored for " tkey ". count = " (count @data-cache))
               )))))))
 
 (defn get-sym-cache-handlerfn [key-fn proc-fn metastr]
   (fn [data-cache & inputs]
     (with-exception-handling
       (let [tkey (apply key-fn inputs)]
-        ;(log Level/FINE metastr " key " tkey)
+        ;(logger/debug metastr " key " tkey)
         (if-let [ret (@data-cache tkey)]
           (do
-            (log Level/FINE metastr " key cached.  Returning data for " tkey)
+            (logger/debug metastr " key cached.  Returning data for " tkey)
             ret)
           (do
-            ;(log Level/FINE metastr " NOT key cached. Processing data for " tkey)
+            ;(logger/debug metastr " NOT key cached. Processing data for " tkey)
             (let [data (apply proc-fn inputs)]
-          ;(log Level/FINE "count " (count @data-cache) " adding " tkey)
+          ;(logger/debug "count " (count @data-cache) " adding " tkey)
 ;            (dosync
 ;                (commute data-cache assoc
 ;                  tkey {:key tkey :processed-data data}))
-           ;(log Level/FINE metastr " data stored for " tkey ". count = " (count @data-cache))
+           ;(logger/debug metastr " data stored for " tkey ". count = " (count @data-cache))
               )))))))
 
 (defmethod symbol-caching/process-path org.openide.filesystems.FileObject
 ;  "traverses a set of source paths and calls analyze on them"
   ([root]
-  (log Level/FINE "process-path file-object " root)
+  (logger/debug "process-path file-object " root)
     (with-exception-handling
       (doseq [f (filter (fn [e] (= "clj" (.getExt e)))
                   (symbol-caching/file-obj-traverse root))]
-        (log Level/FINE "process-path - FileObject to File Queue " root)
+        (logger/debug "process-path - FileObject to File Queue " root)
         (.put (:queue (:file-reader-queue @-reader-queues-))
           [{:ext "clj" :source f :file-object f :key (.getPath f)}]))))
   ([root classpath-entry]
@@ -301,7 +304,7 @@
   []
   (doseq [{:keys [name queue]} (vals @-reader-queues-)]
     (println name " has " (.size queue) " items queued.")))
-    ;(log Level/FINE (:name q) " has " (.size q) " items queued.")))
+    ;(logger/debug (:name q) " has " (.size q) " items queued.")))
 
 
 (defn monitor-until-empty
@@ -309,7 +312,7 @@
     (if (pos? (reduce (comp (memfn size) +)
             0 (map :queue @-reader-queues-)))
         (get-queue-status)
-    (log Level/FINE "queues are empty")))
+    (logger/debug "queues are empty")))
   ([& _] monitor-until-empty))
 
 

@@ -1,18 +1,22 @@
 
 (ns org.enclojure.ide.nb.actions.action-handler
-  (:use org.enclojure.ide.nb.actions.token-navigator
+  (:use
+    org.enclojure.ide.nb.actions.token-navigator
     org.enclojure.ide.navigator.token-nav
     org.enclojure.ide.repl.repl-manager
     org.enclojure.ide.repl.repl-panel
     org.enclojure.ide.nb.editor.repl-tc
-    org.enclojure.ide.nb.editor.repl-focus)
-  (:require [org.enclojure.commons.meta-utils :as meta-utils]
-    [org.enclojure.commons.logging :as logging]
+    org.enclojure.ide.nb.editor.repl-focus
+    )
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
     [org.enclojure.ide.analyze.symbol-nav :as symbol-nav]
     [org.enclojure.ide.nb.editor.completion.file-mapping :as file-mapping]
     [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
     [org.enclojure.ide.common.classpath-utils :as classpath-utils]
-    [org.enclojure.ide.nb.editor.utils :as editor-utils])
+    [org.enclojure.ide.nb.editor.utils :as editor-utils]
+    [org.enclojure.commons.meta-utils :as meta-utils]
+    )
   (:import 
     (org.openide.cookies EditorCookie)
     (org.openide.nodes Node)
@@ -24,13 +28,14 @@
     (java.util.logging Logger Level)
     (java.util.logging Level)    
     (javax.swing.text Document)
-    (javax.swing.JEditorPane)))
+    (javax.swing.JEditorPane)
+    ))
+
+; setup logging
+(logger/ensure-logger)
 
 (def *settings* (ref {:refer-ns-after-file-load true
                       :refer-pretty-printer-after-ns-change true}))
-
-(meta-utils/defrt #^{:private true} log (logging/get-ns-logfn))
-
 
 (defn update-settings [m]
   (sync nil
@@ -51,9 +56,10 @@ the resulting file's ns is refered on successful load"
     (let [cmd (str "(require :reload-all '" nsname ")")]
       (.ExecuteExpr repl cmd nil))))
 
+
 (defn load-with-debug [text ns]
   (if (and ns (check-repl-form? text))
-    (pr-str (list 'org.enclojure.commons.meta-utils/load-string-with-dbg
+    (pr-str (list 'org.enclojure.repl.main/load-string-with-dbg
               text
               (meta-utils/source-path-from-ns ns)
               (meta-utils/file-from-ns ns)))
@@ -78,13 +84,13 @@ text or top level form"
   [nodes]
   (let [{:keys [project expr nsnode nsname]}
         (get-file-context nodes)]
-    (log Level/INFO "eval expression in ns " nsname " type:" (class nsname))
+    (logger/info "eval expression in ns " nsname " type:" (class nsname))
     (execute-expr project expr nsnode evaluate-in-repl)))
 
 (defn paste-eval-expr-action
   [nodes]
   (let [{:keys [project expr nsnode nsname]} (get-file-context nodes)]
-    (log Level/INFO "paste-eval expression in ns " nsname)
+    (logger/info "paste-eval expression in ns " nsname)
     (execute-expr project expr nsnode put-expr-in-repl-and-repl)))
 
 (defn load-file-action [nodes]
@@ -150,20 +156,21 @@ be loaded"
             (conj (if sym ;there was an alias
                       [(unqualified-to-qualified-map alias)]
                       ns-use-refer) this-ns)]
-      (log Level/INFO " got id " id)
-      (log Level/INFO " using " ns-list)
+      (logger/info " got id " id)
+      (logger/info " using " ns-list)
         (let [[file [sym & _]]
               (some #(let [{:keys [symbols source-file] :as ns-syms}
                                   (symbol-caching/from-symbol-cache (str %))]
                        (when-let [sym (symbols (symbol (or sym alias)))]
                          [source-file sym]))
                   ns-list)]
-          (log Level/INFO "in file " file " found " sym)
-          (when-let [full-path (if (.exists (File. file)) file
-                                 (classpath-utils/find-resource file))]
-            (editor-utils/open-editor-file-at-line full-path
-              (max (- (:line sym) 2) 0)))
-          )))))
+          (logger/info "in file " file " found " sym)
+          (when file
+            (when-let [full-path (if (.exists (File. file)) file
+                                     (classpath-utils/find-resource file))]
+                (editor-utils/open-editor-file-at-line full-path
+                  (max (- (:line sym) 2) 0)))
+              ))))))
 
 (defn get-pref-file-path []
   (let [env (into {} (System/getenv)) home (if (env "HOME")

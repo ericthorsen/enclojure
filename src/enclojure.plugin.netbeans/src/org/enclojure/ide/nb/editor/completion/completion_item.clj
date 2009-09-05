@@ -16,8 +16,6 @@
 )
 
 (ns org.enclojure.ide.nb.editor.completion.completion-item
-    (:use org.enclojure.commons.meta-utils
-        org.enclojure.commons.logging)
   (:import (org.netbeans.spi.editor.completion CompletionResultSet
              CompletionItem CompletionProvider CompletionDocumentation
              CompletionTask)
@@ -34,9 +32,12 @@
     (java.awt Color Graphics Font AWTEvent))
   (:require
     [org.enclojure.ide.common.classpath-utils :as classpath-utils]
-    [org.enclojure.ide.navigator.token-nav :as token-nav]))
+    [org.enclojure.ide.navigator.token-nav :as token-nav]
+    [org.enclojure.commons.c-slf4j :as logger]
+    ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defn encode-html [s]
   (let [reader (StringReader. s)]
@@ -119,7 +120,7 @@
             (insert-text-inplace component item search-info))
     (getInsertPrefix [] text)
     (getPreferredWidth [#^Graphics g #^Font font]
-     ; (log Level/INFO "count is !!!!!!! " (count (.trim full-tag)) " for:" full-tag ":")
+     ; (logger/info "count is !!!!!!! " (count (.trim full-tag)) " for:" full-tag ":")
          (CompletionUtilities/getPreferredWidth
            (encode-html text)
            (encode-html args)
@@ -127,12 +128,12 @@
     (getSortPriority [] 1)
     (getSortText [] #^CharSequence (str text))
     (instantSubstitution [#^JTextComponent component] 
-      (log Level/INFO "Instant baby!!!")
+      (logger/info "Instant baby!!!")
       (.defaultAction this component)
       (accept-and-close item search-info)
       true)
     (processKeyEvent [#^KeyEvent evt]
-      (log Level/INFO "keyevent code " (.getKeyCode evt) " instant " instant-sub)
+      (logger/info "keyevent code " (.getKeyCode evt) " instant " instant-sub)
       (if instant-sub 
          (do
            (.consume evt)

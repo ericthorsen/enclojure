@@ -16,15 +16,16 @@
 )
 
 (ns org.enclojure.ide.navigator.analyze
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
+  (:use
     org.enclojure.ide.nb.actions.token-navigator
     org.enclojure.ide.navigator.token-nav
-    clojure.inspector clojure.set)
-    (:require [clojure.contrib.repl-utils :as ru]
-        [net.n01se.clojure-compiler :as cc]
-        [org.enclojure.ide.nb.editor.utils :as editor-utils]
-      )
+    clojure.inspector clojure.set
+    )
+  (:require
+    [clojure.contrib.repl-utils :as ru]
+    [org.enclojure.ide.nb.editor.utils :as editor-utils]
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import (javax.swing JEditorPane)
     (java.util.logging Level)
     (java.awt BorderLayout EventQueue)
@@ -38,7 +39,8 @@
     (org.openide.cookies EditorCookie)
     (org.openide.util ImageUtilities)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defn load-icon [n]
   (ImageUtilities/loadImage
@@ -174,7 +176,7 @@ It is tolerant of incomplete forms."
         (.setOpenIcon renderer icon)
         (.setClosedIcon renderer icon))
     (catch Throwable t
-      (log Level/SEVERE (.getMessage t))))
+      (logger/error (.getMessage t))))
   renderer)
 
 (defmulti get-cell-renderer
@@ -290,22 +292,3 @@ It is tolerant of incomplete forms."
     (if token
       (recur (token-nav ts))))))
 
-;-------------------------------
-; Clojure compiler stuff
-;-------------------------------
-(defn anal-current []
-  (let [{:keys [doc file]} (editor-utils/get-current-editor-data)
-        r (java.io.PushbackReader. 
-            (java.io.FileReader. file))
-        eof (Object.)];(.getText doc 0 (.getLength doc))))]
-    (doseq [form (repeatedly #(read r)) :while form]
-          (print "====: ")
-        (prn form)
-        (prn (cc/analyze form)))))
-
-;    (loop [form (read r false eof) v []]
-;      (if (not= form eof)
-;        (do
-;
-;        (recur (read r) (conj v (cc/analyze form)))
-;        v))))

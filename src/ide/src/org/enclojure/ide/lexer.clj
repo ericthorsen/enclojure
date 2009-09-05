@@ -12,14 +12,15 @@
 
 (ns org.enclojure.ide.lexer
   (:gen-class
-   :methods [ #^{:static true} [getToken [java.io.Reader] clojure.lang.PersistentHashMap] ]))
+   :methods [ #^{:static true} [getToken [java.io.Reader] clojure.lang.PersistentHashMap] ])
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
+  )
 
-;; FF - logger ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(import '(java.util.logging Logger Level))
-(def *logger* (. java.util.logging.Logger (getLogger (str clojure.core/*ns*))))
-(defn- log
-  ([msg] (. *logger* (log java.util.logging.Level/INFO msg)))
-  ([lvl msg] (. *logger* (log lvl msg))))
+; setup logging
+(logger/ensure-logger)
+
 
 ;get a list of exceptions associated with exc
 (defn get-exc-seq [exc] 
@@ -40,7 +41,8 @@
 
 ;publish exception
 (defn publish [exc]
-  (log java.util.logging.Level/SEVERE (get-exc-info exc (memfn getMessage))))
+  (logger/error-throwable
+    (.getMessage exc) exc))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

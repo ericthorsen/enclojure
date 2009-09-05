@@ -12,18 +12,16 @@
 )
 
 (ns org.enclojure.ide.repl.repl-manager
-  (:use org.enclojure.repl.main
-    org.enclojure.commons.logging
-    org.enclojure.commons.meta-utils)
+  (:use org.enclojure.repl.main)
   (:require [org.enclojure.commons.c-slf4j :as logger])
   (:import (java.util.logging Logger Level)
     (java.io PipedOutputStream PipedInputStream LineNumberReader InputStreamReader)
     (org.apache.commons.exec CommandLine ExecuteResultHandler
       PumpStreamHandler DefaultExecutor ExecuteException ExecuteWatchdog)))
 
-;(defrt #^{:private true} log (get-ns-logfn))
+
 ; setup logging
-(logger/def-logging-fn)
+(logger/ensure-logger)
 
 (def default-repl-config {
                           :arguments ["-server" "-Xmx512m" "-Xms128m"]

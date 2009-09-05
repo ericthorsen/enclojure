@@ -15,13 +15,13 @@
 ;*******************************************************************************
 )
 (ns org.enclojure.ide.preferences.enclojure-options-category
-(:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
-    (:require [org.enclojure.ide.preferences.utils :as pref-utils]
-                [org.enclojure.ide.nb.editor.utils :as utils]
-                [org.enclojure.ui.controls :as controls]
-                [org.enclojure.ide.preferences.platform-options :as platform-options]
-      )
+  (:require
+    [org.enclojure.ide.preferences.utils :as pref-utils]
+    [org.enclojure.ide.nb.editor.utils :as utils]
+    [org.enclojure.ui.controls :as controls]
+    [org.enclojure.commons.c-slf4j :as logger]
+    [org.enclojure.ide.preferences.platform-options :as platform-options]
+    )
 (:import (javax.swing Icon ImageIcon)
   (java.util.logging Level)
   (org.netbeans.spi.options OptionsCategory OptionsPanelController)
@@ -36,7 +36,9 @@
   (java.beans PropertyEditor PropertyEditorManager)
   ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
+
 (def -settings-loaded?- (atom false))
 
 (def
@@ -151,7 +153,7 @@
   [pane]
   (proxy [ListSelectionListener][]
     (valueChanged [event]
-      (log Level/INFO "list-listener.........")
+      (logger/info "list-listener.........")
       (update-plaforms-combobox pane))))
            
 (defn create-enclojure-preferences-pane
@@ -182,7 +184,7 @@
       (addPropertyChangeListener [#^java.beans.PropertyChangeListener l]
         (. @pcs addPropertyChangeListener l))
     (applyChanges []
-      (log Level/INFO "calling save-settings!!")
+      (logger/info "calling save-settings!!")
           (save-settings (get-panel this)))
     (cancel [])
     (createAdvanced [_])
@@ -211,7 +213,7 @@
   (when @-settings-loaded?-
     (save-settings pane)
     (update-plaforms-combobox pane))
-  (log Level/INFO "tabbed state-changed " list-value-changed-event))
+  (logger/info "tabbed state-changed " list-value-changed-event))
 
 (defn test-standalone
   []

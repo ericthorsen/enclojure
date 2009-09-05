@@ -26,7 +26,7 @@
 
 (def #^{:private true} EOF (Object.))
 ; setup logging
-(logger/def-logging-fn)
+(logger/ensure-logger)
 
 (defn bind-editor-pane [panel pane result-fn]
   (let [awt-fn #(EventQueue/invokeAndWait

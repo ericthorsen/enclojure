@@ -16,8 +16,7 @@
 )
 
 (ns test.org.enclojure.ide.nb.editor.completion.completion-task
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
+  (:require [org.enclojure.commons.c-slf4j :as logger])
   (:import (org.netbeans.spi.editor.completion CompletionResultSet
              CompletionItem CompletionProvider CompletionDocumentation
              CompletionTask)
@@ -43,6 +42,9 @@
     [org.enclojure.ide.nb.editor.completion.file-mapping :as file-mapping]
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]
     ))
+
+; setup logging
+(logger/ensure-logger)
 
 (defn create-doc [s]
   (PlainDocument.

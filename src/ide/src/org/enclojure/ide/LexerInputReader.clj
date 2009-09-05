@@ -17,9 +17,13 @@
    :init ctor
    :methods [ [unread [char] void] [index [] int]]
    :constructors {[org.netbeans.spi.lexer.LexerInput] []})
-  (:use org.enclojure.commons.logging org.enclojure.commons.meta-utils))
-
-(defrt #^{:private true} log (get-ns-logfn))
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
+  )
+  
+; setup logging
+(logger/ensure-logger)
 
 (defn- -ctor [input]
   [[] [input (atom -1)]])

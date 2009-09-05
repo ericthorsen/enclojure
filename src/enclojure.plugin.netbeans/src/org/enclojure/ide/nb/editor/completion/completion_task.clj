@@ -16,8 +16,6 @@
 )
 
 (ns org.enclojure.ide.nb.editor.completion.completion-task
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
   (:import (org.netbeans.spi.editor.completion CompletionResultSet
              CompletionItem CompletionProvider CompletionDocumentation
              CompletionTask)
@@ -42,12 +40,11 @@
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]
     [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
     [org.enclojure.ide.analyze.symbol-nav :as symbol-nav]
-    ;[org.enclojure.ide.nb.editor.completion.patterns :as patterns]
+    [org.enclojure.commons.c-slf4j :as logger]
     ))
 
-
-
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 ;Types of queries
 ; clojure funcs and hippy completion (which includes pieces of namespaces and classes)
@@ -147,8 +144,8 @@
 
 (defmethod query-type-dataset :all-instance-members
   [{:keys [input]} completion-info]
-   (log Level/WARNING ":all-instance-members- input " input)
-   (log Level/WARNING ":all-instance-members- info " completion-info)
+   (logger/warn ":all-instance-members- input " input)
+   (logger/warn ":all-instance-members- info " completion-info)
      ;(file-mapping/log-completion-info completion-info))
   (merge (check-for-token-walking input)
   {:search-token   
@@ -161,7 +158,7 @@
 
 (defmethod query-type-dataset :statics
   [{:keys [input]} completion-info]
-  (log Level/WARNING "statics - input=" input)
+  (logger/warn "statics - input=" input)
   (let [[search-scope search-token] (.split input "/")]
     (merge (check-for-token-walking input)
     {:search-token search-token
@@ -172,7 +169,7 @@
 
 (defmethod query-type-dataset :class-instance-lookup
   [{:keys [input]} completion-info]
-  (log Level/WARNING ":class-instance-lookup")
+  (logger/warn ":class-instance-lookup")
   (let [[search-scope search-token] (.split input "[.]+")]
     (merge (check-for-token-walking input)
     {:search-token search-token
@@ -186,42 +183,42 @@
 ;   Java statics and required namespaces need qualification so they are omitted here"
 (defmethod query-type-dataset :funcall  
   [{:keys [input]} completion-info]
-    (log Level/WARNING "funcall")
+    (logger/warn "funcall")
   (merge (check-for-token-walking input)
   {:search-token (if (pos? (count input)) input "")
    :data-set (file-mapping/get-funcall-items completion-info)}))
 
 (defmethod query-type-dataset :namespaces-classes
   [{:keys [input]} completion-info]
-  (log Level/WARNING ":namespaces-classes")
+  (logger/warn ":namespaces-classes")
   (merge (check-for-token-walking input)
   {:search-token input
    :data-set (file-mapping/get-namespaces-classes-items completion-info)}))
 
 (defmethod query-type-dataset :namespaces-only
   [{:keys [input]} completion-info]
-  (log Level/WARNING ":namespaces-only")
+  (logger/warn ":namespaces-only")
   (merge (check-for-token-walking input)
   {:search-token input
    :data-set (file-mapping/get-namespaces completion-info)}))
 
 (defmethod query-type-dataset :java-packages-only
   [{:keys [input]} completion-info]
-  (log Level/WARNING ":java-packages-only")
+  (logger/warn ":java-packages-only")
   (merge (check-for-token-walking input)
   {:search-token input
    :data-set (file-mapping/get-java-packages completion-info)}))
 
 (defmethod query-type-dataset :java-classes-for-package
   [{:keys [input first-lparen] } completion-info]
-  (log Level/WARNING ":java-classes-for-package")
+  (logger/warn ":java-classes-for-package")
   (merge (check-for-token-walking input)
   {:search-token input
    :data-set (file-mapping/get-java-classes-for-package first-lparen)}))
 
 (defmethod query-type-dataset :any
   [{:keys [input]} completion-info]
-  (log Level/WARNING "any")
+  (logger/warn "any")
   (merge (check-for-token-walking input)
   {:search-token input
    :data-set (file-mapping/get-funcall-items completion-info)}))
@@ -231,7 +228,7 @@
   [document caret-offset]
   (let [{:keys [char-fn]} (symbol-nav/unify-doc-str document)
         c (char-fn caret-offset)]
-    (log "check-caret-pos c is " c (= \space (char c)))
+    (logger/debug "check-caret-pos c is " c (= \space (char c)))
     (if (#{\r \n \newline \space \)} c)
         (dec caret-offset) caret-offset)))
 
@@ -246,7 +243,7 @@
         end (max (inc start) caret-offset);(symbol-nav/find-end-boundary document start)
         length (- end start)
         {:keys [substr]} (symbol-nav/unify-doc-str document)]
-    (log "get-basic-completion-input: caret " caret-offset " search-offset " search-offset " s " start " e " end " l " length)
+    (logger/debug "get-basic-completion-input: caret " caret-offset " search-offset " search-offset " s " start " e " end " l " length)
           {:start start
            :end end
            :length length
@@ -305,7 +302,7 @@
                   rparen (or rparen (= (char c) \)))]
               (if (= (char c) \()
                 (let [cidx (symbol-nav/find-boundary char-fn inc len (inc offset))
-                      _ (log Level/INFO "cidx " cidx " offset " offset)
+                      _ (logger/info "cidx " cidx " offset " offset)
                       cid (if (pos? cidx) (substr (inc offset) (- cidx offset 1)))
                       special-fn (*specials* cid)
                       first-lparen (or first-lparen 
@@ -335,7 +332,7 @@
         (try ; be paranoid until this is better debugged...
             (find-cursor-context document caret-offset)
         (catch Exception e
-            (log Level/WARNING (str "Error when attempting to get more context for completion: "
+            (logger/warn (str "Error when attempting to get more context for completion: "
                                  (.getMessage e)))))]
       (merge basic more)
     basic)))
@@ -407,7 +404,7 @@ Returns a vector of items"
                           #(Character/isUpperCase %))
           p (str "^" (apply str prefix)
                       (build-search-anchors2 patterns))]
-      (log Level/INFO "RE search pattern:" p)
+      (logger/info "RE search pattern:" p)
         (re-pattern p))))
 
 (defn do-regex-search2
@@ -447,16 +444,14 @@ Returns a vector of items"
 ;                                    (Character/isUpperCase %)) start-text)
 ;          search-anchors (build-search-anchors (apply str upper-chars))
 ;          subsearch (apply str substr)]
-;      (log Level/INFO (str "^" subsearch search-anchors))
+;      (logger/info (str "^" subsearch search-anchors))
 ;        (re-pattern (str "^" subsearch search-anchors)))))
 
 (defn do-search
   "worker function to do the actual search"  
   [search-token forms pred? info]
-  (log info " token " search-token)
+  (logger/debug info " token " search-token)
     (filter (fn [{name :name}]
-;                      (log "checking " name " in " search-token " " (count search-token) " "
-;                       (.startsWith (str name) search-token))
               (when (and (not= (str name) "") (not= "" search-token)
                     (pos? (count search-token)) (pos? (count (str name))))
                    (pred? name search-token))) forms))
@@ -479,7 +474,7 @@ Returns a vector of items"
 ;              matches)))))
 
 (defn do-search-strategy [search-token forms]
-  (log Level/INFO "do-search-strategy token:" search-token " len(search-token) "
+  (logger/info "do-search-strategy token:" search-token " len(search-token) "
     (count search-token) " (count forms) " (count forms))
   (if (or (nil? search-token)
         (zero? (count (.trim search-token)))
@@ -518,17 +513,17 @@ Returns a vector of items"
               dataset (query-type-dataset input completion-info)
               forms (:data-set dataset)
               {:keys [search-token search-scope search-delim]} dataset]
-        (log Level/INFO "input:" input " search-token:" search-token " nil?:"
+        (logger/info "input:" input " search-token:" search-token " nil?:"
           (nil? search-token) " scope:" search-scope)
           ;first do a normal lookup:
         (let [{:keys [match results search-str]}
                 (do-search-strategy search-token forms)
               filtered (remove-dups results)]
-          (log Level/INFO "Completion: count of initial forms is " (count forms))
-          (log Level/INFO "Completion: count of forms after search is " (count results))
-          (log Level/INFO "Completion: count of forms after filtering is " (count filtered))
+          (logger/info "Completion: count of initial forms is " (count forms))
+          (logger/info "Completion: count of forms after search is " (count results))
+          (logger/info "Completion: count of forms after filtering is " (count filtered))
           (when (= 1 (count filtered))
-            (log Level/INFO "one results is " (first filtered)))
+            (logger/info "one results is " (first filtered)))
           (dosync
             (alter -debug-
               (fn [_] (hash-map :caret caretOffset :file file :info completion-info :input input
@@ -547,7 +542,7 @@ Returns a vector of items"
          (catch Throwable t
           (Exceptions/printStackTrace t))
         (finally
-          (log Level/INFO "Finishing completion task")
+          (logger/info "Finishing completion task")
           (.finish resultset)))))))
 
 (defn get-completion-task [query-type text-component]

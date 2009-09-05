@@ -17,16 +17,18 @@
    :init ctor
    :constructors {[org.netbeans.spi.lexer.LexerRestartInfo] []}
    :methods [ #^{:static true} [language [java.util.Map] org.netbeans.api.lexer.Language] ])
-  (:require org.enclojure.ide.lexer org.enclojure.ide.LexerInputReader)
-  (:use org.enclojure.commons.logging org.enclojure.commons.meta-utils)
+  (:require 
+    org.enclojure.ide.lexer org.enclojure.ide.LexerInputReader
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import (java.util.logging Level)
     (org.netbeans.api.lexer TokenHierarchy TokenSequence Token)
     (org.netbeans.spi.lexer TokenFactory LanguageProvider)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
-(defn -ctor [info]
-  ;(log "ctor is being called")
+(defn -ctor [info]  
   [[] {:factory (.tokenFactory info) 
        :input (.input info)
 ;       :rdr (org.enclojure.nb.LexerInputReader. (.input info))}])
@@ -35,12 +37,10 @@
 		      ;(proxy-super unread ch)
 		      (.backup (.input info) 1)))}])
 
-(defn -state [this]
- ;(log "state is being called")
+(defn -state [this] 
   nil)
 
-(defn -release [this]
-  ;(log "release is being called")
+(defn -release [this]  
   nil)
 
 (defn make-tokenid [token ordinal category]
@@ -82,18 +82,17 @@
 (defn create-token [factory token id len]
   (when (pos? len)
     (let [txt (.name id)]
-;      (log Level/INFO (str "create-token called with token[" token "], id[" txt "], len[" len "]"))
+;      (logger/info (str "create-token called with token[" token "], id[" txt "], len[" len "]"))
       (.createToken factory id len))))
 
 (defn recovery [rdr factory input]
-  (log Level/INFO "Calling recovery from ClojureLexer")
+  (logger/info "Calling recovery from ClojureLexer")
   (create-token factory 
 		:error 
 		(token-ids :error (token-ids :any))
 		(.readLength input)))
 
-(defn -nextToken [this]
-  ;(log (str "nextToken is being called - " (.mstate this)))
+(defn -nextToken [this]  
    (let [{:keys [rdr factory input]} (.mstate this)]
      (try
       (let [{:keys [type token]} (org.enclojure.ide.lexer/get-token rdr)]
@@ -102,7 +101,8 @@
 		      (token-ids type (token-ids :any))
 		      (.readLength input)))
       (catch Exception exc
-	(publish log exc)
+        (logger/error-throwable
+          (.getMessage exc) exc)
 	(recovery rdr factory input)))))
     
 (defn language-instance [mime-type]

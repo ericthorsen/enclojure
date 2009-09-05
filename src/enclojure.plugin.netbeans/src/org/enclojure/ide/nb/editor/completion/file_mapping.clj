@@ -16,9 +16,7 @@
 )
 
 (ns org.enclojure.ide.nb.editor.completion.file-mapping
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
-    clojure.set)
+  (:use clojure.set)
   (:import (org.netbeans.spi.editor.completion CompletionResultSet
              CompletionItem CompletionProvider CompletionDocumentation
              CompletionTask) 
@@ -36,12 +34,14 @@
     [org.enclojure.ide.nb.editor.utils :as editor-utils]
     [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]
+    [org.enclojure.commons.c-slf4j :as logger]
     [org.enclojure.ide.nb.actions.token-navigator :as token-navigator]
     ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
-(defn- publish-stack-trace [logfn throwable]
+(defn- publish-stack-trace [throwable]
   (let [root-cause
             (loop [cause throwable]
                 (if-let [cause (.getCause cause)]
@@ -50,14 +50,14 @@
       (.printStackTrace root-cause (PrintWriter. *out*))
       (when (not= root-cause throwable)
          (.printStackTrace throwable (PrintWriter. *out*)))
-      (log Level/SEVERE (str *out*)))))
+      (logger/error (str *out*)))))
 
 (defmacro #^{:private true}
     with-exception-handling [& body]
     `(try
       ~@body
        (catch Throwable t#
-        (publish-stack-trace log t#))))
+        (publish-stack-trace t#))))
 
 (def -universal-libs-
   ["clojure.core" "clojure.set"])
@@ -72,7 +72,7 @@
   [file]
   ;(when-not file
   ;  (throw (Exception. "file-key passed a nil value.")))
-  (log Level/WARNING "default dispatch value for file-key arg=" file)
+  (logger/warn "default dispatch value for file-key arg=" file)
   (when file
     (.getPath file)))
 
@@ -120,18 +120,18 @@ The given predicate is called with the fully qualified class name and is used as
 The given predicate is called with the fully qualified class name.  Default checks to
 see if there are symbols already loaded for the class"
   ([java-class-list pred?]
-    ;(log Level/INFO "ensuring classes " (doall java-class-list))
+    ;(logger/info "ensuring classes " (doall java-class-list))
     (let [package-map (get-resources-by-lib java-class-list pred?)]
       (when-let [nolib-items (package-map nil)]
-            (log Level/SEVERE "Completion cache problem.  Following items had no library reference:")
-            (log Level/SEVERE (print-str nolib-items)))
+            (logger/error "Completion cache problem.  Following items had no library reference:")
+            (logger/error (print-str nolib-items)))
       (when-let [libs (dissoc package-map nil)]
-        (log Level/FINE "processing " (count (keys libs)) " libs")
+        (logger/debug "processing " (count (keys libs)) " libs")
             (dorun
                 (pmap (fn [[jar-name package-set]]
                         (let [reg-ex-patterns
                               (regex-for-lib-loading package-set)]
-                          (log Level/FINE "Processing jar " jar-name " with patterns "
+                          (logger/debug "Processing jar " jar-name " with patterns "
                                 reg-ex-patterns)
                           (try
                             (symbol-caching/process-jar
@@ -139,7 +139,7 @@ see if there are symbols already loaded for the class"
                               (symbol-caching/get-regex-any-matcher-pred
                                 reg-ex-patterns) nil)
                             (catch Throwable t
-                              (publish-stack-trace log t)))))
+                              (publish-stack-trace t)))))
                   libs)))
         package-map))
   ([java-class-list] (ensure-classes java-class-list
@@ -163,7 +163,7 @@ see if there are symbols already loaded for the class"
 
 
 (defn log-completion-info [ci]
-  (log Level/FINE "\nCompletion-info :"
+  (logger/debug "\nCompletion-info :"
     (apply str (map #(when-let [f (%1 ci)]
                        (str "\n\t" %1 " count = "  (count (f))))
                  [:packages :classes :namespaces :hippy-words
@@ -376,9 +376,9 @@ fully qualified namespace or java class name, see if there are symbols loaded"
           (if file (refresh-completion-info (file-key file))
                (get-default-completion-info))]
       ;(when-not file
-      ;  (log Level/INFO "null baby......should be a winner!"))
-      ;(log Level/INFO "Kicking off ensure-classes for file " file)
-      ;(log Level/INFO "-----------classes " (:java-classes completion-info))
+      ;  (logger/info "null baby......should be a winner!"))
+      ;(logger/info "Kicking off ensure-classes for file " file)
+      ;(logger/info "-----------classes " (:java-classes completion-info))
           (let [new-data (ensure-classes (:java-classes completion-info))]
             (swap! -completion-cache- assoc (file-key file) completion-info))))
   @-completion-cache- )
@@ -388,11 +388,11 @@ fully qualified namespace or java class name, see if there are symbols loaded"
             (try
                 (from-cache file)
             (catch Throwable t
-              (publish-stack-trace log t)))]
+              (publish-stack-trace t)))]
         (do
             from-cache)
     (do
-      ;(log Level/FINE "Forcing a rebuild of completion data for file " file)
+      ;(logger/debug "Forcing a rebuild of completion data for file " file)
     (refresh-completion-cache-data file))))
 
 (defn refresh-current-completion-info []

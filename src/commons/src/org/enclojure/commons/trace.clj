@@ -18,8 +18,7 @@
 (defmacro with-context [ctx & body]
   `(if org.enclojure.commons.trace/*context*
      (binding [org.enclojure.commons.trace/*context*
-               (conj org.enclojure.commons.trace/*context* {:context ~ctx :body '~body})]
-       ;(log  com.thortech.triage.util.logging/*context*)
+               (conj org.enclojure.commons.trace/*context* {:context ~ctx :body '~body})]       
        ~@body)
      ~@body))
 
@@ -31,8 +30,7 @@
            (binding [org.enclojure.commons.trace/*context*
                      (conj org.enclojure.commons.trace/*context*
                        (assoc m# :ns (.getName (:ns m#))) {:args args# :body '~body})]
-             (try
-               ;(log  com.thortech.triage.util.logging/*context*)
+             (try               
                (apply f# args#)
                (catch Throwable e#
                  (throw (Exception. (pr-str org.enclojure.commons.trace/*context*) e#))))))

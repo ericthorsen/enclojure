@@ -21,16 +21,16 @@
 Documents for editor support.  Functions unify strings and Documents so the same
 functions can be called for either case."}
   org.enclojure.ide.analyze.symbol-nav
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
   (:require [clojure.set :as set]
     [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.ide.navigator.token-nav :as token-nav]
+    [org.enclojure.commons.c-slf4j :as logger]
     )
   (:import (javax.swing.text Element Document)
     (java.util.logging Level Logger)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 ;Make it uniform to work with strings or Documents
 (defmulti unify-doc-str class)
@@ -113,7 +113,7 @@ functions can be called for either case."}
                         (if (= \. (last id)) ; In case it is a ctor, strip off the trailing .
                             (subs id 0 (dec (count id)))
                         id)))
-        (log Level/WARNING "Could not locate namespace " namesp " perhaps it is not loaded?")
+        (logger/warn "Could not locate namespace " namesp " perhaps it is not loaded?")
         ))))
 
 (defn get-row-start-from-line

@@ -16,10 +16,11 @@
 )
 
 (ns org.enclojure.ide.nb.editor.hyperlinks
-(:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
   (:require [org.enclojure.ide.common.classpath-utils :as classpath-utils]
-    [org.enclojure.ide.nb.editor.utils :as utils])
+    [org.enclojure.ide.nb.editor.utils :as utils]
+    [org.enclojure.commons.c-slf4j :as logger]
+    [org.enclojure.commons.meta-utils :as meta-utils]
+    )
   (:import
     (java.util.logging Level)
     (org.openide.util RequestProcessor)
@@ -33,7 +34,8 @@
     (org.netbeans.lib.editor.hyperlink.spi HyperlinkProvider)
    ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defn get-clj-source-and-line [s]
   (when-let [tag (re-find #"\(.*\.clj\:[0-9]+\)" s)] 
@@ -62,23 +64,23 @@
   (proxy [org.netbeans.lib.editor.hyperlink.spi.HyperlinkProvider] []
     (isHyperlinkPoint
     [#^Document d offset]
-    (log Level/INFO "is-hyperlink " offset)
+    (logger/info "is-hyperlink " offset)
       (boolean
         (let [lineno (NbDocument/findLineNumber d offset)
                 line-offset (NbDocument/findLineOffset d lineno)
                 next-line-offset (NbDocument/findLineOffset d (inc lineno))]
-          (log Level/INFO "is-hyperlink ["
+          (logger/info "is-hyperlink ["
             (apply str (interpose " " [lineno line-offset next-line-offset]))"]")
             (when-let [link-text (when (< line-offset next-line-offset)
                                    (.getText d line-offset
                                    (- next-line-offset line-offset)))]
-              (log Level/INFO "is-hyperlink got text: " link-text)
+              (logger/info "is-hyperlink got text: " link-text)
                 (when-let [{:keys [line link-text file ns-prefix
                                    link-start link-end] :as tag-data}
                             (get-clj-source-and-line link-text)]
-                  (let [full-path (str (root-resource ns-prefix) "/" file)]
+                  (let [full-path (str (meta-utils/root-resource ns-prefix) "/" file)]
                     (when-let [f (classpath-utils/find-resource full-path)]
-                        (log Level/INFO "updating tag-data " tag-data)
+                        (logger/info "updating tag-data " tag-data)
                         (dosync (alter last-ref
                             (fn [_]
                               (assoc tag-data :doc d :doc-offset offset
@@ -87,7 +89,7 @@
                                 :full-path full-path :file-resource f))))
                       true)))))))
     (getHyperlinkSpan [#^Document doc offset]
-       (log Level/INFO "getHyperlinkSpan - offset " offset " last-ref-offset: "
+       (logger/info "getHyperlinkSpan - offset " offset " last-ref-offset: "
          (if @last-ref (:doc-offset @last-ref) ""))
       (when (and @last-ref (= offset (:doc-offset @last-ref)))
         (let [a (make-array Integer/TYPE 2)]
@@ -96,7 +98,7 @@
           a)))
     (performClickAction
       [#^Document doc offset]
-          (log Level/INFO "perform click~~~~~~~~~~~ " (:ns-prefix @last-ref))
+          (logger/info "perform click~~~~~~~~~~~ " (:ns-prefix @last-ref))
             (when @last-ref
                (utils/open-editor-file-at-line (:file-resource @last-ref) 
                  (:line @last-ref)))))))

@@ -16,13 +16,12 @@
 )
 
 (ns org.enclojure.ide.nb.editor.data-object-listener
-  (:use org.enclojure.commons.meta-utils
-        org.enclojure.commons.logging
-        org.enclojure.ide.ClojureLexer)
+  (:use org.enclojure.ide.ClojureLexer)
   (:require [org.enclojure.ide.nb.actions.token-navigator :as token-navigator]
             [org.enclojure.ide.navigator.token-nav :as token-nav]
             [org.enclojure.ide.nb.editor.completion.file-mapping :as file-mapping]
-            clojure.inspector clojure.set)
+            clojure.inspector clojure.set
+            [org.enclojure.commons.c-slf4j :as logger])
   (:import
     (java.util.logging Level)
     (java.io FileReader File)
@@ -30,7 +29,8 @@
     (org.openide.loaders MultiDataObject)
     (org.openide.filesystems FileObject FileUtil)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defmulti data-obj-event 
   (fn [event data-obj]
@@ -43,13 +43,13 @@
   [{:keys [oldValue newValue]} data-object]
   (when (and (= oldValue true) (= newValue false))
     (let [f (-> data-object .getPrimaryEntry .getFile)]
-        (log Level/INFO "data-object-listener updating file " f)
+        (logger/info "data-object-listener updating file " f)
         (file-mapping/refresh-completion-cache-data  (FileUtil/toFile f)))))
 
 (defn get-property-listener [obj]
   (proxy [PropertyChangeListener] []
     (propertyChange [#^PropertyChangeEvent e]
-      (log Level/INFO "data-object-listener " (bean e))
+      (logger/info "data-object-listener " (bean e))
       (data-obj-event (bean e) obj))))
 
 

@@ -16,17 +16,23 @@
 )
 
 (ns org.enclojure.ide.nb.actions.token-navigator
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
-    org.enclojure.ide.navigator.token-nav)
-  (:import (javax.swing JEditorPane)
+  (:use
+    org.enclojure.ide.navigator.token-nav
+    )
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
+  (:import
+    (javax.swing JEditorPane)
     (java.util.logging Level)
     (java.awt EventQueue)
     (org.netbeans.api.lexer TokenHierarchy TokenSequence Token)
     (org.openide.windows TopComponent)
-    (org.openide.cookies EditorCookie)))
+    (org.openide.cookies EditorCookie)
+    ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defn editor-cookie [nodes]
   (when (= (alength nodes) 1)

@@ -15,18 +15,19 @@
 ;*******************************************************************************
 )
 (ns org.enclojure.ide.nb.editor.clj-language-support
-    (:import (java.util HashSet Set)
-        (java.util.logging Logger)
-        (javax.swing.text Document)
-        (org.netbeans.api.languages ASTItem ASTNode ASTToken ParserManager SyntaxContext)
-        (org.netbeans.api.lexer TokenHierarchy TokenSequence)))
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
+  (:import (java.util HashSet Set)
+    (java.util.logging Logger)
+    (javax.swing.text Document)
+    (org.netbeans.api.languages ASTItem ASTNode ASTToken ParserManager SyntaxContext)
+    (org.netbeans.api.lexer TokenHierarchy TokenSequence)))
 
-(def *logger* (.. Logger (getLogger "org.enclojure.edit.clj.clj-language-support")))
+; setup logging
+(logger/ensure-logger)
 (def *nav-window-text-width* 70)
 (def *folding-tooltip-text-width* 120)
-
-(defn dlog [s]
-   (. *logger* (log (.. java.util.logging.Level INFO) s)))
 
 (defn get-keywords [doc]
    (let [kw (new HashSet)]
@@ -58,19 +59,21 @@
    (try
       (get-matching-atoms (. (.. ParserManager (get doc)) (getAST)) filter)
       (catch Exception e
-         (. *logger* (log (.. java.util.logging.Level SEVERE)
-                        (str "Exception in get-matching-AST-atoms: " (. e (getMessage))))))))
+        (logger/error-throwable
+           (str "Exception in get-matching-AST-atoms: " (. e (getMessage)))
+          e))))
 
 (defn get-grammar-piece [type #^Document doc nOffset]
-(try
+  (try
     (let [#^ASTNode n (. (.. ParserManager (get doc)) (getAST))]
-       (when n
+      (when n
         (let [#^ASTNode statement (. n (findNode type  nOffset))]
-           (when statement
-              (. statement (getAsText))))))
+          (when statement
+            (. statement (getAsText))))))
     (catch Exception e
-               (. *logger* (log (.. java.util.logging.Level SEVERE)
-                        (str "Exception in get-grammar-piece" (. e (getMessage))))))))
+      (logger/error-throwable
+        (str "Exception in get-grammar-piece" (. e (getMessage)))
+        e))))
 
 (defn get-current-atom [#^Document doc nOffset]
   (get-grammar-piece "atomic_symbol" doc nOffset))
@@ -126,10 +129,7 @@
 (defn get-meta-fold-display [#^SyntaxContext c]
       (let [leaf (.. c (getASTPath) (getLeaf))
             node (. leaf (findNode "metadata" (. c (getOffset))))]
-         (if node
-                (dlog "got it")
-            (dlog "no")))
-   "meta data")
+   "meta data"))
 
 
  (defn get-fold-display [#^SyntaxContext c]

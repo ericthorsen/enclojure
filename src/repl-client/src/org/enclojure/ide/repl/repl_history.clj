@@ -16,7 +16,7 @@
             (java.awt.event KeyEvent)))
             
 ; setup logging
-(logger/def-logging-fn)
+(logger/ensure-logger)
 
 (defn- new-history
   "A blank history data item or you can pass in a list of items.

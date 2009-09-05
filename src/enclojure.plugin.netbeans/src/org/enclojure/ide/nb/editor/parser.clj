@@ -16,11 +16,10 @@
 )
 
 (ns org.enclojure.ide.nb.editor.parser
-  (:use org.enclojure.commons.meta-utils
-        org.enclojure.commons.logging
-        org.enclojure.ide.ClojureLexer)
+  (:use org.enclojure.ide.ClojureLexer)
   (:require [org.enclojure.ide.nb.actions.token-navigator :as token-navigator]
             [org.enclojure.ide.navigator.token-nav :as token-nav]
+            [org.enclojure.commons.c-slf4j :as logger]
             clojure.inspector clojure.set)
   (:import
     (java.util.logging Level)
@@ -28,16 +27,17 @@
     (org.openide.filesystems FileObject FileUtil)
     (org.netbeans.api.lexer TokenHierarchy TokenSequence)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
-(defrt -parsed-files-
+(def -parsed-files-
  (ref {}))
 
 (defn get-prop [data-object path]  
     (proxy [java.beans.PropertyChangeListener] []
       (propertyChange [event]
-        (log Level/INFO "Thread : " (hash (Thread/currentThread)) " DataObj: " (hash data-object)  " : doc changed " (bean event))
-      (log Level/INFO  "Thread : " (hash (Thread/currentThread)) " DataObj: " (hash data-object) (hash data-object)  " : doc changed " path))))
+        (logger/info "Thread : " (hash (Thread/currentThread)) " DataObj: " (hash data-object)  " : doc changed " (bean event))
+      (logger/info  "Thread : " (hash (Thread/currentThread)) " DataObj: " (hash data-object) (hash data-object)  " : doc changed " path))))
 
 
 (defn new-parser-data [file-object data-object]
@@ -48,11 +48,11 @@
             (.getDocument editor-cookie))
         db (when d (bean d))
         _ (.addPropertyChangeListener editor-cookie (get-prop data-object full-path))]
-    (log Level/INFO "Thread : " (hash (Thread/currentThread)) (hash data-object) " : creating data for " (.getNameExt file-object))
-    (log Level/INFO "Thread : " (hash (Thread/currentThread)) (hash data-object) " : Full: " full-path)
-    (log Level/INFO data-object)
-    (log Level/INFO (bean data-object))
-    (log Level/INFO "Doc: " db " cookie: " editor-cookie)
+    (logger/info "Thread : " (hash (Thread/currentThread)) (hash data-object) " : creating data for " (.getNameExt file-object))
+    (logger/info "Thread : " (hash (Thread/currentThread)) (hash data-object) " : Full: " full-path)
+    (logger/info data-object)
+    (logger/info (bean data-object))
+    (logger/info "Doc: " db " cookie: " editor-cookie)
     data))
 
  

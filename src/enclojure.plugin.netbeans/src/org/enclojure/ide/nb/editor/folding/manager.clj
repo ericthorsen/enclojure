@@ -11,15 +11,14 @@
 )
 
 (ns org.enclojure.ide.nb.editor.folding.manager
-    (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
-    org.enclojure.ide.nb.actions.token-navigator
+    (:use org.enclojure.ide.nb.actions.token-navigator
     org.enclojure.ide.navigator.token-nav
     clojure.inspector clojure.set)
   (:require [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]
     [org.enclojure.ide.nb.editor.utils :as editor-utils]
+    [org.enclojure.commons.c-slf4j :as logger]
     [org.enclojure.ide.nb.editor.completion.file-mapping :as file-mapping])
   (:import
     (java.util.logging Level)
@@ -49,7 +48,8 @@
     (org.openide.filesystems FileUtil)
     (clojure.lang LineNumberingPushbackReader)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defmacro #^{:private true}
     with-exception-handling [& body]
@@ -96,7 +96,7 @@
               (dosync
                 (alter folds conj new-fold)))))
         (catch Throwable t
-          (log Level/SEVERE (.getMessage t))
+          (logger/error (.getMessage t))
           ;(Exceptions/printStackTrace t)
           )))))
 
@@ -115,7 +115,7 @@
           ; This needs to be triggered on load and on changed of the namespace node.          
           (future (file-mapping/refresh-completion-cache-data (.getPath file)))
           (when top-level-forms
-            (log Level/INFO "Folder got forms, symbol count "
+            (logger/info "Folder got forms, symbol count "
               (count (symbol-meta/all-forms top-level-forms)))
                 (dosync
                     (alter forms
@@ -124,7 +124,7 @@
             (EventQueue/invokeLater
                 #(add-folds-from-forms @fold-operation folds @forms tran))))
     (catch Throwable t
-      (log Level/SEVERE (.getMessage t))
+      (logger/error (.getMessage t))
       ;    (Exceptions/printStackTrace t)
       )))
 
@@ -167,13 +167,12 @@
             (if (pos? (count forms))
               (EventQueue/invokeLater
                 #(add-folds-from-forms @fold-operation folds forms tran))))))))
-    (log Level/WARNING "Fold  manager exists with no base document? Could be from a REPL?")))
+    (logger/warn "Fold  manager exists with no base document? Could be from a REPL?")))
 
 (defn get-data-object-data [d]
   (if-let [#^DataObject dob (NbEditorUtilities/getDataObject d)]
     (.clojureAnalyzerData dob)
-    (log Level/WARNING
-      "Unable to find DataObject from document in fold/manager.clj")))
+    (logger/warn "Unable to find DataObject from document in fold/manager.clj")))
 
 (defn get-fold-manager-clj [init-data]
   (let [data (assoc init-data
@@ -183,7 +182,7 @@
       (getOperation [] @(:fold-operation data))
       (getDocument [] @(:base-document data))
       (init [#^FoldOperation op]
-        (log Level/INFO "new fold manager.........")
+        (logger/info "new fold manager.........")
         )
       (initFolds [#^FoldHierarchyTransaction tran]
         (reset-all-folds data tran))
@@ -225,7 +224,7 @@
                 :forms (ref [])
                 :folds (ref #{})}
           fproxy (atom nil)]
-      (log Level/INFO "get-fold-manager-proxy Thread : " (hash (Thread/currentThread)) " Getting fold proxy ")
+      (logger/info "get-fold-manager-proxy Thread : " (hash (Thread/currentThread)) " Getting fold proxy ")
       (proxy [org.netbeans.spi.editor.fold.FoldManager][]
         (getOperation [] @(:fold-operation data))
         (getDocument [] @(:base-document data))
@@ -235,15 +234,15 @@
                 (swap! (:fold-operation data) (fn [_] op))
                 (swap! (:base-document data)
                   (fn [_] (-> op .getHierarchy .getComponent .getDocument)))
-                (log Level/INFO "fold init - name : " (-> op .getHierarchy .getComponent .getName))
-                (log Level/INFO "fold init - doc: " @(:base-document data))
+                (logger/info "fold init - name : " (-> op .getHierarchy .getComponent .getName))
+                (logger/info "fold init - doc: " @(:base-document data))
                 (swap! fproxy
                   (fn [_]
                     (if (= "Repl editor pane"
                           (-> op .getHierarchy .getComponent .getName))
                       (get-fold-manager-repl data)
                       (get-fold-manager-clj data)))))
-              (log Level/INFO "Thread : " (hash (Thread/currentThread)) " Fold " (hash this) " doc " (hash @(:base-document data)))
+              (logger/info "Thread : " (hash (Thread/currentThread)) " Fold " (hash this) " doc " (hash @(:base-document data)))
               (.init @fproxy op)))
         (initFolds [#^FoldHierarchyTransaction tran]
           (with-exception-handling

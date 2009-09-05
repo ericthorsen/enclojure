@@ -15,16 +15,19 @@
 ;*******************************************************************************
 )
 (ns org.enclojure.ui.controls
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
-    (:import (javax.swing Icon ImageIcon DefaultListModel)
-      (java.util.logging Level)
-      (java.awt Toolkit)
-      (java.util Date)
-      (java.text DateFormat)
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
+  (:import
+    (javax.swing Icon ImageIcon DefaultListModel)
+    (java.util.logging Level)
+    (java.awt Toolkit)
+    (java.util Date)
+    (java.text DateFormat)
     ))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (defn center-component [c]
     (let [tk (Toolkit/getDefaultToolkit)
@@ -138,7 +141,7 @@
 
 (defmethod -set-val javax.swing.JCheckBox
   [dlg fld val]
-  (log Level/INFO "set-val javax.swing.JCheckBox " val " " fld)
+  (logger/info "set-val javax.swing.JCheckBox " val " " fld)
   (.setSelected (.get fld dlg)
     (convert-fn val Boolean)))
 
@@ -173,8 +176,8 @@ via reflection and also plugs in easily to the preferences/utils stuff"
         ; Only include specs that I have matching field names for.
         ; I should probably return the missing fields or consider this an exception?
         flds (filter #(contains? fnames (.getName %1)) (:fields (bean cls)))]
-    ;(log Level/INFO " sd reducer " fnames)
-    ;(log Level/INFO " ddd flds " (count flds))
+    ;(logger/info " sd reducer " fnames)
+    ;(logger/info " ddd flds " (count flds))
     (let [[ui-map data-map]
         (reduce (fn [[ui-map data-map] f]
                   (let [k (.getName f)

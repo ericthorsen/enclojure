@@ -19,8 +19,6 @@
   (:use org.enclojure.repl.main
     org.enclojure.ide.repl.repl-panel
     org.enclojure.ide.repl.repl-manager
-    org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
     org.enclojure.ide.common.classpath-utils
     org.enclojure.ide.debugger.jdi
     org.enclojure.ide.nb.editor.repl-focus)
@@ -29,6 +27,7 @@
         :as enclojure-options-category]
     [org.enclojure.ide.repl.repl-history-browse :as repl-history-browse]
     [org.enclojure.ide.nb.editor.utils :as utils]
+    [org.enclojure.commons.c-slf4j :as logger]
     )
   (:import (org.enclojure.ide.repl ReplPanel)
     (org.enclojure.ide.nb.editor ReplTopComponent)
@@ -37,7 +36,8 @@
     (java.awt EventQueue Component)
     (java.util.logging Level Logger)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 ; Set the history browse function...
 (defn open-repl-command-history

@@ -15,9 +15,10 @@
 ;*******************************************************************************
 )
 (ns org.enclojure.ide.navigator.parser
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
-  (:require [org.enclojure.ide.navigator.token-nav :as token-nav])
+  (:require 
+    [org.enclojure.ide.navigator.token-nav :as token-nav]
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import (java.util.logging Level)
    (org.netbeans.api.lexer TokenHierarchy TokenSequence Token)
     (org.enclojure.ide.asm ClassReader ClassVisitor MethodVisitor)
@@ -25,16 +26,8 @@
     (java.io StringReader StringWriter PrintWriter Reader)
     (java.lang.StringBuilder)))
 
-
-(defrt #^{:private true} log (get-ns-logfn))
-
-;(defn capture [data-ref func & args]
-;    (dosync
-;        (alter data
-;            (fn [_] (apply func args))))))
-;
-;(defmacro capture-data-fn [func & args]
-;  `(with-meta (var ~func) #^{:data (ref nil)})
+; setup logging
+(logger/ensure-logger)
 
 (def sigs
     (fn [fdecl]
@@ -45,23 +38,21 @@
                  (seq ret)))
              (list (first fdecl)))))
 
-
-
-(defn- publish-stack-trace [logfn throwable]
+(defn- publish-stack-trace [throwable]
   (let [root-cause
             (loop [cause throwable]
                 (if-let [cause (.getCause cause)]
                     (recur cause) cause))]
     (binding [*out* (StringWriter.)]
       (.printStackTrace root-cause (PrintWriter. *out*))
-      (log Level/SEVERE (str *out*)))))
+      (logger/error (str *out*)))))
 
 (defmacro #^{:private true}
     with-exception-handling [& body]
     `(try
       ~@body
        (catch Throwable t#
-         (publish-stack-trace log t#))))
+         (publish-stack-trace t#))))
 
 (defstruct form-key :ns :file :start-pos)
 ;-------------------------------------------------------------------
@@ -89,7 +80,7 @@
 ;            (if-let [f (first parts)]
 ;                (let [inx (.indexOf new-word f (count next-part))
 ;                      next-part (subs new-word 0 (+ inx (count f)))]
-;                  ;(log Level/INFO "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
+;                  ;(logger/info "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
 ;                    (recur (rest parts) next-part (conj words next-part)))
 ;                words)))
 ;      word-set)))
@@ -107,7 +98,7 @@
 ;            (if-let [f (first parts)]
 ;                (let [inx (.indexOf new-word f (count next-part))
 ;                      next-part (subs new-word 0 (+ inx (count f)))]
-;                  ;(log Level/INFO "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
+;                  ;(logger/info "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
 ;                    (recur (rest parts) next-part (conj words next-part)))
 ;                words)))
 ;      word-set)))
@@ -125,7 +116,7 @@
 ;            (if-let [f (first parts)]
 ;                (let [inx (.indexOf new-word f (count next-part))
 ;                      next-part (subs new-word 0 (+ inx (count f)))]
-;                  ;(log Level/INFO "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
+;                  ;(logger/info "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
 ;                    (recur (rest parts) next-part (conj words next-part)))
 ;                words)))))
 
@@ -197,7 +188,7 @@ Returns a set of strings"
 (defn update-hippy-words
   "Given a java.io.File with a full path, attempt to reparse and update the code data"
   [file]
-  (log Level/INFO "update-hippy-words " file)
+  (logger/info "update-hippy-words " file)
   (let [f (future (get-unique-words
                     (java.io.InputStreamReader.
                      (java.io.FileInputStream. file))))]
@@ -225,7 +216,7 @@ returns {:form form :raw-text text (optionally) :comment-text }"
                 (try
                     (read-string text)
                   (catch Throwable t
-                    (publish-stack-trace log t))))]
+                    (publish-stack-trace t))))]
     (merge {:form form :pos pos :raw-text text}
          (when (and form (= 'comment (first form)))
                 {:comment-text text})))))

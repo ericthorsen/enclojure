@@ -16,10 +16,13 @@
 )
 
 (ns org.enclojure.ide.navigator.views.navigator-panel
-  (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging
+  (:use
     clojure.inspector
-    clojure.set)
+    clojure.set
+    )
+  (:require
+    [org.enclojure.commons.c-slf4j :as logger]
+    )
   (:import (java.util.logging Level)
     (java.awt.event MouseAdapter ActionListener)
     (java.awt.font TextAttribute)
@@ -33,7 +36,8 @@
             JFrame JToolBar JButton SwingUtilities JViewport ImageIcon)
     (org.enclojure.ide.navigator.views CljNavigatorViewPanel)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/ensure-logger)
 
 (def sample-ns-record
   {
@@ -156,7 +160,7 @@
         (.setOpenIcon renderer icon)
         (.setClosedIcon renderer icon))
     (catch Throwable t
-      (log Level/SEVERE (.getMessage t))))
+      (logger/error (.getMessage t))))
   renderer)
 
 (defn get-cell-renderer-proxy []
@@ -265,24 +269,24 @@
   (let [tree (symbols-to-tree symbols sort-fn)]
     (proxy [TreeModel] []
       (getRoot []
-;        (log Level/INFO "getRoot " (class tree))
+;        (logger/info "getRoot " (class tree))
         tree)
       (addTreeModelListener [treeModelListener])
       (getChild [parent index]
-;        (log Level/INFO "getChild type " (class parent) " i=" index)
+;        (logger/info "getChild type " (class parent) " i=" index)
         (when (vector? parent)
           (let [item (nth (seq (sort-by sort-fn
                             (fnext parent))) index)]
-;            (log Level/INFO "item is " item)
+;            (logger/info "item is " item)
             item)))
       (getChildCount [parent]
         (let [cnt (if (vector? parent)
                     (count (fnext parent))
                         0)]
-;        (log Level/INFO "getChildCount type " cnt)
+;        (logger/info "getChildCount type " cnt)
           cnt))
       (isLeaf [node]
- ;       (log Level/INFO "isLeaf type " (class node)
+ ;       (logger/info "isLeaf type " (class node)
  ;         " " (not (vector? node)))
         (not (vector? node)))
       (valueForPathChanged [path newValue])
