@@ -3,10 +3,11 @@
 dist-artifacts
 lib-artifacts
 build-artifacts
+src/**/nbproject/private
 src/enclojure.plugin.netbeans/release/*
 src/enclojure.plugin.netbeans/build/*
+src/enclojure.plugin.netbeans/nbproject/private/*
 build-support/libs/*
-nbproject/private/*
 build-support/deps.zip
 __MACOSX
 .ivy-cache
@@ -15,4 +16,3 @@ ivy-cache
 *.jar
 *.war
 build/*
-src/*/nbproject/*
