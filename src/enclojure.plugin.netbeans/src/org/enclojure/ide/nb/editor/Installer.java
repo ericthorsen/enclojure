@@ -48,7 +48,7 @@ public class Installer extends ModuleInstall {
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.completion.file-mapping"));
             
             // This is needed for dynamically loading repl code.
-            requireFn.invoke(Symbol.create("org.enclojure.repl.meta-utils"));
+            requireFn.invoke(Symbol.create("org.enclojure.commons.meta-utils"));
             requireFn.invoke(Symbol.create("org.enclojure.repl.main"));
 
             setupTrackingFn.invoke();

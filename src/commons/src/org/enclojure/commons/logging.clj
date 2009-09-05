@@ -30,6 +30,11 @@
   (let [nsym# (str (ns-name *ns*))]
     `(org.enclojure.commons.logging/log-to-fn ~nsym#)))
 
+(defmacro testm []
+   (let [nsym# (str (ns-name *ns*))]
+    `(~@(list 'def (with-meta '--logger-- {:private true}))
+           (java.util.logging.Logger/getLogger ~nsym#))))
+
 
 ;get a list of exceptions associated with exc
 (defn get-exc-seq [exc]

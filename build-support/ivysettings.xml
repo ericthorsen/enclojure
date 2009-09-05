@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivysettings>
-    <properties file="${ivy.settings.dir}${file.separator}build.properties"/>
-	<!-- <settings defaultCache="${ivy.settings.dir}${file.separator}ivy-cache" defaultResolver="local"/> -->
+   	<!-- <properties file="${ivy.settings.dir}${file.separator}ivysettings-file.properties"/> -->
+	<caches defaultCacheDir="${ivy.settings.dir}${file.separator}..${file.separator}ivy-cache" />
 	<settings defaultResolver="local"/>
 
     <property name="ivy.local.default.root" value="${ivy.settings.dir}${file.separator}libs" override="false"/>
@@ -9,26 +9,23 @@
     <property name="ivy.local.default.artifact.pattern" value="[organisation]${file.separator}[artifact].[ext]" override="false"/>
     <property name="ivy.retrieve.pattern" value="${lib.path}${file.separator}[artifact].[ext]" override="true"/>
 
-    <caches defaultCacheDir="${ivy.settings.dir}${file.separator}..${file.separator}.ivy-cache" />
-
+    
     <resolvers>
-        <chain name="local" returnFirst="true" latest="latest-time" dual="true">
+		<chain name="local">
             <filesystem name="projects" force="true" checkmodified="true" alwaysCheckExactRevision="true">
                 <ivy pattern="${ivy.settings.dir}${file.separator}..${file.separator}src${file.separator}[module]${file.separator}[module].xml" />
                 <artifact pattern="${ivy.settings.dir}${file.separator}..${file.separator}src${file.separator}[module]${file.separator}${dist.path}${file.separator}[organisation].[artifact].[ext]" />
-            </filesystem>            
-            
-            <filesystem name="third-party-revision">
+            </filesystem>
+         	<filesystem name="third-party-revision">
                 <ivy pattern="${ivy.local.default.root}${file.separator}${ivy.local.default.ivy.pattern}" />
                 <artifact pattern="${ivy.local.default.root}${file.separator}[organisation]${file.separator}[artifact]-[revision].[ext]" />
             </filesystem>
             <filesystem name="third-party">
                 <ivy pattern="${ivy.local.default.root}${file.separator}${ivy.local.default.ivy.pattern}" />
                 <artifact pattern="${ivy.local.default.root}${file.separator}${ivy.local.default.artifact.pattern}" />
-            </filesystem>
-        </chain>
-
-        <chain name="shared" returnFirst="true" latest="latest-time">
+            </filesystem>            
+		</chain>
+   <!--     <chain name="shared" returnFirst="true" latest="latest-time">
             <filesystem name="shared-repo">
                 <ivy pattern="${ivy.settings.dir}${file.separator}..${file.separator}repository${file.separator}[module]${file.separator}[module].xml" />
                 <artifact pattern="${ivy.settings.dir}${file.separator}..${file.separator}repository${file.separator}[module]${file.separator}${dist.path}${file.separator}[organisation].[artifact].[ext]" />
@@ -40,5 +37,6 @@
 				<artifact pattern="http://cloud.github.com/downloads/EricThorsen/enclojure/[artifact].zip" />
 			</url>
 		</chain>
+		-->
 	</resolvers>
 </ivysettings>

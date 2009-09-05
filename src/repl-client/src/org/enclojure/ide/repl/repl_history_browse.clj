@@ -12,10 +12,9 @@
 )
 
 (ns org.enclojure.ide.repl.repl-history-browse
-   (:use org.enclojure.commons.meta-utils
-    org.enclojure.commons.logging)
   (:require [org.enclojure.ui.controls :as controls]
     [org.enclojure.ide.repl.repl-manager :as repl-manager]
+    [org.enclojure.commons.c-slf4j :as logger]
     )
   (:import  (java.util.logging Level)
     (javax.swing JList ListModel JLabel JPanel JTree JTable JScrollPane
@@ -31,7 +30,8 @@
         BufferedReader FileReader)
     (java.util Vector)))
 
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/def-logging-fn)
 
 (defn- get-pref-file-path
   "Given a config category, returns a path for storing/retrieving config data for the given category"
@@ -68,7 +68,7 @@
 (defn log-command
   [repl-id form]
   (let [history-ref (:history-ref (repl-manager/get-repl-config repl-id))]
-    (log Level/INFO "logging " form)
+    (logger/info  "logging " form)
     (when-not ((:forms-set @history-ref) form)
       (dosync 
         (alter history-ref

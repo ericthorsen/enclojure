@@ -15,8 +15,7 @@
 ;*******************************************************************************
 )
 (ns org.enclojure.ide.nb.editor.repl-focus
-  (:use org.enclojure.ide.repl.repl-manager
-    org.enclojure.commons.core
+  (:use org.enclojure.ide.repl.repl-manager    
     org.enclojure.ide.nb.actions.token-navigator
     org.enclojure.ide.navigator.token-nav)  
   (:import
@@ -49,11 +48,13 @@
     repl-tc))
 
 (defn find-active-repl [#^Project p]
-  (first-valid
+  (some #(if (instance? clojure.lang.IFn %) (%) %)
+    [
     (:repl-tc (get-repl-config @last-activated-repl))
     find-first-visible-repl
     (find-project-repl p)
-    (first (all-repls))))
+    (first (all-repls))
+     ]))
 
 (defn set-caret-visibility [repl-name repl-pane activated?]
   (let [editor-pane (current-editor-pane)]

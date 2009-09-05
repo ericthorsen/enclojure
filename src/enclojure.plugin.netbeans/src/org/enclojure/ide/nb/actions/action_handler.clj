@@ -53,7 +53,7 @@ the resulting file's ns is refered on successful load"
 
 (defn load-with-debug [text ns]
   (if (and ns (check-repl-form? text))
-    (pr-str (list 'org.enclojure.repl.meta-utils/load-string-with-dbg
+    (pr-str (list 'org.enclojure.commons.meta-utils/load-string-with-dbg
               text
               (meta-utils/source-path-from-ns ns)
               (meta-utils/file-from-ns ns)))

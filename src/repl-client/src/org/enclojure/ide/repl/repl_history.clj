@@ -11,12 +11,12 @@
 ;*    Author: Eric Thorsen
 )
 (ns org.enclojure.ide.repl.repl-history
-  (:use org.enclojure.commons.logging
-    org.enclojure.commons.meta-utils)
-    (:import (java.util.logging Level Logger)
+  (:require [org.enclojure.commons.c-slf4j :as logger])
+    (:import (java.util.logging Level Logger)      
             (java.awt.event KeyEvent)))
             
-(defrt #^{:private true} log (get-ns-logfn))
+; setup logging
+(logger/def-logging-fn)
 
 (defn- new-history
   "A blank history data item or you can pass in a list of items.

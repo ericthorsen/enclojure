@@ -10,5 +10,7 @@
         <dependency org="Apache" name="commons-io" rev="1.4"/>
         <dependency org="Apache" name="commons-logging" rev="1.1.1"/>
         <dependency org="Netbeans" name="swing-layout" rev="1.0.3"/>
- 	</dependencies>
+        <dependency org="slf4j" name="slf4j-api" rev="1.5.8"/>
+        <dependency org="slf4j" name="slf4j-jdk14" rev="1.5.8"/>
+    </dependencies>
 </ivy-module>

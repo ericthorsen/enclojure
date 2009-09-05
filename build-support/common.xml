@@ -52,7 +52,7 @@
 ################################################################################
 -->
     <target name="resolve" description="build and retrieve dependencies with ivy">
-        <!-- <ivy:cleancache /> -->
+        <ivy:configure file="ivysettings.xml" />
         <ivy:retrieve />
         <ivy:resolve />
     </target>
@@ -292,8 +292,8 @@
     </target>
 
     <target name="clean-ivy-cache" description="clear repo cache with ivy">
-        <delete dir="${ivy-cache.common.dir}" />
-        <delete dir="${ivy-cache.dir}" />
+        <delete dir="${ivy.cache.common.dir}" />
+        <delete dir="${ivy.cache.dir}" />
     </target>
 
     <target name="clean-lib" description="clean the project libraries directory (dependencies)">

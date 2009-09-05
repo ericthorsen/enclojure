@@ -15,17 +15,18 @@
  (:use org.enclojure.repl.main
        org.enclojure.ide.repl.repl-manager
        org.enclojure.ide.repl.repl-history
-       org.enclojure.commons.logging
-       org.enclojure.commons.meta-utils)
- (:require [org.enclojure.ide.repl.repl-history-browse :as repl-history-browse])
+       )
+ (:require [org.enclojure.ide.repl.repl-history-browse :as repl-history-browse]
+   [org.enclojure.commons.c-slf4j :as logger])
  (:import (java.util.logging Logger Level)
       (org.enclojure.ide.repl ReplPanel)
       (java.io File OutputStreamWriter FileOutputStream)
       (java.awt.event KeyEvent)
       (java.awt EventQueue)))
 
-(defrt #^{:private true} EOF (Object.))
-(defrt #^{:private true} log (get-ns-logfn))
+(def #^{:private true} EOF (Object.))
+; setup logging
+(logger/def-logging-fn)
 
 (defn bind-editor-pane [panel pane result-fn]
   (let [awt-fn #(EventQueue/invokeAndWait
@@ -106,7 +107,7 @@
         (.remove d prompt-pos (- (.getLength d) prompt-pos))
         (.insertString d (.getLength d) form nil)
         (catch Exception e
-          (log Level/SEVERE (.getMessage e)))))))
+          (logger/error  (.getMessage e)))))))
 
 (defn put-history-item [history-ref form]
   (let [history-list (:history-list @history-ref)
@@ -114,7 +115,7 @@
     (dosync
         (alter history-ref
             #(add-history-item %1 %2) form))
-    (log Level/FINE "b4 = " n " after " (count (:history-list @history-ref)))
+    (logger/debug  "b4 = " n " after " (count (:history-list @history-ref)))
     {:added (not= n (count (:history-list @history-ref)))
      :history @history-ref}))
   
@@ -142,7 +143,7 @@
     (let [{:keys [repl-fn repl-panel] print-pretty
            'clojure.contrib.pprint/*print-pretty*} (get-repl-config repl-id)          
           expr (build-expr print-pretty ns-node expr)]
-      (log Level/FINE "\neval expr:\n" expr)
+      (logger/debug  "\neval expr:\n" expr)
       (.resultReceived repl-panel (._replEditorPane repl-panel) "\n")
       (if repl-fn
         (repl-fn expr)
@@ -164,7 +165,7 @@
                    (str "(eval '(clojure.contrib.pprint/pprint (do " expr "\n)))")
                  (str " " expr " \n")))
           ]
-      (log Level/FINE "\neval expr:\n" expr)
+      (logger/debug  "\neval expr:\n" expr)
       (.resultReceived repl-panel (._replEditorPane repl-panel) "\n")
       (if repl-fn
         (repl-fn expr)
@@ -175,7 +176,7 @@
 (defn set-print-pretty
   [repl-id repl-pane new-val]
   (let [bv (boolean new-val)]
-    (log Level/FINE "set pretty print to " bv)
+    (logger/debug  "set pretty print to " bv)
   (update-repl repl-id 'clojure.contrib.pprint/*print-pretty* bv)
   (evaluate-in-repl repl-id
     (str "(set! clojure.contrib.pprint/*print-pretty* " bv ")"))
@@ -185,7 +186,7 @@
 (defn set-print-stack-trace-on-error
   [repl-id repl-pane new-val]
   (let [bv (boolean new-val)]
-    (log Level/INFO "set print stack trace to " bv)
+    (logger/info  "set print stack trace to " bv)
   (update-repl repl-id 'org.enclojure.repl.main/*print-stack-trace-on-error* bv)
   (evaluate-in-repl repl-id
     (str "(set! org.enclojure.repl.main/*print-stack-trace-on-error* " bv ")"))
@@ -237,7 +238,7 @@ and store it in repl-history if it has not been seen before"
   (try
     (evaluate-in-repl repl-id expr nsnode)
     (catch Throwable t
-      (publish log t))
+      (logger/error-throwable (.getMessage t) t))
     (finally
       (let [{added :added}
                 (put-history-item (get-history-ref repl-id) expr)]
