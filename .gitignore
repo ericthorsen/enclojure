@@ -8,7 +8,7 @@ src/enclojure.plugin.netbeans/release/*
 src/enclojure.plugin.netbeans/build/*
 src/enclojure.plugin.netbeans/nbproject/private/*
 build-support/libs/*
-build-support/deps.zip
+build-support/deps*.zip
 __MACOSX
 .ivy-cache
 ivy-cache

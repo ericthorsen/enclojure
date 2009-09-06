@@ -7,8 +7,8 @@
 	<property name="ivy.cache.common.dir" value="${ivy.cache.dir}" />
 
 	<property name="bld-dir" value="${basedir}${file.separator}build-support${file.separator}" />
-	<property name="deps-zip" value="${bld-dir}deps.zip" />
-	<available file="${deps-zip}" property="dependancies.downloaded" />
+	<property name="deps-zip" value="deps-2009-09-5.zip" />
+	<available file="${bld-dir}${deps-zip}" property="dependancies.downloaded" />
 	<available file="${ivy.jar.file}" property="ivy.installed" />
 	  
 	<target name="download-ivy" unless="ivy.installed">
@@ -30,11 +30,11 @@
          
 	<target name="init-deps" unless="dependancies.downloaded">
 		<mkdir dir="${bld-dir}" />
-		<echo message="Downloading dependancies from http://cloud.github.com/downloads/EricThorsen/enclojure/deps.zip" />
-		<get src="http://cloud.github.com/downloads/EricThorsen/enclojure/deps.zip"
-			dest="${bld-dir}deps.zip" 
+		<echo message="Downloading dependancies from http://cloud.github.com/downloads/EricThorsen/enclojure/${deps-zip}" />
+		<get src="http://cloud.github.com/downloads/EricThorsen/enclojure/${deps-zip}"
+			dest="${bld-dir}${deps-zip}" 
 			verbose="false" />
-		<unzip src="${bld-dir}deps.zip"	dest="${bld-dir}" />
+		<unzip src="${bld-dir}${deps-zip}"	dest="${bld-dir}" />
 	</target>	
 	
     <target name="buildlist" depends="load-ivy,init-deps">			
