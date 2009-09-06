@@ -292,8 +292,8 @@ and the data from the ui-fields"
         selected-index (if (pos? inx) inx 0)
         pkey (if (> (count @*clojure-platforms*) selected-index)
                (:key (nth @*clojure-platforms* selected-index))
-               (throw (Exception. "Unable to find platform key at index "
-                        selected-index)))]
+               (throw (Exception. (str "Unable to find platform key at index "
+                        selected-index))))]
     (assoc
         (struct platform
             (.getText (.platformNameTextField dlg))
@@ -455,7 +455,7 @@ This is only doing a text search on the names...should do something more."
 
 (defn save-preferences []
   ; make sure the current platform is saved before flushing to disk.
-
+  (logger/info "Preferences being saved : " @*clojure-platforms*)
     (pref-utils/put-prefs -prefs-category-
       @*clojure-platforms*))
 
@@ -486,7 +486,7 @@ This is only doing a text search on the names...should do something more."
 
 (defn save-settings
   [pane]
-  (logger/info "calling save-settings for platforms ")
+  (logger/info "calling save-settings for platforms " @*clojure-platforms*)
   (update-platform (get-platform pane))
   (save-preferences)
   (ensure-libs @*clojure-platforms*))
