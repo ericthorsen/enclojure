@@ -106,12 +106,3 @@
     (when repl-id
       (update-repl repl-id :dbg-engines nil))))
 
-    
-
-;
-;  (when @*actions-manager*
-;    (dosync
-;      (.doAction @*actions-manager* org.netbeans.api.debugger.ActionsManager/ACTION_KILL)
-;      (ref-set *vm* nil)
-;      (ref-set *dbg* nil)
-;      (ref-set *actions-manager* nil))))

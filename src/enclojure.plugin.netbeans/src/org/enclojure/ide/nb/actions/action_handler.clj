@@ -151,13 +151,15 @@ be loaded"
         id (symbol-nav/get-identifier-at document
                   (.getCaretPosition editor-pane))]
     (when id
-      (let [[alias sym] (.split (str id) "/")
+      (let [[alias sym] (.split (.trim (str id)) "/")
             ns-list
             (conj (if sym ;there was an alias
                       [(unqualified-to-qualified-map alias)]
                       ns-use-refer) this-ns)]
-      (logger/info " got id " id)
-      (logger/info " using " ns-list)
+      (logger/info " got id " id " s " (count id))
+      (logger/info " using " ns-list  " s " (count ns-list))
+        (when (or (pos? (count alias))
+                (pos? (count sym)))
         (let [[file [sym & _]]
               (some #(let [{:keys [symbols source-file] :as ns-syms}
                                   (symbol-caching/from-symbol-cache (str %))]
@@ -170,7 +172,7 @@ be loaded"
                                      (classpath-utils/find-resource file))]
                 (editor-utils/open-editor-file-at-line full-path
                   (max (- (:line sym) 2) 0)))
-              ))))))
+              )))))))
 
 (defn get-pref-file-path []
   (let [env (into {} (System/getenv)) home (if (env "HOME")
