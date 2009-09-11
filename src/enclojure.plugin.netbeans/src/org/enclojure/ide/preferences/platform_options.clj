@@ -216,7 +216,7 @@ platforms list"
                            @*clojure-platforms*
                            (:key platform))
           ccount (count @*clojure-platforms* )]
-      (logger/info "do-remove-platform k=" k " i= " index " p " platform)
+      (logger/info "do-remove-platform k={} i={} p={}" k index platform)
       (when index
         (alter *clojure-platforms*
           #(let [[x xs] (split-at index %)]
@@ -226,17 +226,17 @@ platforms list"
 (defn update-platform
   "Updates the given platform using the :key to look up the platform in the seq"
   [{k :key :as platform}]
-  (logger/info "update-platform looking for key " k)
+  (logger/info "update-platform looking for key {}" k)
   (let [{index :index} (platform-and-index
                          @*clojure-platforms* k)]
-  (logger/info "update-platform " (or index "nil!") " " platform)
+  (logger/info "update-platform {} {}" (or index "nil!") platform)
   (when index
     (dosync
         (alter *clojure-platforms*
              #(let [[x xs] (split-at index %)]
                 (ensure-default-platform-is-set
                     (apply vector (concat x [platform] (rest xs)))))))
-    (logger/info "update-platform: after trans " (@*clojure-platforms* index)))))
+    (logger/info "update-platform: after trans {}" (@*clojure-platforms* index)))))
 
 
 (defn update-default-platform
@@ -306,7 +306,7 @@ and the data from the ui-fields"
   [dlg platforms def-edit]
   (let [def-platform (or (platform-and-index platforms def-edit)
                        {:index 0 :platform (first platforms)})]
-    (logger/info "POP - platform and... " def-platform )
+    (logger/info "POP - platform and... {}" def-platform )
     (.setModel (.platformList dlg)
       (controls/get-list-model (map :name platforms)))
     (.setSelectedIndex (.platformList dlg) (:index def-platform))
@@ -334,7 +334,7 @@ and the data from the ui-fields"
           (do-remove-platform (@*clojure-platforms* selected))
           (pop-dialog pane @*clojure-platforms*
             (:key (@*clojure-platforms* (if (zero? selected) 1 (dec selected)))))
-          (logger/info "remove-platform after do-remove count " (count @*clojure-platforms*))
+          (logger/info "remove-platform after do-remove count {}" (count @*clojure-platforms*))
           ))))
 
 (defn- get-file-filter
@@ -393,8 +393,8 @@ This is only doing a text search on the names...should do something more."
         e-inx (.getLastIndex event)
         is-adjusting? (.getValueIsAdjusting event)
         selected (.getSelectedIndex (.platformList pane))]
-  (logger/info "platform-list-changed "
-    "s " s-inx " e " e-inx " adjusting? " is-adjusting? " selected " selected )
+  (logger/info "platform-list-changed s={} e={} adjusting?={} selected={}"
+        s-inx e-inx is-adjusting? selected)
     (when (and (not= s-inx e-inx)
              (not is-adjusting?)
              (>= selected 0))
@@ -404,12 +404,12 @@ This is only doing a text search on the names...should do something more."
           (let [platform (assoc
                        (get-platform pane)
                        :key (:key (@*clojure-platforms* inx-to-update)))]
-            (logger/info "platform-list-changed...calling update for inx "
-              inx-to-update " key " (:key platform))
-            (logger/info "platform-list-changed...platform= " platform)
+            (logger/info "platform-list-changed...calling update for inx {} key={}"
+                inx-to-update (:key platform))
+            (logger/info "platform-list-changed...platform={}" platform)
             (update-platform platform)))
             (let [newp  (@*clojure-platforms* selected)]
-                 (logger/info "platform-list-changed...setting to " newp)
+                 (logger/info "platform-list-changed...setting to {}" newp)
                 (set-platform pane newp))
         ))))
 
@@ -429,7 +429,7 @@ This is only doing a text search on the names...should do something more."
 
 (defn platform-key-typed
   [pane #^java.awt.event.KeyEvent event]
-    (logger/info "key typed " event)
+    (logger/info "key typed {}" event)
   (if (= -clojure-default-platform-name-
         (.getText (.platformNameTextField pane)))
     (.consume event)
@@ -441,12 +441,12 @@ This is only doing a text search on the names...should do something more."
 
 (defn platform-changed
   [pane event]
-  (logger/info "platform-changed old:" (.getOldValue event)
-    " new:" (.getNewValue event)))
+  (logger/info "platform-changed old:{} new:{}" (.getOldValue event)
+        (.getNewValue event)))
 
 (defn set-as-default
   [pane event]
-  (logger/info "set-as-default? " event)
+  (logger/info "set-as-default? {}" event)
   (when (.isSelected (.setAsDefaultCheckBoxGuy pane))
     (let [selected (.getSelectedIndex (.platformList pane))]
         (update-default-platform
@@ -455,7 +455,7 @@ This is only doing a text search on the names...should do something more."
 
 (defn save-preferences []
   ; make sure the current platform is saved before flushing to disk.
-  (logger/info "Preferences being saved : " @*clojure-platforms*)
+  (logger/info "Preferences being saved : {}" @*clojure-platforms*)
     (pref-utils/put-prefs -prefs-category-
       @*clojure-platforms*))
 
@@ -486,7 +486,7 @@ This is only doing a text search on the names...should do something more."
 
 (defn save-settings
   [pane]
-  (logger/info "calling save-settings for platforms " @*clojure-platforms*)
+  (logger/info "calling save-settings for platforms {}" @*clojure-platforms*)
   (update-platform (get-platform pane))
   (save-preferences)
   (ensure-libs @*clojure-platforms*))

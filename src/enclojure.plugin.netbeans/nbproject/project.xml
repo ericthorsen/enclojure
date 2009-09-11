@@ -472,11 +472,11 @@
                 <package>org.enclojure.repl</package>
             </public-packages>
             <class-path-extension>
-                <runtime-relative-path>ext/clojure-1.0.0.jar</runtime-relative-path>
+                <runtime-relative-path>ext/clojure-1.09.11.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/clojure-1.0.0.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/clojure-contrib-1.0.0.jar</runtime-relative-path>
+                <runtime-relative-path>ext/clojure-contrib-1.09.11.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/clojure-contrib-1.0.0.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
@@ -507,10 +507,12 @@
                 <runtime-relative-path>ext/slf4j-jdk14-1.5.8.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/slf4j-jdk14-1.5.8.jar</binary-origin>
             </class-path-extension>
+            <!--
             <class-path-extension>
                 <runtime-relative-path>ext/tools.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/tools.jar</binary-origin>
-            </class-path-extension>            
+            </class-path-extension>
+            -->
         </data>
     </configuration>
 </project>

@@ -21,7 +21,7 @@ slf4j lib convenience functions."}
 
 (defmacro ensure-logger []
    (let [nsym# (str (ns-name *ns*))]
-    `(~@(list 'defonce (with-meta '--logger-- {:private true}))
+    `(~@(list 'defonce (with-meta '--logger-- {:private true :tag  'org.slf4j.Logger}))
            (org.slf4j.LoggerFactory/getLogger ~nsym#))))
 
 (defmacro log
@@ -30,14 +30,19 @@ debug, error, trace, warn and info.
 NOTE: the def-logging-fn must be called in your file in order to use these macros.
 It creates a logger using the namespace bound to *ns* at compile time."
   ([level msg]
-    `(~@(list '. '--logger--) (~level #^String ~msg)))
+    `(let [msg# ~msg]
+       (~@(list '. '--logger--) (~level msg#))))
   ([level fmt obj]    
-    `(~@(list '. '--logger--) (~level #^String ~fmt ~obj)))
-  ([level fmt obj1 obj2]    
-    `(~@(list '. '--logger--) (~level #^String ~fmt ~obj1 ~obj2)))
-  ([level fmt obj1 obj2 & objs]    
-    `(~@(list '. '--logger--)
-      (~level #^String ~fmt ~obj1 ~obj2))))
+    `(let [fmt# ~fmt obj# ~obj]
+        (~@(list '. '--logger--) (~level fmt# obj#))))
+  ([level fmt obj1 obj2]
+    `(let [fmt# ~fmt obj1# ~obj1 obj2# ~obj2]
+        (~@(list '. '--logger--) (~level fmt# obj1# obj2#))))
+  ([level fmt obj1 obj2 objs]
+    `(let [fmt# ~fmt 
+           objs# (into-array java.lang.Object  [~obj1 ~obj2 ~@objs])]
+        (~@(list '. '--logger--)
+            (~level  ~fmt  objs#)))))
 
 (defmacro log-throwable
   ([level msg throwable]

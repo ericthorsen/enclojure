@@ -141,7 +141,7 @@
 
 (defmethod -set-val javax.swing.JCheckBox
   [dlg fld val]
-  (logger/info "set-val javax.swing.JCheckBox " val " " fld)
+  (logger/info "set-val javax.swing.JCheckBox {} {}" val fld)
   (.setSelected (.get fld dlg)
     (convert-fn val Boolean)))
 

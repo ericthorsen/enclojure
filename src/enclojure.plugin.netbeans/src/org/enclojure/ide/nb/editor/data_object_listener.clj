@@ -49,7 +49,7 @@
 (defn get-property-listener [obj]
   (proxy [PropertyChangeListener] []
     (propertyChange [#^PropertyChangeEvent e]
-      (logger/info "data-object-listener " (bean e))
+      (logger/info "data-object-listener {}" (bean e))
       (data-obj-event (bean e) obj))))
 
 

@@ -105,7 +105,7 @@
 For seeing the command line use:"
   ;(apply str (interpose \" \" (org.enclojure.repl.e-repl-startup/java-cmd-array org.enclojure.repl.e-repl-startup/@*default-config*)))"
   [{:keys [arguments debug-port-arg classpath java-main repl-id port ack-port]}]
-  (logger/info  "Arguments are ..... " arguments)
+  (logger/info  "Arguments are .....{}" arguments)
   (apply conj arguments
     (map str
       (filter identity [debug-port-arg "-cp" (if classpath (str "\"" classpath "\"") "")
@@ -115,7 +115,7 @@ For seeing the command line use:"
                            process-monitor-fn]
   (let [java-args (java-cmd-array repl-config)
         cmd-line (CommandLine/parse "java")
-        _ (logger/info  "start java process with "
+        _ (logger/info  "start java process with {}"
             (apply vector java-args))
         _ (doall (map #(.addArguments cmd-line (str %) false) java-args))
         #^DefaultExecutor executor (DefaultExecutor.)
@@ -139,11 +139,10 @@ For seeing the command line use:"
                      (.destroyProcess watchdog)))})) ;//??do we need cleaning of streams "out-pipe err-pipe"?
 
 (defn process-completed [repl-id exit-value]
-  (logger/info  "Process terminated: repl-id=" repl-id))
+  (logger/info  "Process terminated: repl-id={}" repl-id))
 
 (defn process-failed2 [repl-id #^ExecuteException ex]
-  (logger/info  "Process failed: repl-id=" repl-id
-    " " (.getMessage ex)
+  (logger/info  "Process failed: repl-id={} {} {}" repl-id (.getMessage ex)
     (if-let [c (.getCause ex)]
       (.getMessage c))))
 

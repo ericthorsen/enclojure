@@ -176,10 +176,10 @@
 (defn set-print-pretty
   [repl-id repl-pane new-val]
   (let [bv (boolean new-val)]
-    (logger/debug  "set pretty print to " bv)
+    (logger/debug  "set pretty print to {}" bv)
   (update-repl repl-id 'clojure.contrib.pprint/*print-pretty* bv)
   (evaluate-in-repl repl-id
-    (str "(set! clojure.contrib.pprint/*print-pretty* " bv ")"))
+    (str "(set! clojure.contrib.pprint/*print-pretty* {})" bv))
   (.setSelected (.prettyPrintToggleButton repl-pane) bv)))
   
 

@@ -72,7 +72,7 @@
   [file]
   ;(when-not file
   ;  (throw (Exception. "file-key passed a nil value.")))
-  (logger/warn "default dispatch value for file-key arg=" file)
+  (logger/warn "default dispatch value for file-key arg={}" file)
   (when file
     (.getPath file)))
 
@@ -120,19 +120,19 @@ The given predicate is called with the fully qualified class name and is used as
 The given predicate is called with the fully qualified class name.  Default checks to
 see if there are symbols already loaded for the class"
   ([java-class-list pred?]
-    ;(logger/info "ensuring classes " (doall java-class-list))
+    (logger/debug "ensuring classes {}" (doall java-class-list))
     (let [package-map (get-resources-by-lib java-class-list pred?)]
       (when-let [nolib-items (package-map nil)]
-            (logger/error "Completion cache problem.  Following items had no library reference:")
+            (logger/error "Completion cache problem. Following items had no library reference:")
             (logger/error (print-str nolib-items)))
       (when-let [libs (dissoc package-map nil)]
-        (logger/debug "processing " (count (keys libs)) " libs")
+        (logger/debug "processing {} libs." (count (keys libs)))
             (dorun
                 (pmap (fn [[jar-name package-set]]
                         (let [reg-ex-patterns
                               (regex-for-lib-loading package-set)]
-                          (logger/debug "Processing jar " jar-name " with patterns "
-                                reg-ex-patterns)
+                          (logger/debug "Processing jar {} with patterns {}"
+                            jar-name reg-ex-patterns)
                           (try
                             (symbol-caching/process-jar
                                 (java.io.File. jar-name)
@@ -163,7 +163,7 @@ see if there are symbols already loaded for the class"
 
 
 (defn log-completion-info [ci]
-  (logger/debug "\nCompletion-info :"
+  (logger/debug "\nCompletion-info :{}"
     (apply str (map #(when-let [f (%1 ci)]
                        (str "\n\t" %1 " count = "  (count (f))))
                  [:packages :classes :namespaces :hippy-words
@@ -375,10 +375,6 @@ fully qualified namespace or java class name, see if there are symbols loaded"
     (let [completion-info
           (if file (refresh-completion-info (file-key file))
                (get-default-completion-info))]
-      ;(when-not file
-      ;  (logger/info "null baby......should be a winner!"))
-      ;(logger/info "Kicking off ensure-classes for file " file)
-      ;(logger/info "-----------classes " (:java-classes completion-info))
           (let [new-data (ensure-classes (:java-classes completion-info))]
             (swap! -completion-cache- assoc (file-key file) completion-info))))
   @-completion-cache- )

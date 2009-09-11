@@ -144,8 +144,8 @@
 
 (defmethod query-type-dataset :all-instance-members
   [{:keys [input]} completion-info]
-   (logger/warn ":all-instance-members- input " input)
-   (logger/warn ":all-instance-members- info " completion-info)
+   (logger/warn ":all-instance-members- input {}" input)
+   (logger/warn ":all-instance-members- info {}" completion-info)
      ;(file-mapping/log-completion-info completion-info))
   (merge (check-for-token-walking input)
   {:search-token   
@@ -158,7 +158,7 @@
 
 (defmethod query-type-dataset :statics
   [{:keys [input]} completion-info]
-  (logger/warn "statics - input=" input)
+  (logger/warn "statics - input={}" input)
   (let [[search-scope search-token] (.split input "/")]
     (merge (check-for-token-walking input)
     {:search-token search-token
@@ -228,7 +228,7 @@
   [document caret-offset]
   (let [{:keys [char-fn]} (symbol-nav/unify-doc-str document)
         c (char-fn caret-offset)]
-    (logger/debug "check-caret-pos c is " c (= \space (char c)))
+    (logger/debug "check-caret-pos c is {} {}" c (= \space (char c)))
     (if (#{\r \n \newline \space \)} c)
         (dec caret-offset) caret-offset)))
 
@@ -243,7 +243,8 @@
         end (max (inc start) caret-offset);(symbol-nav/find-end-boundary document start)
         length (- end start)
         {:keys [substr]} (symbol-nav/unify-doc-str document)]
-    (logger/debug "get-basic-completion-input: caret " caret-offset " search-offset " search-offset " s " start " e " end " l " length)
+    (logger/debug "get-basic-completion-input: caret {} search-offset {} s {} e {} l {}"
+      caret-offset search-offset start end length)
           {:start start
            :end end
            :length length
@@ -450,7 +451,7 @@ Returns a vector of items"
 (defn do-search
   "worker function to do the actual search"  
   [search-token forms pred? info]
-  (logger/debug info " token " search-token)
+  (logger/debug "{} token {}" info search-token)
     (filter (fn [{name :name}]
               (when (and (not= (str name) "") (not= "" search-token)
                     (pos? (count search-token)) (pos? (count (str name))))
@@ -474,7 +475,7 @@ Returns a vector of items"
 ;              matches)))))
 
 (defn do-search-strategy [search-token forms]
-  (logger/info "do-search-strategy token:" search-token " len(search-token) "
+  (logger/info "do-search-strategy token:{}  len(search-token) {}" search-token ""
     (count search-token) " (count forms) " (count forms))
   (if (or (nil? search-token)
         (zero? (count (.trim search-token)))
@@ -513,17 +514,17 @@ Returns a vector of items"
               dataset (query-type-dataset input completion-info)
               forms (:data-set dataset)
               {:keys [search-token search-scope search-delim]} dataset]
-        (logger/info "input:" input " search-token:" search-token " nil?:"
-          (nil? search-token) " scope:" search-scope)
+        (logger/info "input: {} search-token:{} nil?: {} scope: {}"
+            input search-token (nil? search-token)  search-scope)
           ;first do a normal lookup:
         (let [{:keys [match results search-str]}
                 (do-search-strategy search-token forms)
               filtered (remove-dups results)]
-          (logger/info "Completion: count of initial forms is " (count forms))
-          (logger/info "Completion: count of forms after search is " (count results))
-          (logger/info "Completion: count of forms after filtering is " (count filtered))
+          (logger/info "Completion: count of initial forms is {}" (count forms))
+          (logger/info "Completion: count of forms after search is {}" (count results))
+          (logger/info "Completion: count of forms after filtering is {}" (count filtered))
           (when (= 1 (count filtered))
-            (logger/info "one results is " (first filtered)))
+            (logger/info "one results is {}" (first filtered)))
           (dosync
             (alter -debug-
               (fn [_] (hash-map :caret caretOffset :file file :info completion-info :input input
@@ -542,7 +543,7 @@ Returns a vector of items"
          (catch Throwable t
           (Exceptions/printStackTrace t))
         (finally
-          (logger/info "Finishing completion task")
+          (logger/info "Finishing completion task {}")
           (.finish resultset)))))))
 
 (defn get-completion-task [query-type text-component]

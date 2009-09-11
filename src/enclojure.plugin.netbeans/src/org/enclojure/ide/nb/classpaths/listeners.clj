@@ -107,12 +107,12 @@
                          (tfn)
                          (Thread/yield)
                          (catch java.lang.InterruptedException i
-                           (logger/debug "shutting down queue " thread-label))
+                           (logger/debug "shutting down queue {}" thread-label))
                          (catch Throwable t
                            (publish-stack-trace t)))
                        (recur))
                      (catch java.lang.InterruptedException i
-                       (logger/debug "shutting down queue " thread-label))
+                       (logger/debug "shutting down queue {}" thread-label))
                      (catch Throwable t
                        (publish-stack-trace t))))
                  thread-label)]
@@ -128,7 +128,7 @@
 
 (defmethod add-class-path :default
   [classpath cp-type]
-  (logger/warn "add-class-path multi-method... no dispath for source type " cp-type " ignoring..."))
+  (logger/warn "add-class-path multi-method... no dispath for source type {} ignoring..." cp-type))
 
 (defmethod add-class-path "classpath/source"
   [classpath cp-type]
@@ -136,7 +136,7 @@
     (resource-tracking/add-source-roots classpath)
     (when-let [roots (.getRoots classpath)]
       (doseq [item (seq roots)]
-      (logger/debug "add-class-path :source to path Queue " item)
+      (logger/debug "add-class-path :source to path Queue {}" item)
       (.put (:queue
                  (:path-reader-queue @-reader-queues-)) [item])))))
 
@@ -147,7 +147,7 @@
       (resource-tracking/add-source-roots classpath)
       (when-let [entries (.entries classpath)]
         (doseq [item (seq entries)]
-          (logger/debug "add-class-path :compile to path Queue " item)
+          (logger/debug "add-class-path :compile to path Queue {}" item)
             (.put (:queue
                          (:path-reader-queue @-reader-queues-)) [item])))))
 
@@ -174,11 +174,10 @@
         rem-path-queue (new-queue rem-class-path "rem-classpaths" 4 nil)
         queue-entries-fn
            (fn [queue evt]
-             ;(logger/debug "queueing paths of type " (.getId evt))
              (try
                (let [cp-type (.getId evt)]
                 (doseq [path (.getChangedPaths evt)]
-                  (logger/debug "path listener queueing " path)
+                  (logger/debug "path listener queueing {}" path)
                     (.put queue [path cp-type])))
              (catch Throwable t (publish-stack-trace t))))
         add-paths-thread-pool (Executors/newFixedThreadPool 2)
@@ -216,7 +215,7 @@
     (try
       (let [data (apply proc-fn inputs)] data)
         (catch Throwable t
-            (logger/debug metastr " nocache. inputs " inputs)
+            (logger/debug metastr " nocache. inputs {}" inputs)
           (publish-stack-trace t)))))
 
 (defn get-cache-handlerfn [key-fn proc-fn metastr]
@@ -226,45 +225,35 @@
         ;(logger/debug metastr " key " tkey)
         (if-let [ret (@data-cache tkey)]
           (do
-            (logger/debug metastr " key cached.  Returning data for " tkey)
+            (logger/debug metastr " key cached.  Returning data for {}" tkey)
             ret)
           (do
-            ;(logger/debug metastr " NOT key cached. Processing data for " tkey)
-            (let [data (apply proc-fn inputs)]
-          ;(logger/debug "count " (count @data-cache) " adding " tkey)
+            (let [data (apply proc-fn inputs)]          
             (dosync
                 (commute data-cache assoc
-                  tkey {:key tkey :processed-data data}))
-           ;(logger/debug metastr " data stored for " tkey ". count = " (count @data-cache))
+                  tkey {:key tkey :processed-data data}))           
               )))))))
 
 (defn get-sym-cache-handlerfn [key-fn proc-fn metastr]
   (fn [data-cache & inputs]
     (with-exception-handling
       (let [tkey (apply key-fn inputs)]
-        ;(logger/debug metastr " key " tkey)
         (if-let [ret (@data-cache tkey)]
           (do
-            (logger/debug metastr " key cached.  Returning data for " tkey)
+            (logger/debug metastr " key cached.  Returning data for {}" tkey)
             ret)
-          (do
-            ;(logger/debug metastr " NOT key cached. Processing data for " tkey)
-            (let [data (apply proc-fn inputs)]
-          ;(logger/debug "count " (count @data-cache) " adding " tkey)
-;            (dosync
-;                (commute data-cache assoc
-;                  tkey {:key tkey :processed-data data}))
-           ;(logger/debug metastr " data stored for " tkey ". count = " (count @data-cache))
+          (do            
+            (let [data (apply proc-fn inputs)]          
               )))))))
 
 (defmethod symbol-caching/process-path org.openide.filesystems.FileObject
 ;  "traverses a set of source paths and calls analyze on them"
   ([root]
-  (logger/debug "process-path file-object " root)
+  (logger/debug "process-path file-object {}" root)
     (with-exception-handling
       (doseq [f (filter (fn [e] (= "clj" (.getExt e)))
                   (symbol-caching/file-obj-traverse root))]
-        (logger/debug "process-path - FileObject to File Queue " root)
+        (logger/debug "process-path - FileObject to File Queue {}" root)
         (.put (:queue (:file-reader-queue @-reader-queues-))
           [{:ext "clj" :source f :file-object f :key (.getPath f)}]))))
   ([root classpath-entry]

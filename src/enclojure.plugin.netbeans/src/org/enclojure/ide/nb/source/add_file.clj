@@ -293,7 +293,7 @@ source roots is a map from didplay name to the root file object."
         base-path (subs full-path 0 (.indexOf full-path file))
         target-folder (FileUtil/createFolder (File. base-path))
         data-folder (DataFolder/findFolder target-folder)]
-    (logger/debug "file " file)
+    (logger/debug "file {}" file)
     (doto wizard-descriptor
       (.setTargetName file)
       (.setTargetFolder data-folder))

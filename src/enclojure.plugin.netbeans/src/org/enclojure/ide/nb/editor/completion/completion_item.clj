@@ -120,7 +120,6 @@
             (insert-text-inplace component item search-info))
     (getInsertPrefix [] text)
     (getPreferredWidth [#^Graphics g #^Font font]
-     ; (logger/info "count is !!!!!!! " (count (.trim full-tag)) " for:" full-tag ":")
          (CompletionUtilities/getPreferredWidth
            (encode-html text)
            (encode-html args)
@@ -128,12 +127,12 @@
     (getSortPriority [] 1)
     (getSortText [] #^CharSequence (str text))
     (instantSubstitution [#^JTextComponent component] 
-      (logger/info "Instant baby!!!")
+      (logger/info "Completion: instantSubstitution.")
       (.defaultAction this component)
       (accept-and-close item search-info)
       true)
     (processKeyEvent [#^KeyEvent evt]
-      (logger/info "keyevent code " (.getKeyCode evt) " instant " instant-sub)
+      (logger/info "keyevent code {} instant {}" (.getKeyCode evt) instant-sub)
       (if instant-sub 
          (do
            (.consume evt)

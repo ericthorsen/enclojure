@@ -64,23 +64,23 @@
   (proxy [org.netbeans.lib.editor.hyperlink.spi.HyperlinkProvider] []
     (isHyperlinkPoint
     [#^Document d offset]
-    (logger/info "is-hyperlink " offset)
+    (logger/info "is-hyperlink {}" offset)
       (boolean
         (let [lineno (NbDocument/findLineNumber d offset)
                 line-offset (NbDocument/findLineOffset d lineno)
                 next-line-offset (NbDocument/findLineOffset d (inc lineno))]
-          (logger/info "is-hyperlink ["
-            (apply str (interpose " " [lineno line-offset next-line-offset]))"]")
+          (logger/info "is-hyperlink [{}]"
+            (apply str (interpose " " [lineno line-offset next-line-offset])))
             (when-let [link-text (when (< line-offset next-line-offset)
                                    (.getText d line-offset
                                    (- next-line-offset line-offset)))]
-              (logger/info "is-hyperlink got text: " link-text)
+              (logger/info "is-hyperlink got text: {}" link-text)
                 (when-let [{:keys [line link-text file ns-prefix
                                    link-start link-end] :as tag-data}
                             (get-clj-source-and-line link-text)]
                   (let [full-path (str (meta-utils/root-resource ns-prefix) "/" file)]
                     (when-let [f (classpath-utils/find-resource full-path)]
-                        (logger/info "updating tag-data " tag-data)
+                        (logger/info "updating tag-data {}" tag-data)
                         (dosync (alter last-ref
                             (fn [_]
                               (assoc tag-data :doc d :doc-offset offset
@@ -89,7 +89,7 @@
                                 :full-path full-path :file-resource f))))
                       true)))))))
     (getHyperlinkSpan [#^Document doc offset]
-       (logger/info "getHyperlinkSpan - offset " offset " last-ref-offset: "
+       (logger/info "getHyperlinkSpan - offset {} last-ref-offset:{} " offset
          (if @last-ref (:doc-offset @last-ref) ""))
       (when (and @last-ref (= offset (:doc-offset @last-ref)))
         (let [a (make-array Integer/TYPE 2)]
@@ -98,7 +98,7 @@
           a)))
     (performClickAction
       [#^Document doc offset]
-          (logger/info "perform click~~~~~~~~~~~ " (:ns-prefix @last-ref))
+          (logger/info "perform click~~~~~~~~~~~ {}" (:ns-prefix @last-ref))
             (when @last-ref
                (utils/open-editor-file-at-line (:file-resource @last-ref) 
                  (:line @last-ref)))))))

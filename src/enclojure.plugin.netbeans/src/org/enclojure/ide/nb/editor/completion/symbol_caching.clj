@@ -281,13 +281,13 @@
                   (:ext (first args))]))
 
 (defmethod analyze :default [& args]
-    (logger/warn "analyze default!!!!!!! " (apply str (interpose " " args))))
+    (logger/warn "analyze default!!!!!!! {}" (apply str (interpose " " args))))
 
 (defn analyze-clj-update-cache
   [{:keys [source name] :as args} istream file-key]
   (try ; At this level, I need to look inside the file for the 
     (let [k (meta-utils/ns-from-file file-key)]
-      (logger/debug "analyze :clj  " source)
+      (logger/debug "analyze :clj  {}" source)
       (let [symbols (analyze.files/analyze-file istream "clj" {:source-file file-key})
             ns (ffirst (symbol-meta/get-namespace-node symbols))
             existing-forms (from-symbol-cache (str ns))
@@ -316,8 +316,8 @@
 ;  (logger/warn "analyze [java.util.jar.JarEntry clj]")
   (try
     (let [k (meta-utils/ns-from-file (.getName #^JarEntry source))]
-      (logger/debug "analyze :clj  looking up " k " "
-        (if (symbols-from-symbol-cache k) "yes" "no"))
+      (logger/debug "analyze :clj  looking up {} {}" k
+            (if (symbols-from-symbol-cache k) "yes" "no"))
     (if (symbols-from-symbol-cache k)
       (from-symbol-cache k)
      (with-open [istream (.getInputStream #^JarFile jar #^JarEntry source)]
@@ -327,10 +327,9 @@
 
 (defmethod analyze [java.io.File "clj"]
   [{:keys [source name force-update?] :as args}]
-;  (logger/warn "analyze [java.io.File clj]")
   (try
     (let [k (meta-utils/ns-from-file (.getName #^File source))]
-      (logger/debug "analyze :clj  looking up " k " "
+      (logger/debug "analyze :clj  looking up {} {}" k
         (if (symbols-from-symbol-cache k) "yes" "no"))
     (if (or (and (not force-update?)
               (symbols-from-symbol-cache k)))
@@ -341,24 +340,18 @@
     (catch Throwable t
             (publish-stack-trace t))))
 
-;(defmethod analyze [org.openide.filesystems.FileObject "clj"]
-;  [args]
-;  (analyze (assoc args :source (FileUtil/toFile (:file-object args)))))
-
 (defmethod analyze [org.openide.filesystems.FileObject "clj"]
   [args]
   (FileUtil/toFile (:source args)))
 
 (defmethod analyze [java.util.jar.JarEntry "class"]
   [{:keys [jar source ext lib] :as args}]
-  ;(logger/warn "analyze [java.util.jar.JarEntry \"class\"]")
   (try
     (let [k (meta-utils/classname-from-file (.getName #^JarEntry source))]
       ; If it is a clojure compiled class we will skip it
       (when-not (is-clojure-compiled-class k)
- ;       (logger/debug "analyze :class  looking up " k " " (if (symbols-from-symbol-cache k) "yes" "no"))
             (or (symbols-from-symbol-cache k)
-            (logger/debug "analyze :class " source)
+            (logger/debug "analyze :class {}" source)
               (let [forms (with-open [istream (.getInputStream #^JarFile jar  #^JarEntry source)]
                                 (analyze.files/analyze-file istream ext jar))]
                 (when-not (expected-keys? forms)
@@ -383,7 +376,7 @@
 (defn reparse-file
   "Given a java.io.File with a full path, attempt to reparse and update the code data"
   [file]
-  (logger/debug "reparse " file)
+  (logger/debug "reparse {}" file)
   (analyze {:source file :name (.getPath file)
             :force-update? true :ext "clj"}))
 
@@ -412,7 +405,7 @@
     (or (nil? key-val)
         (and (string? key-val)
           (not (pos? (count (.trim key-val))))))
-    (logger/error "null or empty key for " args))
+    (logger/error "null or empty key for {}" args))
   (str key-val))
 
 (defmulti path-key
@@ -443,11 +436,11 @@
 
 (defn process-jar
   ([#^File jar-file parse-now-pred? ignore-pred? source-root n]
-    (logger/debug "process jar " jar-file)
+    (logger/debug "process jar {}" jar-file)
     (let [lib (.getPath jar-file)]
     (try
       (with-open [jr #^JarFile (JarFile. jar-file)]
-        (logger/debug "Processing entries in jar " jar-file)
+        (logger/debug "Processing entries in jar {}" jar-file)
         (loop [entries  (take n (enumeration-seq (.entries jr))) classes {}]
           (if-let [entry #^JarEntry (first entries)]
             (let [ename (.getName entry)
@@ -459,12 +452,10 @@
                   sufx (.lastIndexOf ename (int \.))
                   ext (when (not= -1 sufx) (subs ename (inc sufx)))]
               (if (parse-now-pred? ename)
-                    (logger/debug "Parse now -> " ekey "match " (parse-now-pred? ename)
-                      " :name " ename " :isdir? " isdir? " path " path
-                      " sufx " sufx " :ext " ext)
-                (logger/debug "Store key only -> " ekey "match " (parse-now-pred? ename)
-                  " :name " ename " :isdir? " isdir? " path " path
-                      " sufx " sufx " :ext " ext))
+                    (logger/debug "Parse now -> {} match {} :name {} :isdir? {} path {} sufx {} :ext {}"
+                      ekey (parse-now-pred? ename) ename isdir? path sufx ext)
+                (logger/debug "Store key only -> {} match {} :name {} :isdir? {} path {} sufx {} :ext {}"
+                    ekey (parse-now-pred? ename) ename isdir? path sufx ext))
                 (recur (rest entries)
                       (cond
                         path
@@ -542,7 +533,7 @@
   (fn ([& args ] (class (first args)))))
 
 (defmethod process-path :default [path-data & args]
-  (logger/debug "process-path default!!! " (class path-data))
+  (logger/debug "process-path default!!! {}" (class path-data))
   )
 
 (defmethod process-path org.netbeans.api.java.classpath.ClassPath$Entry
@@ -567,11 +558,11 @@
 (defmethod process-path org.openide.filesystems.JarFileSystem
   ;"traverses a set of jars and calls analyze on them"
   [#^JarFileSystem jar-file-system classpath-entry]
-    (logger/debug "process-path JarFileSystem " (.getDisplayName #^JarFileSystem jar-file-system))
+    (logger/debug "process-path JarFileSystem {}" (.getDisplayName #^JarFileSystem jar-file-system))
   (when-not (was-file-processed? (.getDisplayName #^JarFileSystem jar-file-system))
       (with-exception-handling
         ; Keep the results but make sure all the keys are in the file map so they get cached.
-        (logger/debug "process-path JarFileSystem (not cached)" (.getDisplayName #^JarFileSystem jar-file-system))
+        (logger/debug "process-path JarFileSystem (not cached) {}" (.getDisplayName #^JarFileSystem jar-file-system))
         (let [new-data
               (process-jar (.getJarFile jar-file-system)     
                 (get-regex-any-matcher-pred
@@ -614,7 +605,7 @@
 (defn get-nav-data-for 
   "Get the symbol data for a given file."
   [file]
-  (logger/info "Navigator loading " file)
+  (logger/info "Navigator loading {}" file)
   (:symbols
         (from-symbol-cache
                 (cache-lookup-ns-from-file (.getPath file)))))
@@ -640,7 +631,7 @@
                 (with-open [s (.getInputStream jr %1)]
                     (analyze-class2 s)))
            (catch Throwable t
-               (logger/error "error reading " (.getName %1))
+               (logger/error "error reading {}" (.getName %1))
              (publish-stack-trace t)))
             (take how-many
                 (enumeration-seq (.entries jr)))))))
@@ -662,9 +653,9 @@
 
 (defn reset-all []
   (clear-caches)
-  (logger/debug "loading boot path")
+  (logger/debug "loading boot path {}")
   (reload-boot-path-all)
-  (logger/debug "loading compile path")
+  (logger/debug "loading compile path {}")
   (reload-compile-path-all))
   
 (defn seeit [tt]

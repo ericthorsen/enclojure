@@ -84,13 +84,13 @@ text or top level form"
   [nodes]
   (let [{:keys [project expr nsnode nsname]}
         (get-file-context nodes)]
-    (logger/info "eval expression in ns " nsname " type:" (class nsname))
+    (logger/info "eval expression in ns {}  type: {}" nsname (class nsname))
     (execute-expr project expr nsnode evaluate-in-repl)))
 
 (defn paste-eval-expr-action
   [nodes]
   (let [{:keys [project expr nsnode nsname]} (get-file-context nodes)]
-    (logger/info "paste-eval expression in ns " nsname)
+    (logger/info "paste-eval expression in ns {}" nsname)
     (execute-expr project expr nsnode put-expr-in-repl-and-repl)))
 
 (defn load-file-action [nodes]
@@ -114,8 +114,7 @@ the resulting file's ns is refered on successful load"
         p (ReplTopComponent/GetProjectFromActivatedNodes nodes)
         nsname (get-namespace pane)
         nsnode (get-namespace-node pane)
-        exp nsnode]
-        ;exp (str "(do " nsnode "(require ['com.infolace.format :as 'format]))")]
+        exp nsnode]        
     (execute-expr p exp nil)))
 
 (defn require-file-ns-action
@@ -124,8 +123,7 @@ the resulting file's ns is refered on successful load"
   (let [pane (current-editor-pane nodes)
         p (ReplTopComponent/GetProjectFromActivatedNodes nodes)
         nsname (get-namespace pane)
-        alias (last (.split (str nsname) "\\."))]
-        ;exp (str "(do " nsnode "(require ['com.infolace.format :as 'format]))")]
+        alias (last (.split (str nsname) "\\."))]        
     (execute-expr p (str "(require '[" nsname " :as " (or alias nsname) "])") nil)))
 
 
@@ -156,8 +154,8 @@ be loaded"
             (conj (if sym ;there was an alias
                       [(unqualified-to-qualified-map alias)]
                       ns-use-refer) this-ns)]
-      (logger/info " got id " id " s " (count id))
-      (logger/info " using " ns-list  " s " (count ns-list))
+      (logger/info " got id {} s {}" id (count id))
+      (logger/info " using {} s {}" ns-list (count ns-list))
         (when (or (pos? (count alias))
                 (pos? (count sym)))
         (let [[file [sym & _]]
@@ -166,7 +164,7 @@ be loaded"
                        (when-let [sym (symbols (symbol (or sym alias)))]
                          [source-file sym]))
                   ns-list)]
-          (logger/info "in file " file " found " sym)
+          (logger/info "in file {} found {}" file sym)
           (when file
             (when-let [full-path (if (.exists (File. file)) file
                                      (classpath-utils/find-resource file))]

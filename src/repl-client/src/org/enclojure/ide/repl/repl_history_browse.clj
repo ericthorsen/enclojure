@@ -68,7 +68,7 @@
 (defn log-command
   [repl-id form]
   (let [history-ref (:history-ref (repl-manager/get-repl-config repl-id))]
-    (logger/info  "logging " form)
+    (logger/info  "logging {}" form)
     (when-not ((:forms-set @history-ref) form)
       (dosync 
         (alter history-ref

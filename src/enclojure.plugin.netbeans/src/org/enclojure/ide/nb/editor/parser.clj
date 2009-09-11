@@ -36,8 +36,8 @@
 (defn get-prop [data-object path]  
     (proxy [java.beans.PropertyChangeListener] []
       (propertyChange [event]
-        (logger/info "Thread : " (hash (Thread/currentThread)) " DataObj: " (hash data-object)  " : doc changed " (bean event))
-      (logger/info  "Thread : " (hash (Thread/currentThread)) " DataObj: " (hash data-object) (hash data-object)  " : doc changed " path))))
+        (logger/info "Thread : {} DataObj: {} : doc changed :{}" (hash (Thread/currentThread))  (hash data-object) (bean event))
+      (logger/info  "Thread : {} DataObj: {} : doc changed :{} path {}" (hash (Thread/currentThread)) (hash data-object) (hash data-object) path))))
 
 
 (defn new-parser-data [file-object data-object]
@@ -48,11 +48,11 @@
             (.getDocument editor-cookie))
         db (when d (bean d))
         _ (.addPropertyChangeListener editor-cookie (get-prop data-object full-path))]
-    (logger/info "Thread : " (hash (Thread/currentThread)) (hash data-object) " : creating data for " (.getNameExt file-object))
-    (logger/info "Thread : " (hash (Thread/currentThread)) (hash data-object) " : Full: " full-path)
-    (logger/info data-object)
-    (logger/info (bean data-object))
-    (logger/info "Doc: " db " cookie: " editor-cookie)
+    (logger/info "Thread : {} {} : creating data for {}" (hash (Thread/currentThread)) (hash data-object))
+    (logger/info "Thread : {} {} : Full: {}" (hash (Thread/currentThread)) (hash data-object)  full-path)
+    (logger/info "{}" data-object)
+    (logger/info "{}" (bean data-object))
+    (logger/info "Doc: {} cookie: {}" db editor-cookie)
     data))
 
  

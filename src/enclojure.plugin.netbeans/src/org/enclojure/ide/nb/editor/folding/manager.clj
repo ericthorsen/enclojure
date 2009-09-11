@@ -115,7 +115,7 @@
           ; This needs to be triggered on load and on changed of the namespace node.          
           (future (file-mapping/refresh-completion-cache-data (.getPath file)))
           (when top-level-forms
-            (logger/info "Folder got forms, symbol count "
+            (logger/info "Folder got forms, symbol count {}"
               (count (symbol-meta/all-forms top-level-forms)))
                 (dosync
                     (alter forms
@@ -224,7 +224,8 @@
                 :forms (ref [])
                 :folds (ref #{})}
           fproxy (atom nil)]
-      (logger/info "get-fold-manager-proxy Thread : " (hash (Thread/currentThread)) " Getting fold proxy ")
+      (logger/info "get-fold-manager-proxy Thread : {} Getting fold proxy "
+        (hash (Thread/currentThread)))
       (proxy [org.netbeans.spi.editor.fold.FoldManager][]
         (getOperation [] @(:fold-operation data))
         (getDocument [] @(:base-document data))
@@ -234,15 +235,16 @@
                 (swap! (:fold-operation data) (fn [_] op))
                 (swap! (:base-document data)
                   (fn [_] (-> op .getHierarchy .getComponent .getDocument)))
-                (logger/info "fold init - name : " (-> op .getHierarchy .getComponent .getName))
-                (logger/info "fold init - doc: " @(:base-document data))
+                (logger/info "fold init - name : {}" (-> op .getHierarchy .getComponent .getName))
+                (logger/info "fold init - doc: {}" @(:base-document data))
                 (swap! fproxy
                   (fn [_]
                     (if (= "Repl editor pane"
                           (-> op .getHierarchy .getComponent .getName))
                       (get-fold-manager-repl data)
                       (get-fold-manager-clj data)))))
-              (logger/info "Thread : " (hash (Thread/currentThread)) " Fold " (hash this) " doc " (hash @(:base-document data)))
+              (logger/info "Thread : {} Fold {} Doc {}"
+                (hash (Thread/currentThread)) (hash this) (hash @(:base-document data)))
               (.init @fproxy op)))
         (initFolds [#^FoldHierarchyTransaction tran]
           (with-exception-handling
