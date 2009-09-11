@@ -55,16 +55,20 @@
 (def -clojure-default-platform-name- -default-platform-)
 (def #^{:private true} -prefs-category- "platforms")
 
-(defn create-library [name classpaths]
+(defn create-library 
+  "Create a library in the netbeans library manager."
+  [name classpaths]
   (.createLibrary (LibraryManager/getDefault)
-                  "j2se"
-                  name
-                  {"classpath"
-                   (reduce #(conj %1
-                              (URL. (str "jar:file:"
-                                      (.replace
-                                        (.getFile (.toURL (java.io.File. %2))) " " "%20") "!/")))
-                     [] classpaths)}))
+    "j2se"
+    name
+    {"classpath"
+     (reduce
+       #(conj %1
+          (URL. (str "jar:file:"
+                  (.replace
+                    (.getFile
+                      (.toURL (java.io.File. %2))) " " "%20") "!/")))
+       [] classpaths)}))
 
 (defn proper-libname
   [name]
@@ -103,7 +107,7 @@
             (recur (.getNextEntry istream) (conj lib-names full-name))))
         lib-names))))
 
-(defn get-defined-platforms
+(defn get-defined-platforms  
   []
   (let [platforms (FileUtil/getConfigFile -system-folder-for-platforms-)
         base-path (str (pref-utils/get-pref-file-base)

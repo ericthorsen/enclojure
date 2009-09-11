@@ -473,11 +473,11 @@
             </public-packages>
             <class-path-extension>
                 <runtime-relative-path>ext/clojure-1.09.11.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/clojure-1.0.0.jar</binary-origin>
+                <binary-origin>release/modules/ext/clojure-1.09.11.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/clojure-contrib-1.09.11.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/clojure-contrib-1.0.0.jar</binary-origin>
+                <binary-origin>release/modules/ext/clojure-contrib-1.09.11.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/commons-exec-1.0.0.jar</runtime-relative-path>

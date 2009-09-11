@@ -31,18 +31,18 @@ NOTE: the def-logging-fn must be called in your file in order to use these macro
 It creates a logger using the namespace bound to *ns* at compile time."
   ([level msg]
     `(let [msg# ~msg]
-       (~@(list '. '--logger--) (~level msg#))))
+       (~@(list '. '--logger--) (~level #^String msg#))))
   ([level fmt obj]    
     `(let [fmt# ~fmt obj# ~obj]
-        (~@(list '. '--logger--) (~level fmt# obj#))))
+        (~@(list '. '--logger--) (~level #^String fmt# obj#))))
   ([level fmt obj1 obj2]
     `(let [fmt# ~fmt obj1# ~obj1 obj2# ~obj2]
-        (~@(list '. '--logger--) (~level fmt# obj1# obj2#))))
+        (~@(list '. '--logger--) (~level #^String fmt# obj1# obj2#))))
   ([level fmt obj1 obj2 objs]
     `(let [fmt# ~fmt 
            objs# (into-array java.lang.Object  [~obj1 ~obj2 ~@objs])]
         (~@(list '. '--logger--)
-            (~level  ~fmt  objs#)))))
+            (~level  #^String ~fmt #^"[Ljava.lang.Object;" objs#)))))
 
 (defmacro log-throwable
   ([level msg throwable]
