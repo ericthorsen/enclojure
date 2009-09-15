@@ -200,4 +200,5 @@ in the repl-config map"
   [repl-id]
   `(do ~@(reduce (fn [l [k v]] (conj l `(set! ~k ~v))) []
            (filter (comp symbol? first)
-             (get-repl-config repl-id)))))
+             (get-repl-config repl-id)))
+     nil))

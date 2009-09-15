@@ -4,5 +4,8 @@
     <dependencies>
         <dependency org="Clojure" name="clojure" rev="1.09.11"/>
         <dependency org="Clojure-contrib" name="clojure-contrib" rev="1.09.11"/>
+        <dependency org="org.enclojure" name="commons" rev="latest.integration"/>
+        <dependency org="slf4j" name="slf4j-api" rev="1.5.8"/>
+        <dependency org="slf4j" name="slf4j-jdk14" rev="1.5.8"/>
     </dependencies>
 </ivy-module>

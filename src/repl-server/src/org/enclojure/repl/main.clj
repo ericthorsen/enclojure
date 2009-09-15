@@ -13,11 +13,18 @@
 
 (ns org.enclojure.repl.main  
   (:use clojure.contrib.pprint clojure.main)
+  (:require [org.enclojure.commons.c-slf4j :as logger])
   ;(:gen-class)
   (:import (java.net Socket ServerSocket)
+    (java.util.logging Level Logger)
     (java.io InputStreamReader DataOutputStream DataInputStream
       PipedReader PipedWriter CharArrayWriter PrintWriter)
     (java.util.concurrent CountDownLatch)))
+
+; setup logging
+(logger/ensure-logger)
+
+(.setLevel (Logger/getLogger (-> *ns* ns-name str)) Level/FINEST)
 
 (def *print-stack-trace-on-error* false)
 
@@ -103,6 +110,7 @@
                             (clojure.main/repl
                               :init (fn [] (in-ns 'user))
                               :read (fn [prompt exit]
+                                      (logger/debug "read: *1={} *2={} *3={}" *1 *2 *3)
                                       (read))
                               :caught (fn [e]
                                         (when (is-eof-ex? e)
@@ -111,7 +119,14 @@
                                           (.printStackTrace e *out*)
                                           (prn (clojure.main/repl-exception e)))
                                         (flush))
-                              :need-prompt (constantly true))
+                              :need-prompt (constantly true)
+                              :print (fn [value]
+                                        (logger/debug "print: value={} " value)
+                                        (prn value)
+;                                        (set! *3 *2)
+;                                        (set! *2 *1)
+;                                        (set! *1 value)
+                                        (logger/debug "print: *1={} *2={} *3={}" *1 *2 *3)))
                             (catch clojure.lang.LispReader$ReaderException ex
                               (prn "REPL closing"))
                             (catch java.lang.InterruptedException ex)
@@ -127,8 +142,8 @@
                     (.flush cmd-wtr))))
      ;//??Using CharArrayWriter to build the string from each read of one byte
      ;Once there is nothing to read than this function returns the string read.
-     ;Using partial so that CharArrayWriter is only created and once and reused.
-     ;There could be better way.
+     ;Using partial so that CharArrayWriter is only created once and reused.
+     ;There could be better way???
      :result-fn (partial
                   (fn [wtr]
                     (.write wtr (.read result-rdr))

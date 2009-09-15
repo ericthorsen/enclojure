@@ -27,8 +27,18 @@
 (def #^{:private true} EOF (Object.))
 ; setup logging
 (logger/ensure-logger)
+(.setLevel (Logger/getLogger (-> *ns* ns-name str)) Level/FINEST)
 
-(defn bind-editor-pane [panel pane result-fn]
+(defn result-with-pprint
+  [print-pretty? result-str]
+  (try
+    (let [form (read-string result-str)])
+      (catch Exception e)
+      (finally result-str)))
+
+(defn bind-editor-pane 
+  "given a repl-panel and editor pane and a result function, wire them up"
+  [panel pane result-fn]
   (let [awt-fn #(EventQueue/invokeAndWait
                   (fn [] (.resultReceived panel pane %)))]
         (start-io-thread
@@ -74,7 +84,6 @@
 ;----------------------------------------------------------------------------
 ; Functions for managing repl history
 ;----------------------------------------------------------------------------
-
 (defn clear-history [repl-id]
   (let [history-ref (new-history-ref)]
     (dosync (alter history-ref assoc :repl-id repl-id))
@@ -129,7 +138,8 @@
 (defn pp-expression
   [print-pretty? expr]
   (if print-pretty?
-    (str "(clojure.contrib.pprint/pprint (do " expr "))") expr))
+    (str "(clojure.contrib.pprint/pprint (do " expr "))") 
+    (str "(do " expr ")")))
 
 (defn build-expr
   [print-pretty? nsnode expr]
@@ -143,14 +153,13 @@
     (let [{:keys [repl-fn repl-panel] print-pretty
            'clojure.contrib.pprint/*print-pretty*} (get-repl-config repl-id)          
           expr (build-expr print-pretty ns-node expr)]
-      (logger/debug  "\neval expr:\n" expr)
+      (logger/debug  "\neval expr:{}\n" expr)
       (.resultReceived repl-panel (._replEditorPane repl-panel) "\n")
       (if repl-fn
-        (repl-fn expr)
+        (repl-fn (str expr "\n"))
         (.resultReceived repl-panel (._replEditorPane repl-panel) "Repl is disconnected\n"))))
   ([repl-id expr]
     (evaluate-in-repl repl-id expr nil)))
-
 
 (defn evaluate-in-repl2
   ([repl-id expr ns-node]
