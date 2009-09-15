@@ -7,7 +7,7 @@
 	<property name="ivy.cache.common.dir" value="${ivy.cache.dir}" />
 
 	<property name="bld-dir" value="${basedir}${file.separator}build-support${file.separator}" />
-	<property name="deps-zip" value="deps-2009-09-5.zip" />
+	<property name="deps-zip" value="deps.zip" />
 	<available file="${bld-dir}${deps-zip}" property="dependancies.downloaded" />
 	<available file="${ivy.jar.file}" property="ivy.installed" />
 	  
