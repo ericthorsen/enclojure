@@ -13,7 +13,8 @@
 
 (ns org.enclojure.repl.main  
   (:use clojure.contrib.pprint clojure.main)
-  (:require [org.enclojure.commons.c-slf4j :as logger])
+  (:require [org.enclojure.commons.c-slf4j :as logger]
+    [clojure.contrib.pprint :as pprint])
   ;(:gen-class)
   (:import (java.net Socket ServerSocket)
     (java.util.logging Level Logger)
@@ -122,10 +123,12 @@
                               :need-prompt (constantly true)
                               :print (fn [value]
                                         (logger/debug "print: value={} " value)
-                                        (prn value)
-;                                        (set! *3 *2)
-;                                        (set! *2 *1)
-;                                        (set! *1 value)
+                                        (set! *3 *2)
+                                        (set! *2 *1)
+                                        (set! *1 value)
+                                       (if *print-pretty*
+                                         (pprint/pprint value)
+                                        (prn value))
                                         (logger/debug "print: *1={} *2={} *3={}" *1 *2 *3)))
                             (catch clojure.lang.LispReader$ReaderException ex
                               (prn "REPL closing"))

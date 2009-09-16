@@ -29,12 +29,6 @@
 (logger/ensure-logger)
 (.setLevel (Logger/getLogger (-> *ns* ns-name str)) Level/FINEST)
 
-(defn result-with-pprint
-  [print-pretty? result-str]
-  (try
-    (let [form (read-string result-str)])
-      (catch Exception e)
-      (finally result-str)))
 
 (defn bind-editor-pane 
   "given a repl-panel and editor pane and a result function, wire them up"
@@ -135,18 +129,13 @@
 (defn empty-string? [string]
   (nil? (seq (filter #(not (java.lang.Character/isWhitespace %)) string))))
 
-(defn pp-expression
-  [print-pretty? expr]
-  (if print-pretty?
-    (str "(clojure.contrib.pprint/pprint (do " expr "))") 
-    (str "(do " expr ")")))
-
 (defn build-expr
   [print-pretty? nsnode expr]
-  (if nsnode 
-    (format "(binding [*ns* *ns*] %s (eval '%s))" nsnode 
-      (pp-expression print-pretty? expr))
-    (pp-expression print-pretty? expr)))
+  (let [wrapped-expr (str "(do " expr ")")]
+    (if nsnode
+      (format "(binding [*ns* *ns*] %s (eval '%s))"
+        nsnode wrapped-expr)
+      (format "(eval '%s)" wrapped-expr))))
 
 (defn evaluate-in-repl
   ([repl-id expr ns-node]
@@ -188,7 +177,7 @@
     (logger/debug  "set pretty print to {}" bv)
   (update-repl repl-id 'clojure.contrib.pprint/*print-pretty* bv)
   (evaluate-in-repl repl-id
-    (str "(set! clojure.contrib.pprint/*print-pretty* {})" bv))
+    (str "(set! clojure.contrib.pprint/*print-pretty* " bv ")"))
   (.setSelected (.prettyPrintToggleButton repl-pane) bv)))
   
 

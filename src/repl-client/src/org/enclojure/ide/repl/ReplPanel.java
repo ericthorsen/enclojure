@@ -170,7 +170,11 @@ public class ReplPanel extends javax.swing.JPanel {
             char kc = evt.getKeyChar();
 
             int caretPos = _replEditorPane.getCaretPosition();
-            if ((!(code == evt.VK_UP || code == evt.VK_DOWN || code == evt.VK_LEFT || code == evt.VK_RIGHT) && caretPos < _promptPos) || (code == evt.VK_BACK_SPACE && caretPos <= _promptPos) || (kc == '\b' && caretPos <= _promptPos)) {
+            if ((!(code == evt.VK_UP || code == evt.VK_DOWN || 
+                    code == evt.VK_LEFT ||
+                    code == evt.VK_RIGHT) && caretPos < _promptPos) ||
+                    (code == evt.VK_BACK_SPACE && caretPos <= _promptPos) ||
+                    (kc == '\b' && caretPos <= _promptPos)) {
                 evt.consume();
                 return;
             }
