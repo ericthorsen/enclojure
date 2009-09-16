@@ -187,16 +187,19 @@
 (defn get-all-classpaths-launch-string []
     (build-launcher-cp-string (get-all-classpaths)))
 
-(defn get-source-files [#^Project p]
+(defn get-source-roots
+  "Looks at each of the SourceGroups of a project and returns the root folder
+of all the JavaProjectConstants/SOURCES_TYPE_JAVA"
+  [#^Project p]
   (let [sources (ProjectUtils/getSources p)
         source-groups (.getSourceGroups sources JavaProjectConstants/SOURCES_TYPE_JAVA)]
     (loop [source-groups source-groups
            source-group (first source-groups)
            ret []]
       (if source-group
-        (recur (next source-groups) (first source-groups) (conj ret (.getRootFolder source-group)))
+        (recur (next source-groups) (first source-groups)
+          (conj ret (.getRootFolder source-group)))
         (distinct ret)))))
-
 
 (defn build-classpath-set
   [source-group cp-type]
@@ -230,18 +233,53 @@
     java.io.File/pathSeparator
     (build-classpath-set source ClassPath/EXECUTE)))
 
+(defn get-classpath-from-source [source]
+  {:source-roots
+    [(build-classpath-set source ClassPath/SOURCE)]
+   :execute-paths
+    [(build-classpath-set source ClassPath/EXECUTE)]})
+
 (def proj (atom nil))
-(defn get-project-classpath [#^Project p]
+
+(defn do-get-project-classpath
+  "For a given project we want a map of:
+{:source-roots :execute-paths}"
+  ([#^Project p]
+    (when p
+        (loop [sources (get-source-roots p) ret {}]
+        (if-let [source (first sources)]
+            (recur (next sources)
+              (merge-with concat
+                ret
+                (get-classpath-from-source source)))
+            ret)))))
+
+(defn get-project-classpath
+  "This function recursively looks at dependancies and collects all the source roots
+and execution requirements for the root project and all it's dependancies.  The
+resulting classpath has all the source roots listed before any execution dependancies
+in order to promote clojure finding the source and loading that before anything else."
+  ([#^Project p]
   (when p
     (swap! proj (fn [_] p))
-    (loop [sources (get-source-files p) ret ""]
-      (if-let [source (first sources)]
-        (recur (next sources)
-          (str ret java.io.File/pathSeparator (get-classpath-from-source source)))
-        (when ret 
-          (logger/info "Returning {}" ret)
-          (.substring ret 1))))))
-
+    (loop [sub-projects 
+           (when-let [subpp (-> p .getLookup
+                         (.lookup org.netbeans.spi.project.SubprojectProvider))]
+             (.getSubprojects subpp))
+           cps {}]
+      (if-let [subp (first sub-projects)]
+        (recur (rest sub-projects)
+          (merge-with concat cps
+            (do-get-project-classpath subp)))
+        (let [final-set
+              (merge-with concat
+                (do-get-project-classpath p) cps)]
+            (apply str
+                (interpose java.io.File/pathSeparator
+                  (concat
+                    (set (:source-roots final-set))
+                    (set (:execute-paths final-set)))))))))))
+          
 (defn classpath-for-repl []
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
                         (apply str (interpose java.io.File/pathSeparator
