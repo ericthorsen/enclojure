@@ -13,19 +13,12 @@
 
 (ns org.enclojure.repl.main  
   (:use clojure.contrib.pprint clojure.main)
-  (:require [org.enclojure.commons.c-slf4j :as logger]
-    [clojure.contrib.pprint :as pprint])
-  ;(:gen-class)
+  (:require [clojure.contrib.pprint :as pprint])  
   (:import (java.net Socket ServerSocket)
     (java.util.logging Level Logger)
     (java.io InputStreamReader DataOutputStream DataInputStream
       PipedReader PipedWriter CharArrayWriter PrintWriter)
     (java.util.concurrent CountDownLatch)))
-
-; setup logging
-(logger/ensure-logger)
-
-(.setLevel (Logger/getLogger (-> *ns* ns-name str)) Level/FINEST)
 
 (def *print-stack-trace-on-error* false)
 
@@ -110,8 +103,7 @@
                           (try
                             (clojure.main/repl
                               :init (fn [] (in-ns 'user))
-                              :read (fn [prompt exit]
-                                      (logger/debug "read: *1={} *2={} *3={}" *1 *2 *3)
+                              :read (fn [prompt exit]                                      
                                       (read))
                               :caught (fn [e]
                                         (when (is-eof-ex? e)
@@ -121,15 +113,13 @@
                                           (prn (clojure.main/repl-exception e)))
                                         (flush))
                               :need-prompt (constantly true)
-                              :print (fn [value]
-                                        (logger/debug "print: value={} " value)
+                              :print (fn [value]                                        
                                         (set! *3 *2)
                                         (set! *2 *1)
                                         (set! *1 value)
                                        (if *print-pretty*
                                          (pprint/pprint value)
-                                        (prn value))
-                                        (logger/debug "print: *1={} *2={} *3={}" *1 *2 *3)))
+                                        (prn value))))
                             (catch clojure.lang.LispReader$ReaderException ex
                               (prn "REPL closing"))
                             (catch java.lang.InterruptedException ex)
@@ -245,6 +235,3 @@
     (when ack-port
       (notify-client-server-started (Integer/parseInt ack-port) repl-id server-port))
     (.await latch)))
-
-
-

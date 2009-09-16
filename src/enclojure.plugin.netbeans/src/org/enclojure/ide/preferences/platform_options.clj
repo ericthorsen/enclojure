@@ -107,7 +107,10 @@
             (recur (.getNextEntry istream) (conj lib-names full-name))))
         lib-names))))
 
-(defn get-defined-platforms  
+(defn get-defined-platforms
+  "Looks in config file of the app (in NB case the layer file)
+in the -system-folder-for-platforms- path for all defined clojure platforms
+and creates entries in the local preferences path."
   []
   (let [platforms (FileUtil/getConfigFile -system-folder-for-platforms-)
         base-path (str (pref-utils/get-pref-file-base)

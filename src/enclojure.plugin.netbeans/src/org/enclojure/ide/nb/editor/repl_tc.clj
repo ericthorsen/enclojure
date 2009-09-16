@@ -25,6 +25,8 @@
   (:require
     [org.enclojure.ide.preferences.enclojure-options-category
         :as enclojure-options-category]
+    [org.enclojure.ide.preferences.platform-options
+        :as platform-options]
     [org.enclojure.ide.repl.repl-history-browse :as repl-history-browse]
     [org.enclojure.ide.nb.editor.utils :as utils]
     [org.enclojure.commons.c-slf4j :as logger]
@@ -51,7 +53,7 @@
     ; make sure the history browser func is set...this does not really belong here
     (swap! repl-history-browse/-open-history-window-fn- 
       (fn [_] open-repl-command-history))
-    (let [prefs (enclojure-options-category/load-preferences)          
+    (let [prefs (enclojure-options-category/load-preferences)
           jvm-args (when-let [args (prefs :jvm-additional-args)]
                      (let [vargs (.split args " ")]
                        (when (pos? (count vargs))

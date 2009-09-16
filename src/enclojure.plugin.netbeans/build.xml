@@ -52,7 +52,7 @@
             <fileset dir="${shared.libs}Clojure">
                 <include name="clojure${clojure-version}.jar" />
             </fileset>
-            <fileset dir="${shared.libs}Clojure">
+            <fileset dir="${shared.libs}Clojure-contrib">
                 <include name="clojure-contrib${clojure-version}.jar" />
             </fileset>
          </zip>

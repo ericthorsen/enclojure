@@ -80,11 +80,18 @@
     (pref-utils/put-prefs -prefs-category-
       @*repl-settings*))
 
+(defn fresh-init
+  []
+  (let [platform-prefs (platform-options/load-preferences)]
+        (assoc
+          (controls/get-default-settings *edit-map*)
+          :stand-alone-repl-platform
+          (:key (first @platform-options/*clojure-platforms*)))))
+
 (defn load-preferences []
     (let [c (pref-utils/get-prefs -prefs-category-)
           new-init? (zero? (count c))
-          start-vals (if new-init?
-                       (controls/get-default-settings *edit-map*) c)]
+          start-vals (if new-init? (fresh-init) c)]
           (dosync
             (alter *repl-settings*
                 (fn [_] start-vals)))
