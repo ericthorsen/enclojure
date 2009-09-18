@@ -11,6 +11,11 @@
 
 package org.enclojure.ide.repl;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
+
 /**
  *
  * @author nsinghal
@@ -28,11 +33,21 @@ public class ReplInfoFrame extends javax.swing.JFrame {
         msgBox.setText(msg);
     }
 
+    static public Point getCenteredCorner(Component c)
+        {
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            return new Point(
+                (int)((dim.getWidth() - c.getWidth()) / 2),
+                (int)((dim.getHeight() - c.getHeight()) / 2)
+            );
+        }
+
     public static ReplInfoFrame _replInfoFrame = null;
 
     public static void Show(String title, String msg)
     {
         if(_replInfoFrame == null) _replInfoFrame = new ReplInfoFrame();
+        _replInfoFrame.setLocation(getCenteredCorner(_replInfoFrame));
         _replInfoFrame.setMessage(title, msg);
         _replInfoFrame.setVisible(true);
     }

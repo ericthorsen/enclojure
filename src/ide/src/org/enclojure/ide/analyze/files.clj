@@ -113,19 +113,27 @@
                                     " form in " additional-attribs " form:";
                                     form " error:" (.getMessage t)))))
                     form-map (when parsed-form (apply hash-map parsed-form))
-                    names (if (= (:type form-map) :namespace)                            
-                            (swap! def-ns (fn [_] (:name form-map))) @def-ns)
+                    is-ns? (= (:type form-map) :namespace)
+                    names (if is-ns? (swap! def-ns
+                                         (fn [_] (:name form-map)))
+                                        @def-ns)
                     eos (not-eos-fn) ;look for true end of stream
                     form-entry
                         (when parsed-form
+                          (let [mmeta (when (and (not is-ns?)
+                                              (symbol? names)
+                                              (find-ns names)
+                                              (:name form-map))
+                                        (ns-resolve names (:name form-map)))]
                             (merge additional-attribs form-map
-                                (hash-map
+                                (apply hash-map
                                         :namespace names
                                         :form form
                                         :line (inc (:line pos-info))
                                         :line-end (.getLineNumber #^CharCountingPushbackReader *in*)
                                         :start (:pos pos-info)
-                                        :end (.getPosition #^CharCountingPushbackReader *in*))))
+                                        :end (.getPosition #^CharCountingPushbackReader *in*)
+                                  (if meta [:doc (:doc (meta mmeta)) :meta (meta mmeta)] [])))))
                     sym-key (:name form-entry)
                     parsed-forms
                         (if parsed-form
@@ -134,7 +142,9 @@
                 (if (not eos) parsed-forms
                   (recur parsed-forms (pos-fn))))))))
        (catch Throwable t
-        (logger/warn "Exception for type " type " attrs " additional-attribs)
+        (logger/warn-throwable
+          (str "Exception for type " type " attrs " additional-attribs)
+          t)
         (publish-stack-trace t))))
 
 (defn test-pull-forms [file]

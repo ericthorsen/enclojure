@@ -60,7 +60,7 @@
         (publish-stack-trace t#))))
 
 (def -universal-libs-
-  ["clojure.core" "clojure.set"])
+  ["clojure.core"])
 
 ;(def -java-default-classes-
 (def -completion-cache- (atom {}))
@@ -200,15 +200,6 @@ see if there are symbols already loaded for the class"
               cls))
     {} java-classes))
 
-;(defn reparse-file [filek]
-;  (let [file (file-key filek)
-;          forms
-;          (with-open [f (java.io.FileInputStream. file)]
-;            (symbol-caching/analyze-clj-update-cache
-;                      {:source file :name filek :ext "clj"} f file))]
-;    (swap! -parse-file-cache- assoc file forms)
-;    forms))
-
 
 (defn get-default-completion-info
   "This function returns a default set of completion data when there is not file present"
@@ -216,7 +207,7 @@ see if there are symbols already loaded for the class"
     (let [java-packages ["java.lang" "clojure.lang"]
             java-classes (vec (filter #(re-find #"^java\.lang\.[A-Z]+" %1)
                                     (keys (symbol-caching/get-symbol-cache))))
-            ns-use-refer ["clojure.core"]
+            ns-use-refer -universal-libs-
             ns-require  []
             hippy-words #{}]
       {
@@ -368,6 +359,19 @@ fully qualified namespace or java class name, see if there are symbols loaded"
     (vec (adapt-for-completion-item
            ((symbol-caching/get-java-class-symbol-cache-) package)))))
 
+(defn do-refresh-completion-cache-data
+  "updates the completion info for the file"
+  [file]
+  (with-exception-handling
+    (let [completion-info
+          (if file (refresh-completion-info (file-key file))
+               (get-default-completion-info))]
+          (let [new-data (ensure-classes (:java-classes completion-info))]
+            (when file
+                (swap! -completion-cache- assoc (file-key file) completion-info))
+            n
+  @-completion-cache- )
+      
 (defn refresh-completion-cache-data
   "updates the completion info for the file"
   [file]
@@ -379,17 +383,15 @@ fully qualified namespace or java class name, see if there are symbols loaded"
             (swap! -completion-cache- assoc (file-key file) completion-info))))
   @-completion-cache- )
 
-(defn ensure-completion-info [file]
-  (if-let [from-cache
-            (try
-                (from-cache file)
-            (catch Throwable t
-              (publish-stack-trace t)))]
-        (do
-            from-cache)
-    (do
-      ;(logger/debug "Forcing a rebuild of completion data for file " file)
-    (refresh-completion-cache-data file))))
+(defn ensure-completion-info [file]  
+    (if-let [data-from-cache
+             (if (and file (pos? (count file)))
+                (try
+                    (from-cache file)
+                (catch Throwable t
+                  (publish-stack-trace t)))
+        (refresh-completion-cache-data file))))
+             
 
 (defn refresh-current-completion-info []
   @(refresh-completion-cache-data

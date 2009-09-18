@@ -22,6 +22,7 @@
     (java.util.logging Level)
     (org.netbeans.api.editor.completion Completion)
     (org.netbeans.spi.editor.completion.support CompletionUtilities)
+    (org.netbeans.spi.editor.completion.support AsyncCompletionQuery AsyncCompletionTask)
     (org.openide.util ImageUtilities)
     (java.net URLEncoder)
     (java.util Collection)
@@ -106,6 +107,25 @@
                          (:search-delim search-info)
                          (print-str (:name item))))
 
+(defn get-tool-tip
+  [{:keys [name namespace]}]
+  (AsyncCompletionTask.
+    (proxy [AsyncCompletionQuery] []
+      (query [#^CompletionResultSet completionResultSet
+              #^Document document
+              i]
+        (let [tool-tip (JToolTip.)
+              tag (if namespace
+                    (str namespace "/" name)
+                    (str name))]
+          (logger/info "Setting tooltip to {}" tag)
+          (.setTipText tool-tip tag)
+          (.setToolTip completionResultSet tool-tip)
+          (.finish completionResultSet))))))
+
+(defn get-doc-str
+  [item])
+
 (defn get-completion-item [item search-info]
   (let [{:keys [name arglists symbol-type] :as tag} item
         text (print-str name)
@@ -114,7 +134,8 @@
         final-text (get-final-text item search-info)];make sure we are not talking to a symbol
   (proxy [org.netbeans.spi.editor.completion.CompletionItem] []
     (createDocumentationTask [])
-    (createToolTipTask [])
+    (createToolTipTask []
+      (get-tool-tip tag))
     (defaultAction [#^JTextComponent component]      
             ;final-text (get-final-text item search-info)
             (insert-text-inplace component item search-info))

@@ -243,7 +243,7 @@
         end (max (inc start) caret-offset);(symbol-nav/find-end-boundary document start)
         length (- end start)
         {:keys [substr]} (symbol-nav/unify-doc-str document)]
-    (logger/debug "get-basic-completion-input: caret {} search-offset {} s {} e {} l {}"
+    (logger/info "get-basic-completion-input: caret {} search-offset {} s {} e {} l {}"
       caret-offset search-offset start end length)
           {:start start
            :end end
@@ -489,7 +489,7 @@ Returns a vector of items"
          {:match :token-walk :results matches
              :search-str search-token})))))
 
-(defn remove-dups [forms]
+(defn remove-dups2 [forms]
     (loop [forms forms results [] lookup #{}]
       (if-let [f (first forms)]        
          (if (lookup (str (:name f) (:arglists f)))
@@ -497,6 +497,18 @@ Returns a vector of items"
            (recur (rest forms) (conj results f) 
              (conj lookup (str (:name f) (:arglists f)))))
         results)))
+
+(defn remove-dups [forms]
+    (loop [forms forms lookup {}]
+      (if-let [f (first forms)]
+        (let [args (:arglists f)
+              nname (str (:name f))
+              exists? (lookup nname)]
+         (if (and exists? (:arglists exists?))
+           (recur (rest forms) lookup)
+           (recur (rest forms) 
+             (assoc lookup nname f))))
+        (vals lookup))))
 
 (def -debug- (ref nil))
 
@@ -506,7 +518,9 @@ Returns a vector of items"
     (query [#^CompletionResultSet resultset #^Document document caretOffset]              
       (try ; Always grab the current editor pane.  Could be invoked from a repl
       (let [{:keys [file doc]} (editor-utils/get-current-editor-data)]
-        (let [completion-info (file-mapping/ensure-completion-info file)
+        (let [completion-info 
+                (if-let [c (file-mapping/ensure-completion-info file)]
+                  c (file-mapping/get-default-completion-info))
               input (if (not= doc document) ; its the repl,keep it simple
                       (get-basic-completion-input document caretOffset)
                 (get-completion-input document caretOffset)) ; file editing
