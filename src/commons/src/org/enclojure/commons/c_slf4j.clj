@@ -46,9 +46,10 @@ It creates a logger using the namespace bound to *ns* at compile time."
 
 (defmacro log-throwable
   ([level msg throwable]
-    (ensure-logger)
-    `(~@(list '. '--logger--)
-       (~level #^String ~msg #^Throwable ~throwable))))
+    `(let [msg# ~msg
+           throwable# ~throwable]
+        (~@(list '. '--logger--)
+            (~level #^String msg# #^Throwable throwable#)))))
 
 (defmacro #^{:private true}  make-level-macros
   "Macro to define the convenience functions for this module.

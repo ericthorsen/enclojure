@@ -92,6 +92,15 @@
 	;                                    " form in " additional-attribs " form:";
 	;                                    form " error:" (.getMessage t)))))
 
+(def #^{:private true} EOF (Object.))
+
+(defn readable-form?
+  []
+  (try
+     (read *in* false EOF true)
+     (catch Throwable t
+       (logger/warn-throwable "Unreadable form found." t))))
+
 (defn pull-forms
   [istream additional-attribs]
   (try
@@ -99,8 +108,7 @@
         (binding [*in* (org.enclojure.ide.CharCountingPushbackReader.
                        (java.io.InputStreamReader. #^InputStream istream
                          (.get (Charset/availableCharsets) "UTF-8")))]
-          (let [EOF (Object.)
-                pos-fn #(do (skip-to-next-form #^CharCountingPushbackReader *in*)
+          (let [pos-fn #(do (skip-to-next-form #^CharCountingPushbackReader *in*)
                            {:pos (.getPosition #^CharCountingPushbackReader *in*)
                             :line (.getLineNumber #^CharCountingPushbackReader *in*)})
                 not-eos-fn #(let [c (.read #^CharCountingPushbackReader *in*)]
@@ -108,21 +116,24 @@
                                   (.unread #^CharCountingPushbackReader *in* c)
                                   c))]
             (loop [forms {} pos-info (pos-fn)]
-              (let [form (read *in* false EOF true)
-                    parsed-form ;make sure what we read is a list
+              ; We need 2 pieces of info to keep looping: if eos and the set of parsed-forms
+              (let [[eos parsed-forms]
+                (if-let [form (readable-form?)]
+                    (let [eos (not-eos-fn) ;look for true end of stream
+                         parsed-form ;make sure what we read is a list
                         (if (and (not= form EOF) (list? form))
                             (try
                                 (analyze.core/form-parse form)
                             (catch Throwable t
-                              (logger/error-throwable
-                                (str "pull-forms: could not parse form " form
-                                  " :attribs"  additional-attribs) t))))
+                              (logger/error
+                                "pull-forms: could not parse form attribs= "
+                                    additional-attribs))))
                     form-map (when parsed-form (apply hash-map parsed-form))
                     is-ns? (= (:type form-map) :namespace)
                     names (if is-ns? (swap! def-ns
                                          (fn [_] (:name form-map)))
                                         @def-ns)
-                    eos (not-eos-fn) ;look for true end of stream
+                    
                     form-entry
                         (when parsed-form
                           (let [mmeta (when (and (not is-ns?)
@@ -144,8 +155,11 @@
                         (if parsed-form
                             (assoc forms sym-key
                                 (conj (forms sym-key) form-entry)) forms)]
+                        [eos parsed-forms])
+                (do (logger/warn "Found unreadle form attribs: {}" (str additional-attribs))
+                    [(not-eos-fn) forms]))]
                 (if (not eos) parsed-forms
-                  (recur parsed-forms (pos-fn))))))))
+                    (recur parsed-forms (pos-fn))))))))
        (catch Throwable t
         (logger/warn-throwable
           (str "Exception for type " type " attrs " additional-attribs)

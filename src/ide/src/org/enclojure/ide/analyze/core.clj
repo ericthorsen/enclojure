@@ -79,8 +79,10 @@ a vector of vectors of the arglists"
   (conj
     (get-def-attribs-for-clojure-form form)
     :name
-    (let [n (first form)]
-      (if (string? n) (symbol n) n))))
+    (if (list? form)
+        (let [n (first form)]
+            (if (string? n) (symbol n) n))
+      (str form))))
 
 (defmethod form-parse 'ns [form]
   (conj
