@@ -87,6 +87,11 @@
         (recur #^CharCountingPushbackReader is)
      (.unread #^CharCountingPushbackReader is (int c)))))
 
+	;                            (catch Throwable t
+	;                                (println "Could not parse the " (inc (count forms))
+	;                                    " form in " additional-attribs " form:";
+	;                                    form " error:" (.getMessage t)))))
+
 (defn pull-forms
   [istream additional-attribs]
   (try
@@ -109,9 +114,9 @@
                             (try
                                 (analyze.core/form-parse form)
                             (catch Throwable t
-                                (println "Could not parse the " (inc (count forms))
-                                    " form in " additional-attribs " form:";
-                                    form " error:" (.getMessage t)))))
+                              (logger/error-throwable
+                                (str "pull-forms: could not parse form " form
+                                  " :attribs"  additional-attribs) t))))
                     form-map (when parsed-form (apply hash-map parsed-form))
                     is-ns? (= (:type form-map) :namespace)
                     names (if is-ns? (swap! def-ns
@@ -149,7 +154,7 @@
 
 (defn test-pull-forms [file]
     (with-open [f (java.io.FileInputStream. #^String file)]
-        (pull-forms f {})))
+        (pull-forms f {:file file})))
 
 
 (defmethod analyze-file "clj"

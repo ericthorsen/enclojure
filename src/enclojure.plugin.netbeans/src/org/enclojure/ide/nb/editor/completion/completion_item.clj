@@ -21,6 +21,7 @@
              CompletionTask)
     (java.util.logging Level)
     (org.netbeans.api.editor.completion Completion)
+    (org.netbeans.spi.editor.completion CompletionDocumentation)
     (org.netbeans.spi.editor.completion.support CompletionUtilities)
     (org.netbeans.spi.editor.completion.support AsyncCompletionQuery AsyncCompletionTask)
     (org.openide.util ImageUtilities)
@@ -123,8 +124,32 @@
           (.setToolTip completionResultSet tool-tip)
           (.finish completionResultSet))))))
 
+(defn get-completion-doc
+  [item]
+  (proxy [CompletionDocumentation][]
+    (getText []
+      (let [{:keys [name namespace doc]}
+             item]
+      (format "<span style=\"font-size:14px;font-weight:bold;color:blue;\">%s</span><br /><br />%s"
+        (if namespace
+          (str namespace "/" name) name)
+            (or doc ""))))
+    (getURL [])
+    (resolveLink [string])
+    (getGotoSourceAction [])
+    ))
+
 (defn get-doc-str
-  [item])
+  [item]
+  (logger/info "get-doc-str")
+  (AsyncCompletionTask.
+    (proxy [AsyncCompletionQuery] []
+      (query [completionResultSet
+              #^Document document
+              i]
+        (.setDocumentation completionResultSet
+          (get-completion-doc item))
+        (.finish completionResultSet)))))
 
 (defn get-completion-item [item search-info]
   (let [{:keys [name arglists symbol-type] :as tag} item
@@ -133,7 +158,8 @@
         {instant-sub :instant-sub} search-info
         final-text (get-final-text item search-info)];make sure we are not talking to a symbol
   (proxy [org.netbeans.spi.editor.completion.CompletionItem] []
-    (createDocumentationTask [])
+    (createDocumentationTask []
+      (get-doc-str tag))
     (createToolTipTask []
       (get-tool-tip tag))
     (defaultAction [#^JTextComponent component]      

@@ -359,18 +359,18 @@ fully qualified namespace or java class name, see if there are symbols loaded"
     (vec (adapt-for-completion-item
            ((symbol-caching/get-java-class-symbol-cache-) package)))))
 
-(defn do-refresh-completion-cache-data
-  "updates the completion info for the file"
-  [file]
-  (with-exception-handling
-    (let [completion-info
-          (if file (refresh-completion-info (file-key file))
-               (get-default-completion-info))]
-          (let [new-data (ensure-classes (:java-classes completion-info))]
-            (when file
-                (swap! -completion-cache- assoc (file-key file) completion-info))
-            n
-  @-completion-cache- )
+;(defn do-refresh-completion-cache-data
+;  "updates the completion info for the file"
+;  [file]
+;  (with-exception-handling
+;    (let [completion-info
+;          (if file (refresh-completion-info (file-key file)) 
+;              (get-default-completion-info))]
+;         (let [new-data (ensure-classes (:java-classes completion-info))]
+;           (when file
+;               (swap! -completion-cache- assoc (file-key file) completion-info))
+;           n
+; @-completion-cache- )
       
 (defn refresh-completion-cache-data
   "updates the completion info for the file"
@@ -381,18 +381,19 @@ fully qualified namespace or java class name, see if there are symbols loaded"
                (get-default-completion-info))]
           (let [new-data (ensure-classes (:java-classes completion-info))]
             (swap! -completion-cache- assoc (file-key file) completion-info))))
-  @-completion-cache- )
+  @-completion-cache-)
 
-(defn ensure-completion-info [file]  
+(defn ensure-completion-info [file]
+  (let [fkey (file-key file)]
     (if-let [data-from-cache
-             (if (and file (pos? (count file)))
+             (if (and fkey (pos? (count fkey)))
                 (try
-                    (from-cache file)
+                    (from-cache fkey)
                 (catch Throwable t
                   (publish-stack-trace t)))
-        (refresh-completion-cache-data file))))
+			(get-default-completion-info))]
+		data-from-cache)))
              
-
 (defn refresh-current-completion-info []
   @(refresh-completion-cache-data
     (editor-utils/from-doc-to-file

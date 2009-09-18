@@ -175,7 +175,7 @@ public class ClojureCodeCompletionItem implements CompletionItem {
                 if (toAdd != null) {
                     value += toAdd;
                 }
-
+                
                 try {
 
                     String c=component.getText(caretOffset-1,1);
