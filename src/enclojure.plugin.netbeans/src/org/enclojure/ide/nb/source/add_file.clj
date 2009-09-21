@@ -249,7 +249,9 @@ source roots is a map from diplay name to the root file object."
                                 (update-created-file project-info file-pane))))]
     (.setSelectedIndex (.sourceRootsComboBox file-pane) inx)
     (item-state-changed-fn)
-    (logger/info "ns-from-file {} Index {}" (meta-utils/ns-from-file ns) inx)
+    (logger/info "ns-from-file {} Index {}"
+      (when ns
+        (meta-utils/ns-from-file ns)) inx)
     ; Wire up the event handlers first.
 ;    (.addKeyListener (.filenameTextField file-pane)
 ;      (proxy [KeyAdapter][]
