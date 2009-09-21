@@ -16,7 +16,7 @@
 )
 (ns org.enclojure.ide.preferences.platform-options  
     (:require
-          [org.enclojure.ide.preferences.utils :as pref-utils]
+          [org.enclojure.ide.settings.utils :as pref-utils]
           [org.enclojure.ide.nb.editor.utils :as utils]
           [org.enclojure.ui.controls :as controls]
           [org.enclojure.commons.c-slf4j :as logger]

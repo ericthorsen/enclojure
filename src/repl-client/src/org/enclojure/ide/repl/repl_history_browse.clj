@@ -14,7 +14,7 @@
 (ns org.enclojure.ide.repl.repl-history-browse
   (:require [org.enclojure.ui.controls :as controls]
     [org.enclojure.ide.repl.repl-manager :as repl-manager]
-    [org.enclojure.commons.c-slf4j :as logger]
+    [org.enclojure.commons.c-slf4j :as logger]   
     )
   (:import  (java.util.logging Level)
     (javax.swing JList ListModel JLabel JPanel JTree JTable JScrollPane
@@ -33,21 +33,7 @@
 ; setup logging
 (logger/ensure-logger)
 
-(defn- get-pref-file-path
-  "Given a config category, returns a path for storing/retrieving config data for the given category"
-  [config-category]
-  (let [env (into {} (System/getenv)) home (if (env "HOME") (env "HOME") (env "HOMEPATH"))
-        base-path (File. (str home File/separator ".enclojure-prefs"
-                                File/separator "repl-logs"))
-        pfile (File. base-path config-category)]
-    (when-not (.exists pfile)
-      (.mkdirs base-path)
-      (.createNewFile pfile))
-    (.getCanonicalPath pfile)))
-
-(def -open-history-window-fn- (atom nil))
-
-(def *repl-commands-log-name* "command-history")
+(def *repl-history-support-impl* (atom nil))
 
 (def -form-prefix- ";{:first-seen ")
 
@@ -56,14 +42,21 @@
   (str -form-prefix-
     (.getTime (java.util.Calendar/getInstance)) "};-------------------------------------"))
 
+;(defn get-repl-log-filename
+;  [repl-id type]
+;  (pref-utils/get-pref-file-path (str repl-id "-" type ".clj")))
+
 (defn get-repl-log-filename
   [repl-id type]
-  (get-pref-file-path (str repl-id "-" type ".clj")))
+  (.getHistoryLogFile @*repl-history-support-impl*
+    (str repl-id "-" type ".clj")))
+
 
 (defn get-repl-command-log-file
   "Helper function to return the File object for the repl-commands history"
   [repl-id]
-  (File. (get-repl-log-filename repl-id *repl-commands-log-name*)))
+  (when @*repl-history-support-impl*
+    (File. (.getHistoryLogFile @*repl-history-support-impl* repl-id))))
 
 (defn log-command
   [repl-id form]
@@ -76,8 +69,7 @@
                 [:forms-set] conj form)))
         (with-open [out (OutputStreamWriter.
                     (FileOutputStream.
-                      (File. (get-repl-log-filename repl-id
-                               *repl-commands-log-name*)) true))]
+                      (get-repl-command-log-file repl-id) true))]
         (binding [*out* out]
           (println (-form-delimiter-) \newline (.trim form)))))))
 
@@ -101,8 +93,7 @@
   [repl-id]
   (with-open [out (OutputStreamWriter.
                     (FileOutputStream.
-                      (File. (get-repl-log-filename repl-id
-                               *repl-commands-log-name*)) false))]
+                      (get-repl-command-log-file repl-id) false))]
         (binding [*out* out]
           (println ""))))
 
@@ -178,9 +169,15 @@
     (controls/center-component jframe)
     (.show jframe)))
 
+;(defn show-history [repl-id]
+;    (if @-open-history-window-fn-
+;        (@-open-history-window-fn- repl-id)
+;    (let [{:keys [history-ref]} (repl-manager/get-repl-config repl-id)]
+;      (show-history-fn (str "History for " repl-id) @history-ref))))
+
 (defn show-history [repl-id]
-    (if @-open-history-window-fn-
-        (@-open-history-window-fn- repl-id)
+    (if @*repl-history-support-impl*
+        (.showHistory @*repl-history-support-impl* repl-id)
     (let [{:keys [history-ref]} (repl-manager/get-repl-config repl-id)]
       (show-history-fn (str "History for " repl-id) @history-ref))))
 

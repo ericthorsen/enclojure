@@ -60,8 +60,7 @@ public class Installer extends ModuleInstall {
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.actions.CljComment"));
           //  requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.clj-language-support"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.common.classpath-utils"));
-            requireFn.invoke(Symbol.create("org.enclojure.ide.nb.clojure.project.create"));
-            requireFn.invoke(Symbol.create("org.enclojure.ide.preferences.utils"));
+            requireFn.invoke(Symbol.create("org.enclojure.ide.nb.clojure.project.create"));            
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.repl-tc"));
             // options
             requireFn.invoke(Symbol.create("org.enclojure.ide.preferences.platform-options"));

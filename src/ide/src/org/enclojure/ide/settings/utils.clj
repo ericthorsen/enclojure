@@ -14,12 +14,11 @@
 ;*    Author: Eric Thorsen
 ;*******************************************************************************
 )
-(ns org.enclojure.ide.preferences.utils
+(ns org.enclojure.ide.settings.utils
   (:require
     [org.enclojure.commons.c-slf4j :as logger]
     )
   (:import
-    (org.openide.util NbPreferences)
     (java.io File OutputStreamWriter FileOutputStream)
     (java.util.logging Level)
     (java.util.prefs Preferences)
@@ -35,7 +34,7 @@
   "Given a config category, returns a path for storing/retrieving config data for the given category"
   []
   (let [env (into {} (System/getenv))
-        home (or (env "netbeans.user") (env "HOME") (env "HOMEPATH"))]
+        home (or (env "user.home") (env "netbeans.user") (env "HOME") (env "HOMEPATH"))]
         (str home (File/separator) ".netbeans" (File/separator) "enclojure-prefs")))
 
 (defn get-pref-file-path 
@@ -69,41 +68,3 @@
   (let [p (get-pref-file-path config-category)]
     (when (.exists (java.io.File. p))
         (read-string (slurp p)))))
-
-(defn p-node [cls]
-  (NbPreferences/forModule cls))
-
-(defn fetch-for
-  ([node] (apply hash-map
-            (apply concat
-              (map #(vector (keyword %) 
-                      (. node (get % nil))) 
-                (. node (keys))))))
-  ([node default-settings]
-    (merge default-settings (fetch-for node))))
-
-(defn fetch [cls]
-  (fetch-for (p-node cls)))
-
-(defn put [n k v]
-  (. n (put (if (keyword? k) 
-              (name k)
-              (str k)) (str v))))
-
-(defn store-for
-  ([node data]
-    (doseq [k (keys data)]
-      (put node k (data k)))))
-
-(defn store [cls data]
-  (let [n (p-node cls)]
-    (store-for n data)))
-
-(defn clear 
-  ([cls]
-    (let [n (p-node cls)]
-      (. (p-node cls) (clear))))
-  ([cls default-data]
-    (clear cls)
-    (store cls default-data)))
-

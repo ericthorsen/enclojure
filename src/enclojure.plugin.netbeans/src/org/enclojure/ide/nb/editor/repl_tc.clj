@@ -29,6 +29,7 @@
         :as platform-options]
     [org.enclojure.ide.repl.repl-history-browse :as repl-history-browse]
     [org.enclojure.ide.nb.editor.utils :as utils]
+    [org.enclojure.ide.settings.utils :as pref-utils]
     [org.enclojure.commons.c-slf4j :as logger]
     )
   (:import (org.enclojure.ide.repl ReplPanel)
@@ -36,23 +37,31 @@
     (org.netbeans.api.project Project ProjectInformation)
     (org.openide.filesystems FileUtil)
     (java.awt EventQueue Component)
-    (java.util.logging Level Logger)))
+    (java.util.logging Level Logger)
+    (java.io File)
+    (org.enclojure.repl IReplHistorySupport)
+    ))
 
 ; setup logging
 (logger/ensure-logger)
 
-; Set the history browse function...
-(defn open-repl-command-history
-  [repl-id]
-  (when-let [fo (FileUtil/toFileObject
-                  (repl-history-browse/get-repl-command-log-file repl-id))]
-    (utils/open-editor-file-at-line fo 1 true)))
+; setup the interface for the repl-history support functions.
+(def -repl-history-support-
+  (proxy [org.enclojure.repl.IReplHistorySupport][]
+    (showHistory [repl-id]
+      (let [log-file (File. (.getHistoryLogFile this repl-id))]
+        (when (.exists log-file)
+            (utils/open-editor-file-at-line 
+              (.getCanonicalPath log-file) 1 true))))
+   (getHistoryLogFile [repl-id]
+     (pref-utils/get-pref-file-path (str repl-id "-command-history.clj")))
+     ))
 
 (defn config-with-preferences
   ([repl-id settings-map]
     ; make sure the history browser func is set...this does not really belong here
-    (swap! repl-history-browse/-open-history-window-fn- 
-      (fn [_] open-repl-command-history))
+    (swap! repl-history-browse/*repl-history-support-impl* 
+      (fn [_] -repl-history-support-))
     (let [prefs (enclojure-options-category/load-preferences)
           jvm-args (when-let [args (prefs :jvm-additional-args)]
                      (let [vargs (.split args " ")]

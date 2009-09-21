@@ -24,9 +24,9 @@ public class CreateStandaloneReplDialog extends javax.swing.JDialog {
     static final Var nonProjectRepl =
       RT.var("org.enclojure.ide.nb.editor.repl-tc", "start-non-project-repl");
     static final Var saveSettings =
-      RT.var("org.enclojure.ide.preferences.utils", "put-prefs");
+      RT.var("org.enclojure.ide.settings.utils", "put-prefs");
     static final Var loadSettings =
-      RT.var("org.enclojure.ide.preferences.utils", "get-prefs");
+      RT.var("org.enclojure.ide.settings.utils", "get-prefs");
     
     static final String ns_settings = "org.enclojure.ide.preferences.enclojure-options-category";
     /** Creates new form ClojureReplDialog */

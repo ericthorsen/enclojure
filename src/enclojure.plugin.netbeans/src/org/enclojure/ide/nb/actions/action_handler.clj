@@ -16,6 +16,7 @@
     [org.enclojure.ide.common.classpath-utils :as classpath-utils]
     [org.enclojure.ide.nb.editor.utils :as editor-utils]
     [org.enclojure.commons.meta-utils :as meta-utils]
+    [org.enclojure.ide.settings.utils :as pref-utils]
     )
   (:import 
     (org.openide.cookies EditorCookie)
@@ -172,23 +173,12 @@ be loaded"
                   (max (- (:line sym) 2) 0)))
               )))))))
 
-(defn get-pref-file-path []
-  (let [env (into {} (System/getenv)) home (if (env "HOME")
-                                               (env "HOME") (env "HOMEPATH"))
-        file-path (str home (File/separator)
-                    ".enclojure-prefs" (File/separator) "adhoc-repl-configs.clj")]
-    (when-not (.exists (File. file-path))
-      (with-open [out (OutputStreamWriter. (FileOutputStream. (File. file-path)))]
-        (binding [*out* out]
-          (prn [""]))))
-    file-path))
-
 (defn save-standalone-repl-settings [classpath]
-  (let [file-path (get-pref-file-path)]
+  (let [file-path (pref-utils/get-pref-file-path "stand-alone-repl")]
     (with-open [out (OutputStreamWriter. (FileOutputStream. (File. file-path)))]
         (binding [*out* out]
           (prn [classpath])))))
 
 (defn get-standalone-repl-settings []
-  (let [file-path (get-pref-file-path)]
+  (let [file-path (pref-utils/get-pref-file-path "stand-alone-repl")]
     (first (read-string (slurp file-path)))))
