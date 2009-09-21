@@ -42,7 +42,7 @@
   "Given a config category, returns a path for storing/retrieving config data for the given category"
   [config-category]
   (let [env (into {} (System/getenv)) 
-        home home (or (env "netbeans.user") (env "HOME") (env "HOMEPATH"))
+        home (or (env "netbeans.user") (env "HOME") (env "HOMEPATH"))
         base-path (File. (str home (File/separator) "enclojure-prefs"))
         pfile (File. base-path config-category)]
     (when-not (.exists pfile)     
