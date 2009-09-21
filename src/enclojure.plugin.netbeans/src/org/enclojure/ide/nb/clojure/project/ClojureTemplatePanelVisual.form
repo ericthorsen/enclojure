@@ -38,8 +38,8 @@
                       </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="projectLocationTextField" alignment="1" pref="584" max="32767" attributes="0"/>
-                          <Component id="createdFolderTextField" alignment="1" pref="584" max="32767" attributes="0"/>
+                          <Component id="projectLocationTextField" alignment="1" pref="594" max="32767" attributes="0"/>
+                          <Component id="createdFolderTextField" alignment="1" pref="594" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="browseButton" min="-2" max="-2" attributes="0"/>

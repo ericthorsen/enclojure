@@ -19,6 +19,7 @@
 package org.enclojure.ide.nb.clojure.project;
 
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
@@ -333,15 +334,19 @@ private void packageNameTextFieldActionPerformed(java.awt.event.ActionEvent evt)
 
         if (doc == projectNameTextField.getDocument() || 
             doc == projectLocationTextField.getDocument()) {
-
-            // Change in the project name
-            String projectName = projectNameTextField.getText();
-            String projectFolder = projectLocationTextField.getText();
-
-            //if (projectFolder.trim().length() == 0 || projectFolder.equals(oldName)) {
-            createdFolderTextField.setText(projectFolder + File.separatorChar + projectName);           
-        //}
-
+            try {
+                // Change in the project name
+                String projectName = projectNameTextField.getText();
+                String projectFolder = projectLocationTextField.getText();
+                File tf = new File(projectFolder);
+                String cp = tf.getCanonicalPath();
+                if (cp.endsWith(File.separator))
+                    cp += projectName;
+                cp+= File.separatorChar + projectName;
+                createdFolderTextField.setText(cp);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
         }
         panel.fireChangeEvent(); // Notify that the panel changed
     }

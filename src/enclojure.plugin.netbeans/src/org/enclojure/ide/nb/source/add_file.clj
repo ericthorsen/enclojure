@@ -79,7 +79,7 @@
 (defn get-source-root-and-ns-from-default
   "Returns a map with the {:root <selected root in the target file>
                            :ns <namespace prefix based on the target file>}
-source roots is a map from didplay name to the root file object."
+source roots is a map from diplay name to the root file object."
   [source-roots target-folder]
   (let [target-str (str target-folder)
         [disp-name root] 
@@ -87,6 +87,7 @@ source roots is a map from didplay name to the root file object."
                       (.startsWith target-str (str file-obj)))
                     source-roots))
         root-str (str root)]
+    (logger/debug "dispname {} root {}" disp-name root)
     (when root
       {:root root
        :root-name disp-name       
@@ -114,15 +115,29 @@ source roots is a map from didplay name to the root file object."
     (subs full-file-path
        (+ 1 (count source-root-str)))))
 
+(defmulti get-canonical-path class)
+
+(defmethod get-canonical-path java.io.File
+  [f] (.getCanonicalPath f))
+
+(defmethod get-canonical-path String
+  [f] (.getCanonicalPath (java.io.File. f)))
+
+(defmethod get-canonical-path org.openide.filesystems.FileObject
+  [f] (get-canonical-path
+        (FileUtil/toFile f)))
+
 (defn get-packages-from-root-model
   [source-root]
-  (let [root-str (.getPath source-root)]
+  (logger/info "source root = {}" source-root)
+  (let [root-str (get-canonical-path (.getPath source-root))]
     (DefaultComboBoxModel.
         (into-array
             (reduce (fn [v f]
                       (conj v 
                         (ns-from-root-file-object
-                          (.getPath source-root) (.getPath f)))) []
+                          root-str (get-canonical-path f))))
+                            []
                 (traverse source-root
                   #(and (.isFolder %1) (not (.contains (.getPath %) ".svn")))))))))
 
@@ -151,16 +166,17 @@ source roots is a map from didplay name to the root file object."
   [proj-info file-pane]
   (boolean
     (let [root-name (.getSelectedItem (.sourceRootsComboBox file-pane))
-          root ((:source-roots proj-info) root-name)
+          root (get-canonical-path (.getPath ((:source-roots proj-info) root-name)))
           pkg-dir (meta-utils/root-resource
                     (str (.getItem
                            (.getEditor
                              (.packagesComboBox file-pane)))))
-          fname (meta-utils/file-from-ns (.getText (.filenameTextField file-pane)))]
-      (.setText (.createdFileTextField file-pane)
-        (str (.getPath root)
-          File/separator pkg-dir
-          File/separator fname)))))
+          fname (meta-utils/file-from-ns (.getText (.filenameTextField file-pane)))
+          full-path (str root
+                        File/separator pkg-dir
+                        File/separator fname)]
+      (.setText (.createdFileTextField file-pane) 
+        (get-canonical-path full-path)))))
 
 (defn set-combo-box-to
   [combo val]
@@ -220,7 +236,20 @@ source roots is a map from didplay name to the root file object."
         (DefaultComboBoxModel. roots-array))
   (let [{:keys [root ns root-name]}
          (get-source-root-and-ns-from-default
-            (:source-roots project-info) default-target-folder)]
+            (:source-roots project-info) default-target-folder)
+        inx (or (find-inx (seq roots-array) #(= root-name %))
+                    (find-inx (seq roots-array) #(= "Source Packages" %))
+                    0)
+        item-state-changed-fn
+                  (fn []
+                    (let [root-name (.getSelectedItem (.sourceRootsComboBox file-pane))]
+                        (when-let [new-root ((:source-roots project-info) root-name)]
+                            (.setModel (.packagesComboBox file-pane)
+                                (get-packages-from-root-model new-root))
+                                (update-created-file project-info file-pane))))]
+    (.setSelectedIndex (.sourceRootsComboBox file-pane) inx)
+    (item-state-changed-fn)
+    (logger/info "ns-from-file {} Index {}" (meta-utils/ns-from-file ns) inx)
     ; Wire up the event handlers first.
 ;    (.addKeyListener (.filenameTextField file-pane)
 ;      (proxy [KeyAdapter][]
@@ -248,15 +277,7 @@ source roots is a map from didplay name to the root file object."
     (.addItemListener (.sourceRootsComboBox file-pane)
       (proxy [ItemListener][]
         (itemStateChanged [event]
-          (let [root-name (.getSelectedItem (.sourceRootsComboBox file-pane))]
-            (when-let [new-root ((:source-roots project-info) root-name)]
-              (.setModel (.packagesComboBox file-pane)
-                (get-packages-from-root-model new-root))
-              (update-created-file project-info file-pane))))))
-      (.setSelectedIndex (.sourceRootsComboBox file-pane)
-        (or (find-inx (seq roots-array) #(= root-name %))
-            (find-inx (seq roots-array) #(= "Source Packages" %))
-          0))
+          (item-state-changed-fn))))
     (set-combo-box-to (.packagesComboBox file-pane)
             (or (when ns (meta-utils/ns-from-file ns)) ""))
     (.setText (.filenameTextField file-pane) "new-ns")

@@ -29,7 +29,7 @@
 (defn root-resource
   "Returns the root directory path for a lib"
   [lib]
-  (str (-> lib (.replace \- \_) (.replace \. \/))))
+  (str (-> lib (.replace \- \_) (.replace \. java.io.File/separatorChar))))
 
 (defn root-directory
   "Returns the root resource path for a lib"
@@ -54,7 +54,7 @@
   [file]
   (let [endinx (.lastIndexOf file ".clj")]
     (-> (if (pos? endinx) (subs file 0 endinx) file)
-      (.replace \_ \-) (.replace \/ \.))))
+      (.replace \_ \-) (.replace java.io.File/separatorChar \.))))
 
 (defn classname-from-file 
   "Given a class file name, returns the proper java class name"

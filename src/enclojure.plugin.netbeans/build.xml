@@ -4,10 +4,15 @@
 <!-- If you delete this file and reopen the project it will be recreated. -->
 <project name="enclojure.plugin.netbeans" default="default" basedir=".">
     <description>Builds, tests, and runs the project org.enclojure.ide.nb.editor.</description>
-  	<property name="user.properties.file" value="${user.home}${file.separator}.netbeans${file.separator}6.7${file.separator}build.properties" />   
- 	<import file="nbproject/build-impl.xml"/>
-    <property name="clojure-version" value="-1.09.11" />
-
+        <property name="nb.version" value="6.7" />
+        <property name="clojure-version" value="-1.09.11" />
+        <!--
+        If this is not here, the project must be loaded into NB once in order for a
+        private properties file to get initialized with this info in it.  Otherwise
+        the build fails looking for the platform-harness stuff.  This works
+        on Mac, Ubuntu and Windows. -->
+        <property name="user.properties.file" value="${user.home}${file.separator}.netbeans${file.separator}${nb.version}${file.separator}build.properties" />
+  	<import file="nbproject/build-impl.xml"/>
 	<!-- For ivy support -->
 <!--	<property file="build.properties"/> -->
 	<property name="workdir" value="${basedir}${file.separator}..${file.separator}..${file.separator}" />
