@@ -155,8 +155,9 @@ be loaded"
             (conj (if sym ;there was an alias
                       [(unqualified-to-qualified-map alias)]
                       ns-use-refer) this-ns)]
-      (logger/info " got id {} s {}" id (count id))
-      (logger/info " using {} s {}" ns-list (count ns-list))
+      (logger/info "goto-declaration-action: id=> {} alias=> {} sym=> {}"
+                    id alias sym)
+      (logger/info " using ns-list => {} (count ns-list) {}" ns-list (count ns-list))
         (when (or (pos? (count alias))
                 (pos? (count sym)))
         (let [[file [sym & _]]

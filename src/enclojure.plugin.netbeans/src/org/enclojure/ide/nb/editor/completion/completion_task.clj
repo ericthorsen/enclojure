@@ -30,8 +30,10 @@
     (java.awt EventQueue Component)
     (org.openide.util Exceptions)
     (org.netbeans.modules.editor NbEditorUtilities)
+    (org.netbeans.api.lexer TokenHierarchy TokenSequence Token)
     (org.netbeans.spi.editor.completion.support AsyncCompletionQuery AsyncCompletionTask))
-  (:require [org.enclojure.ide.common.classpath-utils :as classpath-utils]
+  (:require
+    [org.enclojure.ide.common.classpath-utils :as classpath-utils]
     [org.enclojure.ide.navigator.token-nav :as token-nav]
     [org.enclojure.ide.nb.editor.completion.completion-item :as completion-item]
     [org.enclojure.ide.navigator.parser :as parser]
@@ -284,7 +286,7 @@
     'for
     'doseq])))
 
-(defn find-cursor-context
+(defn find-cursor-context-prev
   "given a doc or a string with a possibly partial form, attempt to make sense
   out of it for completion purposes.  Returns a map with data intended to be
   passed to a function that knows how to filter the completion symbols
@@ -311,19 +313,65 @@
                       context-in (or context-in
                                    (and special-fn
                                      (substr cidx (- start-offset cidx))))]
-                  (println "cidx " cidx " :cid " cid " cid-len " (count cid) " :offset " offset
+                  (logger/info (str "find-cursor-context: cidx " cidx " :cid " cid " cid-len " (count cid) " :offset " offset
                         " :lparen " first-lparen " :spec " special-fn
-                        " :ctx-in " context-in)
-                  (if special-fn
+                        " :ctx-in " context-in))
+                  (if special-fn ; need to make sure that the offset is within this
+                                 ; special fn form.
+                    (when (> cidx search-offset)
+                        {:special-fn special-fn
+                        :first-lparen first-lparen
+                        :context-in context-in})
+                    (recur (dec offset) context-in first-lparen rparen)))
+           (recur (dec offset) context-in first-lparen rparen)))
+              offset))))
+
+(defn find-cursor-context
+  "given a doc or a string with a possibly partial form, attempt to make sense
+  out of it for completion purposes.  Returns a map with data intended to be
+  passed to a function that knows how to filter the completion symbols
+  for the given context.
+   {:special-fn     ; the form recognized as one from the *specials* table
+    :first-lparen   ; the text to the right of the 1st left paren
+    :context-in     ; All the text from the form found to the cursor}
+                           "
+    [document search-offset]
+  (let [{:keys [char-fn substr length]} (symbol-nav/unify-doc-str document)
+        len (length)
+        start-offset (check-caret-pos document search-offset)]
+      (loop [offset start-offset context-in nil first-lparen nil rparen nil]
+        (if (and (>=  offset 0) (> len offset))
+            (let [c #^Character (char-fn offset)
+                  rparen (or rparen (= (char c) \)))]
+              (if (= (char c) \()
+                (let [cidx (symbol-nav/find-boundary char-fn inc len (inc offset))
+                      _ (logger/info "cidx " cidx " offset " offset)
+                      cid (if (pos? cidx) (substr (inc offset) (- cidx offset 1)))
+                      special-fn (*specials* cid)
+                      first-lparen (or first-lparen
+                                     (when-not rparen cid))
+                      context-in (or context-in
+                                   (and special-fn
+                                     (substr cidx (- start-offset cidx))))]
+                  (logger/info (str "find-cursor-context: "                                 
+                                    " cidx " cidx
+                                    " :cid " cid
+                                    " cid-len " (count cid)
+                                    " :offset " offset
+                        " :lparen " first-lparen " :spec " special-fn
+                        " :ctx-in " context-in))
+                  (if special-fn ; need to make sure that the offset is within this
+                                 ; special fn form.                    
                     {:special-fn special-fn
-                     :first-lparen first-lparen
-                     :context-in context-in}
+                    :first-lparen first-lparen
+                    :context-in context-in}
                     (recur (dec offset) context-in first-lparen rparen)))
            (recur (dec offset) context-in first-lparen rparen)))
               offset))))
 
   (defn tfp [s]
     (find-cursor-context s (count s) (dec (count s))))
+
 ;*******************************************************************************
 ; End region for :Helper code for doing more context aware searching
 ;*******************************************************************************
@@ -332,25 +380,11 @@
     (if-let [more
         (try ; be paranoid until this is better debugged...
             (find-cursor-context document caret-offset)
-        (catch Exception e
+        (catch Throwable e
             (logger/warn (str "Error when attempting to get more context for completion: "
                                  (.getMessage e)))))]
       (merge basic more)
     basic)))
-  
-(defn create-doc [s]
-  (PlainDocument.
-    (doto (StringContent. (count s)) (.insertString 0 s))))
-
-(defn test-completion-input 
-  "Given an input string and a offset, what would the completion info look like"
-  ([s offset]
-  (get-completion-input (create-doc s) offset))
-  ([s] (test-completion-input s (dec (count s)))))
-
-(defn test-query-type-data-set-fn [s offset]
-  (let [input (get-completion-input (create-doc s) offset)]
-    (query-type-dataset-fn input nil)))
 
  (defn prepare-query [#^JTextComponent component]
    (let [cinputs (get-completion-input

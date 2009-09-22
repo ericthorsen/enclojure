@@ -62,8 +62,33 @@ functions can be called for either case."}
                     (recur (nav-func offset))
               offset)))
 
+(defn find-boundary-fn
+  [get-char-fn nav-func length start-offset predicate]
+    (loop [offset start-offset]
+        (if (and (>=  offset 0) (> length offset))
+            (let [c #^Character (get-char-fn offset)]
+              (if (not (predicate c))
+                (recur (nav-func offset))
+                offset)))))
+          
 (defn find-boundary-str [#^CharSequence s nav-func offset]
   (find-boundary #(.charAt s %1) nav-func (count s) offset))
+
+(def brace-start
+  {\{ \}
+   \[ \]
+   \( \)
+   })
+
+(def brace-end
+  (zipmap (vals brace-start) (keys brace-start)))
+
+(defn match-brace
+  [document offset]
+  (let [{:keys [char-fn length]} (unify-doc-str document)]
+    (when-let [lstart (find-boundary-fn char-fn dec (length) offset brace-start)]
+      (when-let [lend (find-boundary-fn char-fn inc (length) (inc lstart) brace-end)]
+        [lstart lend]))))
 
 (defn do-find-pattern-boundary
   "Given a document, caret position and a nav-func (dec or inc)

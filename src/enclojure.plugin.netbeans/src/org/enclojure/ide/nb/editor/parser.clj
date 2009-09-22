@@ -54,5 +54,3 @@
     (logger/info "{}" (bean data-object))
     (logger/info "Doc: {} cookie: {}" db editor-cookie)
     data))
-
- 
