@@ -84,11 +84,30 @@ functions can be called for either case."}
   (zipmap (vals brace-start) (keys brace-start)))
 
 (defn match-brace
-  [document offset]
-  (let [{:keys [char-fn length]} (unify-doc-str document)]
-    (when-let [lstart (find-boundary-fn char-fn dec (length) offset brace-start)]
-      (when-let [lend (find-boundary-fn char-fn inc (length) (inc lstart) brace-end)]
-        [lstart lend]))))
+  "given a document or string, an offset within the string and a max-position
+in which to search, look for the first starting brace and attempt to find a matching
+ending brace.  Returns the a list of expected ending brace chars if not balanced.
+nil if all is good."
+  ([document offset max-length]
+    (let [{:keys [char-fn]} (unify-doc-str document)]
+        (when-let [lstart (find-boundary-fn char-fn dec max-length offset brace-start)]
+          (loop [offset (inc lstart) matches (list (brace-start (char-fn lstart)))]
+            (if-let [c (and (> max-length offset)
+                         (pos? (count matches))
+                         (char-fn offset))]
+              (do
+                (logger/info "Start {} offset {} c={} {}" lstart offset (char-fn offset) matches)
+                (recur (inc offset)
+                    (cond
+                        (brace-start c) (conj matches (brace-start c))
+                        (brace-end c) (if (= c (first matches))
+                                        (pop matches)
+                                        (throw (Exception. "Brace mismatch ")))
+                    :else matches)))
+            (if (pos? (count matches)) matches nil))))))
+  ([document offset]
+    (let [{:keys [length]} (unify-doc-str document)]
+      (match-brace document offset (length)))))
 
 (defn do-find-pattern-boundary
   "Given a document, caret position and a nav-func (dec or inc)

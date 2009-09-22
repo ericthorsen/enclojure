@@ -360,12 +360,14 @@
                                     " :offset " offset
                         " :lparen " first-lparen " :spec " special-fn
                         " :ctx-in " context-in))
-                  (if special-fn ; need to make sure that the offset is within this
-                                 ; special fn form.                    
-                    {:special-fn special-fn
-                    :first-lparen first-lparen
-                    :context-in context-in}
-                    (recur (dec offset) context-in first-lparen rparen)))
+                  (if special-fn
+                    ; need to make sure that the start-offset is within this
+                    ; special-fn form.  Otherwise it is not relevant.
+                    (when (symbol-nav/match-brace document (inc offset) start-offset)
+                        {:special-fn special-fn
+                        :first-lparen first-lparen
+                        :context-in context-in})
+                  (recur (dec offset) context-in first-lparen rparen)))
            (recur (dec offset) context-in first-lparen rparen)))
               offset))))
 
