@@ -15,13 +15,23 @@
   (:use org.enclojure.repl.main)
   (:require [org.enclojure.commons.c-slf4j :as logger])
   (:import (java.util.logging Logger Level)
-    (java.io PipedOutputStream PipedInputStream LineNumberReader InputStreamReader)
+    (java.io PipedOutputStream PipedInputStream LineNumberReader InputStreamReader File)
     (org.apache.commons.exec CommandLine ExecuteResultHandler
       PumpStreamHandler DefaultExecutor ExecuteException ExecuteWatchdog)))
 
 
 ; setup logging
 (logger/ensure-logger)
+
+(defn bad-classpath?
+  "Looks for clojure-contrib and clojure in a classpath string"
+  [classpath]
+  (let [paths (.split classpath java.io.File/pathSeparator)
+        clojure (some #(when (>= (.indexOf % "clojure") 0) %) paths)
+        contrib (some #(when (>= (.indexOf % "clojure-contrib") 0) %) paths)]
+    (if (and contrib clojure)
+      (not (and (.exists (File. clojure)) (.exists (File. contrib))))
+      [clojure contrib])))
 
 (def default-repl-config {
                           :arguments ["-server" "-Xmx512m" "-Xms128m"]

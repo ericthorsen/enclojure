@@ -99,7 +99,7 @@
   (try
      (read *in* false EOF true)
      (catch Throwable t
-       (logger/warn-throwable "Unreadable form found." t))))
+       (logger/warn "Unreadable form found. {}" (str t)))))
 
 (defn pull-forms
   [istream additional-attribs]

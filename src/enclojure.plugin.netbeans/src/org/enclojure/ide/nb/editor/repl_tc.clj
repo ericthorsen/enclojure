@@ -39,12 +39,26 @@
     (java.awt EventQueue Component)
     (java.util.logging Level Logger)
     (java.io File)
-    (org.enclojure.repl IReplHistorySupport)
+    (org.enclojure.repl IReplHistorySupport)    
+    (org.openide NotifyDescriptor$Confirmation DialogDisplayer NotifyDescriptor)
     ))
 
 ; setup logging
 (logger/ensure-logger)
 
+(defn verify-classpath
+  [classpath]
+  (if
+    (bad-classpath? classpath)
+    (.notify (DialogDisplayer/getDefault)
+      (NotifyDescriptor$Confirmation.
+        "There did not appear to be both valid clojure and clojure-contrib jars present in the classpath.  These are both required to start a repl.  You can add them as libraries to the project or to your platform under the preferences if this is a stand-alone repl.
+Are you sure you want to continue?"
+        "Possible problem with classpath for the REPL"
+        NotifyDescriptor/YES_NO_OPTION
+        NotifyDescriptor/ERROR_MESSAGE
+          )) 0))
+      
 ; setup the interface for the repl-history support functions.
 (def -repl-history-support-
   (proxy [org.enclojure.repl.IReplHistorySupport][]
@@ -100,15 +114,17 @@
   ;(update-repl repl-id :arguments java-args)
   (let [{:keys [repl-panel repl-tc]} (config-with-preferences repl-id)
         classpath (str (classpath-for-repl) java.io.File/pathSeparator classpath)]
-    (.setResetReplFn repl-panel #(do
-                                   (stop-internal-repl repl-id)
-                                   (start-non-project-repl repl-id java-args classpath)))
-    (create-internal-repl repl-id classpath
-      (partial bind-process-panel repl-panel)
-      (partial bind-repl-panel repl-panel))
-    (activate-repl-tc repl-tc)
-    (evaluate-in-repl repl-id 
-      (str (get-settings-set-expression repl-id)))))
+    (when
+      (zero? (verify-classpath classpath))
+        (.setResetReplFn repl-panel #(do
+                                       (stop-internal-repl repl-id)
+                                       (start-non-project-repl repl-id java-args classpath)))
+        (create-internal-repl repl-id classpath
+          (partial bind-process-panel repl-panel)
+          (partial bind-repl-panel repl-panel))
+        (activate-repl-tc repl-tc)
+        (evaluate-in-repl repl-id
+          (str (get-settings-set-expression repl-id))))))
 
 (defn start-non-project-repl-action [action]
   (let [prefs (enclojure-options-category/get-stand-alone-settings)]
@@ -144,14 +160,18 @@
 (defn start-project-repl [#^Project p]
   (let [repl-id (get-project-name p)
         _ (assure-repl-panel repl-id true)
-        {:keys [repl-panel repl-tc]} (config-with-preferences repl-id)]
-    (.setResetReplFn repl-panel (partial reset-repl p))
-    (create-internal-repl repl-id (get-repl-classpath p)
-      (partial bind-process-panel repl-panel)
-      (partial bind-repl-panel repl-panel))    
-    (activate-repl-tc repl-tc)
-    (evaluate-in-repl repl-id
-        (str (get-settings-set-expression repl-id)))))
+        {:keys [repl-panel repl-tc]} (config-with-preferences repl-id)
+        classpath (get-repl-classpath p)
+        ]
+    (when
+      (zero? (verify-classpath classpath))
+        (.setResetReplFn repl-panel (partial reset-repl p))
+        (create-internal-repl repl-id classpath
+          (partial bind-process-panel repl-panel)
+          (partial bind-repl-panel repl-panel))
+        (activate-repl-tc repl-tc)
+        (evaluate-in-repl repl-id
+            (str (get-settings-set-expression repl-id))))))
 
 (defn stop-project-repl [proj repl-tc-closing?]
   (let [repl-id (if (string? proj) proj (get-project-name proj))]
