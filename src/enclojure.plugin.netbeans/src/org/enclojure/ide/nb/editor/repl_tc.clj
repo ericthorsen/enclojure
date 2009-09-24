@@ -55,13 +55,13 @@
       (NotifyDescriptor$Confirmation.
         (str
         "There did not appear to be both valid clojure and clojure-contrib jars present in the classpath.  "
-          "Clojure => " (if clojure (format "\"%s\"" clojure) " no reference to a clojure jar found in classpath.")
-            (when clojure (if clojure-exists? " valid clojure file." " file not found."))
-          "\nClojure-contrib => " (if clojure-contrib
+          "For clojure.jar => " (if clojure (format "\"%s\"" clojure) " no reference to a clojure jar found in classpath.")
+            (when clojure (if clojure-exists? " possibly valid clojure file." " file not found."))
+          "\nFor clojure-contrib.jar => " (if clojure-contrib
                                     (format "\"%s\"" clojure-contrib)
                                     " no reference to a clojure-contrib jar found in classpath.")
             (when clojure-contrib (if contrib-exists?
-                                    " valid clojure-contrib file." " file not found."))
+                                    " passibly valid clojure-contrib file." " file not found."))
           "\nThese are both required to start a repl."
           "\nFor a project REPL, you can add them as libraries to the project."
           "\nFor the stand-alone REPL, go to the Enclojure category in the Netbeans preferences and make sure they are both present in the selected platform."
