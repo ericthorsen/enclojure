@@ -48,12 +48,24 @@
 
 (defn verify-classpath
   [classpath]
-  (if
-    (bad-classpath? classpath)
+  (if-let [{[clojure clojure-exists?] :clojure
+            [clojure-contrib contrib-exists?] :contrib}
+            (bad-classpath? classpath)]
     (.notify (DialogDisplayer/getDefault)
       (NotifyDescriptor$Confirmation.
-        "There did not appear to be both valid clojure and clojure-contrib jars present in the classpath.  These are both required to start a repl.  You can add them as libraries to the project or to your platform under the preferences if this is a stand-alone repl.
-Are you sure you want to continue?"
+        (str
+        "There did not appear to be both valid clojure and clojure-contrib jars present in the classpath.  "
+          "Clojure => " (if clojure (format "\"%s\"" clojure) " no reference to a clojure jar found in classpath.")
+            (when clojure (if clojure-exists? " valid clojure file." " file not found."))
+          "\nClojure-contrib => " (if clojure-contrib
+                                    (format "\"%s\"" clojure-contrib)
+                                    " no reference to a clojure-contrib jar found in classpath.")
+            (when clojure-contrib (if contrib-exists?
+                                    " valid clojure-contrib file." " file not found."))
+          "\nThese are both required to start a repl."
+          "\nFor a project REPL, you can add them as libraries to the project."
+          "\nFor the stand-alone REPL, go to the Enclojure category in the Netbeans preferences and make sure they are both present in the selected platform."
+          "\nAre you sure you want to continue?")
         "Possible problem with classpath for the REPL"
         NotifyDescriptor/YES_NO_OPTION
         NotifyDescriptor/ERROR_MESSAGE

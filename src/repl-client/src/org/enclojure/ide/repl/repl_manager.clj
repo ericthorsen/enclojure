@@ -24,14 +24,17 @@
 (logger/ensure-logger)
 
 (defn bad-classpath?
-  "Looks for clojure-contrib and clojure in a classpath string"
+  "Looks for clojure-contrib and clojure in a classpath string. It could actually
+look inside the jars but for now just look for the names."
   [classpath]
   (let [paths (.split classpath java.io.File/pathSeparator)
-        clojure (some #(when (>= (.indexOf % "clojure") 0) %) paths)
-        contrib (some #(when (>= (.indexOf % "clojure-contrib") 0) %) paths)]
-    (if (and contrib clojure)
-      (not (and (.exists (File. clojure)) (.exists (File. contrib))))
-      [clojure contrib])))
+        clojure (some #(when (>= (.indexOf % (str File/separator "clojure")) 0) %) paths)
+        contrib (some #(when (>= (.indexOf % (str File/separator "clojure-contrib")) 0) %) paths)
+        clojure-exists? (and clojure (.exists (File. clojure)))
+        contrib-exists? (and contrib (.exists (File. contrib)))]
+    (when-not (and contrib clojure clojure-exists? contrib-exists?)
+      {:clojure [clojure clojure-exists?]
+       :contrib [contrib contrib-exists?]})))
 
 (def default-repl-config {
                           :arguments ["-server" "-Xmx512m" "-Xms128m"]
