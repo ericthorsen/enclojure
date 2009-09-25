@@ -12,6 +12,11 @@
                     <type>java</type>
                     <location>src</location>
                 </source-folder>
+                <source-folder>
+                    <label>test</label>
+                    <type>java</type>
+                    <location>test</location>
+                </source-folder>
             </folders>
             <ide-actions>
                 <action name="build">
@@ -52,6 +57,10 @@
                         <label>src</label>
                         <location>src</location>
                     </source-folder>
+                    <source-folder style="packages">
+                        <label>test</label>
+                        <location>test</location>
+                    </source-folder>
                     <source-file>
                         <location>build.xml</location>
                     </source-file>
@@ -64,14 +73,20 @@
                     <ide-action name="test"/>
                 </context-menu>
             </view>
+            <subprojects/>
         </general-data>
-        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
             <compilation-unit>
                 <package-root>src</package-root>
                 <classpath mode="compile">build-artifacts:dist-artifacts:lib-artifacts</classpath>
                 <built-to>build-artifacts</built-to>
                 <built-to>dist-artifacts</built-to>
                 <built-to>lib-artifacts</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>test</package-root>
+                <unit-tests/>
                 <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>
