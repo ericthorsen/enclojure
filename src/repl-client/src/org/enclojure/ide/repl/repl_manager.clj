@@ -24,8 +24,15 @@
 (logger/ensure-logger)
 
 (defn bad-classpath?
-  "Looks for clojure-contrib and clojure in a classpath string and makes sure 
-the files exist. (Probably should look inside the jars????)"
+  "Given a classpath string, attempt to locate a clojure.jar and a
+clojure-contrib.jar.  The function just looks for jars with these names in the file
+ and makes sure the files exists.  Returns nil if both are found.  Returns a map
+with the name of the file reference found in the string and a boolean as to whether
+or not the file exists.  This is useful for error reporting.
+{:clojure [\"/Users/fred/clojure.jar\" true]
+ :clojure-contrib [nil nil]}
+In the above case, there was a clojure.jar reference found and the file exists.
+For clojure-contrib, no reference was found."
   [classpath]
   (let [paths (.split classpath java.io.File/pathSeparator)
         contrib (some #(when (>= (.indexOf %

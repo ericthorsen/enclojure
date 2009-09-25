@@ -46,7 +46,7 @@
 ; setup logging
 (logger/ensure-logger)
 
-(defn verify-classpath
+(defn verify-classpath 
   [classpath]
   (if-let [{[clojure clojure-exists?] :clojure
             [clojure-contrib contrib-exists?] :contrib}
