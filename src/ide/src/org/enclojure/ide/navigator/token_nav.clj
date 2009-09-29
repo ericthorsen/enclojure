@@ -185,6 +185,17 @@
         (.getText document (:start position)
           (- (:end position) (:start position)))))))
 
+(defmethod get-namespace-node javax.swing.text.AbstractDocument
+  [document]
+  (let [#^TokenSequence ts (.tokenSequence (TokenHierarchy/get document))
+        ns-pred #(or (token-match :ns-publics "ns" %1)
+                   (token-match :ns-publics "in-ns" %1))]
+    (.moveStart ts)
+    (when (move-next ns-pred ts)
+      (when-let [position (get-top-enclosing-form ts (.offset ts))]
+        (.getText document (:start position)
+          (- (:end position) (:start position)))))))
+
 (defn get-namespace [pane]
   (when-let [nsnode (get-namespace-node pane)]
     (str (second (read-string nsnode)))))

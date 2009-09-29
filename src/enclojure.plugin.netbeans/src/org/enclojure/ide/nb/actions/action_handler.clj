@@ -18,7 +18,8 @@
     [org.enclojure.commons.meta-utils :as meta-utils]
     [org.enclojure.ide.settings.utils :as pref-utils]
     )
-  (:import 
+  (:import
+    (org.openide.loaders DataObject MultiDataObject)
     (org.openide.cookies EditorCookie)
     (org.openide.nodes Node)
     (org.openide.windows TopComponent)
@@ -183,3 +184,22 @@ be loaded"
 (defn get-standalone-repl-settings []
   (let [file-path (pref-utils/get-pref-file-path "stand-alone-repl")]
     (first (read-string (slurp file-path)))))
+
+(defn load-sources-in-repl
+  "Given 1 or more selected nodes, attempts to find the relevant repl for the source
+nodes and loads each of them in turn as text (so searching is done)"
+  [nodes]
+  (let [p (ReplTopComponent/GetProjectFromActivatedNodes nodes)]
+    (when-let [repl-tc (find-active-repl p)]
+      (let [{:keys [external local]} (get-repl-config (.ReplName repl-tc))]
+        (doseq [node nodes]
+          (let [data-obj (.lookup (.getLookup node) MultiDataObject)]
+            (when-let [fo (-> data-obj .getPrimaryEntry .getFile)]
+              ; I have the full file path now.  Need the resource/ns name
+              (let [ns-f (classpath-utils/resource-name-from-full-path
+                           (.getPath fo))
+                    full-text (slurp (.getPath fo))]
+                (logger/info "Resource {} full-path {}" ns-f (.getPath fo))
+      (execute-expr p
+        (load-with-debug full-text (meta-utils/ns-from-file ns-f)) nil
+        )))))))))

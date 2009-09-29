@@ -2,8 +2,8 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
     <folder name="ClojurePlatforms">
-        <file name="Clojure-1.0.0" url="platforms/clojure-1.0.0-platform.zip" />
-        <file name="clojure-1.09.11-platform" url="platforms/clojure-1.09.11-platform.zip" />
+        <file name="Clojure-1.0.0" url="platforms/clojure-1.0.0-platform.zip"/>
+        <file name="clojure-1.09.11-platform" url="platforms/clojure-1.09.11-platform.zip"/>
     </folder>
     <folder name="Navigator">
         <folder name="Panels">
@@ -327,6 +327,9 @@
         <folder name="GlassFish">
             <file name="org-enclojure-ide-nb-actions-EvalExpressionInReplAction.instance"/>
         </folder>
+        <folder name="Source">
+            <file name="org-enclojure-ide-nb-actions-LoadSourcesInREPL.instance"/>
+        </folder>
         <folder name="View">
             <file name="org-enclojure-ide-nb-actions-SwitchEditorReplFocusEvent.instance">
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
@@ -425,6 +428,14 @@
         <folder name="text">
             <folder name="x-clojure">
                 <folder name="Actions">
+                    <file name="org-enclojure-ide-nb-actions-LoadSourcesInREPL-separatorBefore.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="1225"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-LoadSourcesInREPL.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Source/org-enclojure-ide-nb-actions-LoadSourcesInREPL.instance"/>
+                        <attr name="position" intvalue="1250"/>
+                    </file>
                     <file name="org-openide-actions-CopyAction.instance">
                         <attr name="position" intvalue="400"/>
                     </file>

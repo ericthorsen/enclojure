@@ -25,19 +25,12 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
-import org.enclojure.ide.nb.editor.ReplTopComponent;
 import org.netbeans.api.project.Project;
-import org.netbeans.api.project.ProjectInformation;
-import org.netbeans.api.project.ProjectUtils;
-import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.awt.DynamicMenuContent;
 import org.openide.awt.Mnemonics;
-import org.openide.filesystems.FileUtil;
 import org.openide.util.ContextAwareAction;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
-import org.openide.util.NbBundle;
 import org.openide.util.actions.Presenter;
 
 public class DebugProjectWithReplContextMenuAction extends AbstractAction implements ContextAwareAction {
@@ -86,6 +79,7 @@ public class DebugProjectWithReplContextMenuAction extends AbstractAction implem
             Exceptions.printStackTrace(ex);
         }
     }
+
     private final class ContextAction extends AbstractAction implements Presenter.Popup {
         private final Project p;
 
