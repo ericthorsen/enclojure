@@ -16,3 +16,4 @@ ivy-cache
 *.jar
 *.war
 build/*
+*.tmproj
