@@ -113,7 +113,11 @@
     (when open-tc? (.open repl-tc))
     repl-tc))
 
-(defn assure-repl-panel [repl-id open-tc?]
+(defn assure-repl-panel 
+  "Given a repl-id, looks in the state of the repl-manager to see if there 
+already is a repl-window with this ID.  Returns nil if exists already,
+otherwise creates a repl-top-componentwith a repl-panel and opens it if open-tc?"
+  [repl-id open-tc?]
   (when-not (:repl-panel (get-repl-config repl-id))
     (let [repl-panel (ReplPanel. repl-id)
           repl-tc (open-repl-tc repl-id open-tc? repl-panel)]
@@ -154,7 +158,8 @@
         ;{:keys [repl-fn result-fn]} (spawn-repl-fn)]
     ; store off all the keys retiurned by this function.
     (apply update-repl repl-id (apply concat spawned-repl-keys))
-    (bind-repl-panel repl-panel (:repl-fn spawned-repl-keys) (:result-fn spawned-repl-keys))
+    (bind-repl-panel repl-panel (:repl-fn spawned-repl-keys)
+                                (:result-fn spawned-repl-keys))
     (evaluate-in-repl repl-id
       (str (get-settings-set-expression repl-id)))
     repl-tc))

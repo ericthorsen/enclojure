@@ -24,8 +24,7 @@
 (:import (javax.swing Icon ImageIcon)
   (java.util.logging Level)
   (java.util  UUID)
-  (java.util.zip ZipInputStream ZipEntry)
-  (org.netbeans.spi.options OptionsCategory OptionsPanelController)
+  (java.util.zip ZipInputStream ZipEntry)  
   (org.openide.util NbBundle Utilities)
   (org.netbeans.api.project.libraries LibraryManager Library)
   (org.openide.filesystems FileObject FileStateInvalidException
