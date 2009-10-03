@@ -35,6 +35,31 @@
     (getReplContext [] repl-context)
     (getReplPanel [] repl-panel))))
 
+(defmulti context-attribs class)
+
+(defmethod context-attribs org.enclojure.repl.IReplContext
+  [context]
+  [:repl-id (.getId context)
+   :startup-expr (.getStartupExpr context)])
+
+(defmethod context-attribs org.enclojure.repl.IReplExternalContext
+  [context]
+  [:repl-id (.getId context)
+   :startup-expr (.getStartupExpr context)
+   :host (.getHost context)
+   :post (.getPort context)
+   ])
+
+(defmethod context-attribs org.enclojure.repl.IReplManagedExternalContext
+  [context]
+  [:repl-id (.getId context)
+   :startup-expr (.getStartupExpr context)
+   :host (.getHost context)
+   :post (.getPort context)
+   :classpath (.getClassPath context)
+   :arguments (.additionalJVMArgs context)
+   ])
+
 (defn- assure-repl-panel
   "Given a repl-id, looks in the state of the repl-manager to see if there
 already is a repl-window with this ID.  Returns nil if exists already,
@@ -45,36 +70,37 @@ otherwise creates a repl-top-componentwith a repl-panel and opens it if open-tc?
       (if-let [irepl (repl-manager/get-repl-config repl-id)]
         irepl
         (let [irepl (create-IRepl repl-context repl-window-factory)]
-          (config-with-preferences repl-id
-            {:repl-id repl-id
+          (apply repl-manager/add-or-update-repl repl-id
              :repl-panel (.getReplPanel irepl)
              :repl-tc (.getReplWindow irepl)
-             :irepl irepl})
+             :irepl irepl
+            (context-attribs repl-context))
           irepl))))
 
 (defn- create-repl [irepl spawn-repl-fn]    
-  (let [spawned-repl-keys (spawn-repl-fn)]
+  (let [spawned-repl-keys (spawn-repl-fn)
+        repl-id (-> irepl .getReplContext .getId)]
     ; store off all the keys retiurned by this function.
     (apply repl-manager/update-repl
-      (-> irepl .getReplContext .getId) (apply concat spawned-repl-keys))
+      repl-id (apply concat spawned-repl-keys))
     (repl-panel/bind-repl-panel (.getReplPanel irepl)
       (:repl-fn spawned-repl-keys)
       (:result-fn spawned-repl-keys))
     (repl-panel/evaluate-in-repl repl-id
-      (str (get-settings-set-expression repl-id)))
-    repl-tc))
+      (-> irepl .getReplContext .getStartupExpr))
+    irepl))
 
 (defn create-in-proc-repl
   "Creates a repl that will run in-proc in the JVM of the app"
   [#^IReplContext repl-context
    #^IReplWindowFactory repl-window-factory]
   (let [irepl (assure-repl-panel repl-context repl-window-factory)]
-    (create-repl irepl create-clojure-repl)))
+    (create-repl irepl repl-main/create-clojure-repl)))
 
 (defn create-unmanaged-external-repl
   "Creates a repl that bind to an external already running JVM
 using the host and port defined in the IReplUnmanagedExternalContext"
-  [#^IReplUnmanagedExternalContext repl-context
+  [#^IReplExternalContext repl-context
    #^IReplWindowFactory repl-window-factory]
   (let [irepl (assure-repl-panel repl-context repl-window-factory)]
     (create-repl irepl
@@ -93,5 +119,5 @@ function as well."
         repl-panel (.getReplPanel irepl)]
        (repl-manager/create-internal-repl repl-id
                     (.getClasspath repl-context)
-                    (partial bind-process-panel repl-panel)
-                    (partial bind-repl-panel repl-panel))))
+                    (partial repl-panel/bind-process-panel repl-panel)
+                    (partial repl-panel/bind-repl-panel repl-panel))))

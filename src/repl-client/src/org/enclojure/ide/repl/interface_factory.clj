@@ -13,7 +13,9 @@
   :name org.enclojure.repl.IReplContext
   :implements [java.lang.Object]
   :methods
-  [[getId [] java.lang.Object]])
+  [[getId [] java.lang.Object]
+   [startupExpr [] java.lang.String]
+   ])
 
 (gen-interface
   :name org.enclojure.repl.IReplExternalContext
@@ -29,7 +31,8 @@
   :extends [org.enclojure.repl.IReplExternalContext]
   :implements [java.lang.Object]
   :methods
-  [[getClassPath [java.lang.Object] java.lang.String]]
+  [[getClassPath [java.lang.Object] java.lang.String]
+   [additionalJVMArgs [] java.lang.String]]
    )
 
 (gen-interface
@@ -56,7 +59,7 @@
   [[getReplWindow [] org.enclojure.repl.IReplWindow]
    [getReplPanel [] org.enclojure.ide.repl.ReplPanel]
    [getReplContext [] org.enclojure.repl.IReplContext]
-   [getAttribs [] java.util.Map]]
+   ]
    )
 
 (gen-interface
