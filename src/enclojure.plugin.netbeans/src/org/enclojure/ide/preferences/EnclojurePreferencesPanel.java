@@ -27,7 +27,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
 
     private final OptionsPanelController controller;
     IFn dispatcherFn = RT.var("org.enclojure.ide.preferences.platform-options","disp-hack");
-    IFn startNonProjectREPLFn = RT.var("org.enclojure.ide.nb.editor.repl-tc","start-non-project-repl-action");                  
+    IFn startNonProjectREPLFn = RT.var("org.enclojure.ide.nb.editor.repl-win","start-stand-alone-repl-action");
     IFn tabbedStateChangedFn = RT.var("org.enclojure.ide.preferences.enclojure-options-category"
                                      ,"tabbed-panel-changed");
     public EnclojurePreferencesPanel(OptionsPanelController controller) {

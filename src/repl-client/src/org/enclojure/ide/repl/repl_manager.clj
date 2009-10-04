@@ -13,7 +13,9 @@
 
 (ns org.enclojure.ide.repl.repl-manager
   (:use org.enclojure.repl.main)
-  (:require [org.enclojure.commons.c-slf4j :as logger])
+  (:require [org.enclojure.commons.c-slf4j :as logger]
+        [org.enclojure.commons.validation :as validation]
+        [org.enclojure.ide.repl.repl-data :as repl-data])
   (:import (java.util.logging Logger Level)
     (java.io PipedOutputStream PipedInputStream LineNumberReader InputStreamReader File)
     (org.apache.commons.exec CommandLine ExecuteResultHandler
@@ -46,45 +48,51 @@ For clojure-contrib, no reference was found."
       {:clojure [clojure clojure-exists?]
        :contrib [contrib contrib-exists?]})))
 
-(def default-repl-config {
-                          :arguments ["-server" "-Xmx512m" "-Xms128m"]
-                          :debug-port-arg "-Xrunjdwp:transport=dt_socket,server=y,suspend=n"
-                          :classpath "/Users/nsinghal/Work/enclojure-google/third-party/Clojure/clojure.jar:/Users/nsinghal/Work/org.enclojure.repl.jar:/Users/nsinghal/Work/enclojure-google/enclojure-clojure-lib/org.enclojure.commons/dist/org.enclojure.commons.jar"
-                          :java-main "org.enclojure.repl.launcher"
-                          :repl-id "Repl identifier"
-                          :port 0
-                          :ack-port nil
-                          })
-
 (def ack-server-socket (atom nil))
-(def running-repls (ref {}))
+(def #^{:doc "The set of running repls" :private true}
+  -running-repls- (ref {}))
 
-(defn register-repl [repl-id repl-config]
+(defn new-repl-data-ref
+  "Use this function to ask for a new reference for a repl instance.
+Sets the validator function to ensure this is usable within the rest of the framework"
+  [repl-config]
+  (ref repl-config
+    :validator #(validation/validate %1
+                  repl-data/-repl-context-validation-)))
+
+(defn register-repl 
+  "Register a new repl using the repl-id as the key.  repl-config is a map. See
+org.enclojure.ide.repl.repl-data for more info"
+  [repl-id repl-config]
+  (assert (map? repl-config))
   (dosync
-    (commute running-repls assoc repl-id
-      (ref (merge default-repl-config repl-config)))))
+    (commute -running-repls- assoc repl-id
+      (new-repl-data-ref 
+        (merge repl-data/-default-repl-data- repl-config)))))
+      ;(ref (merge default-repl-config repl-config)))))
 
 (defn unregister-repl [repl-id]
-  (dosync
-    (commute running-repls dissoc repl-id)))
+  (throw (Exception. (str "Why!!!!!! " repl-id)))
+    (dosync
+    (commute -running-repls- dissoc repl-id)))
 
 (defn get-repl-config [repl-id]
-  (when (contains? @running-repls repl-id)
-    @(@running-repls repl-id)))
+  (when (contains? @-running-repls- repl-id)
+    @(@-running-repls- repl-id)))
 
 (defn all-repl-configs []
-  (map (fn [repl-ref] @repl-ref) (vals @running-repls)))
+  (map (fn [repl-ref] @repl-ref) (vals @-running-repls-)))
 
 (defn update-repl [repl-id & kv-pairs]
   (dosync
-    (let [config-ref (@running-repls repl-id)]
+    (let [config-ref (@-running-repls- repl-id)]
       (if config-ref
         (commute config-ref #(reduce conj % (apply hash-map kv-pairs)))
         (throw (Exception.
-                 (str "Unable to locate repl settings for update using key " config-ref)))))))
+                 (str "Unable to locate repl settings for update using key " repl-id)))))))
 
 (defn add-or-update-repl [repl-id & kv-pairs]
-    (if-let [config-ref (@running-repls repl-id)]
+    (if-let [config-ref (@-running-repls- repl-id)]
       (apply update-repl repl-id kv-pairs)
       (register-repl repl-id (apply hash-map kv-pairs))))
      
@@ -193,7 +201,7 @@ For seeing the command line use:"
                  (apply str (interpose ",\n" (get-repl-config repl-id)))))))))
 
 (defn repl-connected? [repl-id]
-  (and (contains? @running-repls repl-id) (:connected (get-repl-config repl-id))))
+  (and (contains? @-running-repls- repl-id) (:connected (get-repl-config repl-id))))
 
 (defn stop-internal-repl [repl-id]
   (let [{:keys [close-fn repl-fn destroy-fn]} (get-repl-config repl-id)]
@@ -212,7 +220,7 @@ For seeing the command line use:"
     (update-repl repl-id :repl-fn nil :connected false :port 0)))
 
 (defn stop-repl-servers []
-    (loop [repl-ids (keys @running-repls)]
+    (loop [repl-ids (keys @-running-repls-)]
       (when-let [repl-id (first repl-ids)]
         (stop-internal-repl repl-id)
         (recur (next repl-ids)))))
@@ -225,3 +233,7 @@ in the repl-config map"
            (filter (comp symbol? first)
              (get-repl-config repl-id)))
      nil))
+
+(defn get-IRepl
+  [repl-id]
+  (:irepl (get-repl-config repl-id)))

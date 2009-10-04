@@ -22,7 +22,7 @@ import org.openide.util.Exceptions;
 public class ConnectExternalReplDialog extends javax.swing.JDialog {
 
     static final Var connectExternalRepl =
-      RT.var("org.enclojure.ide.nb.editor.repl-tc"
+      RT.var("org.enclojure.ide.nb.editor.repl-win"
                 , "connect-external-repl");
 
     /** Creates new form ConnectExternalReplDialog */

@@ -62,21 +62,15 @@ final public class ReplTopComponent extends TopComponent {
     private String _projectName;
     private Boolean _debugging = false;
 
-//    static final Var executeExpr =
-//      RT.var("org.enclojure.ide.nb.editor.repl-tc", "execute-expr");
-
     static final Var stopProjectReplFn =
-      RT.var("org.enclojure.ide.nb.editor.repl-tc", "stop-project-repl");
+      RT.var("org.enclojure.ide.nb.editor.repl-win", "stop-project-repl");
 
     static final Var setCaretVisibilityFn =
       RT.var("org.enclojure.ide.nb.editor.repl-focus", "set-caret-visibility");
 
     static final Var replFocusFn =
-      RT.var("org.enclojure.ide.nb.editor.repl-tc", "repl-focus");
+      RT.var("org.enclojure.ide.nb.editor.repl-win", "repl-focus");
 
-//    public ReplTopComponent(String projectName, IFn replDataFn) {
-//        initReplTopComponent(projectName, replDataFn);
-//    }
 
     public ReplPanel _replPanel;
 
@@ -329,7 +323,7 @@ final public class ReplTopComponent extends TopComponent {
     public static synchronized ReplTopComponent getDefault() {
         if (instance == null) {
             try {
-                Var getIdeReplFn = RT.var("org.enclojure.ide.nb.editor.repl-tc", "create-ide-repltc");
+                Var getIdeReplFn = RT.var("org.enclojure.ide.nb.editor.repl-win", "create-ide-repl");
                 return (ReplTopComponent)getIdeReplFn.invoke(IDE_REPL);
             } catch (Exception ex) {
                 Exceptions.printStackTrace(ex);

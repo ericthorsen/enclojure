@@ -5,7 +5,7 @@
     org.enclojure.ide.navigator.token-nav
     org.enclojure.ide.repl.repl-manager
     org.enclojure.ide.repl.repl-panel
-    org.enclojure.ide.nb.editor.repl-tc
+    org.enclojure.ide.nb.editor.repl-win
     org.enclojure.ide.nb.editor.repl-focus
     )
   (:require
@@ -100,7 +100,7 @@ text or top level form"
         _ (when ec (.saveDocument ec))
         pane (current-editor-pane nodes)
         p (ReplTopComponent/GetProjectFromActivatedNodes nodes)]
-    (when-let[repl-tc (find-active-repl p)]
+    (when-let [repl-tc (find-active-repl p)]
       (let [{:keys [external local]} (get-repl-config (.ReplName repl-tc))
             nsnode (get-namespace-node pane)
             nsname (get-namespace pane)]

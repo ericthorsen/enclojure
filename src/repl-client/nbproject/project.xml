@@ -78,7 +78,7 @@
         <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">build-artifacts:dist-artifacts:lib-artifacts</classpath>
+                <classpath mode="compile">build-artifacts:dist-artifacts:lib-artifacts:../commons/src</classpath>
                 <built-to>build-artifacts</built-to>
                 <built-to>dist-artifacts</built-to>
                 <built-to>lib-artifacts</built-to>

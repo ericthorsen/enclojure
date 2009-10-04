@@ -61,7 +61,7 @@ public class Installer extends ModuleInstall {
           //  requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.clj-language-support"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.common.classpath-utils"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.clojure.project.create"));            
-            requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.repl-tc"));
+            //requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.repl-tc"));
             // options
             requireFn.invoke(Symbol.create("org.enclojure.ide.preferences.platform-options"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.preferences.enclojure-options-category"));
@@ -86,9 +86,7 @@ public class Installer extends ModuleInstall {
 
             requireFn.invoke(Symbol.create("org.enclojure.ide.debugger.jdi-eval"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.source.add-file"));
-
-            //requireFn.invoke(Symbol.create("net.n01se.clojure-compiler"));
-
+            requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.repl-win"));
 
 //            Logger logger = Logger.getLogger("org.netbeans.modules.debugger.jpda.breakpoints");
 //            logger.setLevel(java.util.logging.Level.ALL );

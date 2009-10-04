@@ -8,49 +8,28 @@
 (ns org.enclojure.ide.repl.interface-factory
   (:import
     (org.enclojure.ide.repl ReplPanel)))
-    
-(gen-interface
-  :name org.enclojure.repl.IReplContext
-  :implements [java.lang.Object]
-  :methods
-  [[getId [] java.lang.Object]
-   [startupExpr [] java.lang.String]
-   ])
 
+;This will go away
 (gen-interface
-  :name org.enclojure.repl.IReplExternalContext
-  :extends [org.enclojure.repl.IReplContext]
+  :name org.enclojure.repl.IReplHistorySupport
   :implements [java.lang.Object]
   :methods
-  [[getHost [] java.lang.String]
-   [getPort [] java.lang.Integer]]
-   )
-
-(gen-interface
-  :name org.enclojure.repl.IReplManagedExternalContext
-  :extends [org.enclojure.repl.IReplExternalContext]
-  :implements [java.lang.Object]
-  :methods
-  [[getClassPath [java.lang.Object] java.lang.String]
-   [additionalJVMArgs [] java.lang.String]]
+  [[showHistory [java.lang.String] java.lang.Void]
+   [getHistoryLogFile [java.lang.String] java.lang.String]
+   ]
    )
 
 (gen-interface
   :name org.enclojure.repl.IReplWindow
   :implements [java.lang.Object]
   :methods
-  [[open [] javax.swing.JComponent]
-   [makeActive [] java.lang.Void]
+  [[getComponent [] javax.swing.JComponent]
+   [open [] javax.swing.JComponent]
+   [makeActive [] javax.swing.JComponent]
    [showHistory [] java.lang.Void]
    [getHistoryLogFile [] java.lang.String]
    ]
    )
-
-(gen-interface
-  :name org.enclojure.repl.IReplPanel
-  :implements [java.lang.Object]
-  :methods
-  [])
 
 (gen-interface
   :name org.enclojure.repl.IRepl
@@ -58,7 +37,7 @@
   :methods
   [[getReplWindow [] org.enclojure.repl.IReplWindow]
    [getReplPanel [] org.enclojure.ide.repl.ReplPanel]
-   [getReplContext [] org.enclojure.repl.IReplContext]
+   [getReplContext [] java.util.Map]
    ]
    )
 
@@ -66,6 +45,6 @@
   :name org.enclojure.repl.IReplWindowFactory
   :implements [java.lang.Object]
   :methods
-  [[makeReplWindow [org.enclojure.ide.repl.ReplPanel 
-                    org.enclojure.repl.IReplContext] org.enclojure.repl.IReplWindow]]
+  [[makeReplWindow [org.enclojure.ide.repl.ReplPanel java.util.Map]
+                    org.enclojure.repl.IReplWindow]]
    )

@@ -36,9 +36,9 @@ import org.openide.util.actions.Presenter;
 public class DebugProjectWithReplContextMenuAction extends AbstractAction implements ContextAwareAction {
 
     static final Var debugContextMenuNameFn =
-        RT.var("org.enclojure.ide.nb.editor.repl-tc", "debug-context-menu-name");
+        RT.var("org.enclojure.ide.nb.editor.repl-win", "debug-context-menu-name");
     static final Var attachDetachDebugger =
-        RT.var("org.enclojure.ide.nb.editor.repl-tc", "start-attach-detach-debugger");
+        RT.var("org.enclojure.ide.nb.editor.repl-win", "start-attach-detach-debugger");
 
     public void actionPerformed(ActionEvent e) {assert false;}
     public Action createContextAwareInstance(Lookup context) {

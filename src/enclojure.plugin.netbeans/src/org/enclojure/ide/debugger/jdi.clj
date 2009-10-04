@@ -11,24 +11,6 @@
  ;    Author: Eric Thorsen
  )
 
-;
-;(:use org.enclojure.platform.depends
-;org.enclojure.platform.utils)
-;(:import (java.io IOException File FileWriter IOException InputStreamReader
-;         PrintWriter StringWriter IOException)
-;(java.lang ClassLoader)
-;(java.net URL)
-;(java.util Properties)
-;(com.sun.jdi Bootstrap VirtualMachine VirtualMachineManager)
-;(com.sun.jdi.connect Connector$Argument AttachingConnector)
-;(com.sun.tools.jdi LinkedHashMap)
-;(org.netbeans.api.debugger.jpda AttachingDICookie)
-;(org.netbeans.api.debugger DebuggerManager DebuggerInfo ActionsManager)
-;(org.netbeans.spi.java.classpath.support ClassPathSupport)
-;(org.netbeans.api.java.classpath ClassPath)
-;(clojure.lang RT)))
-;
-
 (ns org.enclojure.ide.debugger.jdi
   (:use org.enclojure.ide.repl.repl-manager)
   (:import (com.sun.jdi Bootstrap)
@@ -40,9 +22,6 @@
 (defstruct virtual-machine-manager :vmm :attaching-connectors :listening-connectors)
 
 (def *vmm* (ref nil))
-;(def *vm* (ref nil))
-;(def *dbg* (ref nil))
-;(def *actions-manager* (ref nil))
 
 (defn refresh-vmm []
   "Grab the current virtual-machine-manager and it's connectors"
@@ -74,24 +53,10 @@
      AttachingDICookie/ID
      (into-array  [(get-acookie port)])))
 
-;(defn start-debugger [port]
-;   (.startDebugging (DebuggerManager/getDebuggerManager) (get-dbi port)))
-
 (defn attach-dbg [repl-name port]
   (let [dbg-engines (.startDebugging (DebuggerManager/getDebuggerManager) (get-dbi port))]
     (update-repl repl-name :dbg-engines dbg-engines)))
     
-;  (dosync
-;    (alter *dbg* (fn [_] (start-debugger port)))
-;    (ref-set *vm* (first (.connectedVirtualMachines (:vmm @*vmm*))))
-;    (ref-set *actions-manager* (.getActionsManager (first @*dbg*)))))
-
-;//??
-;(defn refresh-refs []
-;  (dosync
-;    (ref-set *vm* (first (.connectedVirtualMachines (:vmm @*vmm*))))
-;    (ref-set *actions-manager* (.getActionsManager (first @*dbg*)))))
-
 (defn kill-dbg [repl-name]
   (let [{:keys [dbg-engines]} (get-repl-config repl-name)
         actions-manager (.getActionsManager (first dbg-engines))]

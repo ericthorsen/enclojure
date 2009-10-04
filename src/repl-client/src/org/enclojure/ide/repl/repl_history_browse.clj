@@ -16,7 +16,8 @@
     [org.enclojure.ide.repl.repl-manager :as repl-manager]
     [org.enclojure.commons.c-slf4j :as logger]   
     )
-  (:import  (java.util.logging Level)
+  (:import  
+    (java.util.logging Level)
     (javax.swing JList ListModel JLabel JPanel JTree JTable JScrollPane
             JFrame JToolBar JButton SwingUtilities JViewport JTextPane
       JEditorPane ImageIcon ListCellRenderer)
@@ -33,8 +34,6 @@
 ; setup logging
 (logger/ensure-logger)
 
-(def *repl-history-support-impl* (atom nil))
-
 (def -form-prefix- ";{:first-seen ")
 
 (defn -form-delimiter-
@@ -42,21 +41,12 @@
   (str -form-prefix-
     (.getTime (java.util.Calendar/getInstance)) "};-------------------------------------"))
 
-;(defn get-repl-log-filename
-;  [repl-id type]
-;  (pref-utils/get-pref-file-path (str repl-id "-" type ".clj")))
-
-(defn get-repl-log-filename
-  [repl-id type]
-  (.getHistoryLogFile @*repl-history-support-impl*
-    (str repl-id "-" type ".clj")))
-
-
 (defn get-repl-command-log-file
   "Helper function to return the File object for the repl-commands history"
   [repl-id]
-  (when @*repl-history-support-impl*
-    (File. (.getHistoryLogFile @*repl-history-support-impl* repl-id))))
+  (let [irepl (repl-manager/get-IRepl repl-id)]
+    (when irepl
+        (File. (-> irepl .getReplWindow .getHistoryLogFile)))))
 
 (defn log-command
   [repl-id form]
@@ -169,17 +159,9 @@
     (controls/center-component jframe)
     (.show jframe)))
 
-;(defn show-history [repl-id]
-;    (if @-open-history-window-fn-
-;        (@-open-history-window-fn- repl-id)
-;    (let [{:keys [history-ref]} (repl-manager/get-repl-config repl-id)]
-;      (show-history-fn (str "History for " repl-id) @history-ref))))
-
 (defn show-history [repl-id]
-    (if @*repl-history-support-impl*
-        (.showHistory @*repl-history-support-impl* repl-id)
-    (let [{:keys [history-ref]} (repl-manager/get-repl-config repl-id)]
-      (show-history-fn (str "History for " repl-id) @history-ref))))
+  (let [irepl (repl-manager/get-IRepl repl-id)]
+    (.showHistory (.getReplWindow irepl))))
 
 (defn test-browser []
   (let [jframe (JFrame. "Testing the repl history")]

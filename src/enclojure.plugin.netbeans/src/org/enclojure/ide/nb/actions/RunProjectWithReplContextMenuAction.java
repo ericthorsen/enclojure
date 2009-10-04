@@ -36,9 +36,9 @@ import org.openide.util.actions.Presenter;
 public class RunProjectWithReplContextMenuAction extends AbstractAction implements ContextAwareAction {
 
     static final Var startStopProjectReplFn =
-        RT.var("org.enclojure.ide.nb.editor.repl-tc", "start-stop-project-repl");
+        RT.var("org.enclojure.ide.nb.editor.repl-win", "start-stop-project-repl");
     static final Var runContextMenuNameFn =
-        RT.var("org.enclojure.ide.nb.editor.repl-tc", "run-context-menu-name");
+        RT.var("org.enclojure.ide.nb.editor.repl-win", "run-context-menu-name");
 
     public void actionPerformed(ActionEvent e) {assert false;}
     public Action createContextAwareInstance(Lookup context) {

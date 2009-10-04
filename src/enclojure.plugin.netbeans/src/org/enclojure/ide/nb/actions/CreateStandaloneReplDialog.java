@@ -22,7 +22,7 @@ import org.openide.util.Exceptions;
 public class CreateStandaloneReplDialog extends javax.swing.JDialog {
 
     static final Var nonProjectRepl =
-      RT.var("org.enclojure.ide.nb.editor.repl-tc", "start-non-project-repl");
+      RT.var("org.enclojure.ide.nb.editor.repl-win", "start-stand-alone-repl-action");
     static final Var saveSettings =
       RT.var("org.enclojure.ide.settings.utils", "put-prefs");
     static final Var loadSettings =
