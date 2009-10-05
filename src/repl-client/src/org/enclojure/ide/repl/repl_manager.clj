@@ -72,7 +72,6 @@ org.enclojure.ide.repl.repl-data for more info"
       ;(ref (merge default-repl-config repl-config)))))
 
 (defn unregister-repl [repl-id]
-  (throw (Exception. (str "Why!!!!!! " repl-id)))
     (dosync
     (commute -running-repls- dissoc repl-id)))
 

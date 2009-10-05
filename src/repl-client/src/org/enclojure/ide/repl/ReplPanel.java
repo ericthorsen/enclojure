@@ -99,12 +99,7 @@ public class ReplPanel extends javax.swing.JPanel {
         } catch (Exception ex) {
             Logger.getLogger(ReplPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-        //??_replEditorPane = new JEditorPane();
-        _replEditorPane.setContentType("text/x-clojurerepl");
-        _replEditorPane.setName("Repl editor pane");
-        _replEditorPane.setDoubleBuffered(true);
+        
         //??_replEditorPane.setInheritsPopupMenu(true);
         jScrollPaneRepl.setViewportView(_replEditorPane);
 

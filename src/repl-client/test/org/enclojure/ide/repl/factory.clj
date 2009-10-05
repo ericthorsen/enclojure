@@ -1,7 +1,8 @@
 (in-ns 'org.enclojure.ide.repl.factory)
 
 (import '(java.io File)
-        '(javax.swing JFrame JScrollPane))
+        '(javax.swing JFrame JScrollPane)
+        '(java.awt EventQueue))
 
 (require '(org.enclojure.ide.settings [utils :as utils])
          '(org.enclojure.ide.repl [repl-data :as repl-data]))
@@ -18,6 +19,9 @@
             "slf4j-jdk14.jar"
             "swing-layout.jar"])
 
+(def -history-viewers-
+  (ref {}))
+
 (defn test-cp
   []
   (apply str
@@ -29,9 +33,18 @@
   (let [jpanel (JFrame. title)]
     (doto jpanel
       (.add
-        (JScrollPane. repl-panel))
-      (.setSize 400 600)
-      (.setVisible true))))
+        (JScrollPane. repl-panel)))))
+
+(defn get-log-viewer
+  [repl-id]
+  (if-let [viewer (@-history-viewers- repl-id)]
+    (doto viewer
+      (.setVisible true)
+      (.requestFocusInWindow))
+    (let [irepl (:irepl (repl-manager/get-repl-config repl-id))]
+    (alter -history-viewers- assoc
+      repl-id
+      (-> irepl .getReplWindow .showHistory)))))
 
 (def -repl-window-factory-
   (proxy [IReplWindowFactory][]
@@ -41,14 +54,20 @@
         (proxy [IReplWindow][]
             (getComponent [] repl-tc)
             (open [] (.setVisible repl-tc true))
-            (makeActive []  (.setSize repl-tc 600 1000)
+            (makeActive []  (.setSize repl-tc 1000 1000)
                             (.setVisible repl-tc true)
                 repl-tc)
-            (showHistory [])
-;                    (let [log-file (File. (.getHistoryLogFile this))]
-;                        (when (.exists log-file)
-;                            (utils/open-editor-file-at-line
-;                                (.getCanonicalPath log-file) 1 true))))
+            (showHistory []
+                    (let [log-file (.getHistoryLogFile this)]
+                        (when (.exists (File. log-file))
+                          (let [edit-win (javax.swing.JEditorPane.)
+                                file-data (slurp log-file)
+                                document (.getDocument edit-win)]
+                            (.insertString document 0 file-data nil)
+                            (let [w (top-window (str "History for " repl-id)
+                                      edit-win)]
+                                (.setSize w 1000 1000)
+                                (.setVisible w true) w)))))
             (getHistoryLogFile []
                 (utils/get-pref-file-path
                   (str repl-id "-command-history.clj")))
@@ -56,7 +75,7 @@
 
 (def *test-context* (assoc (merge repl-data/-repl-context-external-managed-validation-
                       repl-data/-default-repl-data-)
-                     :classpath (test-cp)
+                     :classpath (System/getProperty "java.class.path")
                      :startup-expr ""))
 
 (defn test-repl
@@ -82,3 +101,8 @@
         (str (repl-manager/get-settings-set-expression repl-id)))
         (-> irepl .getReplWindow .open)
         (-> irepl .getReplWindow .makeActive)))
+
+(defn start-external-managed-repl
+  []
+  (EventQueue/invokeLater #(test-repl)))
+

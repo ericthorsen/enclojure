@@ -55,25 +55,30 @@
   panel)
 
 (defn create-repl-editor-pane [panel]
-  (proxy [javax.swing.JEditorPane] []
-    (cut []
-      (let [sel-start (.getSelectionStart this)
-            sel-end (.getSelectionEnd this)
-            prompt-pos (._promptPos panel)]
-        (when (and (not= sel-start sel-end) (>= sel-end sel-start prompt-pos))
-          (proxy-super cut))))
-    (copy []
-      (proxy-super copy))
-    (paste []
-      (let [sel-start (.getSelectionStart this)
-            sel-end (.getSelectionEnd this)
-            ;caret-pos (.getCaretPosition this)
-            prompt-pos (._promptPos panel)
-            doc-length (.getLength (.getDocument this))]
-        (when-not (and (< sel-start prompt-pos) (> sel-end prompt-pos))
-          (when (< sel-start prompt-pos)
-            (.setCaretPosition this doc-length))
-          (proxy-super paste))))))
+(let [editor-pane
+          (proxy [javax.swing.JEditorPane] []
+            (cut []
+              (let [sel-start (.getSelectionStart this)
+                    sel-end (.getSelectionEnd this)
+                    prompt-pos (._promptPos panel)]
+                (when (and (not= sel-start sel-end) (>= sel-end sel-start prompt-pos))
+                  (proxy-super cut))))
+            (copy []
+              (proxy-super copy))
+            (paste []
+              (let [sel-start (.getSelectionStart this)
+                    sel-end (.getSelectionEnd this)
+                    ;caret-pos (.getCaretPosition this)
+                    prompt-pos (._promptPos panel)
+                    doc-length (.getLength (.getDocument this))]
+                (when-not (and (< sel-start prompt-pos) (> sel-end prompt-pos))
+                  (when (< sel-start prompt-pos)
+                    (.setCaretPosition this doc-length))
+                  (proxy-super paste)))))]
+                  (doto editor-pane
+                    (.setContentType "text/x-clojurerepl")
+                    (.setName "Repl editor pane")
+                    (.setDoubleBuffered true))))
 
 ;----------------------------------------------------------------------------
 ; Functions for managing repl history

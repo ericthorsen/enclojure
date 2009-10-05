@@ -144,7 +144,8 @@ returns the editor-cookie used to open the file."
           pane (aget (.getOpenedPanes editorCookie) 0)
         line-offset (symbol-nav/get-row-start-from-line (.getDocument pane) line-no)]
     (when (and line-offset (>= line-offset 0))
-        (.setCaretPosition pane line-offset))))
+        (.setCaretPosition pane line-offset))
+      pane))
   ([file-path line-no]
     (open-editor-file-at-line file-path line-no false)))
 

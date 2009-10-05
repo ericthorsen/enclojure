@@ -16,7 +16,7 @@
   [[getComponent [] java.awt.Component]
    [open [] java.awt.Component]
    [makeActive [] java.awt.Component]
-   [showHistory [] java.lang.Void]
+   [showHistory [] java.awt.Component]
    [getHistoryLogFile [] java.lang.String]
    ]
    )
