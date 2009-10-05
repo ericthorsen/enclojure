@@ -10,6 +10,7 @@
 ;*
 ;*    Author: Eric Thorsen
 )
+
 (ns #^{:author "Eric Thorsen"
        :doc "This file defines the startup routines for the 3 types of repls:
             1. Inproc - Runs inside the current application.
@@ -30,9 +31,8 @@
            You will also have to implement the org.enclojure.repl.IReplWindowFactory
            for creating parent windows for the REPLs.  This enables this framework
            to be pluggable into another windowing framework such as Netbeans."}
-  org.enclojure.ide.repl.factory
-  (:require
-    org.enclojure.ide.repl.interface-factory
+  org.enclojure.ide.repl.factory  
+  (:require    
     [org.enclojure.ide.repl.repl-panel :as repl-panel]
     [org.enclojure.ide.repl.repl-manager :as repl-manager]
     [org.enclojure.commons.validation :as validation]
@@ -41,7 +41,9 @@
     [clojure.contrib.except :as contrib.except]
     )
   (:import (org.enclojure.repl IReplWindow IRepl IReplWindowFactory)
-            (org.enclojure.ide.repl ReplPanel)))
+            (org.enclojure.ide.repl ReplPanel)
+    (org.enclojure.ide.repl DefReplWindowFactory)))
+     
 
 (defn create-IRepl
   [repl-context
@@ -88,33 +90,49 @@ otherwise creates a repl-top-componentwith a repl-panel and opens it if open-tc?
 
 (defn create-in-proc-repl
   "Creates a repl that will run in-proc in the JVM of the app"
-  [repl-context-arg
+  ([repl-context-arg
    #^IReplWindowFactory repl-window-factory]
   (let [repl-context (merge repl-data/-default-repl-data- repl-context-arg)]
     (validation/validate-throw-on-fail repl-context repl-data/-repl-context-validation-)
         (let [irepl (assure-repl-panel repl-context repl-window-factory)]
             (create-repl irepl repl-main/create-clojure-repl))))
+  ([repl-context-arg]
+    (create-in-proc-repl repl-context-arg (DefReplWindowFactory.)))
+  ([] (create-in-proc-repl repl-data/-default-repl-data-)))
 
 (defn create-unmanaged-external-repl
   "Creates a repl that bind to an external already running JVM
 using the host and port defined in the IReplUnmanagedExternalContext"
-  [repl-context-arg
+  ([repl-context-arg
    #^IReplWindowFactory repl-window-factory]
   (let [repl-context (merge repl-data/-default-repl-data- repl-context-arg)]
-    (validation/validate-throw-on-fail repl-context repl-data/-repl-context-external-validation-)
+    (validation/validate-throw-on-fail repl-context
+        repl-data/-repl-context-external-validation-)
     (let [irepl (assure-repl-panel repl-context repl-window-factory)]        
         (create-repl irepl
           #(repl-main/create-repl-client-with-back-channel
              (.getHost repl-context)
-             (.getPort repl-context))))))
+             (.getPort repl-context)))
+      (.setResetReplFn
+            (.getReplPanel irepl)
+            #(do (repl-manager/stop-internal-repl (:repl-id repl-context-arg))
+               (create-unmanaged-external-repl repl-context-arg repl-window-factory)))
+      irepl)))
+  ([repl-context-arg]
+    (create-unmanaged-external-repl repl-context-arg (DefReplWindowFactory.)))
+  ([] (create-unmanaged-external-repl repl-data/-default-repl-data-)))
 
 (defn create-managed-external-repl
   "Creates a repl that bind to an external process that is started by this function.
 When the parent process shutsdown it will shutdown all external JVMs started by this
-function as well."
-  [repl-context-arg
+function as well. If not :classpath is set in the repl-context it will default to
+using the claspath of the running JVM."
+  ([repl-context-arg
    #^IReplWindowFactory repl-window-factory]
-  (let [repl-context (merge repl-data/-default-repl-data- repl-context-arg)]
+  (let [repl-context (assoc (merge repl-data/-default-repl-data- repl-context-arg)
+                       :classpath
+                        (or (:classpath repl-context-arg)
+                            (System/getProperty "java.class.path")))]
   (validation/validate-throw-on-fail repl-context
             repl-data/-repl-context-external-managed-validation-)
   (let [irepl (assure-repl-panel repl-context repl-window-factory)]
@@ -124,4 +142,11 @@ function as well."
                     (:classpath repl-context)
                     (partial repl-panel/bind-process-panel repl-panel)
                     (partial repl-panel/bind-repl-panel repl-panel))
+      (.setResetReplFn
+            (.getReplPanel irepl)
+            #(do (repl-manager/stop-internal-repl repl-id)
+               (create-managed-external-repl repl-context-arg repl-window-factory)))
         irepl))))
+  ([repl-context-arg]
+    (create-managed-external-repl repl-context-arg (DefReplWindowFactory.)))
+  ([] (create-managed-external-repl repl-data/-default-repl-data-)))

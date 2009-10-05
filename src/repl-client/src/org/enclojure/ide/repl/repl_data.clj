@@ -32,7 +32,7 @@
    :arguments ["-server" "-Xmx512m" "-Xms128m"]
    :debug-port-arg "-Xrunjdwp:transport=dt_socket,server=y,suspend=n"   
    :java-main "org.enclojure.repl.launcher"
-   :repl-id "Repl identifier"
+   :repl-id "Default Repl Id"
    :port 0
    :ack-port nil
    })

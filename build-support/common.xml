@@ -143,7 +143,7 @@
             <include name="**/*.clj"/>
         </fileset>
         <pathconvert pathsep=":" property="cljfiles" refid="project-cljfiles"/>
-        <delete file="${build-script}" />
+       <!-- <delete file="${build-script}" /> -->
         <echo>${cljfiles}</echo>
         <echo file="${build-script}">
             (ns --build--
@@ -171,8 +171,9 @@
           <sysproperty key="clojure.compile.path" value="${classes.dir}"/>
           <arg value="--build--"/>
         </java>
+
         <delete file="${build-script}" />
-        <delete file="${build-script-class}" />
+        <delete file="${build-script-class}" /> 
     </target>
 
 <!--
