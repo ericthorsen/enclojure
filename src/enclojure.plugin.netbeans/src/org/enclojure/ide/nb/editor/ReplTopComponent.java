@@ -130,20 +130,6 @@ final public class ReplTopComponent extends TopComponent {
         return propertyText.replace("<<Project Name>>", projectName);
     }
 
-    public void ExecuteExpr(String expr, String nsnode)
-    {
-        //??ReplPanel replPanel = (ReplPanel)jScrollPane1.getViewport().getComponent(0);
-        this._replPanel.EvaluateInRepl(expr, nsnode);
-    }
-
-//    public static void ExecuteExpr(Project p, String expr, String nsnode)
-//    {
-//        try {
-//            executeExpr.invoke(p, expr, nsnode);
-//        } catch (Exception ex) {
-//            Exceptions.printStackTrace(ex);
-//        }
-//    }
 
     public void ReconnectRepl ()
     {
@@ -214,38 +200,6 @@ final public class ReplTopComponent extends TopComponent {
         return _debugging;
     }
 
-//    public String GetDebugContextMenuName(Project p)
-//    {
-//        Boolean projectRunning = IsProjectReplRunning(p);
-//        Boolean debugRunning = IsProjectReplDebugging(p);
-//        String actionName = !projectRunning ? "CTL_RunDebugProjectWithReplAction"
-//                : debugRunning ? "CTL_DetachDebugProjectWithReplAction" : "CTL_AttachDebugProjectWithReplAction";
-//        return NbBundle.getMessage(ReplTopComponent.class, actionName);
-//    }
-
-    public void AttachDetachDebugger(Project p)
-    {
-//        //??_replRunningDebuggers could be List but keeping Hashtable - the
-//        //value might need to be something when we implement it
-//        String projectName = GetProjectName(p);
-//        Boolean attach = !IsProjectReplDebugging(p);
-//
-//        //If we have to attach and repl is not running - launch it
-//        if(attach && !IsProjectReplRunning(p))
-//        {
-//            StartStopProjectRepl(p);
-//        }
-//
-//        //Attach debugger
-//        if(attach)
-//        {
-//            _replRunningDebuggers.put(projectName, true);
-//        }
-//        else
-//        {
-//            _replRunningDebuggers.remove(projectName);
-//        }
-    }
 
     @Override
     protected void componentActivated()
@@ -353,44 +307,6 @@ final public class ReplTopComponent extends TopComponent {
                 "' ID. That is a potential source of errors and unexpected behavior.");
         return getDefault();
     }
-
-//     public static synchronized ReplTopComponent createClojureReplInstance() {
-//
-//        if (clojureInstance == null) {
-//            ClojureReplDialog dlg = new ClojureReplDialog(null, true);
-//            dlg.setVisible(true);
-//
-//            try {
-//                Var nonProjectRepl = RT.var("org.enclojure.ide.nb.editor.repl-tc", "start-non-project-repl");
-//                return (ReplTopComponent)nonProjectRepl.invoke("Clojure REPL",
-//                        dlg.javaArgs.getText(),
-//                        dlg.classPath.getText());
-//            } catch (Exception ex) {
-//                Exceptions.printStackTrace(ex);
-//            }
-//        }
-//        return clojureInstance;
-//    }
-//
-//    public static synchronized ReplTopComponent findClojureReplInstance() {
-//        String replID = PREFERRED_ID_prefix + CLOJURE_REPL;
-//        TopComponent win = WindowManager.getDefault().findTopComponent(replID);
-//        if (win == null) {
-//            Logger.getLogger(ReplTopComponent.class.getName()).warning(
-//                    "Cannot find " + replID + " component. It will not be located properly in the window system.");
-//            return createClojureReplInstance();
-//        }
-//
-//        if (win instanceof ReplTopComponent) {
-//            return (ReplTopComponent) win;
-//        }
-//
-//        Logger.getLogger(ReplTopComponent.class.getName()).warning(
-//                "There seem to be multiple components with the '" + replID +
-//                "' ID. That is a potential source of errors and unexpected behavior.");
-//        return createClojureReplInstance();
-//    }
-  
 
     @Override
     public int getPersistenceType() {

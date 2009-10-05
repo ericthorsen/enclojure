@@ -6,7 +6,7 @@
 (require '(org.enclojure.ide.settings [utils :as utils])
          '(org.enclojure.ide.repl [repl-data :as repl-data]))
 
-(def base-lib-path "/Users/ericthorsen/Dev/enclojure/src/repl-client/lib-artifacts/")
+(def base-lib-path "/Users/ericthor/Dev/enclojure/src/repl-client/lib-artifacts/")
 
 (def libs ["clojure-contrib.jar"
             "clojure.jar"
@@ -54,13 +54,31 @@
                   (str repl-id "-command-history.clj")))
           )))))
 
+(def *test-context* (assoc (merge repl-data/-repl-context-external-managed-validation-
+                      repl-data/-default-repl-data-)
+                     :classpath (test-cp)
+                     :startup-expr ""))
+
 (defn test-repl
   []
-  (create-managed-external-repl
-               (assoc
-                (merge
-                  repl-data/-repl-context-external-managed-validation-
-                    repl-data/-default-repl-data-)
-                 :classpath (test-cp)
-                 :startup-expr "")
-    -repl-window-factory-))
+  (let [{repl-id :repl-id :as repl-context}
+        (assoc (merge repl-data/-repl-context-external-managed-validation-
+                      repl-data/-default-repl-data-)
+                     :classpath (test-cp)
+                     :startup-expr "")
+        irepl
+            (create-managed-external-repl
+                   (assoc
+                    (merge
+                      repl-data/-repl-context-external-managed-validation-
+                        repl-data/-default-repl-data-)
+                     :classpath (test-cp)
+                     :startup-expr "")
+                -repl-window-factory-)]
+    (.setResetReplFn
+            (.getReplPanel irepl)
+            #(do (repl-manager/stop-internal-repl repl-id) (test-repl)))
+      (repl-panel/evaluate-in-repl repl-id
+        (str (repl-manager/get-settings-set-expression repl-id)))
+        (-> irepl .getReplWindow .open)
+        (-> irepl .getReplWindow .makeActive)))

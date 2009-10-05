@@ -9,22 +9,12 @@
   (:import
     (org.enclojure.ide.repl ReplPanel)))
 
-;This will go away
-(gen-interface
-  :name org.enclojure.repl.IReplHistorySupport
-  :implements [java.lang.Object]
-  :methods
-  [[showHistory [java.lang.String] java.lang.Void]
-   [getHistoryLogFile [java.lang.String] java.lang.String]
-   ]
-   )
-
 (gen-interface
   :name org.enclojure.repl.IReplWindow
   :implements [java.lang.Object]
   :methods
-  [[getComponent [] javax.swing.JComponent]
-   [open [] javax.swing.JComponent]
+  [[getComponent [] java.awt.Component]
+   [open [] java.awt.Component]
    [makeActive [] java.awt.Component]
    [showHistory [] java.lang.Void]
    [getHistoryLogFile [] java.lang.String]

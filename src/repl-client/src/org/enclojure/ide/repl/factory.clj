@@ -56,7 +56,7 @@
     (getReplPanel [] repl-panel))))
 
 
-(defn- assure-repl-panel
+(defn assure-repl-panel
   "Given a repl-id, looks in the state of the repl-manager to see if there
 already is a repl-window with this ID.  Returns nil if exists already,
 otherwise creates a repl-top-componentwith a repl-panel and opens it if open-tc?"
