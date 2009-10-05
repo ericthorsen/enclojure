@@ -92,7 +92,9 @@ public class ReplPanel extends javax.swing.JPanel {
     public void createReplEditorPane()
     {
         try {
-            Var createReplEditorPaneFn = RT.var("org.enclojure.ide.repl.repl-panel", "create-repl-editor-pane");
+            Var createReplEditorPaneFn = 
+                    RT.var("org.enclojure.ide.repl.repl-panel"
+                            , "create-repl-editor-pane");
             _replEditorPane = (JEditorPane) createReplEditorPaneFn.invoke(this);
         } catch (Exception ex) {
             Logger.getLogger(ReplPanel.class.getName()).log(Level.SEVERE, null, ex);

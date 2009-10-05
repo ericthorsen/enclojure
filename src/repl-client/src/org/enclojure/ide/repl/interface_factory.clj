@@ -25,7 +25,7 @@
   :methods
   [[getComponent [] javax.swing.JComponent]
    [open [] javax.swing.JComponent]
-   [makeActive [] javax.swing.JComponent]
+   [makeActive [] java.awt.Component]
    [showHistory [] java.lang.Void]
    [getHistoryLogFile [] java.lang.String]
    ]
