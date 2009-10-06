@@ -141,8 +141,7 @@ For seeing the command line use:"
       (filter identity [debug-port-arg "-cp" (if classpath (str "\"" classpath "\"") "")
                         java-main (str "\"" repl-id "\"") port ack-port]))))
 
-(defn launch-java-process [repl-config complete-fn failed-fn
-                           process-monitor-fn]
+(defn launch-java-process [repl-config complete-fn failed-fn process-monitor-fn]
   (let [java-args (java-cmd-array repl-config)
         cmd-line (CommandLine/parse "java")
         _ (logger/info  "start java process with {}"

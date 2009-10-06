@@ -16,15 +16,14 @@
     :implements [org.enclojure.repl.IReplWindowFactory])
     (:import (org.enclojure.repl IReplWindow IReplWindowFactory IRepl)
         (java.io File OutputStreamWriter FileOutputStream)
-            (javax.swing JFrame JScrollPane)
+            (javax.swing JFrame JScrollPane JWindow JPanel)
             (java.awt EventQueue)))
 
 (defn top-window
   [title repl-panel]
   (let [jpanel (JFrame. title)]
     (doto jpanel
-      (.add
-        (JScrollPane. repl-panel)))))
+      (.add repl-panel))))
 
 (defn- get-pref-file-base
   "Given a config category, returns a path for storing/retrieving config data for the given category"
@@ -49,7 +48,8 @@
 
 (defn -makeReplWindow [this repl-panel repl-context]
       (let [repl-id (:repl-id repl-context)
-            repl-tc (top-window repl-id repl-panel)]
+            repl-tc (JPanel.)];(top-window repl-id repl-panel)]
+        (.add repl-tc repl-panel)
         (proxy [IReplWindow][]
             (getComponent [] repl-tc)
             (open [] (.setVisible repl-tc true))

@@ -125,12 +125,17 @@
 (defn test-create-in-proc-repl
   []
   (let [latch (java.util.concurrent.CountDownLatch. 1)
-        irepl (atom nil)]
-        (EventQueue/invokeAndWait
-            #(swap! irepl (fn [_] (create-in-proc-repl))))
-        (EventQueue/invokeLater
-            #(do (-> @irepl .getReplWindow .open)
-                    (-> @irepl .getReplWindow .makeActive)))
+        irepl (atom nil)
+        frame (JFrame. "Inproc REPL Frame")
+        ]
+    (EventQueue/invokeAndWait
+        #(swap! irepl (fn [_] (create-in-proc-repl))))
+    (.setLayout frame (java.awt.GridLayout. 1 1))
+    (.add frame (-> @irepl .getReplPanel))
+    (EventQueue/invokeLater
+      #(do
+         (.setSize frame 1000 1000)
+         (.setVisible frame true)))
     (.await latch)))
 
 (defn test-create-external-server-and-connect-repl
@@ -139,11 +144,22 @@
 
 (defn test-create-managed-repls
   []
-  (let [latch (java.util.concurrent.CountDownLatch. 1)
-        irepl (atom nil)]
-        (EventQueue/invokeAndWait
-            #(swap! irepl (fn [_] (create-managed-external-repl))))
-        (EventQueue/invokeLater
-            #(do (-> @irepl .getReplWindow .open)
-                    (-> @irepl .getReplWindow .makeActive)))
+    (let [latch (java.util.concurrent.CountDownLatch. 1)
+        irepl (atom nil)
+        frame (JFrame. "Managed external REPL Frame")
+        ]
+    (EventQueue/invokeAndWait
+        #(swap! irepl 
+           (fn [_]
+             (reduce (fn [v id]
+                       (conj v (create-managed-external-repl
+                                 {:repl-id (format "Repl-%s" id)}))) []
+               (range 3)))))
+    (.setLayout frame (java.awt.GridLayout. 3 1))
+    (doseq [repl @irepl]
+      (.add frame (-> repl .getReplPanel)))
+    (EventQueue/invokeLater
+      #(do
+         (.setSize frame 1000 1000)
+         (.setVisible frame true)))
     (.await latch)))
