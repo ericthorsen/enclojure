@@ -138,9 +138,26 @@
          (.setVisible frame true)))
     (.await latch)))
 
-(defn test-create-external-server-and-connect-repl
-  []
-  )
+(defn test-connect-external-repl
+  [server-port]
+  (let [latch (java.util.concurrent.CountDownLatch. 1)
+        irepl (atom nil)
+        frame (JFrame. "Unmanaged external REPL Frame")
+        ]
+    (EventQueue/invokeAndWait
+        #(swap! irepl
+           (fn [_] (create-unmanaged-external-repl
+                     {:repl-id (format "Repl-%s" server-port)
+                      :port (Integer/parseInt server-port)
+                      :host "127.0.0.1"}))))
+    (.setLayout frame (java.awt.GridLayout. 1 1))
+    (.add frame (-> @irepl .getReplPanel))
+    (EventQueue/invokeLater
+      #(do
+         (.setSize frame 1000 1000)
+         (.setVisible frame true)))
+        (.await latch)))
+  
 
 (defn test-create-managed-repls
   []

@@ -111,8 +111,8 @@ using the host and port defined in the IReplUnmanagedExternalContext"
     (let [irepl (assure-repl-panel repl-context repl-window-factory)]        
         (create-repl irepl
           #(repl-main/create-repl-client-with-back-channel
-             (.getHost repl-context)
-             (.getPort repl-context)))
+             (:host repl-context)
+             (:port repl-context)))
       (.setResetReplFn
             (.getReplPanel irepl)
             #(do (repl-manager/stop-internal-repl (:repl-id repl-context-arg))

@@ -12,7 +12,7 @@
 )
 
 (ns #^{ :author "Eric Thorsen",
-        :doc "This file defines validation maps to be used by the
+        :doc "This defines validation maps to be used by the
             org.enclojure.commons.validation routines to ensure valid config data
             for the following use cases for REPLS:
             1. Inproc - Runs inside the current application.
@@ -37,19 +37,22 @@
    :ack-port nil
    })
 
-(def -repl-context-validation-
+(def #^{:doc "Context required for an inproc repl"}
+  -repl-context-validation-
     {:repl-id (validation/validator string?)
      :startup-expr (validation/nilable-validator string?)})
      
 
-(def -repl-context-external-validation-
+(def #^{:doc "Context required for an unmanaged external repl"}
+  -repl-context-external-validation-
   (assoc -repl-context-validation-
      :port (validation/validator integer?)
      :host (validation/validator string?)
      :debug-port-arg (validation/nilable-validator string?)))
 
 
-(def -repl-context-external-managed-validation-
+(def #^{:doc "Context required for an managed external repl"}
+  -repl-context-external-managed-validation-
   (assoc -repl-context-validation-
     :port (validation/validator integer?)
     :arguments (validation/nilable-validator vector?)

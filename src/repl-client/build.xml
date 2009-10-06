@@ -39,7 +39,7 @@
         <replace file="${build-script}" token=".>" value="/>" summary="yes" />
     </target>
 
-  <target name="test_inproc_repl"
+  <target name="test-inproc-repl"
           description="Test starting a repl from an existing java process">
     <java classname="clojure.main" fork="true">
       <classpath>
@@ -55,8 +55,8 @@
     </java>
   </target>
 
-  <target name="test_managed_repl"
-          description="Test starting a repl from an existing java process">
+  <target name="test-managed-repl"
+          description="Test starting several managed repls.">
     <java classname="clojure.main" fork="true">
       <classpath>
         <path location="${classes.dir}"/>
@@ -71,4 +71,32 @@
     </java>
   </target>
 
+<target name="test-external-unmanaged-repl"
+          description="Test starting several managed repls.">
+    <java classname="clojure.main" fork="true" spawn="true">
+      <classpath>
+        <path location="${classes.dir}"/>
+        <path location="${src.dir}"/>
+        <path location="${test.dir}"/>
+        <path location="${java.class.path}"/>
+        <path location="${sun.boot.class.path}"/>
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+      </classpath>
+      <arg value="-e"/>
+      <arg value="(require '(org.enclojure.repl [main :as repl-server])) (repl-server/-main &quot;Repl-server&quot; &quot;4033&quot;)"/>
+    </java>
+    <java classname="clojure.main" fork="true">
+      <classpath>
+        <path location="${classes.dir}"/>
+        <path location="${src.dir}"/>
+        <path location="${test.dir}"/>
+        <path location="${java.class.path}"/>
+        <path location="${sun.boot.class.path}"/>
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+      </classpath>
+      <arg value="-e"/>
+      <arg value="(require '(org.enclojure.ide.repl [factory-test :as factory-test])) (factory-test/test-connect-external-repl &quot;4033&quot;)"/>
+      
+    </java>
+  </target>
 </project>

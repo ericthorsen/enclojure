@@ -130,7 +130,7 @@ org.enclojure.ide.repl.repl-data for more info"
       (.interrupt test-thread))
     (pred)))
     
-(defn- java-cmd-array
+(defn java-cmd-array
   "takes a map which looks like @*default-config* and creates a java array to be used in the ProcessBuilder later on.
 For seeing the command line use:"
   ;(apply str (interpose \" \" (org.enclojure.repl.e-repl-startup/java-cmd-array org.enclojure.repl.e-repl-startup/@*default-config*)))"
@@ -141,7 +141,32 @@ For seeing the command line use:"
       (filter identity [debug-port-arg "-cp" (if classpath (str "\"" classpath "\"") "")
                         java-main (str "\"" repl-id "\"") port ack-port]))))
 
-(defn launch-java-process [repl-config complete-fn failed-fn process-monitor-fn]
+(defn launch-java-process 
+  "This function launches a java process using the Apache exec lib for starting a 
+    repl-server.  There are four arguments:
+  repl-config -> A map with a set of startup options for the java process.  
+                 These should include:
+                 :arguments -> startup arguments for the java 
+                 :debug-port-arg -> port to use for the debugger
+                 :classpath -> classpath for -cp arg
+                 :java-main -> class for startup
+                 :repl-id -> a string identifier for the repl
+                 :port  -> socket port to listen for repl command 
+                            (0 will use next available port)
+                 :ack-port -> Acknowledgement port for the starting
+                            process to listen on to ensure the remote repl server 
+                            has successfully started.
+  complete-fn -> Single arg function taking an int that gets called when the external
+                repl server successfully shutdown.
+  failed-fn -> Single arg function taking an int that gets called when the external
+                java process fails.
+  process-monitor-fn -> A function that takes 2 arguments. Each argument is a function
+                that returns a string the result of which is the output from the
+                *out* stream and *err* stream respectively.  For an example see:
+                org.enclojure.ide.repl.repl-panel/bind-editor-pane and
+                org.enclojure.ide.repl.repl-panel/bind-process-panel
+  "
+  [repl-config complete-fn failed-fn process-monitor-fn]
   (let [java-args (java-cmd-array repl-config)
         cmd-line (CommandLine/parse "java")
         _ (logger/info  "start java process with {}"

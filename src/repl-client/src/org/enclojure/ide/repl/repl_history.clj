@@ -10,7 +10,32 @@
 ;*
 ;*    Author: Eric Thorsen
 )
-(ns org.enclojure.ide.repl.repl-history
+(ns #^{ :author "Eric Thorsen",
+        :doc "Support code for managing history for a REPL instance.
+        There is a log which stores only unique commands (uses a hash of the expression)
+        and there is a list used for history at the command line of the REPL.  Here
+        dups are allowed but it won't repeat the last command.  Assume the following
+        commands are typed in and executed in the REPL:
+        (+ 1 1)
+        (/ 23 1)
+        (+ 1 1)
+        (+ 1 1)
+        The command line history list will contain:
+        (+ 1 1)
+        (/ 23 1)
+        (+ 1 1)
+        The history log will contain:
+        (+ 1 1)
+        (/ 23 1)
+
+        There are 2 functions that need to be implemented in the IReplWindow
+        interface that are used by this module for displaying the log.
+            [showHistory [] java.awt.Component]
+            [getHistoryLogFile [] java.lang.String]
+        See the org.enclojure.ide.repl.interface-factory for definitions of these
+        classes.
+        "}
+       org.enclojure.ide.repl.repl-history
   (:require [org.enclojure.commons.c-slf4j :as logger])
     (:import (java.util.logging Level Logger)      
             (java.awt.event KeyEvent)))

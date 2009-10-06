@@ -11,7 +11,32 @@
  ;* Author: Eric Thorsen, Narayan Singhal
  )
 
-(ns org.enclojure.repl.main  
+(ns #^{:author "Eric Thorsen, Narayan Singhal"
+       :doc "This is a socket layer over the REPL in clojure.main.  This can 
+       be run from a java startup using the launcher class or by calling -main
+       using clojure script or within a clojure application.  There is support
+       for providing a socket based ack to a process that started the repl-server.
+       Startup:
+       (-main \"A string name for the REPL\" server-port ack-port)
+       The server port can be 0 which will cause the server to use the next available
+       socket port.
+       Acknowledgment port
+       ------------------------------------------------------------------------
+       In cases where you want to be able to be nofified when the repl-server 
+       has successfully been started up and/or you want to use the next available
+       port and need to be notified of what that port was, the Enclojure repl-server
+       uses and ack-port to create a repl-client to talk back to the starting process.
+       For an example of this see:
+       org.enclojure.ide.repl.repl-manager/get-ack-port
+       If the ack-port is not provided no acknowledgment will be attempted.
+       If the ack-port is provided a repl-client connection will be made and 
+       will send a function call to:
+       (repl-ack repl-id server-port)
+       There is a function:
+       (set-repl-ack-fn ack-fn) 
+       where you can set the function to be called in your client application.
+       "}
+  org.enclojure.repl.main
   (:use clojure.contrib.pprint clojure.main)
   (:require [clojure.contrib.pprint :as pprint])  
   (:import (java.net Socket ServerSocket)

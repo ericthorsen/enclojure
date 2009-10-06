@@ -29,7 +29,6 @@ public class launcher {
             sb.append(args[i]);
             sb.append(" ");
         }
-        //l.log(Level.INFO,"Got args hellloooo:" + sb.toString());
         try {
             requireFn.invoke(Symbol.create("org.enclojure.repl.main"));
             if (args.length > 1) {
