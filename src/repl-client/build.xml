@@ -83,7 +83,8 @@
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
       </classpath>
       <arg value="-e"/>
-      <arg value="(require '(org.enclojure.repl [main :as repl-server])) (repl-server/-main &quot;Repl-server&quot; &quot;4033&quot;)"/>
+      <arg value="(require '(org.enclojure.repl [main :as repl-server]))
+                (repl-server/-main &quot;Repl-server&quot; &quot;4033&quot;)"/>
     </java>
     <java classname="clojure.main" fork="true">
       <classpath>
@@ -95,8 +96,8 @@
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
       </classpath>
       <arg value="-e"/>
-      <arg value="(require '(org.enclojure.ide.repl [factory-test :as factory-test])) (factory-test/test-connect-external-repl &quot;4033&quot;)"/>
-      
+      <arg value="(require '(org.enclojure.ide.repl [factory-test :as factory-test]))
+                (factory-test/test-connect-external-repl &quot;4033&quot;)"/>
     </java>
   </target>
 </project>
