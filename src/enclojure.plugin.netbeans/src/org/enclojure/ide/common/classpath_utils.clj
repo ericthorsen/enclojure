@@ -297,10 +297,30 @@ in order to promote clojure finding the source and loading that before anything 
                     (set (:execute-paths final-set))
                     (set (:boot-paths final-set)))))))))))
 
-(defn classpath-for-default-java
-  []
-  (classpath-set-from-cp
-        (.getBootstrapLibraries (JavaPlatform/getDefault))))
+(defn classpath-for-java-platform
+  ([platform]
+    (classpath-set-from-cp
+      (.getBootstrapLibraries platform)))
+  ([] (JavaPlatform/getDefault)))
+
+(defn java-exec-properties-for-java-platform
+  "Given a JavaPlatform returns a map with:
+  :java-launcher (File object with the fill path to the java launcher)
+  :java-home (File object with the home path of the JavaPlatform.)
+If not arg is passed, calls this function with the default Java Platform
+setup in Netbeans"
+  ([platform]
+    (loop [paths (iterator-seq (-> platform .getInstallFolders .iterator))]
+      (if-let [path (first paths)]
+        (let [basepath (File. (.getPath path))
+              java (first (filter #(.exists %1)
+                            [(File. basepath (str "bin" File/separator "java"))
+                             (File. basepath (str "bin" File/separator "java.exe"))]))]
+          (if java {:launcher java :java-home basepath}
+            (recur (rest paths))))
+        nil)))
+  ([] (java-exec-properties-for-java-platform
+            (JavaPlatform/getDefault))))
 
 (defn classpath-for-repl []
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
