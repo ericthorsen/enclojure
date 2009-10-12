@@ -16,21 +16,35 @@
  (:require
    [org.enclojure.ide.repl.repl-manager :as repl-manager]
    [org.enclojure.ide.repl.repl-panel :as repl-panel]
+   [org.enclojure.commons.c-slf4j :as logger]
    [org.enclojure.ide.repl.repl-data :as repl-data])
  (:import (org.enclojure.repl IReplWindow IReplWindowFactory IRepl)
     (java.io File OutputStreamWriter FileOutputStream)
-        (javax.swing JFrame JScrollPane)
+        (javax.swing JFrame JScrollPane WindowConstants)
         (java.awt EventQueue)
+        (java.awt.event WindowAdapter WindowEvent)
     (org.enclojure.ide.repl DefReplWindowFactory)))
 
+; setup logging
+(logger/ensure-logger)
+
+(defn cleanup-onclose
+  "Add a window listener to a JFrame to shutdown the repl-servers
+and exit the app on close."
+  [jframe]
+  (.setDefaultCloseOperation jframe WindowConstants/DISPOSE_ON_CLOSE)
+  (.addWindowListener jframe
+    (proxy [WindowAdapter][]
+      (windowClosed [e]        
+        (repl-manager/stop-repl-servers)        
+        (System/exit 0))
+        )))
 
 (defn test-create-in-proc-repl
   "Sample function to create an in-proc REPL"
-  []
-  (let [latch (java.util.concurrent.CountDownLatch. 1)
-        irepl (atom nil)
-        frame (JFrame. "Inproc REPL Frame")
-        ]
+  []  
+  (let [irepl (atom nil)
+        frame (JFrame. "Inproc REPL Frame")]
     (EventQueue/invokeAndWait
         #(swap! irepl (fn [_] (create-in-proc-repl))))
     (.setLayout frame (java.awt.GridLayout. 1 1))
@@ -38,17 +52,15 @@
     (EventQueue/invokeLater
       #(do
          (.setSize frame 1000 1000)
-         (.setVisible frame true)))
-    (.await latch)))
+         (.setVisible frame true)
+         (cleanup-onclose frame)))))
 
 (defn test-connect-external-repl
   "This funtion assumes there is already a process running and will connect
 using the create-unmanaged-external-repl function"
   [server-port]
-  (let [latch (java.util.concurrent.CountDownLatch. 1)
-        irepl (atom nil)
-        frame (JFrame. "Unmanaged external REPL Frame")
-        ]
+  (let [irepl (atom nil)
+        frame (JFrame. "Unmanaged external REPL Frame")]
     (EventQueue/invokeAndWait
         #(swap! irepl
            (fn [_] (create-unmanaged-external-repl
@@ -60,17 +72,16 @@ using the create-unmanaged-external-repl function"
     (EventQueue/invokeLater
       #(do
          (.setSize frame 1000 1000)
-         (.setVisible frame true)))
-        (.await latch)))
+         (.setVisible frame true)
+         (cleanup-onclose frame)))))
+         
   
 (defn test-create-managed-repls
   "Sample function that creates 3 managed JVM processes and connects a
 ReplPanel to each one"
   []
-    (let [latch (java.util.concurrent.CountDownLatch. 1)
-        irepl (atom nil)
-        frame (JFrame. "Managed external REPL Frame")
-        ]
+    (let [irepl (atom nil)
+          frame (JFrame. "Managed external REPL Frame")]
     (EventQueue/invokeAndWait
         #(swap! irepl 
            (fn [_]
@@ -78,11 +89,11 @@ ReplPanel to each one"
                        (conj v (create-managed-external-repl
                                  {:repl-id (format "Repl-%s" id)}))) []
                (range 3)))))
-    (.setLayout frame (java.awt.GridLayout. 3 1))
+    (.setLayout frame (java.awt.GridLayout. 3 1))    
     (doseq [repl @irepl]
       (.add frame (-> repl .getReplPanel)))
     (EventQueue/invokeLater
       #(do
          (.setSize frame 1000 1000)
-         (.setVisible frame true)))
-    (.await latch)))
+         (.setVisible frame true)
+         (cleanup-onclose frame)))))

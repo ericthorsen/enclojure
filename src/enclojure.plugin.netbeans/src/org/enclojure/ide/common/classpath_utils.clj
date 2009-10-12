@@ -237,7 +237,9 @@ of all the JavaProjectConstants/SOURCES_TYPE_JAVA"
   {:source-roots
     [(build-classpath-set source ClassPath/SOURCE)]
    :execute-paths
-    [(build-classpath-set source ClassPath/EXECUTE)]})
+    [(build-classpath-set source ClassPath/EXECUTE)]
+   :boot-paths
+    [(build-classpath-set source ClassPath/BOOT)]})
 
 (def proj (atom nil))
 
@@ -278,7 +280,8 @@ in order to promote clojure finding the source and loading that before anything 
                 (interpose java.io.File/pathSeparator
                   (concat
                     (set (:source-roots final-set))
-                    (set (:execute-paths final-set)))))))))))
+                    (set (:execute-paths final-set))
+                    (set (:boot-paths final-set)))))))))))
           
 (defn classpath-for-repl []
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
