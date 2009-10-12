@@ -316,9 +316,11 @@ setup in Netbeans"
               java (first (filter #(.exists %1)
                             [(File. basepath (str "bin" File/separator "java"))
                              (File. basepath (str "bin" File/separator "java.exe"))]))]
-          (if java {:launcher java :java-home basepath}
+          (if java {:launcher java
+                    :java-home basepath
+                    :libs (.getBootstrapLibraries platform)}
             (recur (rest paths))))
-        nil)))
+                nil)))
   ([] (java-exec-properties-for-java-platform
             (JavaPlatform/getDefault))))
 
