@@ -324,6 +324,20 @@ setup in Netbeans"
   ([] (java-exec-properties-for-java-platform
             (JavaPlatform/getDefault))))
 
+(defn get-java-platform-for
+  ([canonical-classpath-str]
+    (assert (string? canonical-classpath-str))
+  (let [platforms
+            (map java-exec-properties-for-java-platform
+                     (.getInstalledPlatforms (JavaPlatformManager/getDefault)))]
+    (when-let [platform (first (filter #(.contains
+                                        canonical-classpath-str
+                                        (.getCanonicalPath (:java-home %)))
+                                            platforms))]
+      platform))))
+  
+
+
 (defn classpath-for-repl []
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
                         (apply str (interpose java.io.File/pathSeparator
@@ -336,5 +350,9 @@ setup in Netbeans"
     cp))
 
 
+(comment
 
-        
+(def plats (.getInstalledPlatforms (JavaPlatformManager/getDefault)))
+(def libs (map #(.getBootstrapLibraries %) plats))
+
+)
