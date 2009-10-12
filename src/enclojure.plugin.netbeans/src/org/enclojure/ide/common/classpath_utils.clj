@@ -201,10 +201,11 @@ of all the JavaProjectConstants/SOURCES_TYPE_JAVA"
           (conj ret (.getRootFolder source-group)))
         (distinct ret)))))
 
-(defn build-classpath-set
-  [source-group cp-type]
-  (let [cp (ClassPath/getClassPath source-group cp-type)
-        base-str (.toString cp ClassPath$PathConversionMode/FAIL)]
+(defn classpath-set-from-cp
+  "Given a ClassPath object, builds a canonical classpath string for
+use on a jvm startup."
+  [#^ClassPath cp]
+  (let [base-str (.toString cp ClassPath$PathConversionMode/FAIL)]
     (str base-str
       java.io.File/pathSeparator
       (classpaths/build-classpath-str
@@ -215,6 +216,19 @@ of all the JavaProjectConstants/SOURCES_TYPE_JAVA"
                         (when (= "file" (.getProtocol url))
                           (.isDirectory (File. (.toURI url)))))
                (.entries cp)))))))
+
+(defn build-classpath-set
+  "Given a SourceGroup and ClassPath/<Type>
+    ClassPath/BOOT
+    ClassPath/COMPILE
+    ClassPath/DEBUG
+    ClassPath/EXECUTE
+    ClassPath/SOURCE
+    etc.
+    returns a canonical classpath string for
+use on a jvm startup."
+  [source-group cp-type]
+  (classpath-set-from-cp (ClassPath/getClassPath source-group cp-type)))
 
 (defn get-classpath-from-source2 [source]
   (str (ClassPath/getClassPath source ClassPath/SOURCE)
@@ -282,7 +296,12 @@ in order to promote clojure finding the source and loading that before anything 
                     (set (:source-roots final-set))
                     (set (:execute-paths final-set))
                     (set (:boot-paths final-set)))))))))))
-          
+
+(defn classpath-for-default-java
+  []
+  (classpath-set-from-cp
+        (.getBootstrapLibraries (JavaPlatform/getDefault))))
+
 (defn classpath-for-repl []
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
                         (apply str (interpose java.io.File/pathSeparator
