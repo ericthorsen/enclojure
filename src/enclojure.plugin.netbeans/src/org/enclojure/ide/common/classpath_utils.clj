@@ -201,6 +201,27 @@ of all the JavaProjectConstants/SOURCES_TYPE_JAVA"
           (conj ret (.getRootFolder source-group)))
         (distinct ret)))))
 
+(defn get-paths-from-classpath2
+  "Given a ClassPath object, returns a vector of canonical paths as strings"
+  [#^ClassPath cp]
+  (reduce #(conj %1
+                   (str (FileUtil/normalizeFile
+                          (FileUtil/toFile (.getRoot %2)))))
+          [] (filter #(let [url (-> % .getURL)]
+                        (when (= "file" (.getProtocol url))
+                          (.exists (File. (.toURI url)))))
+               (.entries cp))))
+
+(defn get-paths-from-classpath
+  "Given a ClassPath object, returns a vector of canonical paths as strings"
+  [#^ClassPath cp]
+  (reduce #(conj %1
+                   (str (FileUtil/normalizeFile
+                          (FileUtil/toFile (.getRoot %2)))))
+          [] (filter #(.getRoot %)
+               (.entries cp))))
+
+
 (defn classpath-set-from-cp
   "Given a ClassPath object, builds a canonical classpath string for
 use on a jvm startup."
@@ -209,13 +230,7 @@ use on a jvm startup."
     (str base-str
       java.io.File/pathSeparator
       (classpaths/build-classpath-str
-        (reduce #(conj %1
-                   (str (FileUtil/normalizeFile
-                          (FileUtil/toFile (.getRoot %2)))))
-          [] (filter #(let [url (-> % .getURL)]
-                        (when (= "file" (.getProtocol url))
-                          (.isDirectory (File. (.toURI url)))))
-               (.entries cp)))))))
+        (get-paths-from-classpath cp)))))
 
 (defn build-classpath-set
   "Given a SourceGroup and ClassPath/<Type>
