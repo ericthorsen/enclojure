@@ -10,6 +10,7 @@
     )
   (:require
     [org.enclojure.commons.c-slf4j :as logger]
+    [org.enclojure.ide.repl.repl-panel :as repl-panel]
     [org.enclojure.ide.analyze.symbol-nav :as symbol-nav]
     [org.enclojure.ide.nb.editor.completion.file-mapping :as file-mapping]
     [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
@@ -59,14 +60,6 @@ the resulting file's ns is refered on successful load"
       (.ExecuteExpr repl cmd nil))))
 
 
-(defn load-with-debug [text ns]
-  (if (and ns (check-repl-form? text))
-    (pr-str (list 'org.enclojure.repl.main/load-string-with-dbg
-              text
-              (meta-utils/source-path-from-ns ns)
-              (meta-utils/file-from-ns ns)))
-    text))
-
 (defn get-file-context
   "attempts to determine the project, namespace and get the ns node for a given
 source file referenced by the passed in node(s) and also extract the selected
@@ -105,7 +98,7 @@ text or top level form"
             nsnode (get-namespace-node pane)
             nsname (get-namespace pane)]
       (execute-expr p
-        (load-with-debug
+        (repl-panel/load-with-debug
             (.getText pane) nsname) nsnode)))))
 
 (defn load-namespace-action
@@ -201,5 +194,5 @@ nodes and loads each of them in turn as text (so searching is done)"
                     full-text (slurp (.getPath fo))]
                 (logger/info "Resource {} full-path {}" ns-f (.getPath fo))
       (execute-expr p
-        (load-with-debug full-text (meta-utils/ns-from-file ns-f)) nil
+        (repl-panel/load-with-debug full-text (meta-utils/ns-from-file ns-f)) nil
         )))))))))

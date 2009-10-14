@@ -45,7 +45,7 @@ public final class CljSourceWizardIterator implements WizardDescriptor.Instantia
      */
     private WizardDescriptor.Panel[] getPanels() {
         project = Templates.getProject(wizard);
-        sources = (Sources)project.getLookup().lookup(Sources.class);
+        sources = project.getLookup().lookup(Sources.class);
         groups = sources.getSourceGroups(JavaProjectConstants.SOURCES_TYPE_JAVA);
         //;packageChooserPanel = JavaTemplates.createPackageChooser(project,groups,new CljSourceWizardPanel1());
         if (panels == null) {

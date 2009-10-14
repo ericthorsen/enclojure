@@ -272,6 +272,16 @@
             <file name="org.enclojure.ide.nb.actions-DebugProjectWithReplContextMenuAction.instance">
                 <attr name="position" intvalue="1002"/>
             </file>
+            <file name="org.enclojure.ide.nb.actions-LoadAllClojureFilesForProjectAction.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllClojureFilesForProjectAction.create"/>
+                    <attr name="source-group" intvalue="0"/>
+                    <attr name="position" intvalue="1003"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-LoadAllClojureFilesForProjectAction.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllClojureFilesForProjectAction.create2"/>
+                    <attr name="source-group" intvalue="1"/>
+                    <attr name="position" intvalue="1004"/>
+            </file>
         </folder>
     </folder>
 

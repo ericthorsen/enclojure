@@ -25,6 +25,7 @@
         :as enclojure-options-category]
     [org.enclojure.ide.preferences.platform-options
         :as platform-options]
+    [org.enclojure.commons.meta-utils :as meta-utils]
     [org.enclojure.ide.repl.repl-history-browse :as repl-history-browse]
     [org.enclojure.ide.nb.editor.utils :as utils]
     [org.enclojure.ide.settings.utils :as pref-utils]
@@ -32,11 +33,13 @@
     [org.enclojure.commons.c-slf4j :as logger]
     [org.enclojure.ide.nb.editor.repl-focus :as repl-focus]
     [org.enclojure.ide.debugger.jdi :as jdi]
+    [org.enclojure.ide.nb.source.add-file :as add-file]
+    [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
     )
   (:import (org.enclojure.ide.repl ReplPanel)
     (org.enclojure.repl IReplWindow IReplWindowFactory)
     (org.enclojure.ide.nb.editor ReplTopComponent)
-    (org.netbeans.api.project Project ProjectInformation)
+    (org.netbeans.api.project Project ProjectInformation ProjectUtils Sources)
     (org.openide.filesystems FileUtil)
     (java.awt EventQueue Component)
     (java.util.logging Level Logger)
@@ -228,6 +231,12 @@
 ;========================================================================
 ; Support functions
 ;========================================================================
+(defn repl-running?
+  [#^Project p]
+  (boolean
+    (repl-manager/repl-connected?
+        (repl-focus/get-project-name p))))
+
 (defn run-context-menu-name [#^Project p]
   (let [repl-id (repl-focus/get-project-name p)]
     (ReplTopComponent/getBundleProperty
@@ -276,3 +285,54 @@ func. The repl-function is used to paste the expression into the repl-window fir
           "CTL_AttachDebugProjectWithReplAction"
           "CTL_RunDebugProjectWithReplAction"))
       repl-id)))
+
+(defn get-source-group
+  "Given a project and an index into a source-group, return the source group. If
+the index is out of range returns nil"
+  [#^Project p index]
+  (when-let [{:keys [name source-roots]}
+                (add-file/get-project-data p)]
+    (let [source-groups (into [] (sort source-roots))]
+        (when (and (< index (count source-groups))
+                  (>= 0 index))
+          (let [ret (source-groups index)]
+            (logger/info "Returning the {} item from {} {}"
+              index (class source-groups) source-groups)
+            {:name (first ret) :source-group (fnext ret)})))))        
+
+(defn load-all-source-context-menu-name
+  "Gets the context menu with the source group name"
+  [#^Project p source-group-inx]
+  (let [repl-id (repl-focus/get-project-name p)]
+    (let [{:keys [name source-group]} (get-source-group p source-group-inx)]       
+      (if name
+       (format
+            (ReplTopComponent/getBundleProperty
+              "CTL_LoadAllSourcesAction" repl-id) name) ""))))
+  
+(defn check-enabled-for-load-all-sources?
+  "If the source-group is in range and the REPL is running returns true"
+  [#^Project p source-group-inx]
+  (boolean (when-let [source-group (get-source-group p source-group-inx)]
+    (repl-running? p))))
+  
+(defn loadall-source-for-project
+  "If the source group is in range, loads all clojure source files into the REPL"
+  [#^Project p source-group-inx]
+  (when-let [{:keys [name source-group]} (get-source-group p source-group-inx)]
+    (let [repl-id (repl-focus/get-project-name p)
+          sources (symbol-caching/file-obj-traverse
+                    source-group
+                    #(= "clj" (.getExt %)))
+          {:keys [external local]} (repl-manager/get-repl-config repl-id)]
+      (logger/info "Found {} source files to load" (count sources))
+      (doseq [source sources]
+         (let [ns-f (classpath-utils/resource-name-from-full-path
+                           (.getPath source))
+               full-text (slurp (.getPath source))]
+        (logger/info "Loading Resource {} in REPL. Full-path {}" ns-f (.getPath source))
+        (execute-expr p
+            (repl-panel/load-with-debug full-text (meta-utils/ns-from-file ns-f)) nil))))))
+          
+
+

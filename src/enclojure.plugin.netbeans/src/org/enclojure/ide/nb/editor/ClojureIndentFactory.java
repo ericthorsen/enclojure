@@ -143,7 +143,7 @@ public class ClojureIndentFactory implements IndentTask.Factory {
                //if not then just indent the one line
                Node[] n = TopComponent.getRegistry().getActivatedNodes();
                if (n.length == 1) {
-                  EditorCookie ec = (EditorCookie) n[0].getCookie(EditorCookie.class);
+                  EditorCookie ec = n[0].getCookie(EditorCookie.class);
                   if (ec != null) {
                      JEditorPane[] panes = ec.getOpenedPanes();
                      if (panes.length > 0) {

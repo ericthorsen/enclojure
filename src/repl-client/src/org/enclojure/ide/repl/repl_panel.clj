@@ -17,7 +17,9 @@
        org.enclojure.ide.repl.repl-history
        )
  (:require [org.enclojure.ide.repl.repl-history-browse :as repl-history-browse]
-   [org.enclojure.commons.c-slf4j :as logger])
+            [org.enclojure.commons.meta-utils :as meta-utils]
+            [org.enclojure.commons.c-slf4j :as logger]
+   )
  (:import (java.util.logging Logger Level)
       (org.enclojure.ide.repl ReplPanel)
       (java.io File OutputStreamWriter FileOutputStream)
@@ -211,6 +213,14 @@
             (not (is-eof-ex? t)))))))
   ([expr]
     (check-repl-form? expr nil)))
+
+(defn load-with-debug [text ns]
+  (if (and ns (check-repl-form? text))
+    (pr-str (list 'org.enclojure.repl.main/load-string-with-dbg
+              text
+              (meta-utils/source-path-from-ns ns)
+              (meta-utils/file-from-ns ns)))
+    text))
 
 (defn check-repl-forms?
   "reads the set of forms that are in expr (could be just 1)

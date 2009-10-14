@@ -261,16 +261,19 @@
 
 (defn file-obj-traverse
   "Takes a FileObject and recurses through returning all the files"
-  [#^FileObject root]
-  (let [accumfn (fn accumfn [roots files]
+  ([#^FileObject root predicate]
+    (let [accumfn (fn accumfn [roots files]
                 (loop [c roots files files]
-                    (if-let [file #^FileObject (first c)]
-                     (recur (rest c)
-                        (if (.isFolder #^FileObject file)
-                          (accumfn (.getChildren #^FileObject file) files)
-                        (conj files file)))
-                files)))]
+                    (if-let [file #^FileObject (first c)]                      
+                        (recur (rest c)
+                            (if (.isFolder #^FileObject file)
+                              (accumfn (.getChildren #^FileObject file) files)
+                              (if (predicate file)
+                                (conj files file) files)))
+                      files)))]
     (accumfn (.getChildren #^FileObject root) [])))
+  ([#^FileObject root]
+    (file-obj-traverse root identity)))
 
 ;------------------------------------------------------------
 ; Analysis of a given unit

@@ -12,18 +12,20 @@
 *    the terms of this license.
 *    You must not remove this notice, or any other, from this software.
 *******************************************************************************
-*    Author: Narayan Singhal
+*    Author: Eric Thorsen
 *******************************************************************************
 )
 */
 package org.enclojure.ide.nb.actions;
 
+import clojure.lang.IFn;
 import clojure.lang.RT;
-import clojure.lang.Var;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import org.netbeans.api.project.Project;
 import org.openide.awt.DynamicMenuContent;
@@ -33,26 +35,51 @@ import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.actions.Presenter;
 
-public class RunProjectWithReplContextMenuAction extends AbstractAction implements ContextAwareAction {
+public class LoadAllClojureFilesForProjectAction extends AbstractAction implements ContextAwareAction {
 
-    static final Var startStopProjectReplFn =
-        RT.var("org.enclojure.ide.nb.editor.repl-win", "start-stop-project-repl");
-    static final Var runContextMenuNameFn =
-        RT.var("org.enclojure.ide.nb.editor.repl-win", "run-context-menu-name");
+    static final String ns = "org.enclojure.ide.nb.editor.repl-win";
+    static final String contextMenuNameFunc = "load-all-source-context-menu-name";
+    static final String actionFunc = "loadall-source-for-project";
+    static final String checkEnabledFunc = "check-enabled-for-load-all-sources?";
+
+       public static synchronized LoadAllClojureFilesForProjectAction create(Map<?,?> args) throws Exception {
+        Integer group = (Integer)args.get("source-group");
+        if(group == null) {
+            throw new Exception("source-group attribute missing! Cannot create LoadAllClojureFilesForProjectAction.");
+        }
+        return new LoadAllClojureFilesForProjectAction(group==null?0:group.intValue());
+       }
+
+              public static synchronized LoadAllClojureFilesForProjectAction create2(Map<?,?> args) throws Exception {
+        Integer group = (Integer)args.get("source-group");
+        if(group == null) {
+            throw new Exception("source-group attribute missing! Cannot create LoadAllClojureFilesForProjectAction.");
+        }
+        return new LoadAllClojureFilesForProjectAction(group==null?0:group.intValue());
+       }
+    int sourceGroup=0;
+    
+    public LoadAllClojureFilesForProjectAction(int sourceGroup)
+        { this.sourceGroup = sourceGroup;}
 
     public void actionPerformed(ActionEvent e) {assert false;}
     public Action createContextAwareInstance(Lookup context) {
         return new ContextAction(context);
     }
+    
     private boolean enable(Project p) {
-        assert p != null;
-        return true;
+        try {
+            return ((Boolean) RT.var(ns,checkEnabledFunc).invoke(p,this.sourceGroup)).booleanValue();
+        } catch (Exception ex) {
+            Exceptions.printStackTrace(ex);
+            return false;
+        }
     }
 
     private String labelFor(Project p) {
         assert p != null;
         try {
-            return (String) runContextMenuNameFn.invoke(p);
+            return (String) RT.var(ns,contextMenuNameFunc).invoke(p,this.sourceGroup);
         } catch (Exception ex) {
             Exceptions.printStackTrace(ex);
         }
@@ -62,11 +89,12 @@ public class RunProjectWithReplContextMenuAction extends AbstractAction implemen
     private void perform(Project p) {
         assert p != null;
         try {
-            startStopProjectReplFn.invoke(p);
+            RT.var(ns,actionFunc).invoke(p,this.sourceGroup);
         } catch (Exception ex) {
             Exceptions.printStackTrace(ex);
         }
     }
+
     private final class ContextAction extends AbstractAction implements Presenter.Popup {
         private final Project p;
 
@@ -94,7 +122,12 @@ public class RunProjectWithReplContextMenuAction extends AbstractAction implemen
                     return getMenuPresenters();
                 }
             }
-            return new Presenter();
+
+            //Not implemented so disabling the menu item
+            JMenuItem menuItem = new Presenter();
+            //??menuItem.setEnabled(false);
+            return menuItem;
         }
     }
 }
+
