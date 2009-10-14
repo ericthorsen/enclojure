@@ -187,12 +187,27 @@
 (defn get-all-classpaths-launch-string []
     (build-launcher-cp-string (get-all-classpaths)))
 
+(defmulti get-file-name-from class)
+
+(defmethod get-file-name-from sun.net.www.protocol.file.FileURLConnection
+  [connection]
+  (.getFile connection))
+
+
+(defn file-from-jar-url
+  "Given a jar URL, return a File object that refers to it"
+  [jar-url]
+  (assert (instance? java.net.URL jar-url))
+  (when-let [jar-conn (.openConnection jar-url)]
+     (java.io.File. (-> jar-conn .getURL .toURI))))
+
 (defn get-source-roots
   "Looks at each of the SourceGroups of a project and returns the root folder
 of all the JavaProjectConstants/SOURCES_TYPE_JAVA"
   [#^Project p]
   (let [sources (ProjectUtils/getSources p)
-        source-groups (.getSourceGroups sources JavaProjectConstants/SOURCES_TYPE_JAVA)]
+        source-groups (.getSourceGroups sources
+                        JavaProjectConstants/SOURCES_TYPE_JAVA)]
     (loop [source-groups source-groups
            source-group (first source-groups)
            ret []]
@@ -201,25 +216,16 @@ of all the JavaProjectConstants/SOURCES_TYPE_JAVA"
           (conj ret (.getRootFolder source-group)))
         (distinct ret)))))
 
-(defn get-paths-from-classpath2
-  "Given a ClassPath object, returns a vector of canonical paths as strings"
-  [#^ClassPath cp]
-  (reduce #(conj %1
-                   (str (FileUtil/normalizeFile
-                          (FileUtil/toFile (.getRoot %2)))))
-          [] (filter #(let [url (-> % .getURL)]
-                        (when (= "file" (.getProtocol url))
-                          (.exists (File. (.toURI url)))))
-               (.entries cp))))
 
 (defn get-paths-from-classpath
   "Given a ClassPath object, returns a vector of canonical paths as strings"
   [#^ClassPath cp]
-  (reduce #(conj %1
-                   (str (FileUtil/normalizeFile
-                          (FileUtil/toFile (.getRoot %2)))))
-          [] (filter #(.getRoot %)
-               (.entries cp))))
+  (reduce #(if (.exists %2)
+             (conj %1 (.getCanonicalPath %2))
+             %1)
+          [] (filter identity 
+               (map #(file-from-jar-url (-> % .getRoot .getURL))
+                    (.entries cp)))))
 
 
 (defn classpath-set-from-cp
@@ -272,7 +278,7 @@ use on a jvm startup."
 
 (def proj (atom nil))
 
-(defn do-get-project-classpath
+(defn do-get-project-classpath-str
   "For a given project we want a map of:
 {:source-roots :execute-paths}"
   ([#^Project p]
@@ -283,6 +289,24 @@ use on a jvm startup."
               (merge-with concat
                 ret
                 (get-classpath-from-source source)))
+            ret)))))
+
+(defn do-get-project-classpath
+  "For a given project we want a map of:
+{:source-roots :execute-paths}"
+  ([#^Project p]
+    (when p
+        (loop [sources (get-source-roots p) 
+               ret   {  :source-roots []
+                        :execute-paths []
+                        :boot-paths [] }]    
+        (if-let [source (first sources)]
+            (recur (next sources)
+              (reduce (fn [m [k src]]
+                        (update-in m [k]
+                         conj (ClassPath/getClassPath source src)))
+                    ret (map vector [:source-roots :execute-paths :boot-paths]
+                          [ClassPath/SOURCE ClassPath/EXECUTE ClassPath/BOOT])))
             ret)))))
 
 (defn get-project-classpath
@@ -301,10 +325,10 @@ in order to promote clojure finding the source and loading that before anything 
       (if-let [subp (first sub-projects)]
         (recur (rest sub-projects)
           (merge-with concat cps
-            (do-get-project-classpath subp)))
+            (do-get-project-classpath-str subp)))
         (let [final-set
               (merge-with concat
-                (do-get-project-classpath p) cps)]
+                (do-get-project-classpath-str p) cps)]
             (apply str
                 (interpose java.io.File/pathSeparator
                   (concat
@@ -352,7 +376,6 @@ setup in Netbeans"
       platform))))
   
 
-
 (defn classpath-for-repl []
     (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
                         (apply str (interpose java.io.File/pathSeparator
@@ -365,9 +388,9 @@ setup in Netbeans"
     cp))
 
 
-(comment
+;(comment
 
 (def plats (.getInstalledPlatforms (JavaPlatformManager/getDefault)))
 (def libs (map #(.getBootstrapLibraries %) plats))
 
-)
+;)

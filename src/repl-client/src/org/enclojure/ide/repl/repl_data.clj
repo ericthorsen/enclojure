@@ -35,6 +35,7 @@
    :repl-id "Default Repl Id"
    :port 0
    :ack-port nil
+   :java-exe "java"
    })
 
 (def #^{:doc "Context required for an inproc repl"}

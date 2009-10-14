@@ -146,6 +146,7 @@ For seeing the command line use:"
     repl-server.  There are four arguments:
   repl-config -> A map with a set of startup options for the java process.  
                  These should include:
+                 :java-exe -> java executable (defaults to java)
                  :arguments -> startup arguments for the java 
                  :debug-port-arg -> port to use for the debugger
                  :classpath -> classpath for -cp arg
@@ -168,7 +169,7 @@ For seeing the command line use:"
   "
   [repl-config complete-fn failed-fn process-monitor-fn]
   (let [java-args (java-cmd-array repl-config)
-        cmd-line (CommandLine/parse "java")
+        cmd-line (CommandLine/parse (or (:java-exe repl-config) "java"))
         _ (logger/info  "start java process with {}"
             (apply vector java-args))
         _ (doall (map #(.addArguments cmd-line (str %) false) java-args))

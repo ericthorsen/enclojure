@@ -112,6 +112,11 @@
   ([]
     (config-with-preferences {})))
 
+(defn get-default-java-exe
+  "Get the full path of the java executable of the default platform"
+  []
+  (.getCanonicalPath
+    (:launcher (classpath-utils/java-exec-properties-for-java-platform))))
 ;========================================================================
 ; Embedded IDE REPL startup
 ;========================================================================
@@ -151,7 +156,8 @@
       (when
         (zero? (verify-classpath classpath))
         (let [irepl (factory/create-managed-external-repl
-                      (assoc updated-config :classpath classpath)
+                      (assoc updated-config :classpath classpath
+                        :java-exe (get-default-java-exe))
                       -get-repl-window-factory-)]
           (.setResetReplFn
             (.getReplPanel irepl)
@@ -190,7 +196,8 @@
     (when
       (zero? (verify-classpath classpath))
         (let [irepl (factory/create-managed-external-repl
-                      (assoc updated-config :classpath classpath)
+                      (assoc updated-config :classpath classpath
+                        :java-exe (get-default-java-exe))
                       -get-repl-window-factory-)]
         (.setResetReplFn (.getReplPanel irepl) (partial reset-repl p))        
         (repl-panel/evaluate-in-repl repl-id
