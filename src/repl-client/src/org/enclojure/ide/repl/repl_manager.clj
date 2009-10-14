@@ -134,7 +134,7 @@ org.enclojure.ide.repl.repl-data for more info"
   "takes a map which looks like @*default-config* and creates a java array to be used in the ProcessBuilder later on.
 For seeing the command line use:"
   ;(apply str (interpose \" \" (org.enclojure.repl.e-repl-startup/java-cmd-array org.enclojure.repl.e-repl-startup/@*default-config*)))"
-  [{:keys [arguments debug-port-arg classpath java-main repl-id port ack-port]}]
+  [{:keys [java-exe arguments debug-port-arg classpath java-main repl-id port ack-port]}]
   (logger/info  "Arguments are .....{}" arguments)
   (apply conj arguments
     (map str
@@ -171,7 +171,7 @@ For seeing the command line use:"
   (let [java-args (java-cmd-array repl-config)
         cmd-line (CommandLine/parse (or (:java-exe repl-config) "java"))
         _ (logger/info  "start java process with {}"
-            (apply vector java-args))
+            (apply vector (or (:java-exe repl-config) "java") java-args))
         _ (doall (map #(.addArguments cmd-line (str %) false) java-args))
         #^DefaultExecutor executor (DefaultExecutor.)
         [out-pipe err-pipe] [(PipedOutputStream.) (PipedOutputStream.)]

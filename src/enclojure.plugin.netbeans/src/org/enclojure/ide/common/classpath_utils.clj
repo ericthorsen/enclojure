@@ -19,6 +19,7 @@
   (:require
     [org.enclojure.ide.repl.classpaths :as classpaths]
     [org.enclojure.commons.c-slf4j :as logger]
+    [clojure.contrib.except :as except]
     )
   (:import (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
              GlobalPathRegistryEvent GlobalPathRegistryListener)
@@ -41,6 +42,7 @@
       FileUtil JarFileSystem URLMapper)
     (java.io File FileWriter IOException StringReader StringWriter
       PrintStream PrintWriter OutputStream ByteArrayOutputStream)
+    (java.net JarURLConnection URL URI)
     (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType
       ClassType)))
 
@@ -190,16 +192,23 @@
 (defmulti get-file-name-from class)
 
 (defmethod get-file-name-from sun.net.www.protocol.file.FileURLConnection
+  [connection]  
+  (java.io.File. (-> connection .getURL .toURI)))
+  
+(defmethod get-file-name-from JarURLConnection
   [connection]
-  (.getFile connection))
-
+  (java.io.File. (-> connection .getJarFileURL .toURI)))
+  
 
 (defn file-from-jar-url
   "Given a jar URL, return a File object that refers to it"
   [jar-url]
-  (assert (instance? java.net.URL jar-url))
+  (except/throw-if-not
+        (instance? java.net.URL jar-url)
+    "Expected argument type of java.net.URL got %s" 
+        (str (or (nil? jar-url) "nil" jar-url)))
   (when-let [jar-conn (.openConnection jar-url)]
-     (java.io.File. (-> jar-conn .getURL .toURI))))
+    (get-file-name-from jar-conn)))
 
 (defn get-source-roots
   "Looks at each of the SourceGroups of a project and returns the root folder
@@ -224,7 +233,8 @@ of all the JavaProjectConstants/SOURCES_TYPE_JAVA"
              (conj %1 (.getCanonicalPath %2))
              %1)
           [] (filter identity 
-               (map #(file-from-jar-url (-> % .getRoot .getURL))
+               (map #(when-let [r (-> % .getRoot)]
+                         (file-from-jar-url (.getURL r)))
                     (.entries cp)))))
 
 
