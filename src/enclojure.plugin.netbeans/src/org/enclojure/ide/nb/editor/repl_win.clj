@@ -34,6 +34,7 @@
     [org.enclojure.ide.nb.editor.repl-focus :as repl-focus]
     [org.enclojure.ide.debugger.jdi :as jdi]
     [org.enclojure.ide.nb.source.add-file :as add-file]
+    [org.enclojure.ide.common.error-reporting :as error-reporting]
     [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
     )
   (:import (org.enclojure.ide.repl ReplPanel)
@@ -137,13 +138,21 @@
 ; External unmanaged REPL startup
 ;========================================================================
 (defn connect-external-repl [repl-id host port]
-    (let [irepl
-          (factory/create-unmanaged-external-repl
-            (assoc (or (repl-manager/get-repl-config repl-id)
-                        {:repl-id repl-id})
-              :host host :port port)
-            -get-repl-window-factory-)]
-    (-> irepl .getReplWindow .getComponent)))
+  (let [irepl
+        (factory/create-unmanaged-external-repl
+          (assoc (or (repl-manager/get-repl-config repl-id)
+                   {:repl-id repl-id})
+            :host host :port port)
+          -get-repl-window-factory-)]
+    (try
+      (-> irepl .getReplWindow .getComponent)
+    (catch Exception e
+      (error-reporting/report-error        
+        (format "Error starting REPL %s using host %s with port %s. Make sure
+the JVM you are connecting to has the Enclojure repl-server running and has
+the clojure.jar and clojure-contrib.jars in the classpath. Also check your host
+and port settings." repl-id) e)))))
+
 
 ;========================================================================
 ; External managed stand alone REPL startup (no project associations)
@@ -177,14 +186,21 @@
 (defn start-stand-alone-repl-action
   "Top level function that grabs the preferences and starts a stand alone repl"
   [action]
-  (let [prefs (enclojure-options-category/get-stand-alone-settings)]
-    (start-stand-alone-repl
-      "Stand-alone REPL"
-      (:jvm-additional-args prefs)
-      (apply str (classpath-utils/classpath-for-repl)
-        java.io.File/pathSeparator
-        (interpose java.io.File/pathSeparator
-          (:classpaths (:platform  prefs)))))))
+  (try
+    (let [prefs (enclojure-options-category/get-stand-alone-settings)]
+      (start-stand-alone-repl
+        "Stand-alone REPL"
+        (:jvm-additional-args prefs)
+        (apply str (classpath-utils/classpath-for-repl)
+          java.io.File/pathSeparator
+          (interpose java.io.File/pathSeparator
+            (:classpaths (:platform  prefs))))))
+    (catch Exception e
+      (error-reporting/report-error        
+        "Stand alone repl failed to start.  Make sure you have Clojure
+and Clojure.contrib jars in assigned Clojure Platform for the standalone REPL.
+See the Enclojure category under preferences to view your settings" e))))
+
 
 (declare reset-repl)
 ;========================================================================
@@ -196,17 +212,25 @@
         curr-config (repl-manager/get-repl-config repl-id)
         updated-config (merge (or curr-config {:repl-id repl-id})
                          (config-with-preferences))]
-    (when
-      (zero? (verify-classpath classpath))
+    (try
+      (when
+        (zero? (verify-classpath classpath))
         (let [irepl (factory/create-managed-external-repl
                       (assoc updated-config :classpath classpath
                         :java-exe (get-default-java-exe))
                       -get-repl-window-factory-)]
-        (.setResetReplFn (.getReplPanel irepl) (partial reset-repl p))        
-        (repl-panel/evaluate-in-repl repl-id
+          (.setResetReplFn (.getReplPanel irepl) (partial reset-repl p))
+          (repl-panel/evaluate-in-repl repl-id
             (str (repl-manager/get-settings-set-expression repl-id)))
           (-> irepl .getReplWindow .open)
-          (-> irepl .getReplWindow .makeActive)))))
+          (-> irepl .getReplWindow .makeActive)))
+    (catch Exception e
+      (error-reporting/report-error        
+        (str (format "Project REPL for %s failed to start.  Make sure you have Clojure
+and Clojure.contrib jars as libraries in your project." repl-id) 
+          "\nThese are both required to start a repl."
+          "\nFor a project REPL, you can add them as libraries to the project.")
+          e)))))
         
 
 (defn stop-project-repl [proj repl-tc-closing?]
@@ -325,7 +349,7 @@ the index is out of range returns nil"
                     source-group
                     #(= "clj" (.getExt %)))
           {:keys [external local]} (repl-manager/get-repl-config repl-id)]
-      (logger/info "Found {} source files to load" (count sources))
+      (logger/debug "Found {} source files to load" (count sources))
       (doseq [source sources]
          (let [ns-f (classpath-utils/resource-name-from-full-path
                            (.getPath source))
