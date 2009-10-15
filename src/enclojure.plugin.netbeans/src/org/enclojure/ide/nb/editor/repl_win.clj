@@ -294,7 +294,7 @@ the index is out of range returns nil"
                 (add-file/get-project-data p)]
     (let [source-groups (into [] (sort source-roots))]
         (when (and (< index (count source-groups))
-                  (>= 0 index))
+                  (>= index 0))
           (let [ret (source-groups index)]
             (logger/info "Returning the {} item from {} {}"
               index (class source-groups) source-groups)

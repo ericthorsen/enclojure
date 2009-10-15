@@ -272,15 +272,25 @@
             <file name="org.enclojure.ide.nb.actions-DebugProjectWithReplContextMenuAction.instance">
                 <attr name="position" intvalue="1002"/>
             </file>
-            <file name="org.enclojure.ide.nb.actions-LoadAllClojureFilesForProjectAction.instance">
-                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllClojureFilesForProjectAction.create"/>
+            <file name="org.enclojure.ide.nb.actions-LoadAllCljFilesForProjectGroup1.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllCljFilesForProjectGroup1.create"/>
                     <attr name="source-group" intvalue="0"/>
                     <attr name="position" intvalue="1003"/>
             </file>
-            <file name="org.enclojure.ide.nb.actions-LoadAllClojureFilesForProjectAction.instance">
-                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllClojureFilesForProjectAction.create2"/>
+            <file name="org.enclojure.ide.nb.actions-LoadAllCljFilesForProjectGroup2.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllCljFilesForProjectGroup2.create"/>
                     <attr name="source-group" intvalue="1"/>
                     <attr name="position" intvalue="1004"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-LoadAllCljFilesForProjectGroup3.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllCljFilesForProjectGroup3.create"/>
+                    <attr name="source-group" intvalue="2"/>
+                    <attr name="position" intvalue="1005"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-LoadAllCljFilesForProjectGroup4.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllCljFilesForProjectGroup4.create"/>
+                    <attr name="source-group" intvalue="3"/>
+                    <attr name="position" intvalue="1006"/>
             </file>
         </folder>
     </folder>

@@ -18,14 +18,12 @@
 */
 package org.enclojure.ide.nb.actions;
 
-import clojure.lang.IFn;
 import clojure.lang.RT;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import org.netbeans.api.project.Project;
 import org.openide.awt.DynamicMenuContent;
@@ -50,13 +48,6 @@ public class LoadAllClojureFilesForProjectAction extends AbstractAction implemen
         return new LoadAllClojureFilesForProjectAction(group==null?0:group.intValue());
        }
 
-              public static synchronized LoadAllClojureFilesForProjectAction create2(Map<?,?> args) throws Exception {
-        Integer group = (Integer)args.get("source-group");
-        if(group == null) {
-            throw new Exception("source-group attribute missing! Cannot create LoadAllClojureFilesForProjectAction.");
-        }
-        return new LoadAllClojureFilesForProjectAction(group==null?0:group.intValue());
-       }
     int sourceGroup=0;
     
     public LoadAllClojureFilesForProjectAction(int sourceGroup)
