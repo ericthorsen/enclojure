@@ -14,7 +14,7 @@
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for code folding"}
   org.enclojure.protocols.editor.code-folding
-  (:require [org.enclojure.protocols.helpers :as helpers])
+  (:require [org.enclojure.protocols.helpers :as helpers]))
 
 (defmulti get-code-folder helpers/classfn-any-arity)
 

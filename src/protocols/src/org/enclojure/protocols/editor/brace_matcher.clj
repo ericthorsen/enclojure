@@ -13,7 +13,8 @@
 
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for brace matching"}
-    org.enclojure.protocols.editor.brace-matcher)
+    org.enclojure.protocols.editor.brace-matcher
+  (:require [org.enclojure.protocols.helpers :as helpers]))
 
 (defmulti get-brace-matcher helpers/classfn-any-arity)
 

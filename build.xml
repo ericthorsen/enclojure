@@ -46,7 +46,7 @@
     <target name="build-all" depends="buildlist"
   			description="compile, jar and publish all projects in the right order">
         <subant target="jar" buildpathref="build-path" />
-		<ant dir="src/enclojure.plugin.netbeans" target="default" />
+		<ant dir="src/plugins/netbeans/enclojure.plugin.netbeans" target="default" />
     </target>
 
     <target name="publish-all" depends="buildlist"

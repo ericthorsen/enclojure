@@ -1,2 +1,0 @@
-org.enclojure.ide.debugger.ClojureBreakpointAnnotationListener
-org.enclojure.ide.debugger.breakpoints.PersistenceManager
