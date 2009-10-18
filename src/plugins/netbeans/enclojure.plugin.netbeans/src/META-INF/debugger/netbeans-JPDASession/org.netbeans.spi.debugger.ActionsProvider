@@ -1,0 +1,2 @@
+org.enclojure.ide.debugger.actions.ClojureToggleBreakpointActionProvider
+org.enclojure.ide.debugger.actions.ClojureGoToCursorActionProvider

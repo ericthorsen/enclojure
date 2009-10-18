@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <folder name="ClojurePlatforms">
+        <file name="Clojure-1.0.0" url="platforms/clojure-1.0.0-platform.zip"/>
+        <file name="clojure-1.09.11-platform" url="platforms/clojure-1.09.11-platform.zip"/>
+    </folder>
+    <folder name="Navigator">
+        <folder name="Panels">
+            <folder name="text">
+                <folder name="x-clojure">
+                    <file name="org-enclojure-ide-navigator-ClojureNavigatorPanel.instance"/>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+
+    <folder name="Projects">
+        <folder name="org-netbeans-modules-java-j2seproject">
+            <folder name="Lookup">
+                <file name="org-enclojure-ide-nb-clojure-project-ClojureLookupProvider.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.clojure.project.ClojureLookupProvider.createJavaSE"/>
+                </file>
+            </folder>
+        </folder>
+    </folder>
+
+    <folder name="Editors">
+        <folder name="text">
+            <folder name="x-clojure">
+                <folder name="Popup">
+                    <file name="org-netbeans-modules-debugger-ui-actions-ToggleBreakpointAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Debug/org-netbeans-modules-debugger-ui-actions-ToggleBreakpointAction.instance"/>
+                        <attr name="position" intvalue="1750"/>
+                    </file>
+                    <file name="org-enclojure-ide-debugger-actions-AddClojureWatchAction.instance">
+                        <attr name="position" intvalue="1625"/>
+                    </file>
+                    <file name="SeparatorClojure.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="1500"/>
+                    </file>
+                    <file name="SeparatorAfterToggle.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="1875"/>
+                    </file>
+                    <file name="org-enclojure-nbmodule-separatorBefore.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="1800"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-LoadFile.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-LoadFile.instance"/>
+                        <attr name="position" intvalue="1801"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-EvalSExpr.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-EvalSExpr.instance"/>
+                        <attr name="position" intvalue="1802"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-EvalExpressionInReplAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/GlassFish/org-enclojure-ide-nb-actions-EvalExpressionInReplAction.instance"/>
+                        <attr name="position" intvalue="1803"/>
+                    </file>
+
+                    <file name="org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.instance"/>
+                        <attr name="position" intvalue="1805"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-UseFileNSInReplAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-UseFileNSInReplAction.instance"/>
+                        <attr name="position" intvalue="1806"/>
+                    </file>
+                    <file name="org-enclojure-nbmodule-separatorBefore.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="1810"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-GotoDeclaration.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-GotoDeclaration.instance"/>
+                        <attr name="position" intvalue="1811"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-editor-ClojureReindentAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-editor-ClojureReindentAction.instance"/>
+                        <attr name="position" intvalue="1812"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-ToggleComment.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ToggleComment.instance"/>
+                        <attr name="position" intvalue="1813"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-SelectTopExpr.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-SelectTopExpr.instance"/>
+                        <attr name="position" intvalue="1814"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-SelectOuterExpr.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-SelectOuterExpr.instance"/>
+                        <attr name="position" intvalue="1815"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-NavByExprOut.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-NavByExprOut.instance"/>
+                        <attr name="position" intvalue="1816"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-NavByExprIn.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-NavByExprIn.instance"/>
+                        <attr name="position" intvalue="1817"/>
+                    </file>
+
+                </folder>
+
+                <folder name="ToolTips">
+                    <file name="org-enclojure-ide-debugger-ClojureToolTipAnnotation.instance"/>
+                </folder>
+
+                <folder name="GlyphGutterActions">
+                    <file name="org-netbeans-modules-debugger-ui-actions-ToggleBreakpointAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Debug/org-netbeans-modules-debugger-ui-actions-ToggleBreakpointAction.instance"/>
+                    </file>
+                </folder>
+
+
+                <file name="language.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.ClojureLexer.language"/>
+                    <attr name="instanceOf" stringvalue="org.netbeans.api.lexer.Language"/>
+                    <attr name="mime-type" stringvalue="text/x-clojure"/>
+                </file>
+
+
+                <file name="EditorKit.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.editor.ClojureEditorKit.create"/>
+                    <attr name="mime-type" stringvalue="text/x-clojure"/>
+                </file>
+
+                <file name="org-enclojure-ide-nb-editor-ClojureIndentFactory.instance"/>
+
+                <folder name="FontsColors">
+                    <folder name="NetBeans">
+                        <folder name="Defaults">
+                            <file name="ClojureFontsColors.xml" url="ClojureFontsColors.xml">
+                                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                            </file>
+                        </folder>
+                    </folder>
+                </folder>
+
+                <folder name="CompletionProviders">
+                    <file name="org-enclojure-ide-nb-editor-completion-CljCompletionProvider.instance"/>
+                   <!-- <file name="org-enclojure-ide-nb-editor-completion-ClojureCodeCompletion_Provider.instance"/>  -->
+                </folder>
+                 <folder name="SideBar">
+                    <file name="org-enclojure-ide-nb-editor-ClojureFoldSideBarFactory.instance">
+                        <attr name="position" intvalue="1500"/>
+                    </file>
+                </folder>
+
+                <folder name="FoldManager">
+                    <file name="org-enclojure-ide-nb-editor-ClojureFoldManagerFactory.instance"/>
+                </folder>
+            </folder>
+
+            <folder name="x-clojurerepl">
+
+                <file name="language.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.ClojureLexer.language"/>
+                    <attr name="instanceOf" stringvalue="org.netbeans.api.lexer.Language"/>
+                    <attr name="mime-type" stringvalue="text/x-clojurerepl"/>
+                </file>
+
+  
+                <file name="EditorKit.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.editor.ClojureEditorKit.create"/>
+                    <attr name="mime-type" stringvalue="text/x-clojurerepl"/>
+                </file>
+  
+                <file name="org-enclojure-ide-nb-editor-ClojureIndentFactory.instance"/>
+
+                <folder name="FontsColors">
+                    <folder name="NetBeans">
+                        <folder name="Defaults">
+                            <file name="ClojureFontsColors.xml" url="ClojureFontsColors.xml">
+                                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                            </file>
+                        </folder>
+                    </folder>
+                </folder>
+
+                <folder name="CompletionProviders">
+                    <file name="org-enclojure-ide-nb-editor-completion-CljCompletionProvider.instance"/>
+                   <!-- <file name="org-enclojure-ide-nb-editor-completion-ClojureCodeCompletion_Provider.instance"/>  -->
+                </folder>
+
+                <folder name="HyperlinkProviders">
+
+                    <file name="HyperlinkProvider..instance">
+                        <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.editor.HyperProviderFactory.create"/>
+                        <attr name="instanceOf" stringvalue="org.netbeans.lib.editor.hyperlink.spi.HyperlinkProvider"/>
+                    </file>
+
+                </folder>
+
+            </folder>
+        </folder>
+
+    </folder>
+
+    <folder name="OptionsDialog">
+        <file name="org-enclojure-ide-preferences-EnclojureOptionsCategory.instance">
+            <attr name="position" intvalue="690"/>
+        </file>
+
+    </folder>
+
+    <!--
+        All standard shortcuts should be bound with wildcard keys
+        e.g., in the layer, not AS-P for Alt-Shift-P, but OS-P, which will map
+        to Alt-Shift-P on PC and Ctrl-Shift-P on mac. For Ctrl/Command, in the
+        layer put DS-P instead of CS-P to bind conditionally to ctrl on PC and
+        command on mac.
+        http://wiki.netbeans.org/DevFaqLogicalKeybindings
+    -->
+    <folder name="Shortcuts">
+        <file name="O-R.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-editor-ClojureReindentAction.instance"/>
+        </file>
+        <file name="O-E.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-EvalSExpr.instance"/>
+        </file>
+        <file name="OS-E.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-EvalExpressionInReplAction.instance"/>
+        </file>
+        <file name="O-L.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-LoadFile.instance"/>
+        </file>
+        <file name="O-SEMICOLON.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ToggleComment.instance"/>
+        </file>
+        <file name="O-SLASH.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ToggleComment.instance"/>
+        </file>
+        <file name="SA-UP.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-SelectOuterExpr.instance"/>
+        </file>
+        <file name="OD-E.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-SelectTopExpr.instance"/>
+        </file>
+        <!-- <file name="OA-UP.shadow"> -->
+        <file name="DO-UP.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-NavByExprOut.instance"/>
+        </file>
+        <file name="DO-DOWN.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-NavByExprIn.instance"/>
+        </file>
+        <file name="OS-N.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.instance"/>
+        </file>
+        <file name="OS-R.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-UseFileNSInReplAction.instance"/>
+        </file>
+        <file name="D-T.shadow">
+            <attr name="originalFile" stringvalue="Actions/View/org-enclojure-ide-nb-actions-SwitchEditorReplFocusEvent.instance"/>
+        </file>
+        <file name="D-MINUS.shadow">
+            <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ConnectExternalReplAction.instance"/>
+        </file>
+    </folder>
+
+    <folder name="Projects">
+        <folder name="Actions">
+            <file name="org-enclojure-nbmodule-separatorBefore.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="1000"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-RunProjectWithReplContextMenuAction.instance">
+                <attr name="position" intvalue="1001"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-DebugProjectWithReplContextMenuAction.instance">
+                <attr name="position" intvalue="1002"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-LoadAllCljFilesForProjectGroup1.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllCljFilesForProjectGroup1.create"/>
+                    <attr name="source-group" intvalue="0"/>
+                    <attr name="position" intvalue="1003"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-LoadAllCljFilesForProjectGroup2.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllCljFilesForProjectGroup2.create"/>
+                    <attr name="source-group" intvalue="1"/>
+                    <attr name="position" intvalue="1004"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-LoadAllCljFilesForProjectGroup3.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllCljFilesForProjectGroup3.create"/>
+                    <attr name="source-group" intvalue="2"/>
+                    <attr name="position" intvalue="1005"/>
+            </file>
+            <file name="org.enclojure.ide.nb.actions-LoadAllCljFilesForProjectGroup4.instance">
+                    <attr name="instanceCreate" methodvalue="org.enclojure.ide.nb.actions.LoadAllCljFilesForProjectGroup4.create"/>
+                    <attr name="source-group" intvalue="3"/>
+                    <attr name="position" intvalue="1006"/>
+            </file>
+        </folder>
+    </folder>
+
+    <folder name="Actions">
+        <!--
+        <folder name="Edit">
+        </folder>
+        -->
+        <folder name="Clojure">
+            <file name="org-enclojure-ide-nb-actions-ConnectExternalReplAction.instance">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="delegate" newvalue="org.enclojure.ide.nb.actions.ConnectExternalReplAction"/>
+                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.actions.Bundle#CTL_ConnectExternalReplAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="noIconInMenu" stringvalue="false"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-CreateStandaloneReplAction.instance">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="delegate" newvalue="org.enclojure.ide.nb.actions.CreateStandaloneReplAction"/>
+                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.actions.Bundle#CTL_CreateStandaloneReplAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="noIconInMenu" stringvalue="false"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-LoadFile.instance"/>
+            <file name="org-enclojure-ide-nb-actions-EvalSExpr.instance"/>
+            <file name="org-enclojure-ide-nb-actions-EvalExpressionInReplAction.instance"/>
+            <file name="org-enclojure-ide-nb-actions-NavByExprIn.instance"/>
+            <file name="org-enclojure-ide-nb-actions-NavByExprOut.instance"/>
+            <file name="org-enclojure-ide-nb-actions-ToggleComment.instance"/>
+            <file name="org-enclojure-ide-nb-actions-SelectOuterExpr.instance"/>
+            <file name="org-enclojure-ide-nb-actions-SelectTopExpr.instance"/>
+            <file name="org-enclojure-ide-nb-actions-GotoDeclaration.instance"/>
+            <file name="org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.instance"/>
+            <file name="org-enclojure-ide-nb-actions-UseFileNSInReplAction.instance"/>
+            <file name="org-enclojure-ide-nb-editor-ClojureReindentAction.instance">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="delegate" newvalue="org.enclojure.ide.nb.editor.ClojureReindentAction"/>
+                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.editor.Bundle#CTL_ClojureReindentAction"/>
+                <attr name="iconBase" stringvalue="org/enclojure/ide/nb/editor/resources/enclojure 16x16.png"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="noIconInMenu" stringvalue="false"/>
+            </file>
+        </folder>
+        <!-- <folder name="Keymaps"/> -->
+        <folder name="Edit">
+            <file name="org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.instance"/>
+            <file name="org-enclojure-ide-nb-actions-SelectTopExpr.instance"/>
+        </folder>
+        <!-- //?? Top level menu to start stop project repl under "Run" -->
+        <!--<folder name="Project">
+            <file name="org-enclojure-ide-nb-actions-RunProjectWithReplAction.instance"/>
+        </folder>-->
+        <folder name="GlassFish">
+            <file name="org-enclojure-ide-nb-actions-EvalExpressionInReplAction.instance"/>
+        </folder>
+        <folder name="Source">
+            <file name="org-enclojure-ide-nb-actions-LoadSourcesInREPL.instance"/>
+        </folder>
+        <folder name="View">
+            <file name="org-enclojure-ide-nb-actions-SwitchEditorReplFocusEvent.instance">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="delegate" newvalue="org.enclojure.ide.nb.actions.SwitchEditorReplFocusEvent"/>
+                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.actions.Bundle#CTL_SwitchEditorReplFocusEvent"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="noIconInMenu" stringvalue="false"/>
+            </file>
+        </folder>
+        <folder name="Window">
+            <file name="org-enclojure-ide-nb-editor-ReplAction.instance">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="component" methodvalue="org.enclojure.ide.nb.editor.ReplTopComponent.findInstance"/>
+                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.editor.Bundle#CTL_EnclojureIDEReplAction"/>
+                <attr name="iconBase" stringvalue="org/enclojure/ide/nb/editor/enclojure 16x16.png"/>
+                <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
+            </file>
+            <!--<file name="org-enclojure-ide-nb-editor-ClojureReplAction.instance">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="component" methodvalue="org.enclojure.ide.nb.editor.ReplTopComponent.findClojureReplInstance"/>
+                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.editor.Bundle#CTL_ClojureReplAction"/>
+                <attr name="iconBase" stringvalue="org/enclojure/ide/nb/editor/enclojure 16x16.png"/>
+                <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
+            </file>-->
+        </folder>
+    </folder>
+
+    <folder name="Menu">
+        <folder name="BuildProject">
+            <file name="org-enclojure-ide-nb-actions-RunProjectWithReplAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Project/org-enclojure-ide-nb-actions-RunProjectWithReplAction.instance"/>
+                <attr name="position" intvalue="9090"/>
+            </file>
+        </folder>
+        <folder name="RunProject">
+            <file name="org-enclojure-nbmodule-separatorBefore.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="9010"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-LoadFile.shadow">
+                <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-LoadFile.instance"/>
+                <attr name="position" intvalue="9020"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-EvalSExpr.shadow">
+                <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-EvalSExpr.instance"/>
+                <attr name="position" intvalue="9030"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-EvalExpressionInReplAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-EvalExpressionInReplAction.instance"/>
+                <attr name="position" intvalue="9030"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-NavByExprIn.shadow">
+                <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-NavByExprIn.instance"/>
+                <attr name="position" intvalue="9040"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-NavByExprOut.shadow">
+                <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-NavByExprOut.instance"/>
+                <attr name="position" intvalue="9050"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-ToggleComment.shadow">
+                <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-ToggleComment.instance"/>
+                <attr name="position" intvalue="9060"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-SelectOuterExpr.shadow">
+                <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-SelectOuterExpr.instance"/>
+                <attr name="position" intvalue="9070"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-SelectTopExpr.shadow">
+                <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-SelectTopExpr.instance"/>
+                <attr name="position" intvalue="9080"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.instance"/>
+                <attr name="position" intvalue="9090"/>
+            </file>
+        </folder>
+        <folder name="View">
+            <file name="org-enclojure-ide-nb-actions-SwitchEditorReplFocusEvent.shadow">
+                <attr name="originalFile" stringvalue="Actions/View/org-enclojure-ide-nb-actions-SwitchEditorReplFocusEvent.instance"/>
+                <attr name="position" intvalue="0"/>
+            </file>
+        </folder>
+        <folder name="Window">
+            <file name="org-enclojure-ide-nb-actions-ConnectExternalReplAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ConnectExternalReplAction.instance"/>
+                <attr name="position" intvalue="0"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-CreateStandaloneReplAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-CreateStandaloneReplAction.instance"/>
+                <attr name="position" intvalue="-100"/>
+            </file>
+        </folder>
+    </folder>
+
+    <folder name="Loaders">
+        <folder name="text">
+            <folder name="x-clojure">
+                <folder name="Actions">
+                    <file name="org-enclojure-ide-nb-actions-LoadSourcesInREPL-separatorBefore.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="1225"/>
+                    </file>
+                    <file name="org-enclojure-ide-nb-actions-LoadSourcesInREPL.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Source/org-enclojure-ide-nb-actions-LoadSourcesInREPL.instance"/>
+                        <attr name="position" intvalue="1250"/>
+                    </file>
+                    <file name="org-openide-actions-CopyAction.instance">
+                        <attr name="position" intvalue="400"/>
+                    </file>
+                    <file name="org-openide-actions-CutAction.instance">
+                        <attr name="position" intvalue="300"/>
+                    </file>
+                    <file name="org-openide-actions-DeleteAction.instance">
+                        <attr name="position" intvalue="600"/>
+                    </file>
+                    <file name="org-openide-actions-FileSystemAction.instance">
+                        <attr name="position" intvalue="1100"/>
+                    </file>
+                    <file name="org-openide-actions-OpenAction.instance">
+                        <attr name="position" intvalue="100"/>
+                    </file>
+                    <file name="org-openide-actions-PropertiesAction.instance">
+                        <attr name="position" intvalue="1400"/>
+                    </file>
+                    <file name="org-openide-actions-RenameAction.instance">
+                        <attr name="position" intvalue="700"/>
+                    </file>
+                    <file name="org-openide-actions-SaveAsTemplateAction.instance">
+                        <attr name="position" intvalue="900"/>
+                    </file>
+                    <file name="org-openide-actions-ToolsAction.instance">
+                        <attr name="position" intvalue="1300"/>
+                    </file>
+                    <file name="sep-1.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="200"/>
+                    </file>
+                    <file name="sep-2.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="500"/>
+                    </file>
+                    <file name="sep-3.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="800"/>
+                    </file>
+                    <file name="sep-4.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="1000"/>
+                    </file>
+                    <file name="sep-5.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="1200"/>
+                    </file>
+                </folder>
+                <folder name="Factories">
+                    <file name="ClojureMimeTypeDataLoader.instance">
+                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/enclojure/ide/nb/editor/resources/Clojure 16x16.png"/>
+                        <attr name="dataObjectClass" stringvalue="org.enclojure.ide.nb.editor.ClojureMimeTypeDataObject"/>
+                        <attr name="instanceCreate" methodvalue="org.openide.loaders.DataLoaderPool.factory"/>
+                        <attr name="mimeType" stringvalue="text/x-clojure"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+
+    <folder name="Menu">
+        <folder name="Edit">
+            <file name="org-enclojure-nbmodule-separatorBefore.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="3300"/>
+            </file>
+            <file name="org-enclojure-ide-nb-editor-ClojureReindentAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-editor-ClojureReindentAction.instance"/>
+                <attr name="position" intvalue="3301"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-EvalSExpr.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-EvalSExpr.instance"/>
+                <attr name="position" intvalue="3302"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-LoadFile.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-LoadFile.instance"/>
+                <attr name="position" intvalue="3303"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-ToggleComment.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ToggleComment.instance"/>
+                <attr name="position" intvalue="3304"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-SelectTopExpr.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-SelectTopExpr.instance"/>
+                <attr name="position" intvalue="3305"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-SelectOuterExpr.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-SelectOuterExpr.instance"/>
+                <attr name="position" intvalue="3306"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-NavByExprOut.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-NavByExprOut.instance"/>
+                <attr name="position" intvalue="3307"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-NavByExprIn.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-NavByExprIn.instance"/>
+                <attr name="position" intvalue="3308"/>
+            </file>
+            <file name="org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.instance"/>
+                <attr name="position" intvalue="3309"/>
+            </file>
+        </folder>
+        <folder name="Window">
+            <file name="ReplAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Window/org-enclojure-ide-nb-editor-ReplAction.instance"/>
+            </file>
+            <!--<file name="ClojureReplAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Window/org-enclojure-ide-nb-editor-ClojureReplAction.instance"/>
+            </file>-->
+        </folder>
+    </folder>
+
+    <folder name="Services">
+        <folder name="MIMEResolver">
+            <file name="ClojureMimeTypeResolver.xml" url="ClojureMimeTypeResolver.xml">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+            </file>
+        </folder>
+    </folder>
+
+    <folder name="Templates">
+        <folder name="Clojure">
+                   <attr name="position" intvalue="300"/>
+<!--            <file name="Clojure Source File" url="ClojureSourceTemplate.clj">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/enclojure/ide/nb/editor/resources/Clojure file 16x16.png"/>
+                <attr name="template" boolvalue="true"/>
+                <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
+                <attr name="instantiatingIterator" methodvalue="org.netbeans.spi.project.ui.templates.support.Templates.createSimpleTargetChooser"/>
+            </file>
+-->
+            <file name="Clojure File - Basic source (ns def only) " url="nbresloc:/org/enclojure/ide/nb/source/ClojureNamespaceTemplate.clj">
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="instantiatingIterator" newvalue="org.enclojure.ide.nb.source.CljSourceWizardIterator"/>
+                <attr name="template" boolvalue="true"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/enclojure/ide/nb/source/nsdef.html"/>
+                <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
+            </file> 
+            <file name="Clojure File - genclass template" url="nbresloc:/org/enclojure/ide/nb/source/ClojureGenClassTemplate.clj">
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="instantiatingIterator" newvalue="org.enclojure.ide.nb.source.CljSourceWizardIterator"/>
+                <attr name="template" boolvalue="true"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/enclojure/ide/nb/source/genclass.html"/>
+                <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
+            </file>
+
+        </folder>
+        <folder name="Project">
+            <folder name="Clojure">
+                <attr name="position" intvalue="100"/>
+                <file name="Clojure Application" url="ClojureProjectTemplate.zip">
+                    <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                    <attr name="instantiatingWizardURL" urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/ClojureTemplateDescription.html"/>
+                    <attr name="instantiatingIterator" methodvalue="org.enclojure.ide.nb.clojure.project.ClojureTemplateWizardIterator.createIterator"/>
+                    <attr name="template" boolvalue="true"/>
+                    <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
+                </file>
+            </folder>
+        </folder>
+    </folder>
+    
+    <folder name="Toolbars">
+        <folder name="Build">
+            <file name="org-enclojure-ide-nb-actions-RunProjectWithReplAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Project/org-enclojure-ide-nb-actions-RunProjectWithReplAction.instance"/>
+                <attr name="position" intvalue="500"/>
+            </file>
+        </folder>
+        <folder name="UndoRedo">
+            <file name="org-enclojure-ide-nb-editor-ClojureReindentAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-editor-ClojureReindentAction.instance"/>
+                <attr name="position" intvalue="600"/>
+            </file>
+        </folder>
+    </folder>
+
+    <folder name="Windows2">
+        <folder name="Components">
+            <file name="ReplTopComponent.settings" url="ReplTopComponentSettings.xml"/>
+        </folder>
+        <folder name="Modes">
+            <folder name="output">
+                <file name="ReplTopComponent.wstcref" url="ReplTopComponentWstcref.xml"/>
+            </folder>
+        </folder>
+    </folder>
+</filesystem>

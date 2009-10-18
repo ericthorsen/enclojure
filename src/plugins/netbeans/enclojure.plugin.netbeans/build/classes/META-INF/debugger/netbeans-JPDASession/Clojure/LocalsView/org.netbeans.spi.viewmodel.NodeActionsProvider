@@ -1,0 +1,2 @@
+org.enclojure.ide.debugger.actions.ImplicitLocalsNodeActionsProvider
+org.enclojure.ide.debugger.actions.AttributesNodeActionsProvider

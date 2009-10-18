@@ -52,5 +52,3 @@
   (.backup (input this) 1))
 
 (defn- -close [this])
-
-;(binding [*compile-path* "/Users/ffailla/dev/thortech/src/enclojure.code/enclojure.editor.suite/enclojure.editor.lib/classes"] (compile 'org.enclojure.nb.LexerInputReader))

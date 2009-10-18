@@ -21,9 +21,10 @@
 ; setup logging
 (logger/ensure-logger)
 
+(def *token-stack* (atom []))
 
 ;get a list of exceptions associated with exc
-(defn get-exc-seq [exc] 
+(defn get-exc-seq [exc]
   (loop [e exc acc []]
     (if e
       (recur (. e (getCause)) (conj acc e))
@@ -31,8 +32,8 @@
 
 ;concatenate the result func for each and its causes
 (defn get-exc-info [exc func]
-  (reduce str (map (fn [e] 
-		       (str (func e) "\n")) 
+  (reduce str (map (fn [e]
+		       (str (func e) "\n"))
 		   (get-exc-seq exc))))
 
 ;get a formatted message for exc
@@ -123,7 +124,7 @@
       (when (< len i)
 	(let [ch (.read rdr)]
 	  (if (or (eof? ch)
-		  (whitespace? (char ch))  
+		  (whitespace? (char ch))
 		  (terminating? (char ch)))
 	    (do (unread rdr ch) (recur len uc))
 	    (let [d (Character/digit ch base)
@@ -193,20 +194,20 @@
   (let [sb (StringBuilder.)]
     (.append sb double-quote)
     (loop [ch (.read rdr)]
-      (cond 
+      (cond
        (eof? ch) nil
        (= (char ch) \\)
        (let [ch (.read rdr)]
 	 (when-not (eof? ch)
-	   (.append sb 
+	   (.append sb
 		    (or (escape-chars (char ch))
-			(cond 
+			(cond
 			 (= (char ch) \u)
 			 (do (let [ch (.read rdr)]
 			       (if (= -1 (Character/digit ch 16))
 				 (throw (Exception. (str "Invalid unicode escape: \\u" (char ch))))
 				 (read-unicode-char rdr ch 16 4 true))))
-			 (Character/isDigit ch) 
+			 (Character/isDigit ch)
 			 (let [ch (read-unicode-char rdr ch 8 3 false)]
 			   (if (> ch 0377)
 			     (throw (Exception. "Octal escape sequence must be in range [0, 377]."))
@@ -216,12 +217,12 @@
      )))
 	   (recur (.read rdr))))
        :else (do (.append sb (char ch))
-		 (when-not (= (char ch) \") 
+		 (when-not (= (char ch) \")
 		   (recur (.read rdr))))))
     {:type :string :token (str sb)}))
 
 ;will be used in the future :)
-(def dispatch-table 
+(def dispatch-table
   {\^ :meta
    \' :var
    \" :regex
@@ -246,12 +247,12 @@
 
 (defn make-delim-token [type]
   (fn delim-token [rdr ch]
-    {:type type :token (str ch)}))
+    {:type type :token (str ch) :stack (swap! *token-stack* conj type)}))
 
 (def read-table
      {
-      \" string-token 
-      \; comment-token      
+      \" string-token
+      \; comment-token
       \' (make-delim-token :quote)
       \@ (make-delim-token :deref)
       \^ (make-delim-token :meta)
@@ -269,7 +270,7 @@
 
 (defn get-word-type [s]
   (let [ch (.charAt s 0)]
-    (cond 
+    (cond
      (Character/isDigit ch)  {:type :number :token s}
      (and (#{\+ \-} ch) (> (count s) 1) (Character/isDigit (.charAt s 1)))  {:type :number :token s}
      (= ch \:) {:type :keyword :token s}
@@ -280,7 +281,7 @@
      (ns-imports? s) {:type :ns-imports :token s}
      (compiler-special? s) {:type :compiler-special :token s}
      :else {:type :symbol :token s})))
-	
+
 (defn word-token [rdr ch]
   (let [sb (StringBuilder.)]
     (.append sb ch)
@@ -297,23 +298,25 @@
   (let [f (read-table ch)]
     (if f
       (f rdr ch)
-      (word-token rdr ch))))    
+      (word-token rdr ch))))
 
-(defn get-token [rdr] 
+(defn get-token [rdr]
+  (binding [*token-stack* (swap! *token-stack* vector)]
   (let [ch (.read rdr)]
     (when-not (eof? ch)
       (let [ch (char ch)]
 	(if (whitespace? ch)
 	  (recur rdr)
-	  (read-token rdr ch))))))
+	  (read-token rdr ch)))))))
 
 (defn- -getToken [this rdr]
-  (get-token rdr))
+  (binding [*token-stack* (swap! *token-stack* vector)]
+    (get-token rdr)))
 
 (defn get-all-tokens [rdr]
   (loop [ret []
-	 t (org.enclojure.ide.lexer/get-token rdr)] 
-    (if t 
+	 t (org.enclojure.ide.lexer/get-token rdr)]
+    (if t
       (recur (conj ret t) (org.enclojure.ide.lexer/get-token rdr) )
       ret)))
 
@@ -357,5 +360,5 @@
       (set words))))
 
 (defn doit []
-  (with-open [f (java.io.FileReader. "/Users/ffailla/foo.clj")]
+  (with-open [f (java.io.FileReader. "/Users/ericthor/foo.clj")]
     (get-all-tokens (clojure.lang.LineNumberingPushbackReader. f))))
