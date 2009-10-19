@@ -16,7 +16,7 @@
   org.enclojure.protocols.lexing.lexer
   (:require [org.enclojure.protocols.helpers :as helpers]))
 
-(defmulti get-lexer helpers/classfn-any-arity)
+(defmulti get-lexer helpers/classfn-arity*)
 
 
 

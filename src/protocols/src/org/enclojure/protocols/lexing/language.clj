@@ -16,7 +16,9 @@
      org.enclojure.protocols.language
   (:require [org.enclojure.protocols.helpers :as helpers]))
 
-(defmulti get-language helpers/classfn-any-arity)
+(defmulti get-language-id class)
+(defmulti get-language helpers/classfn-arity*)
+(defmulti get-mime-type class)
 
 
 

@@ -16,5 +16,5 @@
     org.enclojure.protocols.editor.brace-matcher
   (:require [org.enclojure.protocols.helpers :as helpers]))
 
-(defmulti get-brace-matcher helpers/classfn-any-arity)
+(defmulti get-brace-matcher helpers/classfn-arity*)
 

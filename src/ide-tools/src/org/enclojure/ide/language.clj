@@ -12,13 +12,14 @@
 )
 
 (ns #^{ :author "Eric Thorsen",
-       :doc "Protocol for org.enclojure.protocols.logger"}
-  org.enclojure.protocols.logger
-  (:require [org.enclojure.protocols.helpers :as helpers]))
+        :doc "Protocol for org.enclojure.ide.language"}
+		org.enclojure.ide.language
+  (:require [org.enclojure.protocols.language :as language]))
 
-(defmulti debug helpers/classfn-arity*)
-(defmulti error helpers/classfn-arity*)
-(defmulti trace helpers/classfn-arity*)
-(defmulti warn helpers/classfn-arity*)
-(defmulti info helpers/classfn-arity*)
+(def -CLOJURE-LANGUAGE-ID- "Clojure")
+
+(defmethod org.enclojure.protocols.language/get-language-id
+    :default -CLOJURE-LANGUAGE-ID-)
+
+ 
 

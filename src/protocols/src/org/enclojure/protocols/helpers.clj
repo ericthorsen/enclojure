@@ -15,9 +15,11 @@
         :doc "Helper funcs"}
   org.enclojure.protocols.helpers)
 
-(defn classfn-any-arity
+(defn classfn-arity*
   ([]) ([& args] (class (first args))))
 
+(defn classfn-arity+
+  ([& args] (class (first args))))
 
 
 

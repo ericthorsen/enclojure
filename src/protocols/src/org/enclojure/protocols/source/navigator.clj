@@ -16,4 +16,4 @@
   org.enclojure.protocols.source.navigator
   (:require [org.enclojure.protocols.helpers :as helpers]))
 
-(defmulti get-navigator helpers/classfn-any-arity)
+(defmulti get-navigator helpers/classfn-arity*)

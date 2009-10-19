@@ -16,7 +16,7 @@
   org.enclojure.protocols.editor.code-folding
   (:require [org.enclojure.protocols.helpers :as helpers]))
 
-(defmulti get-code-folder helpers/classfn-any-arity)
+(defmulti get-code-folder helpers/classfn-arity*)
 
 
 
