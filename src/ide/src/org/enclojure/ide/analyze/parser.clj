@@ -14,35 +14,35 @@
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for org.enclojure.ide.analyze.parser"}
  org.enclojure.ide.analyze.parser  
-  (:import
-    (org.netbeans.modules.parsing.api Source Snapshot)
-    (org.netbeans.modules.parsing.spi Parser)
-    (javax.swing.text Document PlainDocument
-      StringContent AbstractDocument$Content)
-    (java.io File)
-    (org.netbeans.api.lexer TokenHierarchy)
-    (org.netbeans.modules.parsing.spi ParserFactory)
-    (org.openide.filesystems FileUtil FileObject)
-    ))
+;  (:import
+;    (org.netbeans.modules.parsing.api Source Snapshot)
+;    (org.netbeans.modules.parsing.spi Parser)
+;    (javax.swing.text Document PlainDocument
+;      StringContent AbstractDocument$Content)
+;    (java.io File)
+;    (org.netbeans.api.lexer TokenHierarchy)
+;    (org.netbeans.modules.parsing.spi ParserFactory)
+;    (org.openide.filesystems FileUtil FileObject)
+    )
 
-(defmulti get-source class)
-
-(defmethod get-source Document
-  [document]
-  (Source/create document))
-
-(defmethod get-source File
-  [file]
-  (Source/create (FileUtil/createData file)))
-
-(defmethod get-source FileObject
-  [file]
-  (Source/create file))
-
-(def s (get-source 
-         (java.io.File.
-            "/Users/ericthor/Dev/enclojure/src/ide/src/org/enclojure/ide/analyze/core.clj")))
-(def snap (.createSnapshot s))
+;(defmulti get-source class)
+;
+;(defmethod get-source Document
+;  [document]
+;  (Source/create document))
+;
+;(defmethod get-source File
+;  [file]
+;  (Source/create (FileUtil/createData file)))
+;
+;(defmethod get-source FileObject
+;  [file]
+;  (Source/create file))
+;
+;(def s (get-source
+;         (java.io.File.
+;            "/Users/ericthor/Dev/enclojure/src/ide/src/org/enclojure/ide/analyze/core.clj")))
+;(def snap (.createSnapshot s))
 
 
 
