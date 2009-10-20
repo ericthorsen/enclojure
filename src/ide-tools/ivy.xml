@@ -17,5 +17,6 @@
         <dependency org="slf4j" name="slf4j-api" rev="1.5.8"/>
         <dependency org="slf4j" name="slf4j-jdk14" rev="1.5.8"/>
         <dependency org="jparsec" name="jparsec" rev="2.0"/>
+        <dependency org="jflex" name="jflex" rev="1.4.3"/>
     </dependencies>
 </ivy-module>

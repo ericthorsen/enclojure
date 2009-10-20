@@ -64,8 +64,3 @@ Returns a map of key [true|false] for each result"
                              (if (false? v)
                                (conj r k) r)) [] vmap))))))))
 
-
-
-
-
-
