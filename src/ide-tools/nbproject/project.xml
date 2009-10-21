@@ -26,7 +26,7 @@
                     <target>clean</target>
                 </action>
                 <action name="run">
-                    <target>run</target>
+                    <target>do-run</target>
                 </action>
                 <action name="test">
                     <target>test</target>
