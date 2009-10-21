@@ -59,7 +59,7 @@
     :arguments (validation/nilable-validator vector?
     :java-main (validation/validator string?)
     :classpath (validation/validator string?)
-    :debug-port-arg (validation/nilable-validator string?)))
+    :debug-port-arg (validation/nilable-validator string?))))
 
 (defn bless-external-context
   [repl-context]
@@ -70,7 +70,7 @@
       (assoc (meta repl-context)
         :bless-external-context?
             (validation/validate-throw-on-fail repl-context
-                    repl-data/-repl-context-external-managed-validation-)))))
+                    -repl-context-external-managed-validation-)))))
 
 
 

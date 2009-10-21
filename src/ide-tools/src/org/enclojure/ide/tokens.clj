@@ -20,7 +20,8 @@
 (def -token-meta-
   {:language "Clojure"
    :mime-type "text/x-clojure"
-   :token-table -TOKEN-TYPES-MAP-})
+   ;:token-table -TOKEN-TYPES-MAP-
+   })
 
 (defn make-token
   [str-tok typek tag]
@@ -148,6 +149,7 @@
                             '-TOKEN-TYPES-)))
         java-tokens (map #(.replace (str %1) "-" "_")
                       tokens)]
+    ;(println (count tokens) " " (count java-tokens))
     (apply str
       (map format (cycle [fmt-str]) java-tokens tokens))))
 

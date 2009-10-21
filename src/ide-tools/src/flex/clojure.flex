@@ -24,7 +24,7 @@ import clojure.lang.Keyword;
 import clojure.lang.LispReader;
 import clojure.lang.Symbol;
 import java.util.regex.Pattern;
-import java_cup.runtime.Scanner;
+import java_cup.runtime.*;
 import flex.ClojureSym;
 
 %%
@@ -36,6 +36,7 @@ import flex.ClojureSym;
 %column
 %unicode
 %public
+%debug
 %function next_token
 %type ClojureSym
 
@@ -50,12 +51,12 @@ import flex.ClojureSym;
 
 public ClojureSym symbol(IPersistentMap tokenType,Object data)
 {
-    symbol(tokenType,yyline, yycolumn,yychar,data);
+    ClojureSym.create(tokenType,yyline, yycolumn,yychar,data);
 }
 
 public ClojureSym symbol(IPersistentMap tokenType)
 {
-    symbol(tokenType,yyline, yycolumn,yychar);
+    ClojureSym.create(tokenType,yyline, yycolumn,yychar);
 }
 
 //From LispReader
@@ -124,56 +125,36 @@ static clojure.lang.Var ARG_ENV = clojure.lang.Var.create(null);
 	dispatchMacros['_'] = new LispReader.DiscardReader();
 	}
 */
-final static IPersistentMap cSTRING_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cSTRING-LITERAL").get();
+	final static IPersistentMap cSTRING_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cSTRING-LITERAL").get();
 	final static IPersistentMap cWRONG_STRING_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cWRONG-STRING-LITERAL").get();
 	final static IPersistentMap cLONG_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLONG-LITERAL").get();
-	final static IPersistentMap symNS_SEP = (IPersistentMap)RT.var("org.enclojure.ide.tokens","symNS_SEP").get();
 	final static IPersistentMap cWHITESPACE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cWHITESPACE").get();
 	final static IPersistentMap cLINE_COMMENT = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLINE-COMMENT").get();
-	final static IPersistentMap symIMPLICIT_ARG = (IPersistentMap)RT.var("org.enclojure.ide.tokens","symIMPLICIT_ARG").get();
 	final static IPersistentMap cCOLON_SYMBOL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cCOLON-SYMBOL").get();
-	final static IPersistentMap cWHITESPACE_SET = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cWHITESPACE_SET").get();
-	final static IPersistentMap cRIGHT_SQUARE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cRIGHT_SQUARE").get();
 	final static IPersistentMap cSHARPUP = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cSHARPUP").get();
 	final static IPersistentMap cRIGHT_SQUARE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cRIGHT-SQUARE").get();
 	final static IPersistentMap get_java_def = (IPersistentMap)RT.var("org.enclojure.ide.tokens","get-java-def").get();
 	final static IPersistentMap cTRUE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cTRUE").get();
-	final static IPersistentMap cBIG_INT_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBIG_INT_LITERAL").get();
 	final static IPersistentMap _token_meta_ = (IPersistentMap)RT.var("org.enclojure.ide.tokens","-token-meta-").get();
-	final static IPersistentMap cREADABLE_TEXT = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cREADABLE_TEXT").get();
 	final static IPersistentMap cTILDAAT = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cTILDAAT").get();
 	final static IPersistentMap cEOF = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cEOF").get();
-	final static IPersistentMap cRIGHT_PAREN = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cRIGHT_PAREN").get();
 	final static IPersistentMap symATOM = (IPersistentMap)RT.var("org.enclojure.ide.tokens","symATOM").get();
-	final static IPersistentMap cLEFT_CURLY = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLEFT_CURLY").get();
 	final static IPersistentMap cRIGHT_PAREN = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cRIGHT-PAREN").get();
-	final static IPersistentMap cBAD_CHARACTER = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBAD_CHARACTER").get();
-	final static IPersistentMap cINTEGER_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cINTEGER_LITERAL").get();
 	final static IPersistentMap cBIG_DECIMAL_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBIG-DECIMAL-LITERAL").get();
 	final static IPersistentMap cNIL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cNIL").get();
 	final static IPersistentMap cWHITESPACE_SET = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cWHITESPACE-SET").get();
 	final static IPersistentMap symIMPLICIT_ARG = (IPersistentMap)RT.var("org.enclojure.ide.tokens","symIMPLICIT-ARG").get();
-	final static IPersistentMap cLONG_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLONG_LITERAL").get();
-	final static IPersistentMap cBOOLEAN_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBOOLEAN_LITERAL").get();
 	final static IPersistentMap cFLOAT_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cFLOAT-LITERAL").get();
 	final static IPersistentMap cCHAR_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cCHAR-LITERAL").get();
-	final static IPersistentMap cCOLON_SYMBOL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cCOLON_SYMBOL").get();
 	final static IPersistentMap cLEFT_PAREN = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLEFT-PAREN").get();
 	final static IPersistentMap cSHARP = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cSHARP").get();
-	final static IPersistentMap cDOUBLE_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cDOUBLE_LITERAL").get();
-	final static IPersistentMap cLEFT_SQUARE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLEFT_SQUARE").get();
-	final static IPersistentMap cBIG_DECIMAL_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBIG_DECIMAL_LITERAL").get();
-	final static IPersistentMap cWRONG_STRING_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cWRONG_STRING_LITERAL").get();
 	final static IPersistentMap cDOUBLE_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cDOUBLE-LITERAL").get();
 	final static IPersistentMap cBIG_INT_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBIG-INT-LITERAL").get();
 	final static IPersistentMap cLEFT_SQUARE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLEFT-SQUARE").get();
 	final static IPersistentMap cLEFT_CURLY = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLEFT-CURLY").get();
-	final static IPersistentMap cFLOAT_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cFLOAT_LITERAL").get();
-	final static IPersistentMap cCHAR_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cCHAR_LITERAL").get();
 	final static IPersistentMap cTILDA = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cTILDA").get();
 	final static IPersistentMap cREADABLE_TEXT = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cREADABLE-TEXT").get();
 	final static IPersistentMap symNS_SEP = (IPersistentMap)RT.var("org.enclojure.ide.tokens","symNS-SEP").get();
-	final static IPersistentMap cRIGHT_CURLY = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cRIGHT_CURLY").get();
 	final static IPersistentMap make_token = (IPersistentMap)RT.var("org.enclojure.ide.tokens","make-token").get();
 	final static IPersistentMap cQUOTE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cQUOTE").get();
 	final static IPersistentMap cUP = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cUP").get();
@@ -182,11 +163,9 @@ final static IPersistentMap cSTRING_LITERAL = (IPersistentMap)RT.var("org.encloj
 	final static IPersistentMap symS = (IPersistentMap)RT.var("org.enclojure.ide.tokens","symS").get();
 	final static IPersistentMap cAT = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cAT").get();
 	final static IPersistentMap cCOMMENTS = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cCOMMENTS").get();
-	final static IPersistentMap cLINE_COMMENT = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLINE_COMMENT").get();
 	final static IPersistentMap cFALSE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cFALSE").get();
 	final static IPersistentMap make_token_set = (IPersistentMap)RT.var("org.enclojure.ide.tokens","make-token-set").get();
 	final static IPersistentMap cRATIO = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cRATIO").get();
-	final static IPersistentMap cLEFT_PAREN = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLEFT_PAREN").get();
 	final static IPersistentMap symDOT = (IPersistentMap)RT.var("org.enclojure.ide.tokens","symDOT").get();
 	final static IPersistentMap _TOKEN_TYPES_MAP_ = (IPersistentMap)RT.var("org.enclojure.ide.tokens","-TOKEN-TYPES-MAP-").get();
 	final static IPersistentMap _TOKEN_TYPES_BY_ID_ = (IPersistentMap)RT.var("org.enclojure.ide.tokens","-TOKEN-TYPES-BY-ID-").get();
@@ -195,7 +174,6 @@ final static IPersistentMap cSTRING_LITERAL = (IPersistentMap)RT.var("org.encloj
 	final static IPersistentMap cIDENTIFIERS = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cIDENTIFIERS").get();
 	final static IPersistentMap cLITERALS = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cLITERALS").get();
 	final static IPersistentMap cBOOLEAN_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBOOLEAN-LITERAL").get();
-	final static IPersistentMap cSTRING_LITERAL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cSTRING_LITERAL").get();
 	final static IPersistentMap cBAD_CHARACTER = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBAD-CHARACTER").get();
 	final static IPersistentMap cEOL = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cEOL").get();
 	final static IPersistentMap cBACKQUOTE = (IPersistentMap)RT.var("org.enclojure.ide.tokens","cBACKQUOTE").get();
@@ -349,7 +327,7 @@ mFALSE = "false"
 
 <YYINITIAL>{
 
-  {mLINE_COMMENT}                           {  return symbol(LINE_COMMENT); }
+  {mLINE_COMMENT}                           {  return symbol(cLINE_COMMENT); }
   
   {mWS}+                                    {  return symbol(cWHITESPACE); }
   {mCOMMA}                                  {  return symbol(cCOMMA); }
@@ -373,7 +351,7 @@ mFALSE = "false"
   // Reserved symbols
   "/"                                       {  return symbol(symATOM); }
   "."{mIDENT} | {mIDENT}"."                 {  return symbol(symATOM); }
-  {mIDENT}                                  {  yypushback(yytext().length()); yybegin(cSYMBOL); }
+  {mIDENT}                                  {  yypushback(yytext().length()); yybegin(SYMBOL); }
   {mKEY}                                    {  return symbol(cCOLON_SYMBOL); }
 
 

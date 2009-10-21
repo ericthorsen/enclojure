@@ -17,6 +17,9 @@ package flex;
 import java_cup.runtime.Symbol;
 import clojure.lang.Var;
 import clojure.lang.IPersistentMap;
+import clojure.lang.Keyword;
+import clojure.lang.RT;
+
 
 public class ClojureSym extends Symbol {
     public IPersistentMap _tokenType;
@@ -25,19 +28,25 @@ public class ClojureSym extends Symbol {
     public int _col;
     public int _char;
 
-    public ClojureSym(IPersistentMap tokenType,int t,int line, int column , int chari)
+    static public final Keyword ID = Keyword.intern("ID");
+    static public int getID(IPersistentMap tokenType)
     {
-        super(t);
+        return ((Integer)RT.get(tokenType,ID)).intValue();
+    }
+
+    public ClojureSym(IPersistentMap tokenType,int line, int column , int chari)
+    {
+        super(getID(tokenType));
         this._tokenType = tokenType;
         this._line = line;
         this._col = column;
         this._char = chari;
     }
 
-    public ClojureSym( IPersistentMap tokenType,int t,int line, int column
+    public ClojureSym( IPersistentMap tokenType,int line, int column
                         , int chari, Object data)
     {
-        super(t,data);
+        super(getID(tokenType));
         this._tokenType = tokenType;
         this._data = data;
         this._line = line;
@@ -45,15 +54,15 @@ public class ClojureSym extends Symbol {
         this._char = chari;
     }
 
-    static public ClojureSym create(IPersistentMap tokenType,int t,int line
+    static public ClojureSym create(IPersistentMap tokenType,int line
                                     , int column , int chari)
     {
-        return new ClojureSym( tokenType,t,line, column ,chari);
+        return new ClojureSym(tokenType,line, column ,chari);
     }
     
-    static public ClojureSym create(IPersistentMap tokenType,int t,int line, int column
+    static public ClojureSym create(IPersistentMap tokenType,int line, int column
                                     , int chari ,  Object data)
     {
-        return new ClojureSym(tokenType,t,line, column ,chari, data);
+        return new ClojureSym(tokenType,line, column ,chari, data);
     }    
 }
