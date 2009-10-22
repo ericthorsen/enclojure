@@ -12,18 +12,23 @@
 )
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for org.enclojure.idetools.tokens"}
-		org.enclojure.idetools.tokens)
+		org.enclojure.idetools.tokens
+  (:import (org.enclojure.flex ClojureSym)))
 
 (def -token-meta-
   {:language "Clojure"
    :mime-type "text/x-clojure"
    ;:token-table -TOKEN-TYPES-MAP-
    })
+(def -token-ids- (atom -1))
+
+(defn- next-id []
+  (swap! -token-ids- inc))
 
 (defn make-token
   [str-tok typek tag]
   (with-meta
-    {:type typek :token str-tok :lextag tag}
+    {:type typek :token str-tok :lextag tag :ID (next-id)}
     -token-meta-))
 
 (defmacro make-token-set
@@ -31,6 +36,7 @@
   (let [syms# (vec (map str token-set))]
     `(with-meta
        {:type :token-set :token ~str-tok :lextag ~tag
+        :ID (next-id)
         :token-set (zipmap (map symbol ~syms#)
                      ~token-set)
         } -token-meta-)))

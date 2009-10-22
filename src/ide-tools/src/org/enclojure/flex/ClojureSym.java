@@ -21,7 +21,7 @@ import clojure.lang.Keyword;
 import clojure.lang.RT;
 
 
-public class ClojureSym extends Symbol {
+public class ClojureSym extends Symbol  {
     public IPersistentMap _tokenType;
     public Object _data;
     public int _line;
@@ -64,5 +64,39 @@ public class ClojureSym extends Symbol {
                                     , int chari ,  Object data)
     {
         return new ClojureSym(tokenType,line, column ,chari, data);
-    }    
+    }
+
+
+//    boolean containsKey(Object key)
+//    {
+//
+//    }
+//
+//    IMapEntry entryAt(Object key)
+//    {
+//
+//    }
+//    
+//    IPersistentMap assoc(Object key, Object val)
+//    {
+//
+//    }
+//
+//    IPersistentMap assocEx(Object key, Object val) throws Exception
+//    {
+//
+//    }
+//
+//    IPersistentMap without(Object key) throws Exception
+//    {
+//
+//    }
+//        int count()
+//        {
+//
+//        }
+//        Iterator<T> iterator()
+//        {
+//
+//        }
 }

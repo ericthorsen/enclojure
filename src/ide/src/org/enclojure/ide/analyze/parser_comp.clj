@@ -51,6 +51,6 @@
     (adjacent 
       (reduce #(conj %1 (.token TERMINALS #^String %2)) [] operator) operator)))
 
-(def UNSIGNED_RIGHT_SHIFT (adjacent ">>>"))
-(def RIGHT_SHIFT (.next (-> UNSIGNED_RIGHT_SHIFT .not) (adjacent(">>"))))
+;(def UNSIGNED_RIGHT_SHIFT (adjacent ">>>"))
+;(def RIGHT_SHIFT (.next (-> UNSIGNED_RIGHT_SHIFT .not) (adjacent(">>"))))
                       

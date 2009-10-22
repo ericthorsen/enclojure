@@ -87,6 +87,7 @@
             <compilation-unit>
                 <package-root>test</package-root>
                 <unit-tests/>
+                <classpath mode="compile">build-artifacts:dist-artifacts:lib-artifacts</classpath>
                 <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>
