@@ -394,7 +394,3 @@ mFALSE = "false"
 
 // Anything else is should be marked as a bad char
 .                                           {  return symbol(cBAD_CHARACTER); }
-
-
-
-
