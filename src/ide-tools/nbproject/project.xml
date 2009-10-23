@@ -26,7 +26,7 @@
                     <target>clean</target>
                 </action>
                 <action name="run">
-                    <target>run</target>
+                    <target>do-run</target>
                 </action>
                 <action name="test">
                     <target>test</target>
@@ -87,6 +87,7 @@
             <compilation-unit>
                 <package-root>test</package-root>
                 <unit-tests/>
+                <classpath mode="compile">build-artifacts:dist-artifacts:lib-artifacts</classpath>
                 <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>

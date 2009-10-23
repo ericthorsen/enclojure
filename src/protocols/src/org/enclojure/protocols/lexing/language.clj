@@ -13,9 +13,10 @@
 
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for file.types"}
-     org.enclojure.protocols.language
+     org.enclojure.protocols.lexing.language
   (:require [org.enclojure.protocols.helpers :as helpers]))
 
+(defn foo [])
 (defmulti get-language-id class)
 (defmulti get-language helpers/classfn-arity*)
 (defmulti get-mime-type class)

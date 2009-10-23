@@ -12,10 +12,9 @@
 )
 
 (ns #^{ :author "Eric Thorsen",
-        :doc "Protocol for brace matching"}
-    org.enclojure.protocols.completion.settings
-  (:require [org.enclojure.protocols.helpers :as helpers]))
+        :doc "Protocol for org.enclojure.idetools.parser-test"}
+		org.enclojure.idetools.parser-test
+		 (:require [org.enclojure.protocols.helpers :as helpers]))
 
-(defmulti get-completion-engine helpers/classfn-arity*)
 
 

@@ -11,22 +11,24 @@
 ;*    Author: Eric Thorsen
 )
 (ns #^{ :author "Eric Thorsen",
-        :doc "Protocol for org.enclojure.ide.tokens"}
-		org.enclojure.ide.tokens)
-
-(declare -TOKEN-TYPES-MAP-)
-(declare -TOKEN-TYPES-BY-ID-)
+        :doc "Protocol for org.enclojure.idetools.tokens"}
+		org.enclojure.idetools.tokens
+  (:import (org.enclojure.flex ClojureSym)))
 
 (def -token-meta-
   {:language "Clojure"
    :mime-type "text/x-clojure"
    ;:token-table -TOKEN-TYPES-MAP-
    })
+(def -token-ids- (atom -1))
+
+(defn- next-id []
+  (swap! -token-ids- inc))
 
 (defn make-token
   [str-tok typek tag]
   (with-meta
-    {:type typek :token str-tok :lextag tag}
+    {:type typek :token str-tok :lextag tag :ID (next-id)}
     -token-meta-))
 
 (defmacro make-token-set
@@ -34,6 +36,7 @@
   (let [syms# (vec (map str token-set))]
     `(with-meta
        {:type :token-set :token ~str-tok :lextag ~tag
+        :ID (next-id)
         :token-set (zipmap (map symbol ~syms#)
                      ~token-set)
         } -token-meta-)))
@@ -123,34 +126,5 @@
 (def cIDENTIFIERS (make-token-set  "identifiers" :identifiers #{symATOM}))
 (def cSTRINGS (make-token-set "string literals" :string-literals
                 #{cSTRING-LITERAL, cWRONG-STRING-LITERAL}))
-
-(def -TOKEN-TYPES-BY-ID-
-  (apply vector (filter
-         (fn [[k v]]
-           (not= #{'-TOKEN-TYPES-BY-ID- '-TOKEN-TYPES-MAP- 'get-java-def} k))
-         (ns-publics (find-ns 'org.enclojure.ide.tokens)))))
-
-
-(def -TOKEN-TYPES-MAP-
-      (reduce (fn [m i]                
-                (let [[k kv] (-TOKEN-TYPES-BY-ID- i)
-                      v (when (.isBound kv) (.get kv))]
-                    (if (and v (map? v))
-                        (assoc m k (assoc v :ID i))
-                    m))) {}
-            (range (count -TOKEN-TYPES-BY-ID-))))
-
-(defn get-java-def
-  []  
-  (let [fmt-str "\tfinal static IPersistentMap %s = (IPersistentMap)RT.var(\"org.enclojure.ide.tokens\",\"%s\").get();\n"
-        tokens  (distinct
-                  (keys (dissoc
-                        (ns-publics (find-ns 'org.enclojure.ide.tokens))
-                            '-TOKEN-TYPES-)))
-        java-tokens (map #(.replace (str %1) "-" "_")
-                      tokens)]
-    ;(println (count tokens) " " (count java-tokens))
-    (apply str
-      (map format (cycle [fmt-str]) java-tokens tokens))))
 
 

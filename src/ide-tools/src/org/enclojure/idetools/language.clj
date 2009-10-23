@@ -12,14 +12,14 @@
 )
 
 (ns #^{ :author "Eric Thorsen",
-        :doc "Protocol for org.enclojure.ide.language"}
-		org.enclojure.ide.language
-  (:require [org.enclojure.protocols.language :as language]))
+        :doc "Protocol for org.enclojure.idetools.language"}
+		org.enclojure.idetools.language
+  )
 
 (def -CLOJURE-LANGUAGE-ID- "Clojure")
 
-(defmethod org.enclojure.protocols.language/get-language-id
-    :default -CLOJURE-LANGUAGE-ID-)
+;(defmethod language/get-language-id
+;    :default -CLOJURE-LANGUAGE-ID-)
 
  
 

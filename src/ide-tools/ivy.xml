@@ -3,21 +3,12 @@
     <info organisation="org.enclojure" module="ide-tools"/>
     <dependencies>
 	<dependency org="org.enclojure" name="commons" rev="latest.integration"/>
- 	<dependency org="org.enclojure" name="repl-server" rev="latest.integration"/>  
- 	<dependency org="org.enclojure" name="repl-client" rev="latest.integration"/>  
  	<dependency org="org.enclojure" name="protocols" rev="latest.integration"/>
         <dependency org="Clojure" name="clojure" rev="1.09.11"/>
         <dependency org="Clojure-contrib" name="clojure-contrib" rev="1.09.11"/>
-        <dependency org="Apache" name="commons-exec" rev="1.0.0"/>
-        <dependency org="Apache" name="commons-io" rev="1.4"/>
-        <dependency org="Apache" name="commons-logging" rev="1.1.1"/>
-        <dependency org="Apache" name="log4j" rev="1.2.15"/>
-        <dependency org="jParsec" name="jparsec" rev="2.0"/>
-        <dependency org="Netbeans" name="swing-layout" rev="1.0.3"/>
-        <dependency org="Netbeans" name="org-netbeans-modules-lexer" rev=""/>
         <dependency org="slf4j" name="slf4j-api" rev="1.5.8"/>
         <dependency org="slf4j" name="slf4j-jdk14" rev="1.5.8"/>
-        <dependency org="jparsec" name="jparsec" rev="2.0"/>
+        <dependency org="java-cup" name="java-cup" rev="11a"/>
         <dependency org="jflex" name="jflex" rev="1.4.3"/>
     </dependencies>
 </ivy-module>

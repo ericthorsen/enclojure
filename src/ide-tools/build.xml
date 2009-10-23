@@ -3,4 +3,32 @@
     <property file="build.properties"/>
     <property file="${basedir}${file.separator}..${file.separator}..${file.separator}build-support${file.separator}build.properties"/>
 	<import file="${common.dir}${file.separator}common.xml"/>
+
+
+<taskdef name="cup"
+  classname="java_cup.anttask.CUPTask">
+     <classpath>
+        <path location="${classes.dir}"/>
+        <path location="${src.dir}"/>
+        <path location="${test.dir}"/>
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </classpath>
+</taskdef>
+
+<target name="cup" depends="init">
+    <cup srcfile="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}cup${file.separator}clojure.cup"
+      destdir="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}cup"
+        interface="true"
+        parser="ClojureParser"
+        symbols="ClojureSym"
+        package=""
+        />
+    <classpath>
+        <path location="${classes.dir}"/>
+        <path location="${src.dir}"/>
+        <path location="${test.dir}"/>
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </classpath>
+</target>
+
 </project>

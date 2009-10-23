@@ -13,7 +13,7 @@
 )
 */
 
-package flex;
+package org.enclojure.flex;
 import java_cup.runtime.Symbol;
 import clojure.lang.Var;
 import clojure.lang.IPersistentMap;
@@ -21,7 +21,7 @@ import clojure.lang.Keyword;
 import clojure.lang.RT;
 
 
-public class ClojureSym extends Symbol {
+public class ClojureSym extends Symbol  {
     public IPersistentMap _tokenType;
     public Object _data;
     public int _line;
@@ -66,4 +66,37 @@ public class ClojureSym extends Symbol {
         return new ClojureSym(tokenType,line, column ,chari, data);
     }
 
+
+//    boolean containsKey(Object key)
+//    {
+//
+//    }
+//
+//    IMapEntry entryAt(Object key)
+//    {
+//
+//    }
+//    
+//    IPersistentMap assoc(Object key, Object val)
+//    {
+//
+//    }
+//
+//    IPersistentMap assocEx(Object key, Object val) throws Exception
+//    {
+//
+//    }
+//
+//    IPersistentMap without(Object key) throws Exception
+//    {
+//
+//    }
+//        int count()
+//        {
+//
+//        }
+//        Iterator<T> iterator()
+//        {
+//
+//        }
 }
