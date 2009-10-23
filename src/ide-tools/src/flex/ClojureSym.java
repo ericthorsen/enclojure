@@ -64,5 +64,6 @@ public class ClojureSym extends Symbol {
                                     , int chari ,  Object data)
     {
         return new ClojureSym(tokenType,line, column ,chari, data);
-    }    
+    }
+
 }

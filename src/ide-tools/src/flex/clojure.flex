@@ -40,8 +40,9 @@ import flex.ClojureSym;
 %function next_token
 %type ClojureSym
 
-%eof{ return;
-%eof}
+%eofval{ 
+    return ClojureSym.create(cEOF,yyline, yycolumn,yychar);
+%eofval}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////// User code //////////////////////////////////////////////////////////////////////////////////////
@@ -51,12 +52,12 @@ import flex.ClojureSym;
 
 public ClojureSym symbol(IPersistentMap tokenType,Object data)
 {
-    ClojureSym.create(tokenType,yyline, yycolumn,yychar,data);
+    return ClojureSym.create(tokenType,yyline, yycolumn,yychar,data);
 }
 
 public ClojureSym symbol(IPersistentMap tokenType)
 {
-    ClojureSym.create(tokenType,yyline, yycolumn,yychar);
+    return ClojureSym.create(tokenType,yyline, yycolumn,yychar);
 }
 
 //From LispReader

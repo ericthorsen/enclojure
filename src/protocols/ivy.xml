@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0">
-    <info organisation="org.enclojure" module="commons"/>
+    <info organisation="org.enclojure" module="protocols"/>
     <dependencies>
         <dependency org="Clojure" name="clojure" rev="1.09.11"/>
     </dependencies>
