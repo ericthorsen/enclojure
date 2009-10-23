@@ -167,7 +167,7 @@
                             "(eval (clojure.contrib.pprint/pprint (do " expr "\n))))")
                    (str "(binding [*ns* *ns*]" ns-node  "(eval '(do " expr "\n)))"))
                  (if print-pretty
-                   (str "(eval '(clojure.contrib.pprint/pprint (do " expr "\n)))")
+                   (str "(eval '(clojure.contrib.pprint/pprint (do " (prn-str expr) "\n)))")
                  (str " " expr " \n")))
           ]
       (logger/debug  "\neval expr:\n" expr)
