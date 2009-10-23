@@ -6,29 +6,25 @@
 
 
 <taskdef name="cup"
-  classname="java_cup.anttask.CUPTask">
-     <classpath>
-        <path location="${classes.dir}"/>
-        <path location="${src.dir}"/>
-        <path location="${test.dir}"/>
-        <fileset dir="${lib.dir}" includes="**/*.jar"/>
-    </classpath>
+  classname="java_cup.anttask.CUPTask">     
 </taskdef>
+
+<taskdef classname="JFlex.anttask.JFlexTask" name="jflex" />
 
 <target name="cup" depends="init">
     <cup srcfile="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}cup${file.separator}clojure.cup"
-      destdir="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}cup"
+      destdir="${src.dir}${file.separator}"
         interface="true"
+        force="true"
         parser="ClojureParser"
-        symbols="ClojureSym"
-        package=""
-        />
-    <classpath>
-        <path location="${classes.dir}"/>
-        <path location="${src.dir}"/>
-        <path location="${test.dir}"/>
-        <fileset dir="${lib.dir}" includes="**/*.jar"/>
-    </classpath>
+        symbols="ClojureSym"        
+        />    
+</target>
+
+<target name="flex" depends="init,cup">
+    <jflex file="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}flex${file.separator}clojure.flex"
+      destdir="${src.dir}${file.separator}"        
+        />    
 </target>
 
 </project>

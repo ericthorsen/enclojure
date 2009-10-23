@@ -27,11 +27,13 @@ import clojure.lang.IPersistentMap;
 import java.util.regex.Pattern;
 import java.util.logging.*;
 import java_cup.runtime.*;
-import org.enclojure.flex.ClojureSym;
+import org.enclojure.flex.ClojureSymbol;
+import Example.ClojureSym;
 
 %%
 
 %class _Lexer
+%implements ClojureSym
 %cup
 %char
 %line
@@ -40,10 +42,10 @@ import org.enclojure.flex.ClojureSym;
 %public
 %debug
 %function next_token
-%type ClojureSym
+%type ClojureSymbol
 
 %eofval{ 
-    return ClojureSym.create(cEOF,yyline, yycolumn,yychar);
+    return ClojureSymbol.create(cEOF,yyline, yycolumn,yychar);
 %eofval}
 
 %eofval{
@@ -58,14 +60,14 @@ import org.enclojure.flex.ClojureSym;
 
     final Var requireFn = RT.var("clojure.core","require");
 
-    public ClojureSym symbol(Var tokenType,Object data)
+    public ClojureSymbol symbol(Var tokenType,Object data)
     {
-        return ClojureSym.create((IPersistentMap)tokenType.get(),yyline, yycolumn,yychar,data);
+        return ClojureSymbol.create((IPersistentMap)tokenType.get(),yyline, yycolumn,yychar,data);
     }
 
-    public ClojureSym symbol(Var tokenType)
+    public ClojureSymbol symbol(Var tokenType)
     {
-        return ClojureSym.create((IPersistentMap)tokenType.get(),yyline, yycolumn,yychar);
+        return ClojureSymbol.create((IPersistentMap)tokenType.get(),yyline, yycolumn,yychar);
     }
 
 

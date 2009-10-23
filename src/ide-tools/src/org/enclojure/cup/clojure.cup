@@ -2,35 +2,71 @@ package Example;
 
 import java_cup.runtime.*;
 
-parser code {:
-	public static void main(String args[]) throws Exception {
-		SymbolFactory sf = new DefaultSymbolFactory();
-		if (args.length==0) new Parser(new Scanner(System.in,sf),sf).parse();
-		else new Parser(new Scanner(new java.io.FileInputStream(args[0]),sf),sf).parse();
-	}
-:}
 
-terminal SEMI, PLUS, TIMES, LPAREN, RPAREN;
-terminal Integer NUMBER;
+terminal STRING_LITERAL
+        , WRONG_STRING_LITERAL
+        , LONG_LITERAL
+        , WHITESPACE
+        , LINE_COMMENT
+        , COLON_SYMBOL
+        , SHARPUP
+        , RIGHT_SQUARE
+        , TRUE
+        , __token_meta_
+        , TILDAAT
+        , symATOM
+        , RIGHT_PAREN
+        , BIG_DECIMAL_LITERAL
+        , NIL
+        , WHITESPACE_SET
+        , symIMPLICIT_ARG
+        , FLOAT_LITERAL
+        , CHAR_LITERAL
+        , LEFT_PAREN
+        , SHARP
+        , DOUBLE_LITERAL
+        , BIG_INT_LITERAL
+        , _token_ids_
+        , LEFT_SQUARE
+        , LEFT_CURLY
+        , TILDA
+        , READABLE_TEXT
+        , symNS_SEP
+        , make_token
+        , QUOTE
+        , UP
+        , RIGHT_CURLY
+        , COMMA
+        , symS
+        , AT
+        , COMMENTS
+        , FALSE
+        , make_token_set
+        , RATIO
+        , symDOT
+        , SEPARATORS
+        , INTEGER_LITERAL
+        , IDENTIFIERS
+        , LITERALS
+        , BOOLEAN_LITERAL
+        , BAD_CHARACTER
+        , EOL
+        , BACKQUOTE
+        , STRINGS
+        , ATOMS;
 
-non terminal expr_list, expr_part;
-non terminal Integer expr;
 
-precedence left PLUS;
-precedence left TIMES;
+non terminal compilation_unit,goal,literals;
 
-expr_list ::= expr_list expr_part | expr_part;
-expr_part ::= expr:e {: System.out.println(" = "+e+";"); :} SEMI;
-expr      ::= NUMBER:n
-	      {: RESULT=n; :}
-            | expr:l PLUS expr:r
-	      {: RESULT=new Integer(l.intValue() + r.intValue()); :}
-	    | expr:l TIMES expr:r
-	      {: RESULT=new Integer(l.intValue() * r.intValue()); :}
-	    | LPAREN expr:e RPAREN
-	      {: RESULT=e; :}
-	    ;
+goal ::= compilation_unit;
 
+literals ::= STRING_LITERAL
+    | LONG_LITERAL
+    | INTEGER_LITERAL
+    | BOOLEAN_LITERAL;
+
+compilation_unit ::= literals;
+	   
 
 
 
