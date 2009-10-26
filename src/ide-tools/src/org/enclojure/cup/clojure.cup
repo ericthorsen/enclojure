@@ -10,27 +10,79 @@ parser code {:
 	}
 :}
 
-terminal SEMI, PLUS, TIMES, LPAREN, RPAREN;
-terminal Integer NUMBER;
+terminal LEFT_PAREN
+        ,RIGHT_PAREN
+        ,LEFT_BRACE
+        ,RIGHT_BRACE
+        ,LEFT_BRACKET
+        ,RIGHT_BRACKET
+        ,SHARP
+        ,HAT
+        ,SHARP_HAT
+        ,KEYWORD
+        ,DOUBLE_QUOTE
+        ,SINGLE_QUOTE
+        ,BACK_QUOTE
+        ,TILDE
+        ,AT
+        ,TILDE_AT
+        ,NUM_INT
+        ,NUM_LONG
+        ,NUM_BIG_INT
+        ,NUM_FLOAT
+        ,NUM_DOUBLE
+        ,NUM_BIG_DECIMAL
+        ,RATIO_NUMBER
+        ,SHARP_UP
+        ,IMPLICIT_ARG
+        ,ONE_NL
+        ,HEX_DIGIT
+        ,CHAR
+        ,STRING_ESC
+        ,STRING_CONTENT
+        ,STRING
+        ,WRONG_STRING
+        ,LINE_COMMENT
+        ,LETTER
+        ,SLASH_LETTER
+        ,OTHER
+        ,NoDigit
+        ,OTHER_REDUCED
+        ,NoDigit1
+        ,IDENT
+        ,KEY
+        ,NIL
+        ,TRUE
+        ,FALSE;
 
-non terminal expr_list, expr_part;
-non terminal Integer expr;
-
-precedence left PLUS;
-precedence left TIMES;
-
-expr_list ::= expr_list expr_part | expr_part;
-expr_part ::= expr:e {: System.out.println(" = "+e+";"); :} SEMI;
-expr      ::= NUMBER:n
-	      {: RESULT=n; :}
-            | expr:l PLUS expr:r
-	      {: RESULT=new Integer(l.intValue() + r.intValue()); :}
-	    | expr:l TIMES expr:r
-	      {: RESULT=new Integer(l.intValue() * r.intValue()); :}
-	    | LPAREN expr:e RPAREN
-	      {: RESULT=e; :}
-	    ;
+terminal INTEGER_LITERAL;
+terminal FLOATING_POINT_LITERAL;
+terminal BOOLEAN_LITERAL;
+terminal CHARACTER_LITERAL;
+terminal STRING_LITERAL;
+terminal NULL_LITERAL;
 
 
+non terminal s_expr, map,vector,set,list;
+non terminal literal,series;
 
+
+s_expr ::=  literal | series;
+
+series ::= list | vector | map | set;
+
+list    ::= LEFT_PAREN s_expr RIGHT_PAREN;
+vector  ::= LEFT_BRACKET s_expr RIGHT_BRACKET;
+set     ::= SHARP_HAT s_expr RIGHT_BRACE;
+map     ::= LEFT_BRACE s_expr s_expr RIGHT_BRACE;
+
+
+literal ::=	INTEGER_LITERAL
+	|	FLOATING_POINT_LITERAL
+	|	BOOLEAN_LITERAL
+	|	CHARACTER_LITERAL
+	|	STRING_LITERAL
+	|	NULL_LITERAL
+        |       KEYWORD
+	;
 
