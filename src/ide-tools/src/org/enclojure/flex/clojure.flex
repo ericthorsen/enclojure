@@ -45,8 +45,9 @@ import Example.ClojureSym;
 /* %type ClojureSymbol */
 
 %eofval{
-    return symbol(EOF,"EOF");
+    return new java_cup.runtime.Symbol(ClojureSym.EOF);
 %eofval}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////// User code //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,7 +217,7 @@ public ClojureSymbol symbol(Var tokenType)
 
 mNL = \r | \n | \r\n                                    // NewLines
 mWS = " " | \t | \f | {mNL}                       // Whitespaces
-mCOMMA = ","
+mCOMMA = "," 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////      integers and floats     /////////////////////////////////////////////////////////////////////
@@ -357,11 +358,11 @@ mFALSE = "false"
 
   {mLINE_COMMENT}                           {  return symbol(LINE_COMMENT,yytext()); }
   
-  {mWS}+                                    {  return symbol(WHITESPACE,yytext()); }
-  {mCOMMA}                                  {  return symbol(COMMA,yytext()); }
+  {mWS}+                                    //{  }//return symbol(WHITESPACE,yytext()); }
+  {mCOMMA}                                  //{  }//return symbol(COMMA,yytext()); }
 
   {mSTRING}                                 {  return symbol(STRING_LITERAL,yytext()); }
-  {mWRONG_STRING }                          {  return symbol(WRONG_STRING_LITERAL,yytext()); }
+  {mWRONG_STRING}                           {  return symbol(WRONG_STRING_LITERAL,yytext()); }
 
   {mCHAR}                                   {  return symbol(CHAR_LITERAL,yytext()); }
   {mNIL}                                    {  return symbol(NIL,yytext()); }
@@ -382,7 +383,6 @@ mFALSE = "false"
   {mIDENT}                                  {  yypushback(yytext().length()); yybegin(SYMBOL); }
   {mKEYWORD}                                {  return symbol(KEYWORD,yytext()); }
 
-
   {mQUOTE}                                  {  return symbol(QUOTE,yytext()); }
   {mBACKQUOTE}                              {  return symbol(BACKQUOTE,yytext()); }
   {mSHARPUP}                                {  return symbol(SHARP_HAT,yytext()); }
@@ -400,7 +400,6 @@ mFALSE = "false"
   {mRS}                                     {  return symbol(RIGHT_SQUARE,yytext()); }
   {mLC}                                     {  return symbol(LEFT_CURLY,yytext()); }
   {mRC}                                     {  return symbol(RIGHT_CURLY,yytext()); }
-
 
 }
 

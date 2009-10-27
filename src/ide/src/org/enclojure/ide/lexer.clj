@@ -247,7 +247,7 @@
 
 (defn make-delim-token [type]
   (fn delim-token [rdr ch]
-    {:type type :token (str ch) :stack (swap! *token-stack* conj type)}))
+    {:type type :token (str ch)})); :stack (swap! *token-stack* conj type)}))
 
 (def read-table
      {
@@ -301,17 +301,17 @@
       (word-token rdr ch))))
 
 (defn get-token [rdr]
-  (binding [*token-stack* (swap! *token-stack* vector)]
+  ;(binding [*token-stack* (swap! *token-stack* vector)]
   (let [ch (.read rdr)]
     (when-not (eof? ch)
       (let [ch (char ch)]
 	(if (whitespace? ch)
 	  (recur rdr)
-	  (read-token rdr ch)))))))
+	  (read-token rdr ch))))))
 
 (defn- -getToken [this rdr]
-  (binding [*token-stack* (swap! *token-stack* vector)]
-    (get-token rdr)))
+  ;(binding [*token-stack* (swap! *token-stack* vector)]
+    (get-token rdr))
 
 (defn get-all-tokens [rdr]
   (loop [ret []

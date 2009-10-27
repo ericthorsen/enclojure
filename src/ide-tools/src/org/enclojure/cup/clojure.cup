@@ -71,6 +71,7 @@ terminal NEWLINE
 		,FALSE
 		,BAD_CHARACTER
 		,COLON
+                ,SYMBOL
 		,symDOT
 		,symNS_SEP
 		,symATOM
@@ -89,33 +90,36 @@ terminal STRING_LITERAL;
 terminal WRONG_STRING_LITERAL;
 terminal NULL_LITERAL;
 
-non terminal s_expr, map,vector,set,list;
-non terminal literal,series;
+non terminal s_expr, map,vector,set,list,empty_list;
+non terminal literal,series,empty,list_expr,pair_expr,expr_part;
 
 start with s_expr;	   
 	
-s_expr ::= /* empty */
-	| TRUE
-	| FALSE
-	| SYMBOL
-	| KEYWORD
-	| STRING
-	| list 
-	| vector 
-	| map 
-	| set
- 	| literal  
-	;
+s_expr ::= expr_part;
 
-series ::= list | vector | map | set; 
+expr_part ::= literal 
+        |  list | vector | map | set;
 
-list    ::= LEFT_PAREN RIGHT_PAREN | LEFT_PAREN s_expr RIGHT_PAREN;
-vector  ::= LEFT_SQUARE s_expr RIGHT_SQUARE;
-set     ::= SHARP_HAT s_expr RIGHT_CURLY;
-map     ::= LEFT_CURLY s_expr s_expr RIGHT_CURLY;
+list    ::=  LEFT_PAREN s_expr RIGHT_PAREN;
+empty_list ::= LEFT_PAREN RIGHT_PAREN;
+list_expr ::= empty_list | list;
 
+vector  ::= LEFT_SQUARE s_expr:e RIGHT_SQUARE
+        {: System.out.println("vector [" + e +"]"); :}
+        ;
 
-literal ::=	INTEGER_LITERAL
+set     ::= SHARP LEFT_CURLY s_expr:e RIGHT_CURLY
+        {: System.out.println("set #{" + e +"}"); :}
+        ;
+
+map     ::= LEFT_CURLY pair_expr:e RIGHT_CURLY
+        {: System.out.println("map {" + e +"}"); :}
+        ;
+
+pair_expr ::= s_expr s_expr;
+
+literal ::= 
+           INTEGER_LITERAL
 	|  BIG_INT_LITERAL
 	|  LONG_LITERAL
 	|  FLOAT_LITERAL
@@ -125,7 +129,10 @@ literal ::=	INTEGER_LITERAL
 	|  CHAR_LITERAL
 	|  STRING_LITERAL
 	|  WRONG_STRING_LITERAL
-	|  KEYWORD
+	|  KEYWORD        
 	|  NULL_LITERAL
 	;
+
+empty ::= /* empty */
+    ;
 
