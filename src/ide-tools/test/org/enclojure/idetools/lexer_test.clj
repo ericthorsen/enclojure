@@ -17,19 +17,25 @@
         (:require [org.enclojure.idetools.tokens :as tokens]
           [org.enclojure.idetools.token-set :as token-set])
   (:use clojure.test)
-  (:import (org.enclojure.flex _Lexer ClojureSym)
-    (java.io StringReader)))
-
+  (:import (org.enclojure.flex _Lexer ClojureSymbol)
+    (Example ClojureSym ClojureParser)
+    (java.io File FileReader FileInputStream StringReader)))
+    
 (def -lexer- (_Lexer. (StringReader. "")))
-(def symEOF (:ID tokens/cEOF))
+(def tkEOF 0)
 
 (defn get-lex-tokens
   [in-str]
   (.yyreset -lexer- (StringReader. in-str))
   (loop [tokens []]
     (let [token (.next_token -lexer-)]
-      (if (= (.sym token) symEOF)
+      (if (= (.sym token) tkEOF)
         (conj tokens token)
         (recur (conj tokens token))))))
+
+
+
+
+
 
 

@@ -1,72 +1,131 @@
 package Example;
 
 import java_cup.runtime.*;
+import org.enclojure.flex._Lexer;
+import java.io.*;
+import org.enclojure.flex.*;
+
+parser code {:
+	public static void main(String args[]) throws Exception {
+		if (args.length==0) 
+		{
+		new ClojureParser(new _Lexer(System.in)).parse();
+		}
+		else
+		{ 
+		new ClojureParser(new _Lexer(new java.io.FileInputStream(args[0]))).parse();
+		}
+	}
+:}
+
+terminal NEWLINE
+		,WHITESPACE
+		,COMMA
+		,HEX_DIGIT
+		,DIGIT
+		,BIG_SUFFIX
+		,FLOAT_SUFFIX
+		,LONG_SUFFIX
+		,INT_SUFFIX
+		,DOUBLE_SUFFIX
+		,EXPONENT
+		,NUM_INT_PART
+		,NUM_INT
+		,NUM_LONG
+		,NUM_BIG_INT
+		,NUM_FLOAT
+		,NUM_DOUBLE
+		,NUM_BIG_DECIMAL
+		,LEFT_PAREN 
+		,RIGHT_PAREN
+		,LEFT_SQUARE
+		,RIGHT_SQUARE
+		,LEFT_CURLY
+		,RIGHT_CURLY
+		,QUOTE
+		,BACKQUOTE
+		,SHARP
+		,SHARP_HAT
+		,HAT
+		,IMPLICIT_ARG
+		,TILDA
+		,AT
+		,TILDAAT
+		,ONE_NL
+		,CHAR
+		,STRING_ESC
+		,STRING_CONTENT
+		,STRING
+		,WRONG_STRING
+		,LINE_COMMENT
+		,LETTER
+		,SLASH_LETTER
+		,OTHER
+		,NoDigit
+		,OTHER_REDUCED
+		,NoDigit1
+		,IDENT
+		,KEYWORD
+		,NIL
+		,TRUE
+		,FALSE
+		,BAD_CHARACTER
+		,COLON
+		,symDOT
+		,symNS_SEP
+		,symATOM
+		,symIMPLICIT_ARG
+		;
+
+terminal INTEGER_LITERAL;
+terminal BIG_INT_LITERAL;
+terminal LONG_LITERAL;
+terminal FLOAT_LITERAL;
+terminal DOUBLE_LITERAL;
+terminal BIG_DECIMAL_LITERAL;
+terminal RATIO;
+terminal CHAR_LITERAL;
+terminal STRING_LITERAL;
+terminal WRONG_STRING_LITERAL;
+terminal NULL_LITERAL;
+
+non terminal s_expr, map,vector,set,list;
+non terminal literal,series;
+
+start with s_expr;	   
+	
+s_expr ::= /* empty */
+	| TRUE
+	| FALSE
+	| SYMBOL
+	| KEYWORD
+	| STRING
+	| list 
+	| vector 
+	| map 
+	| set
+ 	| literal  
+	;
+
+series ::= list | vector | map | set; 
+
+list    ::= LEFT_PAREN RIGHT_PAREN | LEFT_PAREN s_expr RIGHT_PAREN;
+vector  ::= LEFT_SQUARE s_expr RIGHT_SQUARE;
+set     ::= SHARP_HAT s_expr RIGHT_CURLY;
+map     ::= LEFT_CURLY s_expr s_expr RIGHT_CURLY;
 
 
-terminal STRING_LITERAL
-        , WRONG_STRING_LITERAL
-        , LONG_LITERAL
-        , WHITESPACE
-        , LINE_COMMENT
-        , COLON_SYMBOL
-        , SHARPUP
-        , RIGHT_SQUARE
-        , TRUE
-        , __token_meta_
-        , TILDAAT
-        , symATOM
-        , RIGHT_PAREN
-        , BIG_DECIMAL_LITERAL
-        , NIL
-        , WHITESPACE_SET
-        , symIMPLICIT_ARG
-        , FLOAT_LITERAL
-        , CHAR_LITERAL
-        , LEFT_PAREN
-        , SHARP
-        , DOUBLE_LITERAL
-        , BIG_INT_LITERAL
-        , _token_ids_
-        , LEFT_SQUARE
-        , LEFT_CURLY
-        , TILDA
-        , READABLE_TEXT
-        , symNS_SEP
-        , make_token
-        , QUOTE
-        , UP
-        , RIGHT_CURLY
-        , COMMA
-        , symS
-        , AT
-        , COMMENTS
-        , FALSE
-        , make_token_set
-        , RATIO
-        , symDOT
-        , SEPARATORS
-        , INTEGER_LITERAL
-        , IDENTIFIERS
-        , LITERALS
-        , BOOLEAN_LITERAL
-        , BAD_CHARACTER
-        , EOL
-        , BACKQUOTE
-        , STRINGS
-        , ATOMS;
-
-
-non terminal compilation_unit,goal,literals;
-
-goal ::= compilation_unit;
-
-literals ::= STRING_LITERAL
-    | LONG_LITERAL
-    | INTEGER_LITERAL
-    | BOOLEAN_LITERAL;
-
-compilation_unit ::= literals;
-	   
-
-
+literal ::=	INTEGER_LITERAL
+	|  BIG_INT_LITERAL
+	|  LONG_LITERAL
+	|  FLOAT_LITERAL
+	|  DOUBLE_LITERAL
+	|  BIG_DECIMAL_LITERAL
+	|  RATIO
+	|  CHAR_LITERAL
+	|  STRING_LITERAL
+	|  WRONG_STRING_LITERAL
+	|  KEYWORD
+	|  NULL_LITERAL
+	;
 

@@ -22,13 +22,13 @@ import clojure.lang.IFn;
 import clojure.lang.Var;
 import clojure.lang.Keyword;
 import clojure.lang.LispReader;
-import clojure.lang.Symbol;
 import clojure.lang.IPersistentMap;
 import java.util.regex.Pattern;
 import java.util.logging.*;
 import java_cup.runtime.*;
 import org.enclojure.flex.ClojureSymbol;
 import Example.ClojureSym;
+
 
 %%
 
@@ -42,14 +42,10 @@ import Example.ClojureSym;
 %public
 %debug
 %function next_token
-%type ClojureSymbol
-
-%eofval{ 
-    return ClojureSymbol.create(cEOF,yyline, yycolumn,yychar);
-%eofval}
+/* %type ClojureSymbol */
 
 %eofval{
-    return symbol(cEOF);
+    return symbol(EOF,"EOF");
 %eofval}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////// User code //////////////////////////////////////////////////////////////////////////////////////
@@ -57,53 +53,64 @@ import Example.ClojureSym;
 
 %{
 
+final Var requireFn = RT.var("clojure.core","require");
+final SymbolFactory symFactory = new DefaultSymbolFactory();
 
-    final Var requireFn = RT.var("clojure.core","require");
+public  java_cup.runtime.Symbol symbol(int ID,String tokenType,Object data)
+{
+    return symFactory.newSymbol(tokenType,ID,data);
+}
 
-    public ClojureSymbol symbol(Var tokenType,Object data)
-    {
-        return ClojureSymbol.create((IPersistentMap)tokenType.get(),yyline, yycolumn,yychar,data);
-    }
+public java_cup.runtime.Symbol symbol(int ID,String tokenType)
+{
+    return symFactory.newSymbol(tokenType,ID);
+}
 
-    public ClojureSymbol symbol(Var tokenType)
-    {
-        return ClojureSymbol.create((IPersistentMap)tokenType.get(),yyline, yycolumn,yychar);
-    }
+/*
+public ClojureSymbol symbol(Var tokenType,Object data)
+{
+    return ClojureSymbol.create((IPersistentMap)tokenType.get(),yyline, yycolumn,yychar,data);
+}
 
+public ClojureSymbol symbol(Var tokenType)
+{
+    return ClojureSymbol.create((IPersistentMap)tokenType.get(),yyline, yycolumn,yychar);
+}
+*/
 
 //From LispReader
-static final clojure.lang.Symbol QUOTE = Symbol.create("quote");
-static final clojure.lang.Symbol THE_VAR = Symbol.create("var");
-static clojure.lang.Symbol UNQUOTE = Symbol.create("clojure.core", "unquote");
-static clojure.lang.Symbol UNQUOTE_SPLICING = Symbol.create("clojure.core", "unquote-splicing");
-static clojure.lang.Symbol CONCAT = Symbol.create("clojure.core", "concat");
-static clojure.lang.Symbol SEQ = Symbol.create("clojure.core", "seq");
-static clojure.lang.Symbol LIST = Symbol.create("clojure.core", "list");
-static clojure.lang.Symbol APPLY = Symbol.create("clojure.core", "apply");
-static clojure.lang.Symbol HASHMAP = Symbol.create("clojure.core", "hash-map");
-static clojure.lang.Symbol HASHSET = Symbol.create("clojure.core", "hash-set");
-static clojure.lang.Symbol VECTOR = Symbol.create("clojure.core", "vector");
-static clojure.lang.Symbol WITH_META = Symbol.create("clojure.core", "with-meta");
-static clojure.lang.Symbol META = Symbol.create("clojure.core", "meta");
-static clojure.lang.Symbol DEREF = Symbol.create("clojure.core", "deref");
+// static final clojure.lang.Symbol QUOTE = Symbol.create("quote");
+// static final clojure.lang.Symbol THE_VAR = Symbol.create("var");
+// static clojure.lang.Symbol UNQUOTE = Symbol.create("clojure.core", "unquote");
+// static clojure.lang.Symbol UNQUOTE_SPLICING = Symbol.create("clojure.core", "unquote-splicing");
+// static clojure.lang.Symbol CONCAT = Symbol.create("clojure.core", "concat");
+// static clojure.lang.Symbol SEQ = Symbol.create("clojure.core", "seq");
+// static clojure.lang.Symbol LIST = Symbol.create("clojure.core", "list");
+// static clojure.lang.Symbol APPLY = Symbol.create("clojure.core", "apply");
+// static clojure.lang.Symbol HASHMAP = Symbol.create("clojure.core", "hash-map");
+// static clojure.lang.Symbol HASHSET = Symbol.create("clojure.core", "hash-set");
+// static clojure.lang.Symbol VECTOR = Symbol.create("clojure.core", "vector");
+// static clojure.lang.Symbol WITH_META = Symbol.create("clojure.core", "with-meta");
+// static clojure.lang.Symbol META = Symbol.create("clojure.core", "meta");
+// static clojure.lang.Symbol DEREF = Symbol.create("clojure.core", "deref");
 
-static IFn[] macros = new IFn[256];
-static IFn[] dispatchMacros = new IFn[256];
+// static IFn[] macros = new IFn[256];
+// static IFn[] dispatchMacros = new IFn[256];
 
-static Pattern symbolPat = Pattern.compile("[:]?([\\D&&[^/]].*/)?([\\D&&[^/]][^/]*)");
-static Pattern intPat =
-		Pattern.compile(
-				"([-+]?)(?:(0)|([1-9][0-9]*)|0[xX]([0-9A-Fa-f]+)|0([0-7]+)|([1-9][0-9]?)[rR]([0-9A-Za-z]+)|0[0-9]+)");
-static Pattern ratioPat = Pattern.compile("([-+]?[0-9]+)/([0-9]+)");
-static Pattern floatPat = Pattern.compile("([-+]?[0-9]+(\\.[0-9]*)?([eE][-+]?[0-9]+)?)(M)?");
-static final clojure.lang.Symbol SLASH = Symbol.create("/");
-static final clojure.lang.Symbol CLOJURE_SLASH = Symbol.create("clojure.core","/");
+// static Pattern symbolPat = Pattern.compile("[:]?([\\D&&[^/]].*/)?([\\D&&[^/]][^/]*)");
+// static Pattern intPat =
+// 		Pattern.compile(
+// 				"([-+]?)(?:(0)|([1-9][0-9]*)|0[xX]([0-9A-Fa-f]+)|0([0-7]+)|([1-9][0-9]?)[rR]([0-9A-Za-z]+)|0[0-9]+)");
+// static Pattern ratioPat = Pattern.compile("([-+]?[0-9]+)/([0-9]+)");
+// static Pattern floatPat = Pattern.compile("([-+]?[0-9]+(\\.[0-9]*)?([eE][-+]?[0-9]+)?)(M)?");
+// static final clojure.lang.Symbol SLASH = Symbol.create("/");
+// static final clojure.lang.Symbol CLOJURE_SLASH = Symbol.create("clojure.core","/");
 
 
 //symbol->gensymbol
-static clojure.lang.Var GENSYM_ENV = clojure.lang.Var.create(null);
+// static clojure.lang.Var GENSYM_ENV = clojure.lang.Var.create(null);
 //sorted-map num->gensymbol
-static clojure.lang.Var ARG_ENV = clojure.lang.Var.create(null);
+// static clojure.lang.Var ARG_ENV = clojure.lang.Var.create(null);
 
 /*
     static
@@ -136,7 +143,7 @@ static clojure.lang.Var ARG_ENV = clojure.lang.Var.create(null);
 	dispatchMacros['<'] = new LispReader.UnreadableReader();
 	dispatchMacros['_'] = new LispReader.DiscardReader();
 	}
-*/
+
 	public final static Var cSTRING_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cSTRING-LITERAL");
 	public final static Var cWRONG_STRING_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cWRONG-STRING-LITERAL");
 	public final static Var cLONG_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cLONG-LITERAL");
@@ -191,12 +198,13 @@ static clojure.lang.Var ARG_ENV = clojure.lang.Var.create(null);
 	public final static Var cBACKQUOTE = (Var)RT.var("org.enclojure.idetools.tokens","cBACKQUOTE");
 	public final static Var cSTRINGS = (Var)RT.var("org.enclojure.idetools.tokens","cSTRINGS");
 	public final static Var cATOMS = (Var)RT.var("org.enclojure.idetools.tokens","cATOMS");
+*/
 
 %}
 %init{
     try {
-        requireFn.invoke(Symbol.create("org.enclojure.idetools.tokens"));
-        requireFn.invoke(Symbol.create("org.enclojure.idetools.token-set"));
+        requireFn.invoke(clojure.lang.Symbol.create("org.enclojure.idetools.tokens"));
+        requireFn.invoke(clojure.lang.Symbol.create("org.enclojure.idetools.token-set"));
     } catch (Exception ex) {
             Logger.getLogger("org.enclojure.flex._Lexer").log(Level.SEVERE, null, ex);
         }
@@ -320,7 +328,7 @@ mOTHER_REDUCED = "_" | "-" | "*" | "+" | "=" | "&" | "<" | ">" | "$" | "?" | "!"
 mNoDigit1 = ({mLETTER} | {mOTHER_REDUCED})
 
 mIDENT = {mNoDigit} ({mNoDigit} | {mDIGIT})* "#"?
-mKEY = ":" (":")? ({mIDENT} ":")* {mIDENT}
+mKEYWORD = ":" (":")? ({mIDENT} ":")* {mIDENT}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////      predefined      ////////////////////////////////////////////////////////////////////////////
@@ -338,63 +346,63 @@ mFALSE = "false"
 
 %%
 <SYMBOL> {
-  "."                                       {  return symbol(symDOT); }
-  "/"                                       {  return symbol(symNS_SEP); }
-  ({mNoDigit1} | {mDIGIT} | ":")+           {  return symbol(symATOM); }
-  (({mNoDigit1} | {mDIGIT} | ":")+)? "#"    {  yybegin(YYINITIAL); return symbol(symATOM); }
+  "."                                       {  return symbol(symDOT,yytext()); }
+  "/"                                       {  return symbol(symNS_SEP,yytext()); }
+  ({mNoDigit1} | {mDIGIT} | ":")+           {  return symbol(symATOM,yytext()); }
+  (({mNoDigit1} | {mDIGIT} | ":")+)? "#"    {  yybegin(YYINITIAL); return symbol(symATOM,yytext()); }
   [^]                                       {  yypushback(yytext().length()); yybegin(YYINITIAL); }
 }
 
 <YYINITIAL>{
 
-  {mLINE_COMMENT}                           {  return symbol(cLINE_COMMENT); }
+  {mLINE_COMMENT}                           {  return symbol(LINE_COMMENT,yytext()); }
   
-  {mWS}+                                    {  return symbol(cWHITESPACE); }
-  {mCOMMA}                                  {  return symbol(cCOMMA); }
+  {mWS}+                                    {  return symbol(WHITESPACE,yytext()); }
+  {mCOMMA}                                  {  return symbol(COMMA,yytext()); }
 
-  {mSTRING}                                 {  return symbol(cSTRING_LITERAL,yytext()); }
-  {mWRONG_STRING }                          {  return symbol(cWRONG_STRING_LITERAL); }
+  {mSTRING}                                 {  return symbol(STRING_LITERAL,yytext()); }
+  {mWRONG_STRING }                          {  return symbol(WRONG_STRING_LITERAL,yytext()); }
 
-  {mCHAR}                                   {  return symbol(cCHAR_LITERAL,yytext()); }
-  {mNIL}                                    {  return symbol(cNIL); }
-  {mTRUE}                                   {  return symbol(cTRUE,yytext()); }
-  {mFALSE}                                  {  return symbol(cFALSE,yytext()); }
+  {mCHAR}                                   {  return symbol(CHAR_LITERAL,yytext()); }
+  {mNIL}                                    {  return symbol(NIL,yytext()); }
+  {mTRUE}                                   {  return symbol(TRUE,yytext()); }
+  {mFALSE}                                  {  return symbol(FALSE,yytext()); }
 
-  {mNUM_INT}                                {  return symbol(cINTEGER_LITERAL,yytext()); }
-  {mNUM_LONG}                               {  return symbol(cLONG_LITERAL,yytext()); }
-  {mNUM_BIG_INT}                            {  return symbol(cBIG_INT_LITERAL,yytext()); }
-  {mNUM_FLOAT}                              {  return symbol(cFLOAT_LITERAL,yytext()); }
-  {mNUM_DOUBLE}                             {  return symbol(cDOUBLE_LITERAL,yytext()); }
-  {mNUM_BIG_DECIMAL}                        {  return symbol(cBIG_DECIMAL_LITERAL,yytext()); }
-  {mRATIO}                                  {  return symbol(cRATIO,yytext()); }
+  {mNUM_INT}                                {  return symbol(INTEGER_LITERAL,yytext()); }
+  {mNUM_LONG}                               {  return symbol(LONG_LITERAL,yytext()); }
+  {mNUM_BIG_INT}                            {  return symbol(BIG_INT_LITERAL,yytext()); }
+  {mNUM_FLOAT}                              {  return symbol(FLOAT_LITERAL,yytext()); }
+  {mNUM_DOUBLE}                             {  return symbol(DOUBLE_LITERAL,yytext()); }
+  {mNUM_BIG_DECIMAL}                        {  return symbol(BIG_DECIMAL_LITERAL,yytext()); }
+  {mRATIO}                                  {  return symbol(RATIO,yytext()); }
 
   // Reserved symbols
   "/"                                       {  return symbol(symATOM,yytext()); }
   "."{mIDENT} | {mIDENT}"."                 {  return symbol(symATOM,yytext()); }
   {mIDENT}                                  {  yypushback(yytext().length()); yybegin(SYMBOL); }
-  {mKEY}                                    {  return symbol(cCOLON_SYMBOL); }
+  {mKEYWORD}                                {  return symbol(KEYWORD,yytext()); }
 
 
-  {mQUOTE}                                  {  return symbol(cQUOTE); }
-  {mBACKQUOTE}                              {  return symbol(cBACKQUOTE); }
-  {mSHARPUP}                                {  return symbol(cSHARPUP); }
-  {mSHARP}                                  {  return symbol(cSHARP); }
-  {mUP}                                     {  return symbol(cUP); }
-  {mIMPLICIT_ARG}                           {  return symbol(symIMPLICIT_ARG); }
-  {mTILDA}                                  {  return symbol(cTILDA); }
-  {mAT}                                     {  return symbol(cAT); }
-  {mTILDAAT}                                {  return symbol(cTILDAAT); }
+  {mQUOTE}                                  {  return symbol(QUOTE,yytext()); }
+  {mBACKQUOTE}                              {  return symbol(BACKQUOTE,yytext()); }
+  {mSHARPUP}                                {  return symbol(SHARP_HAT,yytext()); }
+  {mSHARP}                                  {  return symbol(SHARP,yytext()); }
+  {mUP}                                     {  return symbol(HAT,yytext()); }
+  {mIMPLICIT_ARG}                           {  return symbol(symIMPLICIT_ARG,yytext()); }
+  {mTILDA}                                  {  return symbol(TILDA,yytext()); }
+  {mAT}                                     {  return symbol(AT,yytext()); }
+  {mTILDAAT}                                {  return symbol(TILDAAT,yytext()); }
 
 
-  {mLP}                                     {  return symbol(cLEFT_PAREN); }
-  {mRP}                                     {  return symbol(cRIGHT_PAREN); }
-  {mLS}                                     {  return symbol(cLEFT_SQUARE); }
-  {mRS}                                     {  return symbol(cRIGHT_SQUARE); }
-  {mLC}                                     {  return symbol(cLEFT_CURLY); }
-  {mRC}                                     {  return symbol(cRIGHT_CURLY); }
+  {mLP}                                     {  return symbol(LEFT_PAREN,yytext()); }
+  {mRP}                                     {  return symbol(RIGHT_PAREN,yytext()); }
+  {mLS}                                     {  return symbol(LEFT_SQUARE,yytext()); }
+  {mRS}                                     {  return symbol(RIGHT_SQUARE,yytext()); }
+  {mLC}                                     {  return symbol(LEFT_CURLY,yytext()); }
+  {mRC}                                     {  return symbol(RIGHT_CURLY,yytext()); }
 
 
 }
 
 // Anything else is should be marked as a bad char
-.                                           {  return symbol(cBAD_CHARACTER); }
+.                                           {  return symbol(BAD_CHARACTER,yytext()); }

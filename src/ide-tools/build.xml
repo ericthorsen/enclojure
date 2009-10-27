@@ -23,7 +23,7 @@
 
 <target name="flex" depends="init,cup">
     <jflex file="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}flex${file.separator}clojure.flex"
-      destdir="${src.dir}${file.separator}"        
+      destdir="${src.dir}${file.separator}"      
         />    
 </target>
 
