@@ -56,10 +56,10 @@
   -repl-context-external-managed-validation-
   (assoc -repl-context-validation-
     :port (validation/validator integer?)
-    :jvm-additional-args (validation/nilable-validator vector?
+    :jvm-additional-args (validation/nilable-validator vector?)
     :java-main (validation/validator string?)
     :classpath (validation/validator string?)
-    :debug-port-arg (validation/nilable-validator string?))))
+    :debug-port-arg (validation/nilable-validator string?)))
 
 (defn bless-external-context
   [repl-context]

@@ -48,19 +48,20 @@ validator-meta lookup the value in data-map and call the validator func on it.
 Returns a map of key [true|false] for each result"
   [data-map validator-meta]
   (assert (map? data-map))
-  (assert (map? validator-meta))
-  (apply hash-map
-    (reduce concat []
-        (for [[kf f] validator-meta] [kf (f (data-map kf))]))))
+  (assert (map? validator-meta))  
+    (reduce (fn [m [k vfn]]              
+              (assoc m k (vfn (data-map k))))
+      {} validator-meta))
 
 (defn validate-throw-on-fail
+  "If the data map fails validation, throws an exception passing back the failed
+keys and their passed in values"
   [data-map validator-meta]
   (let [vmap (get-validation data-map validator-meta)]
     (if (every? true? (vals vmap)) true
+      (let [bad-keys (map first (filter (fn [[k v]] (not v)) vmap))]        
       (throw (IllegalArgumentException.
                (format "Validation failed for keys %s"
-                 (select-keys data-map 
-                   (reduce (fn [r [k v]]
-                             (if (false? v)
-                               (conj r k) r)) [] vmap))))))))
+                 (reduce #(assoc %1 %2 (data-map %2))
+                   {} bad-keys))))))))
 

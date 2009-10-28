@@ -175,8 +175,10 @@ For seeing the command line use:"
         _ (doall (map #(.addArguments cmd-line (str %) false) java-args))
         #^DefaultExecutor executor (DefaultExecutor.)
         [out-pipe err-pipe] [(PipedOutputStream.) (PipedOutputStream.)]
-        out-pipe-reader (LineNumberReader. (InputStreamReader. (PipedInputStream. out-pipe)))
-        err-pipe-reader (LineNumberReader. (InputStreamReader. (PipedInputStream. err-pipe)))]
+        out-pipe-reader (LineNumberReader.
+                          (InputStreamReader. (PipedInputStream. out-pipe)))
+        err-pipe-reader (LineNumberReader.
+                          (InputStreamReader. (PipedInputStream. err-pipe)))]
     (.setStreamHandler executor (PumpStreamHandler. out-pipe err-pipe))
     (process-monitor-fn
       #(.readLine out-pipe-reader)

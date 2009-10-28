@@ -164,7 +164,8 @@ and port settings." repl-id) e)))))
         updated-config (merge (or curr-config {:repl-id repl-id})
                          (config-with-preferences))]
     (when curr-config ; Stop the repl if it is already running
-      (repl-manager/stop-internal-repl repl-id))    
+      (repl-manager/stop-internal-repl repl-id))
+    (println updated-config)
       (when
         (zero? (verify-classpath classpath))
         (let [irepl (factory/create-managed-external-repl
