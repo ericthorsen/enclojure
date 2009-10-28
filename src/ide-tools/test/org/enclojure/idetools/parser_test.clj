@@ -29,6 +29,17 @@
       Compiler$BodyExpr
       )))
 
+(def -parser- (ClojureParser.))
+
+(defn do-parser
+  [in-str]
+  (.yyreset lexer-test/-lexer- (StringReader. in-str))
+  (let [parser (ClojureParser. lexer-test/-lexer-)]
+    (.parse parser)))
+
+;  (.setScanner -parser- lexer-test/-lexer-)
+;  (.parse -parser-))
+
 
 (def -stmt- clojure.lang.Compiler$C/STATEMENT)
 (def -expr- clojure.lang.Compiler$C/EXPRESSION)

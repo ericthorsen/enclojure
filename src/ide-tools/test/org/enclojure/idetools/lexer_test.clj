@@ -33,9 +33,90 @@
         (conj tokens token)
         (recur (conj tokens token))))))
 
+(defn lex-token-syms
+  [in-str]
+  (map #(.sym %) (get-lex-tokens in-str)))
 
+(deftest test-tokens
+  (testing "basic tokens"
+    (is (= [ClojureSym/LEFT_CURLY ClojureSym/EOF]
+            (lex-token-syms "{")))
+    (is (= [ClojureSym/RIGHT_CURLY ClojureSym/EOF]
+            (lex-token-syms "}")))
+    (is (= [ClojureSym/LEFT_PAREN ClojureSym/EOF]
+            (lex-token-syms "(")))
+    (is (= [ClojureSym/RIGHT_PAREN ClojureSym/EOF]
+            (lex-token-syms ")")))
+    (is (= [ClojureSym/LEFT_SQUARE ClojureSym/EOF]
+            (lex-token-syms "[")))
+    (is (= [ClojureSym/RIGHT_SQUARE ClojureSym/EOF]
+            (lex-token-syms "]")))
+    (is (= [ClojureSym/BACKQUOTE ClojureSym/EOF]
+            (lex-token-syms "`")))
+    (is (= [ClojureSym/SHARP_CURLY ClojureSym/EOF]
+            (lex-token-syms "#{")))
+    (is (= [ClojureSym/AT ClojureSym/EOF]
+            (lex-token-syms "@")))
+    (is (= [ClojureSym/TILDA ClojureSym/EOF]
+            (lex-token-syms "~")))
+    (is (= [ClojureSym/TILDAAT ClojureSym/EOF]
+            (lex-token-syms "~@")))
+    )
 
+  (testing "whitespace and comments"
+    (is (= [ClojureSym/EOF]
+        (lex-token-syms ",")))
+    (is (= [ClojureSym/EOF]
+        (lex-token-syms ",,,,")))
+    (is (= [ClojureSym/EOF]
+        (lex-token-syms " ")))
+    (is (= [ClojureSym/EOF]
+        (lex-token-syms " , ,")))
+    (is (= [ClojureSym/LINE_COMMENT ClojureSym/EOF]
+        (lex-token-syms "; some comment")))
+    )
 
+  (testing "literals"
+    (is (= [ClojureSym/NIL ClojureSym/EOF]
+        (lex-token-syms "nil")))
+    (is (= [ClojureSym/TRUE ClojureSym/EOF]
+        (lex-token-syms "true")))
+    (is (= [ClojureSym/FALSE ClojureSym/EOF]
+        (lex-token-syms "false")))
+    (is (= [ClojureSym/CHAR_LITERAL ClojureSym/EOF]
+        (lex-token-syms "\\C")))
+    (is (= [ClojureSym/RATIO ClojureSym/EOF]
+        (lex-token-syms "12/34")))
+    (is (= [ClojureSym/INTEGER_LITERAL ClojureSym/EOF]
+        (lex-token-syms "12")))
+    (is (= [ClojureSym/INTEGER_LITERAL ClojureSym/EOF]
+        (lex-token-syms "0xe50")))
+    (is (= [ClojureSym/BIG_DECIMAL_LITERAL ClojureSym/EOF]
+        (lex-token-syms "12.3")))
+    (is (= [ClojureSym/STRING_LITERAL ClojureSym/EOF]
+        (lex-token-syms "\"This is a string.\"")))
+    (is (= [ClojureSym/STRING_LITERAL ClojureSym/EOF]
+        (lex-token-syms "\"\"")))
+    (is (= [ClojureSym/STRING_LITERAL ClojureSym/EOF]
+        (lex-token-syms "\"string with escapes \t \n \r \f \b \"")))
+    )
 
-
-
+  (testing "symbols, keywords"
+    (is (= [ClojureSym/symATOM ClojureSym/EOF]
+        (lex-token-syms "fred")))
+    (is (= [ClojureSym/symATOM ClojureSym/EOF]
+        (lex-token-syms "?fred")))
+    (is (= [ClojureSym/symATOM ClojureSym/EOF]
+        (lex-token-syms "!fred")))
+    (is (= [ClojureSym/symATOM ClojureSym/EOF]
+        (lex-token-syms ".fred")))
+    (is (= [ClojureSym/KEYWORD ClojureSym/EOF]
+        (lex-token-syms ":fred")))
+    (is (= [ClojureSym/KEYWORD ClojureSym/EOF]
+        (lex-token-syms "::fred")))
+    (is (= [ClojureSym/symATOM ClojureSym/symNS_SEP
+            ClojureSym/symATOM ClojureSym/EOF]
+        (lex-token-syms "nss/func")))
+    )
+  
+  )

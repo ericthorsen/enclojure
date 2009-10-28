@@ -55,7 +55,7 @@ import Example.ClojureSym;
 %{
 
 final Var requireFn = RT.var("clojure.core","require");
-final SymbolFactory symFactory = new DefaultSymbolFactory();
+final ComplexSymbolFactory symFactory = new ComplexSymbolFactory();
 
 public  java_cup.runtime.Symbol symbol(int ID,String tokenType,Object data)
 {
@@ -268,7 +268,6 @@ mRATIO = {mNUM_INT_PART} "/" {mNUM_INT_PART}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////// Parens, Squares, Curleys, Quotes /////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 mLP = "("
 mRP = ")"
 mLS = "["
@@ -280,11 +279,13 @@ mQUOTE = "'"
 mBACKQUOTE = "`"
 mSHARP = "#"
 mSHARPUP = {mSHARP} {mUP}
+mSHARP_CURLY = {mSHARP} {mLC}
 mUP = "^"
 mIMPLICIT_ARG = "%" | "%"{mDIGIT}+ | "%""&"
 mTILDA = "~"
 mAT = "@"
 mTILDAAT = {mTILDA} {mAT}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////// Strings /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -358,8 +359,8 @@ mFALSE = "false"
 
   {mLINE_COMMENT}                           {  return symbol(LINE_COMMENT,yytext()); }
   
-  {mWS}+                                    //{  }//return symbol(WHITESPACE,yytext()); }
-  {mCOMMA}                                  //{  }//return symbol(COMMA,yytext()); }
+  {mWS}+                                    {  }//return symbol(WHITESPACE,yytext()); }
+  {mCOMMA}                                  {  }//return symbol(COMMA,yytext()); }
 
   {mSTRING}                                 {  return symbol(STRING_LITERAL,yytext()); }
   {mWRONG_STRING}                           {  return symbol(WRONG_STRING_LITERAL,yytext()); }
@@ -385,9 +386,10 @@ mFALSE = "false"
 
   {mQUOTE}                                  {  return symbol(QUOTE,yytext()); }
   {mBACKQUOTE}                              {  return symbol(BACKQUOTE,yytext()); }
+  {mSHARP_CURLY} 	                        {  return symbol(SHARP_CURLY,yytext()); }  
   {mSHARPUP}                                {  return symbol(SHARP_HAT,yytext()); }
   {mSHARP}                                  {  return symbol(SHARP,yytext()); }
-  {mUP}                                     {  return symbol(HAT,yytext()); }
+  {mUP}                                     {  return symbol(HAT,yytext()); }  
   {mIMPLICIT_ARG}                           {  return symbol(symIMPLICIT_ARG,yytext()); }
   {mTILDA}                                  {  return symbol(TILDA,yytext()); }
   {mAT}                                     {  return symbol(AT,yytext()); }
