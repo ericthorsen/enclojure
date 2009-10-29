@@ -507,12 +507,10 @@
                 <runtime-relative-path>ext/slf4j-jdk14-1.5.8.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/slf4j-jdk14-1.5.8.jar</binary-origin>
             </class-path-extension>
-            <!--
             <class-path-extension>
                 <runtime-relative-path>ext/tools.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/tools.jar</binary-origin>
             </class-path-extension>
-            -->
         </data>
     </configuration>
 </project>
