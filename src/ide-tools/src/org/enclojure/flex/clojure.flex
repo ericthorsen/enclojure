@@ -56,6 +56,7 @@ import Example.ClojureSym;
 
 final Var requireFn = RT.var("clojure.core","require");
 final ComplexSymbolFactory symFactory = new ComplexSymbolFactory();
+public final static Var _tokenMap = (Var)RT.var("org.enclojure.idetools.tokens","-TOKENS-");
 
 public  java_cup.runtime.Symbol symbol(int ID,String tokenType,Object data)
 {
@@ -64,7 +65,7 @@ public  java_cup.runtime.Symbol symbol(int ID,String tokenType,Object data)
 
 public java_cup.runtime.Symbol symbol(int ID,String tokenType)
 {
-    return symFactory.newSymbol(tokenType,ID);
+    return symFactory.newSymbol(tokenType,ID,tokenType);
 }
 
 /*
@@ -79,127 +80,7 @@ public ClojureSymbol symbol(Var tokenType)
 }
 */
 
-//From LispReader
-// static final clojure.lang.Symbol QUOTE = Symbol.create("quote");
-// static final clojure.lang.Symbol THE_VAR = Symbol.create("var");
-// static clojure.lang.Symbol UNQUOTE = Symbol.create("clojure.core", "unquote");
-// static clojure.lang.Symbol UNQUOTE_SPLICING = Symbol.create("clojure.core", "unquote-splicing");
-// static clojure.lang.Symbol CONCAT = Symbol.create("clojure.core", "concat");
-// static clojure.lang.Symbol SEQ = Symbol.create("clojure.core", "seq");
-// static clojure.lang.Symbol LIST = Symbol.create("clojure.core", "list");
-// static clojure.lang.Symbol APPLY = Symbol.create("clojure.core", "apply");
-// static clojure.lang.Symbol HASHMAP = Symbol.create("clojure.core", "hash-map");
-// static clojure.lang.Symbol HASHSET = Symbol.create("clojure.core", "hash-set");
-// static clojure.lang.Symbol VECTOR = Symbol.create("clojure.core", "vector");
-// static clojure.lang.Symbol WITH_META = Symbol.create("clojure.core", "with-meta");
-// static clojure.lang.Symbol META = Symbol.create("clojure.core", "meta");
-// static clojure.lang.Symbol DEREF = Symbol.create("clojure.core", "deref");
 
-// static IFn[] macros = new IFn[256];
-// static IFn[] dispatchMacros = new IFn[256];
-
-// static Pattern symbolPat = Pattern.compile("[:]?([\\D&&[^/]].*/)?([\\D&&[^/]][^/]*)");
-// static Pattern intPat =
-// 		Pattern.compile(
-// 				"([-+]?)(?:(0)|([1-9][0-9]*)|0[xX]([0-9A-Fa-f]+)|0([0-7]+)|([1-9][0-9]?)[rR]([0-9A-Za-z]+)|0[0-9]+)");
-// static Pattern ratioPat = Pattern.compile("([-+]?[0-9]+)/([0-9]+)");
-// static Pattern floatPat = Pattern.compile("([-+]?[0-9]+(\\.[0-9]*)?([eE][-+]?[0-9]+)?)(M)?");
-// static final clojure.lang.Symbol SLASH = Symbol.create("/");
-// static final clojure.lang.Symbol CLOJURE_SLASH = Symbol.create("clojure.core","/");
-
-
-//symbol->gensymbol
-// static clojure.lang.Var GENSYM_ENV = clojure.lang.Var.create(null);
-//sorted-map num->gensymbol
-// static clojure.lang.Var ARG_ENV = clojure.lang.Var.create(null);
-
-/*
-    static
-	{
-	macros['"'] = new LispReader.StringReader();
-	macros[';'] = new LispReader.CommentReader();
-	macros['\''] = new LispReader.WrappingReader(QUOTE);
-	macros['@'] = new LispReader.WrappingReader(DEREF);//new DerefReader();
-	macros['^'] = new LispReader.WrappingReader(META);
-	macros['`'] = new LispReader.SyntaxQuoteReader();
-	macros['~'] = new LispReader.UnquoteReader();
-	macros['('] = new LispReader.ListReader();
-	macros[')'] = new LispReader.UnmatchedDelimiterReader();
-	macros['['] = new LispReader.VectorReader();
-	macros[']'] = new LispReader.UnmatchedDelimiterReader();
-	macros['{'] = new LispReader.MapReader();
-	macros['}'] = new LispReader.UnmatchedDelimiterReader();
-	macros['\\'] = new LispReader.CharacterReader();
-	macros['%'] = new LispReader.ArgReader();
-	macros['#'] = new LispReader.DispatchReader();
-
-
-	dispatchMacros['^'] = new LispReader.MetaReader();
-	dispatchMacros['\''] = new LispReader.VarReader();
-	dispatchMacros['"'] = new LispReader.RegexReader();
-	dispatchMacros['('] = new LispReader.FnReader();
-	dispatchMacros['{'] = new LispReader.SetReader();
-	dispatchMacros['='] = new LispReader.EvalReader();
-	dispatchMacros['!'] = new LispReader.CommentReader();
-	dispatchMacros['<'] = new LispReader.UnreadableReader();
-	dispatchMacros['_'] = new LispReader.DiscardReader();
-	}
-
-	public final static Var cSTRING_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cSTRING-LITERAL");
-	public final static Var cWRONG_STRING_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cWRONG-STRING-LITERAL");
-	public final static Var cLONG_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cLONG-LITERAL");
-	public final static Var cWHITESPACE = (Var)RT.var("org.enclojure.idetools.tokens","cWHITESPACE");
-	public final static Var cLINE_COMMENT = (Var)RT.var("org.enclojure.idetools.tokens","cLINE-COMMENT");
-	public final static Var cCOLON_SYMBOL = (Var)RT.var("org.enclojure.idetools.tokens","cCOLON-SYMBOL");
-	public final static Var cSHARPUP = (Var)RT.var("org.enclojure.idetools.tokens","cSHARPUP");
-	public final static Var cRIGHT_SQUARE = (Var)RT.var("org.enclojure.idetools.tokens","cRIGHT-SQUARE");
-	public final static Var get_java_def = (Var)RT.var("org.enclojure.idetools.tokens","get-java-def");
-	public final static Var cTRUE = (Var)RT.var("org.enclojure.idetools.tokens","cTRUE");
-	public final static Var _token_meta_ = (Var)RT.var("org.enclojure.idetools.tokens","-token-meta-");
-	public final static Var cTILDAAT = (Var)RT.var("org.enclojure.idetools.tokens","cTILDAAT");
-	public final static Var cEOF = (Var)RT.var("org.enclojure.idetools.tokens","cEOF");
-	public final static Var symATOM = (Var)RT.var("org.enclojure.idetools.tokens","symATOM");
-	public final static Var cRIGHT_PAREN = (Var)RT.var("org.enclojure.idetools.tokens","cRIGHT-PAREN");
-	public final static Var cBIG_DECIMAL_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cBIG-DECIMAL-LITERAL");
-	public final static Var cNIL = (Var)RT.var("org.enclojure.idetools.tokens","cNIL");
-	public final static Var cWHITESPACE_SET = (Var)RT.var("org.enclojure.idetools.tokens","cWHITESPACE-SET");
-	public final static Var symIMPLICIT_ARG = (Var)RT.var("org.enclojure.idetools.tokens","symIMPLICIT-ARG");
-	public final static Var cFLOAT_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cFLOAT-LITERAL");
-	public final static Var cCHAR_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cCHAR-LITERAL");
-	public final static Var cLEFT_PAREN = (Var)RT.var("org.enclojure.idetools.tokens","cLEFT-PAREN");
-	public final static Var cSHARP = (Var)RT.var("org.enclojure.idetools.tokens","cSHARP");
-	public final static Var cDOUBLE_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cDOUBLE-LITERAL");
-	public final static Var cBIG_INT_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cBIG-INT-LITERAL");
-	public final static Var cLEFT_SQUARE = (Var)RT.var("org.enclojure.idetools.tokens","cLEFT-SQUARE");
-	public final static Var cLEFT_CURLY = (Var)RT.var("org.enclojure.idetools.tokens","cLEFT-CURLY");
-	public final static Var cTILDA = (Var)RT.var("org.enclojure.idetools.tokens","cTILDA");
-	public final static Var cREADABLE_TEXT = (Var)RT.var("org.enclojure.idetools.tokens","cREADABLE-TEXT");
-	public final static Var symNS_SEP = (Var)RT.var("org.enclojure.idetools.tokens","symNS-SEP");
-	public final static Var make_token = (Var)RT.var("org.enclojure.idetools.tokens","make-token");
-	public final static Var cQUOTE = (Var)RT.var("org.enclojure.idetools.tokens","cQUOTE");
-	public final static Var cUP = (Var)RT.var("org.enclojure.idetools.tokens","cUP");
-	public final static Var cRIGHT_CURLY = (Var)RT.var("org.enclojure.idetools.tokens","cRIGHT-CURLY");
-	public final static Var cCOMMA = (Var)RT.var("org.enclojure.idetools.tokens","cCOMMA");
-	public final static Var symS = (Var)RT.var("org.enclojure.idetools.tokens","symS");
-	public final static Var cAT = (Var)RT.var("org.enclojure.idetools.tokens","cAT");
-	public final static Var cCOMMENTS = (Var)RT.var("org.enclojure.idetools.tokens","cCOMMENTS");
-	public final static Var cFALSE = (Var)RT.var("org.enclojure.idetools.tokens","cFALSE");
-	public final static Var make_token_set = (Var)RT.var("org.enclojure.idetools.tokens","make-token-set");
-	public final static Var cRATIO = (Var)RT.var("org.enclojure.idetools.tokens","cRATIO");
-	public final static Var symDOT = (Var)RT.var("org.enclojure.idetools.tokens","symDOT");
-	public final static Var _TOKEN_TYPES_MAP_ = (Var)RT.var("org.enclojure.idetools.tokens","-TOKEN-TYPES-MAP-");
-	public final static Var _TOKEN_TYPES_BY_ID_ = (Var)RT.var("org.enclojure.idetools.tokens","-TOKEN-TYPES-BY-ID-");
-	public final static Var cSEPARATORS = (Var)RT.var("org.enclojure.idetools.tokens","cSEPARATORS");
-	public final static Var cINTEGER_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cINTEGER-LITERAL");
-	public final static Var cIDENTIFIERS = (Var)RT.var("org.enclojure.idetools.tokens","cIDENTIFIERS");
-	public final static Var cLITERALS = (Var)RT.var("org.enclojure.idetools.tokens","cLITERALS");
-	public final static Var cBOOLEAN_LITERAL = (Var)RT.var("org.enclojure.idetools.tokens","cBOOLEAN-LITERAL");
-	public final static Var cBAD_CHARACTER = (Var)RT.var("org.enclojure.idetools.tokens","cBAD-CHARACTER");
-	public final static Var cEOL = (Var)RT.var("org.enclojure.idetools.tokens","cEOL");
-	public final static Var cBACKQUOTE = (Var)RT.var("org.enclojure.idetools.tokens","cBACKQUOTE");
-	public final static Var cSTRINGS = (Var)RT.var("org.enclojure.idetools.tokens","cSTRINGS");
-	public final static Var cATOMS = (Var)RT.var("org.enclojure.idetools.tokens","cATOMS");
-*/
 
 %}
 %init{
