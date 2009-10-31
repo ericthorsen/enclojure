@@ -23,7 +23,7 @@
     (apply vector (filter
              (fn [[k v]]
                (not= #{'-TOKEN-TYPES-BY-ID- '-TOKEN-TYPES-MAP- 'get-java-def} k))
-                 (ns-publics (find-ns 'org.enclojure.ide.tokens))))))
+                 (ns-publics (find-ns 'org.enclojure.idetools.tokens))))))
 
 
 (def -TOKEN-TYPES-MAP-
@@ -41,7 +41,7 @@
   (let [fmt-str "\tfinal static IPersistentMap %s = (IPersistentMap)RT.var(\"org.enclojure.ide.tokens\",\"%s\").get();\n"
         tokens  (distinct
                   (keys (dissoc
-                        (ns-publics (find-ns 'org.enclojure.ide.tokens))
+                        (ns-publics (find-ns 'org.enclojure.idetools.tokens))
                             '-TOKEN-TYPES-)))
         java-tokens (map #(.replace (str %1) "-" "_")
                       tokens)]
