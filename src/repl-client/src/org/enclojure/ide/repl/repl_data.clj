@@ -29,7 +29,7 @@
 
 (def -default-repl-data-
   {
-   :arguments ["-server" "-Xmx512m" "-Xms128m"]
+   :jvm-additional-args ["-server" "-Xmx512m" "-Xms128m"]
    :debug-port-arg "-Xrunjdwp:transport=dt_socket,server=y,suspend=n"   
    :java-main "org.enclojure.repl.launcher"
    :repl-id "Default Repl Id"
@@ -56,10 +56,10 @@
   -repl-context-external-managed-validation-
   (assoc -repl-context-validation-
     :port (validation/validator integer?)
-    :arguments (validation/nilable-validator vector?
+    :jvm-additional-args (validation/nilable-validator vector?)
     :java-main (validation/validator string?)
     :classpath (validation/validator string?)
-    :debug-port-arg (validation/nilable-validator string?))))
+    :debug-port-arg (validation/nilable-validator string?)))
 
 (defn bless-external-context
   [repl-context]

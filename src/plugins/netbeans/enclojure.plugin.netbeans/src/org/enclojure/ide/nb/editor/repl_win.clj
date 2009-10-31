@@ -112,7 +112,7 @@
                          (apply vector vargs))))]
           (merge prefs
             (if jvm-args
-              (assoc settings-map :arguments jvm-args) settings-map))))
+              (assoc settings-map :jvm-additional-args jvm-args) settings-map))))
   ([]
     (config-with-preferences {})))
 
@@ -164,7 +164,8 @@ and port settings." repl-id) e)))))
         updated-config (merge (or curr-config {:repl-id repl-id})
                          (config-with-preferences))]
     (when curr-config ; Stop the repl if it is already running
-      (repl-manager/stop-internal-repl repl-id))    
+      (repl-manager/stop-internal-repl repl-id))
+    (println updated-config)
       (when
         (zero? (verify-classpath classpath))
         (let [irepl (factory/create-managed-external-repl
@@ -197,9 +198,9 @@ and port settings." repl-id) e)))))
             (:classpaths (:platform  prefs))))))
     (catch Exception e
       (error-reporting/report-error        
-        "Stand alone repl failed to start.  Make sure you have Clojure
+        (str "Stand alone repl failed to start.  Make sure you have Clojure
 and Clojure.contrib jars in assigned Clojure Platform for the standalone REPL.
-See the Enclojure category under preferences to view your settings" e))))
+See the Enclojure category under preferences to view your settings" (.getMessage e)) e))))
 
 
 (declare reset-repl)
@@ -213,6 +214,8 @@ See the Enclojure category under preferences to view your settings" e))))
         updated-config (merge (or curr-config {:repl-id repl-id})
                          (config-with-preferences))]
     (try
+      (logger/info "For project {} Verifying classpath {} " p classpath)
+      (logger/info "updated-config {} " updated-config)
       (when
         (zero? (verify-classpath classpath))
         (let [irepl (factory/create-managed-external-repl
@@ -229,7 +232,8 @@ See the Enclojure category under preferences to view your settings" e))))
         (str (format "Project REPL for %s failed to start.  Make sure you have Clojure
 and Clojure.contrib jars as libraries in your project." repl-id) 
           "\nThese are both required to start a repl."
-          "\nFor a project REPL, you can add them as libraries to the project.")
+          "\nFor a project REPL, you can add them as libraries to the project.\n"
+          (.getMessage e))
           e)))))
         
 

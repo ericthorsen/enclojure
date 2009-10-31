@@ -13,9 +13,8 @@
 
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for org.enclojure.idetools.token-set"}
-		org.enclojure.idetools.token-set
-	(:require [org.enclojure.protocols.helpers :as helpers])
-        (:use org.enclojure.idetools.tokens))
+		org.enclojure.idetools.token-set	
+        (:require [org.enclojure.idetools.tokens :as tokens]))
 
 
 (def -TOKEN-TYPES-BY-ID-

@@ -164,13 +164,16 @@
           expr (if ns-node
                  (if print-pretty
                    (str "(binding [*ns* *ns*]" ns-node
-                            "(eval (clojure.contrib.pprint/pprint (do " expr "\n))))")
-                   (str "(binding [*ns* *ns*]" ns-node  "(eval '(do " expr "\n)))"))
+                            "(eval (clojure.contrib.pprint/pprint (do " 
+                                (pr-str expr) "\n))))")
+                   (str "(binding [*ns* *ns*]" ns-node  "(eval '(do "
+                        (pr-str expr) "\n)))"))
                  (if print-pretty
-                   (str "(eval '(clojure.contrib.pprint/pprint (do " expr "\n)))")
-                 (str " " expr " \n")))
+                   (str "(eval '(clojure.contrib.pprint/pprint (do " 
+                     (pr-str expr) "\n)))")
+                 (str " " (pr-str expr) " \n")))
           ]
-      (logger/debug  "\neval expr:\n" expr)
+      (logger/debug  "\neval expr:\n{}" (pr-str expr))
       (.resultReceived repl-panel (._replEditorPane repl-panel) "\n")
       (if repl-fn
         (repl-fn expr)
