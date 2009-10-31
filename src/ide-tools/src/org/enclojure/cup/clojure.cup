@@ -44,10 +44,18 @@ terminal NEWLINE
 		,RIGHT_SQUARE
 		,LEFT_CURLY
 		,RIGHT_CURLY
-		,SHARP_CURLY
+                ,DISPATCH
+                ,DISP_META
+                ,DISP_VAR
+                ,DISP_REGEX
+                ,DISP_FN
+                ,DISP_SET
+                ,DISP_EVAL
+                ,DISP_COMMENT
+                ,DISP_UNREADABLE
+                ,DISP_DISCARD_FORM
 		,QUOTE
 		,BACKQUOTE
-		,SHARP
 		,SHARP_HAT
 		,HAT
 		,IMPLICIT_ARG
@@ -74,7 +82,7 @@ terminal NEWLINE
 		,FALSE
 		,BAD_CHARACTER
 		,COLON
-        ,SYMBOL
+                ,SYMBOL
 		,symDOT
 		,symNS_SEP
 		,symATOM
@@ -107,6 +115,10 @@ nonterminal Object atom;
 nonterminal Object operands;
 nonterminal Object operand;
 nonterminal Object symbol;
+nonterminal Object symbol_part;
+nonterminal Object q_name;
+nonterminal Object q_name_part;
+nonterminal Object type_hint;
 
 start with s_expr;	   
 	
@@ -170,14 +182,14 @@ vector  ::= LEFT_SQUARE operands:e RIGHT_SQUARE
         {:
  		RESULT = RT.vector(e);
 		System.out.println("vector [" + e +"]"); 
-		:}
+	:}
         ;
 
-set     ::= SHARP LEFT_CURLY operands:e RIGHT_CURLY
+set     ::= DISP_SET operands:e RIGHT_CURLY
         {: 
 		RESULT = RT.set (e); 
 		System.out.println("set #{" + e +"}"); 
-		:}
+	:}
         ;
 
 map     ::= LEFT_CURLY operand:e1 operand:e2 RIGHT_CURLY
@@ -185,7 +197,6 @@ map     ::= LEFT_CURLY operand:e1 operand:e2 RIGHT_CURLY
  		RESULT = RT.map(e1,e2);
 		System.out.println("map {" + e1 + "," + e2 +"}"); :}
    		;
-
 
 literal ::= 
        INTEGER_LITERAL:e
@@ -214,31 +225,62 @@ literal ::=
 		{: RESULT = RT.readString((String)e); :}
 	;
 
-symbol ::= symATOM:ns symNS_SEP symATOM:sym
+q_name_part ::= symATOM:e
+    {: RESULT = e; :}
+    ;
+
+q_name ::= q_name:e1 symDOT q_name_part:e2
+        {: RESULT = ((String)e1) + "." + ((String)e2); :}
+        |
+        q_name_part:e
+        {: RESULT = e; :}
+        ;
+                
+symbol_part ::= q_name:ns symNS_SEP symATOM:sym
 		{:
 		RESULT = clojure.lang.Symbol.create((String)ns,(String)sym);
 		System.out.println("symbol " + ns + "/" + sym);
 		:}
- 		| symATOM:sym
-		{:
-		RESULT = clojure.lang.Symbol.create((String)sym);
-		System.out.println("symbol "+ sym);
-		:}
-		| symDOT:sym
+ 		| q_name:sym
 		{:
 		RESULT = clojure.lang.Symbol.create((String)sym);
 		System.out.println("symbol "+ sym);
 		:}
 		;
 
+type_hint ::= DISP_META STRING_LITERAL:e
+                {:
+		RESULT = e;
+		System.out.println("DISP_META STRING_LITERAL " + e);
+		:}
+                |
+                DISP_META symbol_part:e
+                {:
+		RESULT = e;
+		System.out.println("DISP_META symbol_part " + e);
+		:}
+                ;
+
+symbol ::= type_hint:hint symbol_part:e
+                {:
+                cloure.lang.Symbol t = cloure.lang.Symbol.create("user",(String)e);
+                t = t.withMeta ((IPersistentMap)RT.map(Keyword.create("tag"),hint));
+		RESULT = t;
+		System.out.println("DISP_META STRING_LITERAL " + e);
+		:}
+        | symbol_part:e
+        {:
+        RESULT = RT.var("user",(String)e);
+        :}
+        ;
+
 atom ::= series:e
 	{: RESULT = e; :}
 	| literal:e
 	{: RESULT = e; :}
 	| symbol:e
-	{: RESULT = e; :}	
+	{: RESULT = e; :}
 	;
 	
 empty ::= /* empty */
     ;
-

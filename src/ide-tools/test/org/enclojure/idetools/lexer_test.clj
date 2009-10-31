@@ -53,8 +53,6 @@
             (lex-token-syms "]")))
     (is (= [ClojureSym/BACKQUOTE ClojureSym/EOF]
             (lex-token-syms "`")))
-    (is (= [ClojureSym/SHARP_CURLY ClojureSym/EOF]
-            (lex-token-syms "#{")))
     (is (= [ClojureSym/AT ClojureSym/EOF]
             (lex-token-syms "@")))
     (is (= [ClojureSym/TILDA ClojureSym/EOF]
@@ -118,5 +116,25 @@
             ClojureSym/symATOM ClojureSym/EOF]
         (lex-token-syms "nss/func")))
     )
-  
+
+  (testing "dispatch forms"
+    (is (= [ClojureSym/DISP_META ClojureSym/EOF]
+            (lex-token-syms "#^")))
+    (is (= [ClojureSym/DISP_VAR ClojureSym/EOF]
+            (lex-token-syms "#\\")))
+    (is (= [ClojureSym/DISP_REGEX ClojureSym/EOF]
+            (lex-token-syms "#\"")))
+    (is (= [ClojureSym/DISP_FN ClojureSym/EOF]
+            (lex-token-syms "#(")))
+    (is (= [ClojureSym/DISP_SET ClojureSym/EOF]
+            (lex-token-syms "#{")))
+    (is (= [ClojureSym/DISP_EVAL ClojureSym/EOF]
+            (lex-token-syms "#=")))
+    (is (= [ClojureSym/DISP_COMMENT ClojureSym/EOF]
+            (lex-token-syms "#!")))
+    (is (= [ClojureSym/DISP_UNREADABLE ClojureSym/EOF]
+            (lex-token-syms "#<")))
+    (is (= [ClojureSym/DISP_DISCARD_FORM ClojureSym/EOF]
+            (lex-token-syms "#_")))
+    )  
   )

@@ -158,14 +158,24 @@ mRC = "}"
 
 mQUOTE = "'"
 mBACKQUOTE = "`"
-mSHARP = "#"
-mSHARPUP = {mSHARP} {mUP}
-mSHARP_CURLY = {mSHARP} {mLC}
 mUP = "^"
 mIMPLICIT_ARG = "%" | "%"{mDIGIT}+ | "%""&"
 mTILDA = "~"
 mAT = "@"
 mTILDAAT = {mTILDA} {mAT}
+
+mDISPATCH = "#"
+// Reader macros
+mDISP_META = {mDISPATCH} {mUP}
+mDISP_VAR = {mDISPATCH} "\\"
+mDISP_REGEX = {mDISPATCH} "\""
+mDISP_FN = {mDISPATCH} {mLP}
+mDISP_SET = {mDISPATCH} {mLC}
+mDISP_EVAL= {mDISPATCH} "="
+mDISP_COMMENT= {mDISPATCH} "!"
+mDISP_UNREADABLE= {mDISPATCH} "<"
+mDISP_DISCARD_FORM= {mDISPATCH} "_"
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -267,9 +277,16 @@ mFALSE = "false"
 
   {mQUOTE}                                  {  return symbol(QUOTE,yytext()); }
   {mBACKQUOTE}                              {  return symbol(BACKQUOTE,yytext()); }
-  {mSHARP_CURLY} 	                        {  return symbol(SHARP_CURLY,yytext()); }  
-  {mSHARPUP}                                {  return symbol(SHARP_HAT,yytext()); }
-  {mSHARP}                                  {  return symbol(SHARP,yytext()); }
+  {mDISP_META}                              {  return symbol(DISP_META,yytext()); }
+  {mDISP_VAR}                               {  return symbol(DISP_VAR,yytext()); }
+  {mDISP_REGEX}                             {  return symbol(DISP_REGEX,yytext()); }
+  {mDISP_FN}                                {  return symbol(DISP_FN,yytext()); }
+  {mDISP_SET}                               {  return symbol(DISP_SET,yytext()); }
+  {mDISP_EVAL}                              {  return symbol(DISP_EVAL,yytext()); }
+  {mDISP_COMMENT}                           {  return symbol(DISP_COMMENT,yytext()); }
+  {mDISP_UNREADABLE}                        {  return symbol(DISP_UNREADABLE,yytext()); }
+  {mDISP_DISCARD_FORM}                      {  return symbol(DISP_DISCARD_FORM,yytext()); }
+  {mDISPATCH}                               {  return symbol(DISPATCH,yytext()); }
   {mUP}                                     {  return symbol(HAT,yytext()); }  
   {mIMPLICIT_ARG}                           {  return symbol(symIMPLICIT_ARG,yytext()); }
   {mTILDA}                                  {  return symbol(TILDA,yytext()); }

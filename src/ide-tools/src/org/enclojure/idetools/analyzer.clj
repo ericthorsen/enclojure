@@ -51,6 +51,9 @@
 ;Integer
 (def *RET_LOCAL_NUM*)
 
+(def *source-roots*)
+(def *classpath*)
+
 (def *specials-syms*
     ['def 'loop 'loop* 'recur 'if 'let 'let* 'letfn* 'do 'fn* 'fn 'quote 'var
     '. 'set! 'try-finally 'try 'catch 'finally 'throw 'monitor-enter 'monitor-exit
