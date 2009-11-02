@@ -67,3 +67,11 @@
   (reduce #(assoc %1
              %2 (symbol (str %2 "-expr"))) {} *specials-syms*))
 
+
+; Not sure if this idea is sound but...
+; this map will allowing mapping any symbol to a special form so that
+; functions/macros that wrap a special form can use the same analyzer 
+(def *special-form-mapping*
+  (ref (zipmap *specials-syms* *specials-syms*)))
+
+

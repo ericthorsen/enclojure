@@ -55,6 +55,19 @@ terminal NEWLINE
                 ,DISP_UNREADABLE
                 ,DISP_DISCARD_FORM
 		,QUOTE
+
+                ,DEF
+                ,DEFN
+                ,FN
+                ,LOOP
+                ,RECUR
+                ,DO
+                ,IF
+                ,NS
+                ,LET
+                ,LET_STAR
+                ,LETFN 
+
 		,BACKQUOTE
 		,SHARP_HAT
 		,HAT
@@ -263,8 +276,8 @@ type_hint ::= DISP_META STRING_LITERAL:e
 
 symbol ::= type_hint:hint symbol_part:e
                 {:
-                cloure.lang.Symbol t = cloure.lang.Symbol.create("user",(String)e);
-                t = t.withMeta ((IPersistentMap)RT.map(Keyword.create("tag"),hint));
+                clojure.lang.Symbol t = clojure.lang.Symbol.create("user",(String)e);                
+                t = (clojure.lang.Symbol)t.withMeta (RT.map(Keyword.intern("tag"),hint));
 		RESULT = t;
 		System.out.println("DISP_META STRING_LITERAL " + e);
 		:}

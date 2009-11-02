@@ -231,6 +231,21 @@ mNIL = "nil"
 mTRUE = "true"
 mFALSE = "false"
 
+// Specials
+mDEF = "def"
+mDEFN = "defn"
+mFN = "fn"
+mLOOP = "loop"
+mRECUR = "recur"
+mDO = "do"
+mIF = "if"
+mNS = "ns"
+mLET = "let"
+mLET_STAR = "let*"
+mLETFN = "letfn"
+mQUOTE = "quote"
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////  states ///////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -268,6 +283,20 @@ mFALSE = "false"
   {mNUM_DOUBLE}                             {  return symbol(DOUBLE_LITERAL,yytext()); }
   {mNUM_BIG_DECIMAL}                        {  return symbol(BIG_DECIMAL_LITERAL,yytext()); }
   {mRATIO}                                  {  return symbol(RATIO,yytext()); }
+
+  // Specials
+  {mDEF}                                    {  return symbol(DEF,yytext()); }
+  {mDEFN}                                   {  return symbol(DEFN,yytext()); }
+  {mFN}                                     {  return symbol(FN,yytext()); }
+  {mLOOP}                                   {  return symbol(LOOP,yytext()); }
+  {mRECUR}                                  {  return symbol(RECUR,yytext()); }
+  {mDO}                                     {  return symbol(DO,yytext()); }
+  {mIF}                                     {  return symbol(IF,yytext()); }
+  {mNS}                                     {  return symbol(NS,yytext()); }
+  {mLET}                                    {  return symbol(LET,yytext()); }
+  {mLET_STAR}                               {  return symbol(LET_STAR,yytext()); }
+  {mLETFN}                                  {  return symbol(LETFN,yytext()); }
+  {mQUOTE}                                  {  return symbol(QUOTE,yytext()); }
 
   // Reserved symbols
   "/"                                       {  return symbol(symATOM,yytext()); }

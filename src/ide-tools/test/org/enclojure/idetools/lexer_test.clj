@@ -136,5 +136,31 @@
             (lex-token-syms "#<")))
     (is (= [ClojureSym/DISP_DISCARD_FORM ClojureSym/EOF]
             (lex-token-syms "#_")))
-    )  
-  )
+    )
+
+  (testing "specials forms"
+    (is (= [ClojureSym/DEF ClojureSym/EOF]
+            (lex-token-syms "def")))
+    (is (= [ClojureSym/DEFN ClojureSym/EOF]
+            (lex-token-syms "defn")))
+    (is (= [ClojureSym/LOOP ClojureSym/EOF]
+            (lex-token-syms "loop")))
+    (is (= [ClojureSym/RECUR ClojureSym/EOF]
+            (lex-token-syms "recur")))
+    (is (= [ClojureSym/DO ClojureSym/EOF]
+            (lex-token-syms "do")))
+    (is (= [ClojureSym/IF ClojureSym/EOF]
+            (lex-token-syms "if")))
+    (is (= [ClojureSym/NS ClojureSym/EOF]
+            (lex-token-syms "ns")))
+    (is (= [ClojureSym/LET ClojureSym/EOF]
+            (lex-token-syms "let")))
+    (is (= [ClojureSym/LET_STAR ClojureSym/EOF]
+            (lex-token-syms "let*")))
+    (is (= [ClojureSym/LETFN ClojureSym/EOF]
+            (lex-token-syms "letfn")))
+    (is (= [ClojureSym/QUOTE ClojureSym/EOF]
+            (lex-token-syms "quote")))
+    )
+
+)
