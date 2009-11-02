@@ -27,4 +27,8 @@
         />    
 </target>
 
+<target name="jar" depends="flex,common.jar">
+</target>
+
+
 </project>
