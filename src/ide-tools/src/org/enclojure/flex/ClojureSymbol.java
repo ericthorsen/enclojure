@@ -21,6 +21,8 @@ import clojure.lang.RT;
 
 
 public class ClojureSymbol extends Symbol {
+
+    public final static Var _tokenMap = (Var)RT.var("org.enclojure.idetools.tokens","-TOKENS-");
     public IPersistentMap _tokenType;
     public Object _data;
     public int _line;

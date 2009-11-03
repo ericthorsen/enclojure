@@ -11,7 +11,6 @@
     <property name="build-script" value="${classes.dir}${file.separator}__build__.clj" />
     <property name="build-script-class" value="${classes.dir}${file.separator}__build____init.class" />
     <property name="test-script" value="${test.build.dir}${file.separator}__test__.clj" />
-
 <!--
 ################################################################################
       target: load-ivy
@@ -45,7 +44,28 @@
     <!-- <ivy:settings file="${common.dir}${file.separator}ivysettings.xml" /> -->
     <property name="ivy.shared.default.root" value="${repository.dir}${file.separator}shared"/>
 
+	
+	<!--
+	################################################################################
+	      target: init-cup and jflex
+	################################################################################
+	-->
+	    <target name="load-flex-cup">
 
+	        <path id="jflex.lib.path">
+	            <fileset dir="${common.dir}${file.separator}libs${file.separator}jflex">
+		 			<include name="JFlex-1.4.3.jar"/>
+				</fileset>
+	            <fileset dir="${common.dir}${file.separator}libs${file.separator}java-cup">
+		 			<include name="java-cup-11a.jar"/>
+				</fileset>
+	        </path>
+			<taskdef name="cup" classpathref="jflex.lib.path"
+			  classname="java_cup.anttask.CUPTask">     
+			</taskdef>
+
+			<taskdef classpathref="jflex.lib.path" classname="JFlex.anttask.JFlexTask" name="jflex" />
+	    </target>
 <!--
 ################################################################################
   resolve tasks
@@ -71,7 +91,7 @@
   init tasks
 ################################################################################
 -->
-    <target name="init" depends="init-dirs, init-props, load-ivy,copy-resource-files" />
+    <target name="init" depends="init-dirs, init-props, load-ivy,load-flex-cup,copy-resource-files" />
 
     <target name="init-dirs">
         <mkdir dir="${classes.dir}" />

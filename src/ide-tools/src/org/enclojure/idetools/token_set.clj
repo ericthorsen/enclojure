@@ -19,8 +19,10 @@
 
 (def -TOKEN-TYPES-BY-ID-
   (when-not *compile-files*
-    (apply vector 
-      (ns-publics (find-ns 'org.enclojure.idetools.tokens)))))
+    (apply vector (filter
+             (fn [[k v]]
+               (not= #{'-TOKEN-TYPES-BY-ID- '-TOKEN-TYPES-MAP- 'get-java-def} k))
+                 (ns-publics (find-ns 'org.enclojure.idetools.tokens))))))
 
 
 (def -TOKEN-TYPES-MAP-

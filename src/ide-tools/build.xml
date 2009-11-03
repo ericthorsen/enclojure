@@ -4,13 +4,6 @@
     <property file="${basedir}${file.separator}..${file.separator}..${file.separator}build-support${file.separator}build.properties"/>
 	<import file="${common.dir}${file.separator}common.xml"/>
 
-
-<taskdef name="cup"
-  classname="java_cup.anttask.CUPTask">     
-</taskdef>
-
-<taskdef classname="JFlex.anttask.JFlexTask" name="jflex" />
-
 <target name="cup" depends="init">
     <cup srcfile="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}cup${file.separator}clojure.cup"
       destdir="${src.dir}${file.separator}"
@@ -21,10 +14,14 @@
         />    
 </target>
 
-<target name="flex" depends="init,cup">
+<target name="flex" depends="cup">
     <jflex file="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}flex${file.separator}clojure.flex"
       destdir="${src.dir}${file.separator}"      
         />    
 </target>
+
+<target name="jar" depends="flex,common.jar">
+</target>
+
 
 </project>
