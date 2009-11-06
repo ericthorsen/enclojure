@@ -42,23 +42,26 @@
 (defn match-pair
   [in-str]
   (let [lexer (_Lexer. (StringReader. in-str))]
-    (loop [tokens [] stack nil]
+    (loop [tokens [] stack nil cnt 0]
         (let [token (.next_token lexer)
               sym (.sym token)]
-          (println sym " in start " (*start-match-map* sym) " in end " (*end-match-map* sym))
+          (println cnt " sym=" sym " start-match= " (*start-match-map* sym) " end-match= " (*end-match-map* sym))
           (if (= sym ClojureSym/EOF)
             stack
             (let [nstack
-                (cond (*start-match-map* sym)
-                        (conj stack sym)
+                (cond (*start-match-map* sym) (do (println  cnt " start")
+                        (conj stack sym))
                   (*end-match-map* sym)
                     (let [s (first stack)]
+                      (println  cnt  " end first = " s " should match " (*end-match-map* sym))
                       (if (= s (*end-match-map* sym)) (pop stack)
                         (throw (Exception. (format "Expected %d got %d"
                                              (*end-match-map* sym) s))))
-                  :else stack)]
-              (println nstack)
-              (recur (conj tokens token) nstack)))))))
+                  :else (do (println  cnt " squwatola")
+                      stack)))]
+              (println  cnt " " nstack)
+              (recur (conj tokens token) nstack (inc cnt))))))))
+
 
 
   
