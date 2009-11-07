@@ -30,14 +30,16 @@
 (defn set-conj [s v]
   (conj (or s #{}) v))
 
-(def *start-match-map*
-  (reduce (fn [m [k v]]
-            (assoc m k v)) {} *matched-pairs*))
+(def *match-map*
+  (reduce (fn [m [k v :as p]]
+            (assoc m k p)) {} *matched-pairs*))
 
 (def *end-match-map*
   (reduce (fn [m [k v]]
-            (assoc m v k)) {} *matched-pairs*))
-
+            (update-in m [v] 
+              (fn [c] 
+                (if c (conj c k) #{k}))))
+                 {} *matched-pairs*))
 
 (defn match-pair
   [in-str]
@@ -45,20 +47,23 @@
     (loop [tokens [] stack nil cnt 0]
         (let [token (.next_token lexer)
               sym (.sym token)]
-          (println cnt " sym=" sym " start-match= " (*start-match-map* sym) " end-match= " (*end-match-map* sym))
+          (println cnt " sym=" sym " start-match= " (*match-map* sym) " end-match= " 
+            (*end-match-map* sym))
           (if (= sym ClojureSym/EOF)
             stack
             (let [nstack
-                (cond (*start-match-map* sym) (do (println  cnt " start")
+                (cond (*match-map* sym) (do (println  cnt " start")
                         (conj stack sym))
                   (*end-match-map* sym)
                     (let [s (first stack)]
-                      (println  cnt  " end first = " s " should match " (*end-match-map* sym))
-                      (if (= s (*end-match-map* sym)) (pop stack)
+                      (println  cnt  " end first = " s " should match "
+                            (*end-match-map* sym))
+                      (if ((*end-match-map* sym) s)
+                        (pop stack)
                         (throw (Exception. (format "Expected %d got %d"
-                                             (*end-match-map* sym) s))))
+                                             (*end-match-map* sym) ((*end-match-map* sym) s))))))
                   :else (do (println  cnt " squwatola")
-                      stack)))]
+                      stack))]
               (println  cnt " " nstack)
               (recur (conj tokens token) nstack (inc cnt))))))))
 
