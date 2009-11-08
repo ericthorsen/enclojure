@@ -31,11 +31,25 @@
 
 (def -parser- (ClojureParser.))
 
-(defn do-parser
+(defn get-parser
   [in-str]
   (.yyreset lexer-test/-lexer- (StringReader. in-str))
-  (let [parser (ClojureParser. lexer-test/-lexer-)]
-    (.parse parser)))
+  (let [p (ClojureParser. lexer-test/-lexer-)]
+    (.debug_parse p)))
+
+(deftest test-tokens
+  (testing "parsing literals"
+    (is (= (.value (get-parser "1234")) 1234))
+    (is (= (.value (get-parser "\"string literal\"")) "string literal"))
+    (is (= (.value (get-parser "0.12")) 0.12))
+    (is (= (.value (get-parser "7/22")) 7/22))
+    (is (= (.value (get-parser "\\c")) \c))
+    (is (= (.value (get-parser "{}")) {}))
+    (is (= (.value (get-parser "#{}")) #{}))
+    (is (= (.value (get-parser "[]")) []))
+    (is (= (.value (get-parser "()")) nil))
+    )
+  )
 
 
 

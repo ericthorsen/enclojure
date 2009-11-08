@@ -16,8 +16,13 @@
  org.enclojure.idetools.matchers
     (:import (org.enclojure.flex _Lexer ClojureSymbol)
     (Example ClojureSym ClojureParser)
-    (java.io File FileReader FileInputStream StringReader)))
+    (java.io File FileReader FileInputStream StringReader)
+      (org.enclojure.idetools PositionalPushbackReader)))
 
+
+(def *context* (atom nil))
+
+;(context :ns name (context :import (context :package) (context :package)) (context :require (context :libspec) (context :libspec)
 
 (def *matched-pairs*
   [
@@ -43,34 +48,59 @@
 
 (defn match-pair
   [in-str]
-  (let [lexer (_Lexer. (StringReader. in-str))]
+  (let [reader (PositionalPushbackReader. (StringReader. in-str))
+        lexer (_Lexer. reader)]
     (loop [tokens [] stack nil cnt 0]
         (let [token (.next_token lexer)
               sym (.sym token)]
-          (println cnt " sym=" sym " start-match= " (*match-map* sym) " end-match= " 
-            (*end-match-map* sym))
+          ;(println cnt " sym=" sym " start-match= " (*match-map* sym) " end-match= "
+           ; (*end-match-map* sym))
           (if (= sym ClojureSym/EOF)
             stack
             (let [nstack
-                (cond (*match-map* sym) (do (println  cnt " start")
+                (cond (*match-map* sym) 
+                  (do ;(println  cnt " start")
                         (conj stack sym))
                   (*end-match-map* sym)
                     (let [s (first stack)]
-                      (println  cnt  " end first = " s " should match "
-                            (*end-match-map* sym))
+                      ;(println  cnt  " end first = " s " should match "
+                      ;      (*end-match-map* sym))
                       (if ((*end-match-map* sym) s)
                         (pop stack)
                         (throw (Exception. (format "Expected %d got %d"
                                              (*end-match-map* sym) ((*end-match-map* sym) s))))))
-                  :else (do (println  cnt " squwatola")
-                      stack))]
+                  :else stack)]
               (println  cnt " " nstack)
               (recur (conj tokens token) nstack (inc cnt))))))))
 
-
-
-  
-  
+(defn fix-pairs
+  [in-str]
+  (let [reader (PositionalPushbackReader. (StringReader. in-str))
+        lexer (_Lexer. reader)]
+    (loop [tokens [] stack nil cnt 0]
+        (let [token (.next_token lexer)
+              sym (.sym token)]
+          ;(println cnt " sym=" sym " start-match= " (*match-map* sym) " end-match= "
+           ; (*end-match-map* sym))
+          (if (= sym ClojureSym/EOF)
+            stack
+            (let [nstack
+                (cond (*match-map* sym)
+                  (do ;(println  cnt " start")
+                        (conj stack token))
+                  (*end-match-map* sym)
+                    (let [s (first stack)]
+                      ;(println  cnt  " end first = " s " should match "
+                      ;      (*end-match-map* sym))
+                      (if ((*end-match-map* sym) (.sym s))
+                        (pop stack)
+                        (throw (Exception. (format "Should insert %s at %d. got %d instead. "
+                                             (*end-match-map* sym)
+                                             (.getPosition lexer)
+                                             ((*end-match-map* sym) s))))))
+                  :else stack)]
+              (println  (format "%d:%d" cnt (.getPosition lexer)) " " nstack)
+              (recur (conj tokens token) nstack (inc cnt))))))))
 
 
 

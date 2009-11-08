@@ -82,6 +82,7 @@
 
 
 (defn ns-form
+  "This provides context but no relationship to position in the form"
   [form]
   (when (= (first form) 'ns)    
     (let [[nsname & forms] (rest form)

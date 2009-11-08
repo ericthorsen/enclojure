@@ -17,6 +17,10 @@
 
 (def -TOKENS- (atom {}))
 
+(defn get-token
+  [id]
+  (@-TOKENS- id))
+
 (def -token-meta-
   {:language "Clojure"
    :mime-type "text/x-clojure"

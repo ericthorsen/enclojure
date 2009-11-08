@@ -117,6 +117,8 @@ terminal NULL_LITERAL;
 nonterminal Object s_expr;
 nonterminal Object expr_part;
 nonterminal Object map;
+nonterminal Object map_entry;
+nonterminal Object map_entries;
 nonterminal Object vector;
 nonterminal Object set;
 nonterminal Object list;
@@ -149,8 +151,7 @@ expr_part ::= expr_part:e1 atom:e2
 			{: RESULT = e; :}
 			;
 
-series ::= 
-	      list:e
+series ::=      list:e
 		{: RESULT = e; :} 
 		| vector:e 
 		{: RESULT = e; :}
@@ -159,6 +160,7 @@ series ::=
 		| set:e
 		{: RESULT = e; :}
 		;
+
 	
 operand ::= atom:e
 		{:RESULT = e; :}
@@ -183,12 +185,14 @@ operands
 		RESULT = e; 
 		:}
 	;
-	
+
 list    ::=  LEFT_PAREN operands:e RIGHT_PAREN
 		{: 
 		System.out.println("list [" + e +"]");
 		RESULT = RT.list (e); 
 		:}
+                | LEFT_PAREN RIGHT_PAREN
+                {: RESULT = RT.list(); :}
 		;
 		
 vector  ::= LEFT_SQUARE operands:e RIGHT_SQUARE
@@ -196,6 +200,8 @@ vector  ::= LEFT_SQUARE operands:e RIGHT_SQUARE
  		RESULT = RT.vector(e);
 		System.out.println("vector [" + e +"]"); 
 	:}
+        | LEFT_SQUARE RIGHT_SQUARE
+        {: RESULT = RT.vector(); :}
         ;
 
 set     ::= DISP_SET operands:e RIGHT_CURLY
@@ -203,13 +209,30 @@ set     ::= DISP_SET operands:e RIGHT_CURLY
 		RESULT = RT.set (e); 
 		System.out.println("set #{" + e +"}"); 
 	:}
+        | DISP_SET RIGHT_CURLY
+        {: RESULT = RT.set(); :}
         ;
 
-map     ::= LEFT_CURLY operand:e1 operand:e2 RIGHT_CURLY
+map_entry ::= operand:e1 operand:e2
+    {: 	RESULT = RT.map(e1,e2); :}
+        ;
+
+map_entries ::= map_entries:e1 map_entry:e2
+    {: 	RESULT = RT.map(e1,e2); :}
+    | map_entry:e
+    {: RESULT = e; :}
+        ;
+map     ::= LEFT_CURLY map_entries:e RIGHT_CURLY
      	{:
- 		RESULT = RT.map(e1,e2);
-		System.out.println("map {" + e1 + "," + e2 +"}"); :}
-   		;
+ 		RESULT = e;
+		System.out.println("map " + e );
+        :}
+        |
+         LEFT_CURLY RIGHT_CURLY
+        {: RESULT = RT.map(); :}
+   	;
+
+
 
 literal ::= 
        INTEGER_LITERAL:e
@@ -283,7 +306,7 @@ symbol ::= type_hint:hint symbol_part:e
 		:}
         | symbol_part:e
         {:
-        RESULT = RT.var("user",(String)e);
+        RESULT = e;
         :}
         ;
 

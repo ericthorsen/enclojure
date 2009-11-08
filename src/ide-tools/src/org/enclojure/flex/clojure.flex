@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
 import java.util.logging.*;
 import java_cup.runtime.*;
 import org.enclojure.flex.ClojureSymbol;
+import org.enclojure.flex.CljSymbol;
+import org.enclojure.flex.ClojureSymFactory;
 import Example.ClojureSym;
 
 
@@ -55,18 +57,28 @@ import Example.ClojureSym;
 %{
 
 final Var requireFn = RT.var("clojure.core","require");
-final ComplexSymbolFactory symFactory = new ComplexSymbolFactory();
+final ClojureSymFactory symFactory = new ClojureSymFactory();
 public final static Var _tokenMap = (Var)RT.var("org.enclojure.idetools.tokens","-TOKENS-");
 
 public  java_cup.runtime.Symbol symbol(int ID,String tokenType,Object data)
 {
-    return symFactory.newSymbol(tokenType,ID,data);
+    //  ([id tag line col charp start end text data]
+    return CljSymbol.newSymbol(ID,tokenType,yyline,yycolumn
+                                ,yychar,zzStartRead
+                                ,yytext().length()
+                                ,yytext(),data);
 }
 
 public java_cup.runtime.Symbol symbol(int ID,String tokenType)
 {
-    return symFactory.newSymbol(tokenType,ID,tokenType);
+    return CljSymbol.newSymbol(ID,tokenType,yyline,yycolumn
+                                ,yychar,zzStartRead
+                                ,yytext().length()
+                                ,yytext(),yytext());
+    
 }
+
+public int getPosition() {  return yychar; }
 
 /*
 public ClojureSymbol symbol(Var tokenType,Object data)
@@ -285,18 +297,18 @@ mQUOTE = "quote"
   {mRATIO}                                  {  return symbol(RATIO,yytext()); }
 
   // Specials
-  {mDEF}                                    {  return symbol(DEF,yytext()); }
-  {mDEFN}                                   {  return symbol(DEFN,yytext()); }
-  {mFN}                                     {  return symbol(FN,yytext()); }
-  {mLOOP}                                   {  return symbol(LOOP,yytext()); }
-  {mRECUR}                                  {  return symbol(RECUR,yytext()); }
-  {mDO}                                     {  return symbol(DO,yytext()); }
-  {mIF}                                     {  return symbol(IF,yytext()); }
-  {mNS}                                     {  return symbol(NS,yytext()); }
-  {mLET}                                    {  return symbol(LET,yytext()); }
-  {mLET_STAR}                               {  return symbol(LET_STAR,yytext()); }
-  {mLETFN}                                  {  return symbol(LETFN,yytext()); }
-  {mQUOTE}                                  {  return symbol(QUOTE,yytext()); }
+  //{mDEF}                                    {  return symbol(DEF,yytext()); }
+  //{mDEFN}                                   {  return symbol(DEFN,yytext()); }
+//  {mFN}                                     {  return symbol(FN,yytext()); }
+//  {mLOOP}                                   {  return symbol(LOOP,yytext()); }
+//  {mRECUR}                                  {  return symbol(RECUR,yytext()); }
+//  {mDO}                                     {  return symbol(DO,yytext()); }
+//  {mIF}                                     {  return symbol(IF,yytext()); }
+//  {mNS}                                     {  return symbol(NS,yytext()); }
+//  {mLET}                                    {  return symbol(LET,yytext()); }
+//  {mLET_STAR}                               {  return symbol(LET_STAR,yytext()); }
+//  {mLETFN}                                  {  return symbol(LETFN,yytext()); }
+//  {mQUOTE}                                  {  return symbol(QUOTE,yytext()); }
 
   // Reserved symbols
   "/"                                       {  return symbol(symATOM,yytext()); }
