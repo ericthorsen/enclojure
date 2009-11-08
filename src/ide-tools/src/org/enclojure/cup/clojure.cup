@@ -232,8 +232,6 @@ map     ::= LEFT_CURLY map_entries:e RIGHT_CURLY
         {: RESULT = RT.map(); :}
    	;
 
-
-
 literal ::= 
        INTEGER_LITERAL:e
 		{: RESULT = RT.readString((String)e); :}
@@ -284,10 +282,10 @@ symbol_part ::= q_name:ns symNS_SEP symATOM:sym
 		:}
 		;
 
-type_hint ::= DISP_META STRING_LITERAL:e
+type_hint ::= DISP_META:m STRING_LITERAL:e
                 {:
 		RESULT = e;
-		System.out.println("DISP_META STRING_LITERAL " + e);
+		System.out.println("DISP_META STRING_LITERAL " + m + " " + e);
 		:}
                 |
                 DISP_META symbol_part:e
@@ -310,11 +308,15 @@ symbol ::= type_hint:hint symbol_part:e
         :}
         ;
 
-atom ::= series:e
+atom ::= AT series:e
+	{: RESULT = e; :}
+        | series:e
 	{: RESULT = e; :}
 	| literal:e
 	{: RESULT = e; :}
-	| symbol:e
+	| AT symbol:e
+	{: RESULT = e; :}
+        | symbol:e
 	{: RESULT = e; :}
 	;
 	

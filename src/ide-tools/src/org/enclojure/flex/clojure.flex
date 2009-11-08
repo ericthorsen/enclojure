@@ -47,7 +47,12 @@ import Example.ClojureSym;
 /* %type ClojureSymbol */
 
 %eofval{
-    return new java_cup.runtime.Symbol(ClojureSym.EOF);
+    return CljSymbol.newSymbol(ClojureSym.EOF,"EOF"
+                                ,yyline,yycolumn
+                                ,yychar,zzStartRead
+                                ,yytext().length()
+                                ,yytext(),yytext());
+    
 %eofval}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -14,30 +14,32 @@
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for org.enclojure.idetools.matchers"}
  org.enclojure.idetools.matchers
+  (:require [org.enclojure.idetools.tokens :as tokens])
     (:import (org.enclojure.flex _Lexer ClojureSymbol)
     (Example ClojureSym ClojureParser)
     (java.io File FileReader FileInputStream StringReader)
       (org.enclojure.idetools PositionalPushbackReader)))
 
-
 (def *context* (atom nil))
 
-;(context :ns name (context :import (context :package) (context :package)) (context :require (context :libspec) (context :libspec)
-
 (def *matched-pairs*
-  [
-   [ClojureSym/LEFT_PAREN ClojureSym/RIGHT_PAREN]
-   [ClojureSym/DISP_SET ClojureSym/RIGHT_CURLY]
-   [ClojureSym/LEFT_CURLY ClojureSym/RIGHT_CURLY]
-   [ClojureSym/LEFT_SQUARE ClojureSym/RIGHT_SQUARE]
-   ])
+  (reduce
+    (fn [v [s e]]
+        (conj v [(tokens/get-token s) (tokens/get-token e)]))
+    []
+    [
+       [ClojureSym/LEFT_PAREN ClojureSym/RIGHT_PAREN]
+       [ClojureSym/DISP_SET ClojureSym/RIGHT_CURLY]
+       [ClojureSym/LEFT_CURLY ClojureSym/RIGHT_CURLY]
+       [ClojureSym/LEFT_SQUARE ClojureSym/RIGHT_SQUARE]
+    ]))
 
 (defn set-conj [s v]
   (conj (or s #{}) v))
 
 (def *match-map*
   (reduce (fn [m [k v :as p]]
-            (assoc m k p)) {} *matched-pairs*))
+            (assoc m k v)) {} *matched-pairs*))
 
 (def *end-match-map*
   (reduce (fn [m [k v]]
@@ -72,6 +74,12 @@
                   :else stack)]
               (println  cnt " " nstack)
               (recur (conj tokens token) nstack (inc cnt))))))))
+
+(defn fix-str
+  [in-str stack]
+  (if (pos? (count stack))
+    1 2))
+    
 
 (defn fix-pairs
   [in-str]
