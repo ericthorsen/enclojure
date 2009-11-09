@@ -20,7 +20,72 @@
         />    
 </target>
 
-<target name="jar" depends="flex,common.jar">
+<target name="pre-build-script" depends="init">
+    <fileset dir="${src.dir}" id="symbols">
+        <include name="**/CljSymbol.clj" />
+        <include name="**/ClojureSymFactory.clj" />
+    </fileset>
+
+     <copy todir="${classes.dir}" >
+        <fileset dir="${src.dir}" id="symbols">
+            <include name="**/tokens.clj" />
+            <include name="**/CljSymbol.clj" />
+            <include name="**/ClojureSymFactory.clj" />
+        </fileset>
+     </copy>
+
+    <pathconvert pathsep=":" property="symbols-p" refid="symbols"/>
+
+    <echo message="prebuild"></echo>
+    <echo>${cljfiles}</echo>
+    <echo file="${build-script}">
+        (ns --build--
+            !!${symbols-p}##
+        )
+    </echo>
+
+    <replace file="${build-script}" token="${src.dir}${file.separator}" value="" summary="yes"/>
+    <replace file="${build-script}" token="${file.separator}" value="/" summary="yes"/>
+    <replace file="${build-script}" token=":" value="&#34;)&#13;&#10;(:load &#34;" summary="yes" />
+    <replace file="${build-script}" token="!!" value="(:load &#34;" summary="yes" />
+    <replace file="${build-script}" token="##" value="&#34;)" summary="yes" />
+    <!-- <replace file="${build-script}" token="_" value="-" summary="yes" />  -->
+    <replace file="${build-script}" token=".clj" value="" summary="yes" />
+    <replace file="${build-script}" token=".>" value="/>" summary="yes" />
+
+</target>
+
+
+<target name="pre-compile-clojure" depends="init, copy-properties-files,resolve, pre-build-script" unless="clojure-no-aot">
+       <path id="compile-jarfiles">
+            <fileset dir="${lib.dir}" includes="**/*.jar"/>
+        </path>
+        <!-- Need the ClojureSym.java interface with the symbol contants generated from flex" -->
+        <javac srcdir="${src.dir}"
+               destdir="${classes.dir}"
+               includeJavaRuntime="yes"
+               debug="true"
+               includes="Example/ClojureSym.java"
+               target="1.5">
+            <classpath refid="compile-jarfiles"/>
+        </javac>
+    <!-- Now compile the 3 clojure files that have gen-class stuff needed by the rest of the build  -->
+    <java failonerror="true" classname="clojure.lang.Compile">
+      <classpath>
+          <path location="${classes.dir}"/>
+          <path location="${src.dir}"/>
+          <fileset dir="${lib.dir}" includes="**/*.jar"/>
+      </classpath>
+      <sysproperty key="clojure.compile.path" value="${classes.dir}"/>
+      <arg value="--build--"/>
+    </java>
+
+    <delete file="${build-script}" />
+    <delete file="${build-script-class}" />
+</target>
+
+
+<target name="jar" depends="flex,pre-compile-clojure,common.jar">
 </target>
 
 
