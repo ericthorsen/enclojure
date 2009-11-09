@@ -67,6 +67,7 @@
      (swap! -TOKENS- assoc id# token#)
     (~@(list 'def token) token#)))
 
+(def-token EOF :string "" :eof)
 (def-token LINE_COMMENT :string "line comment" :line-comment)
 (def-token STRING :string "string literal" :string-literal)
 (def-token WRONG_STRING :string "wrong string literal" :wrong-string-literal)

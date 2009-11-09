@@ -16,7 +16,8 @@
     org.enclojure.idetools.matchers-test
         (:require [org.enclojure.idetools.tokens :as tokens]
           [org.enclojure.idetools.token-set :as token-set])
-  (:use clojure.test org.enclojure.idetools.matchers)
+  (:use clojure.test)
+  (:require [org.enclojure.idetools.matchers :as matchers])
   (:import (org.enclojure.flex _Lexer ClojureSymbol)
     (Example ClojureSym ClojureParser)
     (java.io File FileReader FileInputStream StringReader)))
@@ -29,26 +30,18 @@
 
 (deftest matchers-test
   (testing "string patterns"
-    (is (= "()" (apply str (fix-pairs "(" -char-pairs-))))
-    (is (= "[]" (apply str (fix-pairs "[" -char-pairs-))))
-    (is (= "{}" (apply str (fix-pairs "{" -char-pairs-))))
-    (is (= "()" (apply str (fix-pairs ")" -char-pairs-))))
-    (is (= "\"\"" (apply str (fix-pairs "\"" -char-pairs-))))
-    (is (= "[]" (apply str (fix-pairs "]" -char-pairs-))))
-    (is (= "{}" (apply str (fix-pairs "}" -char-pairs-))))
-    (is (= "()([])" (apply str (fix-pairs ")(]" -char-pairs-))))
+    (is (= "()" (apply str (matchers/fix-pairs "(" -char-pairs-))))
+    (is (= "[]" (apply str (matchers/fix-pairs "[" -char-pairs-))))
+    (is (= "{}" (apply str (matchers/fix-pairs "{" -char-pairs-))))
+    (is (= "()" (apply str (matchers/fix-pairs ")" -char-pairs-))))
+    (is (= "\"\"" (apply str (matchers/fix-pairs "\"" -char-pairs-))))
+    (is (= "[]" (apply str (matchers/fix-pairs "]" -char-pairs-))))
+    (is (= "{}" (apply str (matchers/fix-pairs "}" -char-pairs-))))
+    (is (= "()([])" (apply str (matchers/fix-pairs ")(]" -char-pairs-))))
     )
   (testing "tokens"
-    (is (= [tokens/LEFT_PAREN tokens/RIGHT_PAREN
-            (fix-pairs "(" -char-pairs-))))
-    (is (= "[]" (apply str (fix-pairs "[" -char-pairs-))))
-    (is (= "{}" (apply str (fix-pairs "{" -char-pairs-))))
-    (is (= "()" (apply str (fix-pairs ")" -char-pairs-))))
-    (is (= "\"\"" (apply str (fix-pairs "\"" -char-pairs-))))
-    (is (= "[]" (apply str (fix-pairs "]" -char-pairs-))))
-    (is (= "{}" (apply str (fix-pairs "}" -char-pairs-))))
-    (is (= "()([])" (apply str (fix-pairs ")(]" -char-pairs-))))
+    (is (= [tokens/LEFT_PAREN tokens/RIGHT_PAREN tokens/EOF]
+            (matchers/fix-pairs "()" matchers/*matched-pairs*)))
     )
-
   )
 

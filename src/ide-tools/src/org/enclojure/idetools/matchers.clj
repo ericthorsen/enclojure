@@ -24,9 +24,9 @@
 
 (def *matched-pairs*
   (reduce
-    (fn [v [s e]]
-        (conj v [(tokens/get-token s) (tokens/get-token e)]))
-    []
+    (fn [m [s e]]
+        (assoc m (tokens/get-token s) (tokens/get-token e)))
+    {}
     [
        [ClojureSym/LEFT_PAREN ClojureSym/RIGHT_PAREN]
        [ClojureSym/DISP_SET ClojureSym/RIGHT_CURLY]
