@@ -22,11 +22,17 @@
     (Example ClojureSym ClojureParser)
     (java.io File FileReader FileInputStream StringReader)))
 
+(defn- make-char-token
+  [c]
+   (tokens/make-token c :char (str c) :char c))
+
+; For testing basic brace matching/corretion.
 (def -char-pairs-
-  { \{ \}
-   \( \)
-   \[ \]
-   \" \"})
+  {
+   (make-char-token \{) (make-char-token \})
+   (make-char-token \() (make-char-token \))
+   (make-char-token \[) (make-char-token \])
+   })
 
 (deftest matchers-test
   (testing "string patterns"

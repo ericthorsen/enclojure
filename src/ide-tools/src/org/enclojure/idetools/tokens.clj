@@ -32,10 +32,17 @@
 (defn- next-id []
   (swap! -token-ids- inc))
 
+(defstruct token :id :type :token :len :lextag :symbol)
+
 (defn make-token
+  ":id = unique id for the token
+   :type = [:char :string, etc.]
+   :token = value of the token (always a string)
+   :lextag = some meaningful lexical tag
+   :symbol = for internal use..."  
   [id typek str-tok tag symbol]
   (with-meta
-    {:id id :type typek :token str-tok :lextag tag :symbol symbol}
+    (struct token id typek str-tok (count str-tok) tag symbol)
     -token-meta-))
 
 (defmacro register-token

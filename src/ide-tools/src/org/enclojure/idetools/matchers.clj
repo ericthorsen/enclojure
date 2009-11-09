@@ -78,7 +78,8 @@
 (defn
   fix-pairs
   "Given a seq of tokens and a map of paired tokens,
-  attempt to check/repair token stream by adding tokens where needed"
+scan the input stream and return a set of operations to be applied to the stream
+to attempt to check/repair the stream by adding tokens where needed."
   ([token-stream keyfn pairs]
   (let [end-map (reduce (fn [m [k v]]
                             (update-in m [v]
@@ -114,3 +115,81 @@
                out)))))
   ([token-stream pairs]
     (fix-pairs token-stream identity pairs)))
+
+;----- Helper functions to allow me to treat strings and tokens uniformly. -----
+(defmulti get-token-stream class)
+
+(defmethod get-token-stream String
+  [text]
+  (reduce #(conj %1
+             (let [c (.charAt text %2)]
+               {:pos %2 :value (str c)
+                :token
+                (tokens/make-token c :char (str c) :char c)})) []
+    (range (count text))))
+
+(defmethod get-token-stream org.enclojure.flex._Lexer
+  [lexer]
+  (loop [tokens []]
+    (let [t (.next_token lexer)]
+      (if (not= (.sym t) ClojureSym/EOF)
+        (recur (conj tokens 
+                 (struct token-data t
+                   (.getPosition lexer)
+                   (-> lexer .yytext .length))))
+      tokens))))
+
+(defn
+  get-fix-pairs-fns
+  "Given a seq of tokens and a map of paired tokens,
+scan the input stream and return a set of operations to be applied to the stream
+to attempt to check/repair the stream by adding tokens where needed.
+The function calls get-token-stream on the token-stream arg and then
+seqs through the token-stream.  The keyfn is called on the :token of each
+element in the token-stream and is used to equality testing."
+  ([token-stream pairs keyfn]
+  (let [end-map (reduce (fn [m [k v]]
+                            (update-in m [v]
+                              (fn [c]
+                                (if c (conj c k) #{k}))))
+                         {} pairs)]
+    (loop [tokens (get-token-stream token-stream)
+           insert-offset 0
+           stack nil
+           edit-ops []]
+        (if-let [{:keys [token pos value] :as token-instance} (first tokens)]
+            (let [token-key (keyfn token)
+                  [nstack t offset]
+                (cond
+                  (pairs token-key) ;matches a start token
+                    [(conj stack token) [] 0]; push it onto the stack and keep the token
+                   (end-map token-key) ; matches an end token
+                    (if-let [s (first stack)] ;If there is something on the stack
+                      (if ((end-map token-key) (keyfn s)) ;...see if it matches
+                        [(pop stack) [] 0];...keep it and pop the stack
+                        (let [i (first (end-map token-key))]
+                            [stack [{:insert i 
+                                     :pos (+ pos insert-offset)}] (:len i)])) ;...else, insert the start token
+                                                   ; in place and push it onto the stack
+                      (let [i (first (end-map token-key))]
+                        [stack [{:insert i :pos pos}](:len i)]));Nothing on the stack,
+                                                    ;so put the beginnning token
+                                                    ;before the current token
+                  :else [stack [] 0])] ; Not a match-pair.
+              (println "key " token-key "token " token 
+                " stack " (map :token nstack) " add " t)
+              (recur (rest tokens) (+ insert-offset offset)
+                        nstack (concat edit-ops t)))
+             (if (pos? (count stack))
+                (concat edit-ops
+                  (reduce #(conj %1 {:insert (pairs %2)}) [] stack))
+               edit-ops)))))
+  ([token-stream pairs]
+    (get-fix-pairs-fns token-stream pairs identity)))
+
+;(defn apply-edits
+;  "Given a source (could be a string, document, etc.) apply each edit sequentally:
+;"
+;  [source edit-fn-map edits]
+;  (loop [source source edit edits]
+;    (if-let [{:keys
