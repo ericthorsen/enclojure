@@ -74,41 +74,43 @@
                   :else stack)]
               (println  cnt " " nstack)
               (recur (conj tokens token) nstack (inc cnt))))))))
-
-(defn fix-str
-  [in-str stack]
-  (if (pos? (count stack))
-    1 2))
     
-
-(defn fix-pairs
-  [in-str]
-  (let [reader (PositionalPushbackReader. (StringReader. in-str))
-        lexer (_Lexer. reader)]
-    (loop [tokens [] stack nil cnt 0]
-        (let [token (.next_token lexer)
-              sym (.sym token)]
-          ;(println cnt " sym=" sym " start-match= " (*match-map* sym) " end-match= "
-           ; (*end-match-map* sym))
-          (if (= sym ClojureSym/EOF)
-            stack
-            (let [nstack
-                (cond (*match-map* sym)
-                  (do ;(println  cnt " start")
-                        (conj stack token))
-                  (*end-match-map* sym)
-                    (let [s (first stack)]
-                      ;(println  cnt  " end first = " s " should match "
-                      ;      (*end-match-map* sym))
-                      (if ((*end-match-map* sym) (.sym s))
-                        (pop stack)
-                        (throw (Exception. (format "Should insert %s at %d. got %d instead. "
-                                             (*end-match-map* sym)
-                                             (.getPosition lexer)
-                                             ((*end-match-map* sym) s))))))
-                  :else stack)]
-              (println  (format "%d:%d" cnt (.getPosition lexer)) " " nstack)
-              (recur (conj tokens token) nstack (inc cnt))))))))
-
-
-
+(defn
+  fix-pairs
+  "Given a seq of tokens and a map of paired tokens,
+  attempt to check/repair token stream by adding tokens where needed"
+  ([token-stream keyfn pairs]
+  (let [end-map (reduce (fn [m [k v]]
+                            (update-in m [v]
+                              (fn [c]
+                                (if c (conj c k) #{k}))))
+                         {} pairs)]
+    (loop [tokens token-stream
+           stack nil
+           out []]
+        (if-let [token (first tokens)]
+            (let [token-key (keyfn token)
+                  [nstack t]
+                (cond
+                  (pairs token-key) ;matches a start token
+                    [(conj stack token) [token]]; push it onto the stack and keep the token
+                   (end-map token-key) ; matches an end token
+                    (if-let [s (first stack)] ;If there is something on the stack
+                      (if ((end-map token-key) (keyfn s)) ;...see if it matches
+                        [(pop stack) [token]];...keep it and pop the stack
+                        (let [i (first (end-map token-key))]
+                            [(conj stack i) [i]])) ;...else, insert the start token
+                                                   ; in place and push it onto the stack
+                      (let [i (first (end-map token-key))]
+                        [stack [i token]]));Nothing on the stack,
+                                                    ;so put the beginnning token
+                                                    ;before the current token
+                  :else [stack [token]])] ; Not a match-pair.
+              (println "token " token " stack " nstack " add " t)
+              (recur (rest tokens) nstack (concat out t)))
+             (if (pos? (count stack))
+                (concat out
+                  (reduce #(conj %1 (pairs %2)) [] stack))
+               out)))))
+  ([token-stream pairs]
+    (fix-pairs token-stream identity pairs)))
