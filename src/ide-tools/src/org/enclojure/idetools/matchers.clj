@@ -100,7 +100,7 @@ to attempt to check/repair the stream by adding tokens where needed."
                       (if ((end-map token-key) (keyfn s)) ;...see if it matches
                         [(pop stack) [token]];...keep it and pop the stack
                         (let [i (first (end-map token-key))]
-                            [(conj stack i) [i]])) ;...else, insert the start token
+                            [stack [i token]])) ;...else, insert the start token
                                                    ; in place and push it onto the stack
                       (let [i (first (end-map token-key))]
                         [stack [i token]]));Nothing on the stack,
@@ -115,6 +115,7 @@ to attempt to check/repair the stream by adding tokens where needed."
                out)))))
   ([token-stream pairs]
     (fix-pairs token-stream identity pairs)))
+
 
 ;----- Helper functions to allow me to treat strings and tokens uniformly. -----
 (defmulti get-token-stream class)
@@ -134,9 +135,8 @@ to attempt to check/repair the stream by adding tokens where needed."
     (let [t (.next_token lexer)]
       (if (not= (.sym t) ClojureSym/EOF)
         (recur (conj tokens 
-                 (struct token-data t
-                   (.getPosition lexer)
-                   (-> lexer .yytext .length))))
+                 (assoc (.state t)
+                   :pos (.getPosition lexer))))
       tokens))))
 
 (defn
@@ -168,11 +168,12 @@ element in the token-stream and is used to equality testing."
                       (if ((end-map token-key) (keyfn s)) ;...see if it matches
                         [(pop stack) [] 0];...keep it and pop the stack
                         (let [i (first (end-map token-key))]
-                            [stack [{:insert i 
+                            [stack [{:token i
                                      :pos (+ pos insert-offset)}] (:len i)])) ;...else, insert the start token
                                                    ; in place and push it onto the stack
                       (let [i (first (end-map token-key))]
-                        [stack [{:insert i :pos pos}](:len i)]));Nothing on the stack,
+                        [stack [{:token i 
+                                 :pos (+ pos insert-offset)}] (:len i)]));Nothing on the stack,
                                                     ;so put the beginnning token
                                                     ;before the current token
                   :else [stack [] 0])] ; Not a match-pair.
@@ -182,10 +183,14 @@ element in the token-stream and is used to equality testing."
                         nstack (concat edit-ops t)))
              (if (pos? (count stack))
                 (concat edit-ops
-                  (reduce #(conj %1 {:insert (pairs %2)}) [] stack))
+                  (reduce
+                    #(conj %1 {:token (pairs %2)}) [] stack))
                edit-ops)))))
   ([token-stream pairs]
-    (get-fix-pairs-fns token-stream pairs identity)))
+    (get-fix-pairs-fns token-stream pairs identity))
+  ([token-stream]
+    (get-fix-pairs-fns token-stream *matched-pairs* identity)))
+
 
 ;(defn apply-edits
 ;  "Given a source (could be a string, document, etc.) apply each edit sequentally:

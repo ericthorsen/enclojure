@@ -29,10 +29,20 @@
 ; For testing basic brace matching/corretion.
 (def -char-pairs-
   {
+   \{ \} \( \) \[ \] \" \"
+  })
+
+; For testing basic brace matching/corretion.
+(def -char-token-pairs-
+  {
    (make-char-token \{) (make-char-token \})
    (make-char-token \() (make-char-token \))
    (make-char-token \[) (make-char-token \])
    })
+
+(defn lex-string
+  [s]
+  (_Lexer. (StringReader. s)))
 
 (deftest matchers-test
   (testing "string patterns"
@@ -44,10 +54,13 @@
     (is (= "[]" (apply str (matchers/fix-pairs "]" -char-pairs-))))
     (is (= "{}" (apply str (matchers/fix-pairs "}" -char-pairs-))))
     (is (= "()([])" (apply str (matchers/fix-pairs ")(]" -char-pairs-))))
+    (is (= "(let [x 4] { []()})"
+          (apply str (matchers/fix-pairs "(let [x 4] { ])" -char-pairs-))))
     )
-  (testing "tokens"
-    (is (= [tokens/LEFT_PAREN tokens/RIGHT_PAREN tokens/EOF]
-            (matchers/fix-pairs "()" matchers/*matched-pairs*)))
+  (testing "lexer/token patterns"
+    (is (= (list tokens/RIGHT_PAREN)
+            (map :token (matchers/get-fix-pairs-fns
+                          (lex-string "(") matchers/*matched-pairs*))))
     )
   )
 
