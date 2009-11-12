@@ -18,7 +18,8 @@
     (:import (org.enclojure.flex _Lexer ClojureSymbol)
     (Example ClojureSym ClojureParser)
     (java.io File FileReader FileInputStream StringReader)
-      (org.enclojure.idetools PositionalPushbackReader)))
+      (org.enclojure.idetools PositionalPushbackReader)
+      (javax.swing.text PlainDocument Document GapContent)))
 
 (def *context* (atom nil))
 
@@ -116,6 +117,10 @@ to attempt to check/repair the stream by adding tokens where needed."
   ([token-stream pairs]
     (fix-pairs token-stream identity pairs)))
 
+;----- Take a string and put it through the lexer ----
+(defn lex-string
+  [s]
+  (_Lexer. (StringReader. s)))
 
 ;----- Helper functions to allow me to treat strings and tokens uniformly. -----
 (defmulti get-token-stream class)
