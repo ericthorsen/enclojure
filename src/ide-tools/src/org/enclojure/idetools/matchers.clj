@@ -18,7 +18,8 @@
     (:import (org.enclojure.flex _Lexer ClojureSymbol)
     (Example ClojureSym ClojureParser)
     (java.io File FileReader FileInputStream StringReader)
-      (org.enclojure.idetools PositionalPushbackReader)))
+      (org.enclojure.idetools PositionalPushbackReader)
+      (javax.swing.text PlainDocument Document GapContent)))
 
 (def *context* (atom nil))
 
@@ -75,47 +76,11 @@
               (println  cnt " " nstack)
               (recur (conj tokens token) nstack (inc cnt))))))))
     
-(defn
-  fix-pairs
-  "Given a seq of tokens and a map of paired tokens,
-scan the input stream and return a set of operations to be applied to the stream
-to attempt to check/repair the stream by adding tokens where needed."
-  ([token-stream keyfn pairs]
-  (let [end-map (reduce (fn [m [k v]]
-                            (update-in m [v]
-                              (fn [c]
-                                (if c (conj c k) #{k}))))
-                         {} pairs)]
-    (loop [tokens token-stream
-           stack nil
-           out []]
-        (if-let [token (first tokens)]
-            (let [token-key (keyfn token)
-                  [nstack t]
-                (cond
-                  (pairs token-key) ;matches a start token
-                    [(conj stack token) [token]]; push it onto the stack and keep the token
-                   (end-map token-key) ; matches an end token
-                    (if-let [s (first stack)] ;If there is something on the stack
-                      (if ((end-map token-key) (keyfn s)) ;...see if it matches
-                        [(pop stack) [token]];...keep it and pop the stack
-                        (let [i (first (end-map token-key))]
-                            [stack [i token]])) ;...else, insert the start token
-                                                   ; in place and push it onto the stack
-                      (let [i (first (end-map token-key))]
-                        [stack [i token]]));Nothing on the stack,
-                                                    ;so put the beginnning token
-                                                    ;before the current token
-                  :else [stack [token]])] ; Not a match-pair.
-              (println "token " token " stack " nstack " add " t)
-              (recur (rest tokens) nstack (concat out t)))
-             (if (pos? (count stack))
-                (concat out
-                  (reduce #(conj %1 (pairs %2)) [] stack))
-               out)))))
-  ([token-stream pairs]
-    (fix-pairs token-stream identity pairs)))
 
+;----- Take a string and put it through the lexer ----
+(defn lex-string
+  [s]
+  (_Lexer. (StringReader. s)))
 
 ;----- Helper functions to allow me to treat strings and tokens uniformly. -----
 (defmulti get-token-stream class)
@@ -148,6 +113,9 @@ The function calls get-token-stream on the token-stream arg and then
 seqs through the token-stream.  The keyfn is called on the :token of each
 element in the token-stream and is used to equality testing."
   ([token-stream pairs keyfn]
+    ; Create a reverse lookup map for the end pairs.
+    ; NOTE: this does not allow determining which start token is selected if
+    ; more than one match such as the #{} and {} cases.
   (let [end-map (reduce (fn [m [k v]]
                             (update-in m [v]
                               (fn [c]
@@ -191,10 +159,21 @@ element in the token-stream and is used to equality testing."
   ([token-stream]
     (get-fix-pairs-fns token-stream *matched-pairs* identity)))
 
+(defmulti insert-text-fn (fn [& args] (class (first args))))
 
-;(defn apply-edits
-;  "Given a source (could be a string, document, etc.) apply each edit sequentally:
-;"
-;  [source edit-fn-map edits]
-;  (loop [source source edit edits]
-;    (if-let [{:keys
+(defmethod insert-text-fn Document
+  [d {pos :pos token :token}]
+  (.insertString d (or pos (.getLength d)) (:token token) nil)
+  d)
+
+(defmethod insert-text-fn String
+  [s {pos :pos token :token}]
+  (println "s " s " p " pos " t " (:token token))
+  (if pos
+    (str (subs s 0 pos) (:token token) (subs s pos))
+    (str s (:token token))))
+
+(defn apply-edits
+  "Given a source (could be a string, document, etc.) apply each edit sequentally:"
+  [source edits]
+  (reduce insert-text-fn source edits))

@@ -40,10 +40,6 @@
    (make-char-token \[) (make-char-token \])
    })
 
-(defn lex-string
-  [s]
-  (_Lexer. (StringReader. s)))
-
 (deftest matchers-test
   (testing "string patterns"
     (is (= "()" (apply str (matchers/fix-pairs "(" -char-pairs-))))
@@ -57,10 +53,29 @@
     (is (= "(let [x 4] { []()})"
           (apply str (matchers/fix-pairs "(let [x 4] { ])" -char-pairs-))))
     )
+  
   (testing "lexer/token patterns"
     (is (= (list tokens/RIGHT_PAREN)
             (map :token (matchers/get-fix-pairs-fns
-                          (lex-string "(") matchers/*matched-pairs*))))
+                          (matchers/lex-string "(") matchers/*matched-pairs*))))
+    (is (= (list tokens/LEFT_PAREN)
+            (map :token (matchers/get-fix-pairs-fns
+                          (matchers/lex-string ")") matchers/*matched-pairs*))))
+    (is (= (list tokens/RIGHT_CURLY)
+            (map :token (matchers/get-fix-pairs-fns
+                          (matchers/lex-string "{") matchers/*matched-pairs*))))
+    (is (= (list tokens/RIGHT_CURLY)
+            (map :token (matchers/get-fix-pairs-fns
+                          (matchers/lex-string "#{") matchers/*matched-pairs*))))
+    (is (= (list tokens/LEFT_CURLY)
+            (map :token (matchers/get-fix-pairs-fns
+                          (matchers/lex-string "}") matchers/*matched-pairs*))))
+    (is (= (list tokens/RIGHT_SQUARE)
+            (map :token (matchers/get-fix-pairs-fns
+                          (matchers/lex-string "[") matchers/*matched-pairs*))))
+    (is (= (list tokens/LEFT_SQUARE)
+            (map :token (matchers/get-fix-pairs-fns
+                          (matchers/lex-string "]") matchers/*matched-pairs*))))
     )
   )
 
