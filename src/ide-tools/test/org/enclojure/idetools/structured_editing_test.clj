@@ -57,7 +57,7 @@ and exit the app on close."
 
 (defn editor
   []
-   (let [frame (JFrame. "Inproc REPL Frame")
+   (let [frame (JFrame. "Structured editing test.")
          editor-pane (JEditorPane.)
          scroll-pane (JScrollPane. editor-pane)
          docd (DefaultStyledDocument.)

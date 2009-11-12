@@ -53,6 +53,7 @@
     (is (= "(let [x 4] { []()})"
           (apply str (matchers/fix-pairs "(let [x 4] { ])" -char-pairs-))))
     )
+  
   (testing "lexer/token patterns"
     (is (= (list tokens/RIGHT_PAREN)
             (map :token (matchers/get-fix-pairs-fns
