@@ -13,15 +13,23 @@
 
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for org.enclojure.idetools.structured-editing-test"}
- org.enclojure.idetools.structured-editing-test 
+ org.enclojure.idetools.structured-editing-test
+  (:require [org.enclojure.idetools.matchers :as matchers]
+      [org.enclojure.commons.c-slf4j :as logger])
   (:import
-    (java.io File OutputStreamWriter FileOutputStream)
-        (javax.swing JFrame JScrollPane WindowConstants JEditorPane)
+    (java.io File OutputStreamWriter FileOutputStream StringReader)
+        (org.enclojure.flex _Lexer ClojureSymbol)
+        (Example ClojureSym ClojureParser)
+        (org.enclojure.idetools PositionalPushbackReader)
+        (javax.swing JFrame JScrollPane WindowConstants JEditorPane SwingUtilities)
         (java.awt EventQueue)
         (java.awt.event WindowAdapter WindowEvent)
         (javax.swing.event DocumentListener DocumentEvent)
-        (javax.swing.text DefaultStyledDocument)))
+        (javax.swing.text DefaultStyledDocument)
+        (java.util.logging Level Logger)))
 
+; setup logging
+(logger/ensure-logger)
 
 (defn cleanup-onclose
   "Add a window listener to a JFrame to shutdown the repl-servers
@@ -35,23 +43,32 @@ and exit the app on close."
         (System/exit 0))
         )))
 
+(defn match-pairs
+  [document lexer]
+  (try
+    (.yyreset lexer
+      (StringReader. (.getText document 0 (.getLength document))))
+    (if-let [edits (matchers/get-fix-pairs-fns lexer)]
+      (matchers/apply-edits document edits)
+      document)
+    (catch Throwable e
+      (logger/error "Exception in match-pairs {}" (.getMessage e)))))
+
 (defn get-listener
-  [d]
-  (proxy [DocumentListener] []
-    (changedUpdate [#^DocumentEvent e]
-      (println "change " e " t:" (bean e) )
-      )
-    (insertUpdate [#^DocumentEvent e]
-      (println "update " e " t:" (bean e))
-      )
-    (removeUpdate [#^DocumentEvent e]
-      (println "remove " e " t:" (bean e))
+  [editor-pane]
+  (let [-lexer- (_Lexer. (StringReader. ""))]
+    (proxy [DocumentListener] []
+        (changedUpdate [#^DocumentEvent e])
+        (insertUpdate [#^DocumentEvent e]
+          (println "insert " e " t:" (bean e))
+          (matchers/check-pair-for-doc editor-pane e))
+        (removeUpdate [#^DocumentEvent e])
       )))
 
 (defn refresh-listener
   [{:keys [frame editor doc listener] :as m}]
   (.removeDocumentListener doc listener)
-  (let [ret  (assoc m :listener (get-listener doc))]
+  (let [ret  (assoc m :listener (get-listener editor))]
     (.addDocumentListener doc (:listener ret))
     ret))
 
@@ -61,7 +78,7 @@ and exit the app on close."
          editor-pane (JEditorPane.)
          scroll-pane (JScrollPane. editor-pane)
          docd (DefaultStyledDocument.)
-         doc-listener (get-listener docd)]
+         doc-listener (get-listener editor-pane)]
         (.setDocument editor-pane docd)
         (.setLayout frame (java.awt.GridLayout. 1 1))
         (.add frame scroll-pane)

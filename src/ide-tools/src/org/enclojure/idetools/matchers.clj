@@ -19,9 +19,48 @@
     (Example ClojureSym ClojureParser)
     (java.io File FileReader FileInputStream StringReader)
       (org.enclojure.idetools PositionalPushbackReader)
+      (javax.swing.event DocumentListener DocumentEvent DocumentEvent$EventType)
+      (javax.swing JFrame JScrollPane WindowConstants JEditorPane SwingUtilities)
       (javax.swing.text PlainDocument Document GapContent)))
 
-(def *context* (atom nil))
+; For testing basic brace matching/corretion.
+(def -char-pairs-
+  {
+   \{ \}
+   \( \)
+   \[ \]
+   \" \"
+  })
+
+(defn check-pair-for-doc
+  "Meant to be plugged into a document event listener for an editor pane for
+inserting matching pairs.  Works within comments as well by design"
+  [#^JEditorPane editor-pane
+   #^DocumentEvent doc-event]
+  (when (and (= 1 (.getLength doc-event))
+          (= (.getType doc-event) DocumentEvent$EventType/INSERT))
+    (let [len (-> doc-event .getDocument .getLength)
+          offset (.getOffset doc-event)
+          s (.charAt (.getText (.getDocument doc-event) offset 1) 0)]
+      (when-let [e (-char-pairs- s)]
+        ; Make sure the next char is not already a match
+        (when (or
+                ; Make sure if the current char is a " the previous is not
+                (and (= s \")
+                  (or (zero? offset)
+                    (and (>= (dec offset) 0)
+                        (#{\space \newline \tab}
+                          (.charAt
+                             (.getText (.getDocument doc-event) (dec offset) 1) 0)))))
+                ; Make sure the next character is not aleady a match
+                (and (not= s \") (<= (inc offset) len)
+                  (not= e (.charAt
+                            (.getText (.getDocument doc-event) (inc offset) 1) 0))))          
+          (SwingUtilities/invokeLater
+            #(do
+               (.insertString (.getDocument doc-event) (inc offset) (str e) nil)
+               (.setCaretPosition editor-pane
+                 (dec (.getCaretPosition editor-pane))))))))))
 
 (def *matched-pairs*
   (reduce
@@ -76,6 +115,46 @@
               (println  cnt " " nstack)
               (recur (conj tokens token) nstack (inc cnt))))))))
     
+(defn
+  fix-pairs
+  "Given a seq of tokens and a map of paired tokens,
+scan the input stream and return a set of operations to be applied to the stream
+to attempt to check/repair the stream by adding tokens where needed."
+  ([token-stream keyfn pairs]
+  (let [end-map (reduce (fn [m [k v]]
+                            (update-in m [v]
+                              (fn [c]
+                                (if c (conj c k) #{k}))))
+                         {} pairs)]
+    (loop [tokens token-stream
+           stack nil
+           out []]
+        (if-let [token (first tokens)]
+            (let [token-key (keyfn token)
+                  [nstack t]
+                (cond
+                  (pairs token-key) ;matches a start token
+                    [(conj stack token) [token]]; push it onto the stack and keep the token
+                   (end-map token-key) ; matches an end token
+                    (if-let [s (first stack)] ;If there is something on the stack
+                      (if ((end-map token-key) (keyfn s)) ;...see if it matches
+                        [(pop stack) [token]];...keep it and pop the stack
+                        (let [i (first (end-map token-key))]
+                            [(conj stack i) [i]])) ;...else, insert the start token
+                                                   ; in place and push it onto the stack
+                      (let [i (first (end-map token-key))]
+                        [stack [i token]]));Nothing on the stack,
+                                                    ;so put the beginnning token
+                                                    ;before the current token
+                  :else [stack [token]])] ; Not a match-pair.
+              (println "token " token " stack " nstack " add " t)
+              (recur (rest tokens) nstack (concat out t)))
+             (if (pos? (count stack))
+                (concat out
+                  (reduce #(conj %1 (pairs %2)) [] stack))
+               out)))))
+  ([token-stream pairs]
+    (fix-pairs token-stream identity pairs)))
 
 ;----- Take a string and put it through the lexer ----
 (defn lex-string
@@ -127,27 +206,30 @@ element in the token-stream and is used to equality testing."
            edit-ops []]
         (if-let [{:keys [token pos value] :as token-instance} (first tokens)]
             (let [token-key (keyfn token)
-                  [nstack t offset]
+                  [next-tokens nstack t offset]
                 (cond
                   (pairs token-key) ;matches a start token
-                    [(conj stack token) [] 0]; push it onto the stack and keep the token
+                    [(rest tokens) (conj stack token) [] 0]; push it onto the stack and keep the token
                    (end-map token-key) ; matches an end token
                     (if-let [s (first stack)] ;If there is something on the stack
                       (if ((end-map token-key) (keyfn s)) ;...see if it matches
-                        [(pop stack) [] 0];...keep it and pop the stack
-                        (let [i (first (end-map token-key))]
-                            [stack [{:token i
-                                     :pos (+ pos insert-offset)}] (:len i)])) ;...else, insert the start token
-                                                   ; in place and push it onto the stack
+                        [(rest tokens) (pop stack) [] 0];...keep it and pop the stack
+                        ; End the closest starting bracket and continue.
+                            [tokens (pop stack) [{:token (pairs s)
+                                     :pos (+ pos insert-offset)}] (:len s)])
+                      ;nothing on the stack so insert the start token
+                      ; in place and push it onto the stack
                       (let [i (first (end-map token-key))]
-                        [stack [{:token i 
+                        [(rest tokens) stack [{:token i
                                  :pos (+ pos insert-offset)}] (:len i)]));Nothing on the stack,
                                                     ;so put the beginnning token
                                                     ;before the current token
-                  :else [stack [] 0])] ; Not a match-pair.
+                  :else [(rest tokens) stack [] 0])] ; Not a match-pair.
               (println "key " token-key "token " token 
-                " stack " (map :token nstack) " add " t)
-              (recur (rest tokens) (+ insert-offset offset)
+                "\n\tstack1 " (map :token nstack)
+                "\n\tstack2 " nstack
+                "\n\tadd " t)
+              (recur next-tokens (+ insert-offset offset)
                         nstack (concat edit-ops t)))
              (if (pos? (count stack))
                 (concat edit-ops

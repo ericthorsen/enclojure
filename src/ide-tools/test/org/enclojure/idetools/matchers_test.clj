@@ -27,12 +27,6 @@
    (tokens/make-token c :char (str c) :char c))
 
 ; For testing basic brace matching/corretion.
-(def -char-pairs-
-  {
-   \{ \} \( \) \[ \] \" \"
-  })
-
-; For testing basic brace matching/corretion.
 (def -char-token-pairs-
   {
    (make-char-token \{) (make-char-token \})
@@ -54,6 +48,7 @@
           (apply str (matchers/fix-pairs "(let [x 4] { ])" -char-pairs-))))
     )
   
+ 
   (testing "lexer/token patterns"
     (is (= (list tokens/RIGHT_PAREN)
             (map :token (matchers/get-fix-pairs-fns
@@ -76,6 +71,9 @@
     (is (= (list tokens/LEFT_SQUARE)
             (map :token (matchers/get-fix-pairs-fns
                           (matchers/lex-string "]") matchers/*matched-pairs*))))
+    (is (= (list tokens/RIGHT_SQUARE)
+            (map :token (matchers/get-fix-pairs-fns
+                          (matchers/lex-string "([)") matchers/*matched-pairs*))))
     )
   )
 
