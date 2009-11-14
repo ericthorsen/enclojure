@@ -61,7 +61,8 @@ and exit the app on close."
         (changedUpdate [#^DocumentEvent e])
         (insertUpdate [#^DocumentEvent e]
           (println "insert " e " t:" (bean e))
-          (matchers/check-pair-for-doc editor-pane e))
+          (matchers/check-pair-for-doc editor-pane e
+            matchers/find-matching-pairs-in-doc))
         (removeUpdate [#^DocumentEvent e])
       )))
 

@@ -13,8 +13,7 @@
 
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for org.enclojure.idetools.form-def"}
-		org.enclojure.idetools.form-def
-		 (:require [org.enclojure.protocols.helpers :as helpers]))
+		org.enclojure.idetools.form-def)
 
 (defn- all-true?
   [& fns]

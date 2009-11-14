@@ -472,12 +472,12 @@
                 <package>org.enclojure.repl</package>
             </public-packages>
             <class-path-extension>
-                <runtime-relative-path>ext/clojure-1.0.0-2009-10-28.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/clojure-1.0.0-2009-10-28.jar</binary-origin>
+                <runtime-relative-path>ext/clojure-1.0.0-2009-11-13.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/clojure-1.0.0-2009-11-13.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/clojure-contrib-1.0.0-2009-10-28.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/clojure-contrib-1.0.0-2009-10-28.jar</binary-origin>
+                <runtime-relative-path>ext/clojure-contrib-1.0.0-2009-11-13.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/clojure-contrib-1.0.0-2009-11-13.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/commons-exec-1.0.0.jar</runtime-relative-path>

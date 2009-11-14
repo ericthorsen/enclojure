@@ -14,7 +14,8 @@
 (ns #^{ :author "Eric Thorsen",
         :doc "Protocol for org.enclojure.idetools.matchers"}
  org.enclojure.idetools.matchers
-  (:require [org.enclojure.idetools.tokens :as tokens])
+  (:require [org.enclojure.idetools.tokens :as tokens]
+    [org.enclojure.protocols :as enclojure.protocols])
     (:import (org.enclojure.flex _Lexer ClojureSymbol)
     (Example ClojureSym ClojureParser)
     (java.io File FileReader FileInputStream StringReader)
@@ -61,6 +62,57 @@ inserting matching pairs.  Works within comments as well by design"
                (.insertString (.getDocument doc-event) (inc offset) (str e) nil)
                (.setCaretPosition editor-pane
                  (dec (.getCaretPosition editor-pane))))))))))
+
+(defn find-matching-pairs-in-doc
+  "Meant to be plugged into a document event listener for an editor pane for
+   inserting matching pairs.  Works within comments as well by design"
+  ([#^Document document char-pairs offset limit]
+    (let [len (.getLength document)          
+          s (.charAt (.getText document offset 1) 0)]
+      (when-let [e (char-pairs s)]
+        ; Make sure the next char is not already a match
+        (when (or
+                ; Make sure if the current char is a " the previous is not
+                (and (= s \")
+                  (or (zero? offset)
+                    (and (>= (dec offset) 0)
+                        (#{\space \newline \tab}
+                          (.charAt
+                             (.getText document (dec offset) 1) 0)))))
+                ; Make sure the next character is not aleady a match
+                (and (not= s \") (<= (inc offset) len)
+                  (not= e (.charAt
+                            (.getText document (inc offset) 1) 0))))          
+            #(.insertString document (inc offset) (str e) nil)))))
+  ([#^Document document char-pairs offset]
+    (find-matching-pairs-for-doc document char-pairs offset Integer/MAX_VALUE))
+  ([#^Document document char-pairs]
+    (find-matching-pairs-for-doc document char-pairs 0)))
+
+
+(deftype editor-doc-listener
+  [editor-pane doc-event] [clojure.lang.IPersistentMap])
+
+(extend ::editor-doc-listener
+  enclojure.protocols/brace-matcher
+  {:find-match find-matching-pairs-in-doc}
+  )
+
+(defn check-pair-for-doc
+  "Meant to be plugged into a document event listener for an editor pane for
+inserting matching pairs.  Works within comments as well by design"
+  [#^JEditorPane editor-pane  #^DocumentEvent doc-event brace-matcher]
+  (when (and (= 1 (.getLength doc-event))
+          (= (.getType doc-event) DocumentEvent$EventType/INSERT))
+    (when-let [match-fn ((:find-match brace-matcher)
+                          (.getDocument doc-event)
+                                                -char-pairs- (.getOffset doc-event))]
+          (SwingUtilities/invokeLater
+            #(do
+               (match-fn)
+               (.setCaretPosition editor-pane
+                 (dec (.getCaretPosition editor-pane))))))))
+
 
 (def *matched-pairs*
   (reduce
