@@ -24,6 +24,7 @@
       (javax.swing JFrame JScrollPane WindowConstants JEditorPane SwingUtilities)
       (javax.swing.text PlainDocument Document GapContent)))
 
+
 ; For testing basic brace matching/corretion.
 (def -char-pairs-
   {
@@ -85,9 +86,9 @@ inserting matching pairs.  Works within comments as well by design"
                             (.getText document (inc offset) 1) 0))))          
             #(.insertString document (inc offset) (str e) nil)))))
   ([#^Document document char-pairs offset]
-    (find-matching-pairs-for-doc document char-pairs offset Integer/MAX_VALUE))
+    (find-matching-pairs-in-doc document char-pairs offset Integer/MAX_VALUE))
   ([#^Document document char-pairs]
-    (find-matching-pairs-for-doc document char-pairs 0)))
+    (find-matching-pairs-in-doc document char-pairs 0)))
 
 
 (deftype editor-doc-listener

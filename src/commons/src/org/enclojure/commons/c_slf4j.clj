@@ -51,7 +51,9 @@ It creates a logger using the namespace bound to *ns* at compile time."
         (~@(list '. '--logger--)
             (~level #^String msg# #^Throwable throwable#)))))
 
-(defmacro #^{:private true}  make-level-macros
+(defmacro 
+  ;#^{:private true}
+  make-level-macros
   "Macro to define the convenience functions for this module.
 Users do not call this directly."
   [level]

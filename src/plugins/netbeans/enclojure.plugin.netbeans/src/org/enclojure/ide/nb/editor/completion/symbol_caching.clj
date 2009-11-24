@@ -17,37 +17,28 @@
 
 (ns org.enclojure.ide.nb.editor.completion.symbol-caching
   (:use clojure.main)
-  (:require [clojure.set :as set]
-    [org.enclojure.ide.navigator.parser :as parser]
+  (:require [clojure.set :as set]   
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]
-    [org.enclojure.ide.nb.classpaths.resource-tracking :as resource-tracking]
-    [org.enclojure.ide.analyze.core :as analyze.core]
+    [org.enclojure.ide.nb.classpaths.resource-tracking :as resource-tracking]    
     [org.enclojure.commons.c-slf4j :as logger]
     [org.enclojure.commons.meta-utils :as meta-utils]
     [org.enclojure.ide.analyze.files :as analyze.files]
     )
-  (:import (org.netbeans.api.java.classpath ClassPath GlobalPathRegistry
-             GlobalPathRegistryEvent GlobalPathRegistryListener)
-    (clojure.lang LineNumberingPushbackReader)
-    (clojure.asm Opcodes)
-    (java.lang ExceptionInInitializerError)
+  (:import
+    ; Java dependancies
     (java.util.logging Level Logger)
-    (java.util.concurrent LinkedBlockingQueue CountDownLatch
-      Executors ExecutorService TimeUnit ExecutorCompletionService)
+    (java.io StringReader File StringWriter PrintWriter)
+    (java.util.jar JarFile$JarFileEntry JarFile JarEntry)
+    (java.net URL)
+    (java.util Calendar)
+    ; Enclojure dependancies for Asm (maybe I can piggy back off clojure or NB for this?
     (org.enclojure.ide.asm ClassReader ClassVisitor Type)
     (org.enclojure.ide.asm.tree ClassNode)
-    (java.io StringReader File)
-    (java.util Calendar)
-    (java.net URL)
-    (org.openide.filesystems JarFileSystem)
+    ; Netbeans dependancies
     (org.netbeans.api.java.classpath ClassPath$Entry ClassPath)
-    (java.lang.StringBuilder)
-    (java.util.jar JarFile$JarFileEntry JarFile JarEntry)
     (org.openide.filesystems FileObject FileStateInvalidException
       FileUtil JarFileSystem URLMapper)
-    (java.io File FileWriter IOException StringReader StringWriter
-      PrintStream PrintWriter OutputStream ByteArrayOutputStream)
-    (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType ClassType)))
+    ))
 
 ; setup logging
 (logger/ensure-logger)
