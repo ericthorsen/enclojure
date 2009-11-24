@@ -12,7 +12,8 @@
 )
 (ns org.enclojure.ide.repl.factory-test
  (:use org.enclojure.ide.repl.factory
-   org.enclojure.ide.repl.DefReplWindowFactory)
+   org.enclojure.ide.repl.DefReplWindowFactory
+   clojure.test)
  (:require
    [org.enclojure.ide.repl.repl-manager :as repl-manager]
    [org.enclojure.ide.repl.repl-panel :as repl-panel]
@@ -40,15 +41,24 @@ and exit the app on close."
         (System/exit 0))
         )))
 
+;------------- Simple helper functions for creating REPLs ------------------
+(defn create-inproc-repl
+  []
+  (let [irepl (atom nil)]
+    (EventQueue/invokeAndWait
+      #(swap! irepl (fn [_] (create-in-proc-repl))))
+    @irepl))
+
+;---------- Interactive tests for experimenting with REPLs ------------------
 (defn test-create-in-proc-repl
   "Sample function to create an in-proc REPL"
   []  
-  (let [irepl (atom nil)
+  (let [irepl (create-inproc-repl)
         frame (JFrame. "Inproc REPL Frame")]
     (EventQueue/invokeAndWait
         #(swap! irepl (fn [_] (create-in-proc-repl))))
     (.setLayout frame (java.awt.GridLayout. 1 1))
-    (.add frame (-> @irepl .getReplPanel))
+    (.add frame (-> irepl .getReplPanel))
     (EventQueue/invokeLater
       #(do
          (.setSize frame 1000 1000)
@@ -97,3 +107,15 @@ ReplPanel to each one"
          (.setSize frame 1000 1000)
          (.setVisible frame true)
          (cleanup-onclose frame)))))
+
+;---------- Automated tests for REPLs ------------------
+
+(deftest test-repl-startup
+  (testing "Testing repl startup functions"
+    (is (create-inproc-repl)
+
+    
+         (cleanup-onclose frame)))))
+
+
+

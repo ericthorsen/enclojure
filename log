@@ -1,0 +1,63 @@
+Author Eric Thor:  Merge branch 'protocol-work'
+Author Eric Thor:  Continuing with the test definitions for the repl.
+Author Eric Thor:  Moved to the latest version of clojure to get a bug fix for clojure.test/user-fixtures. Started adding more tests for the REPLs.
+Author Eric Thor:  Added a target to have ide-tools call the flex and cup compilers.
+Author Eric Thor:  Started adding special forms to parser.
+Author Eric Thor:  merged with local branch
+Author Eric Thor:  no change
+Author Eric Thorsen:  Added support for meta data on symbols and qualified symbols.  Added support for all the dispath macros in the lexer
+Author Eric Thor:  Have the basic forms defined in the parser.  Starting to work on the analyzer piece in clojure.
+Author Eric Thor:  Merge branch 'master' of git@github.com:EricThorsen/enclojure
+Author Eric Thor:  Created a set of tests for the lexer and started getting clojure to proper grammer for CUP.
+Author Eric Thor:  Fixed a bug introduced in the validation routines for repl startup.
+Author Eric Thor:  Broken REPL...
+Author Eric Thor:  Merge branch 'protocol-work' of git@github.com:EricThorsen/enclojure into protocol-work
+Author Eric Thorsen:  WORK-IN-PROGRESS
+Author unknown:  Wrapped the repl expr in prn-str before doing pretty print
+Author Eric Thor:  WORK IN PROGRESS
+Author Eric Thorsen:  WORK-IN-PROGRESS
+Author Eric Thorsen:  working on cup...
+Author Eric Thor:  Started adding in the CUP support.
+Author Eric Thor:  Working lexer. Began writing test cases and looking into the parser.
+Author Eric Thor:  Building version of the WORK-IN-PROGRESS...
+Author Eric Thor:  work-in-progress
+Author Eric Thor:  WORK-IN-PROGRESS - continuing on the analyzer
+Author Eric Thorsen:  WORK-In-PROGRESS
+Author Eric Thor:  MORE WORK on the analyzer - WORK-IN-PROGRESS!!!
+Author Eric Thor:  work-in-progress!!!!!!!!!
+Author Eric Thorsen:  Started the work on a parser combinator
+Author Eric Thor:  Moved the Netbeans plugin project into a plugins/Netbeans directory.
+Author Eric Thor:  Moved the Netbeans plugin into a plugins directory to better partition the code from the generic IDE support code.
+Author Eric Thor:  First pass on the protocol project.
+Author Eric Thor:  Completed the loadd-all files functionality. Added better error reporting for REPL startup.
+Author Eric Thorsen:  Added separate commands for loading source groups individually
+Author Eric Thor:  WORK-IN-PROGRESS!!! Adding support for loading all source from a given source group for a project into a repl. WORK-IN-PROGRESS!!!
+Author Eric Thor:  removed the private dir from under the ClojureProjectTemplate
+Author Eric Thor:  Fixed some bugs in order to support other java project types (web projects) on repl startup. Added the java-exe to the log statements in repl startup.
+Author Eric Thor:  Added functionality for inspecting java platforms. Added the :java-exe to the repl-data for startup Changed the project and stand alone repl startups to use the full path of the java-exe for the default platform.
+Author Eric Thor:  Continuing work on decting the platform for a project
+Author Eric Thor:  Work in progess...looking up the Java Platform for a project.
+Author Eric Thor:  Added bootstrap libs to return of java-exec-properties-for-java-platform function.
+Author Eric Thor:  Added some additional function in classpath_utils related to JavaPlatforms in Netbeans.
+Author Eric Thor:  Fixed a bug where the Project REPLs were not guaranteed to use the assigned Java Platform in their project.
+Author Eric Thor:  Cleaned up the factor-test function in the repl-client project. Fixed a bug where repl-startups were not using the JDK of the project for project repls.
+Author Eric Thor:  Cleaned up the unused code in the factory-test namespace.
+Author Eric Thor:  Completed making tests for the 3 use cases for repls.
+Author Eric Thorsen:  Added testing functions for external manageed repls and simplified the default replwindow factory
+Author Eric Thor:  Added a default factory for ReplWindows and default arguments for the 3 use cases for creating repls within the Enclojure REPL system. There are ant tests for inproc REPLs and Managed REPLs. External unmanaged are next...
+Author Eric Thor:  Added testing functions to start repl with history support outside of any IDE.
+Author Eric Thor:  Finished the first pass of a testing framework for the REPL system outside of Netbeans.
+Author Eric Thorsen:  Addded testing functions for repl outside of Netbeans
+Author Eric Thor:  Retired the repl_tc file in favor of a simplified and better isolated repl-win.  Partitioned the repl hosting in the IDE from the implementation of the REPL support code such that only a couple of classes and a handful of functions need to be defined to plug the REPL framework into a windowing system.
+Author Eric Thorsen:  Starting to move the plugin code to use the generic startup routines
+Author Eric Thor:  Creating a layer towards further separation of the repl from Netbeans specific code.
+Author Eric Thor:  Added text mate projet files to .gitignore
+Author Eric Thor:  Added USERPROFILE environment variable for preferences on Windows platforms; fixes #16 Added context menu for loaded selected clojure source files.
+Author Eric Thor:  Updated the docs on some function.
+Author Eric Thorsen:  Added test dirs to projects
+Author Eric Thor:  Corrected a bug where just having clojure-contrib without the clojure jar was not getting caught by the classpath verifyer for the repl startup.
+Author Eric Thor:  Improved the warning message for missing clojure / clojure-contrib jars when starting repls.
+Author Eric Thor:  Fixed a bug where a parse warning was being bubled up as an exception. Added support for ensuring there is both a clojure and clojure-contrib jars in the slasspath before starting a repl.
+Author Eric Thor:  Added a testing file for completion-task
+Author Eric Thor:  Fixed a completion bug where the context was getting confused in some cases causing no symbols to be suggested at all.
+Author Eric Thor:  Fixed a completion bug when there was no context.

@@ -134,9 +134,9 @@ org.enclojure.ide.repl.repl-data for more info"
   "takes a map which looks like @*default-config* and creates a java array to be used in the ProcessBuilder later on.
 For seeing the command line use:"
   ;(apply str (interpose \" \" (org.enclojure.repl.e-repl-startup/java-cmd-array org.enclojure.repl.e-repl-startup/@*default-config*)))"
-  [{:keys [java-exe arguments debug-port-arg classpath java-main repl-id port ack-port]}]
-  (logger/info  "Arguments are .....{}" arguments)
-  (apply conj arguments
+  [{:keys [java-exe jvm-additional-args debug-port-arg classpath java-main repl-id port ack-port]}]
+  (logger/info  "Arguments are .....{}" jvm-additional-args)
+  (apply conj jvm-additional-args
     (map str
       (filter identity [debug-port-arg "-cp" (if classpath (str "\"" classpath "\"") "")
                         java-main (str "\"" repl-id "\"") port ack-port]))))
@@ -147,7 +147,7 @@ For seeing the command line use:"
   repl-config -> A map with a set of startup options for the java process.  
                  These should include:
                  :java-exe -> java executable (defaults to java)
-                 :arguments -> startup arguments for the java 
+                 :jvm-additional-args -> startup arguments for the java 
                  :debug-port-arg -> port to use for the debugger
                  :classpath -> classpath for -cp arg
                  :java-main -> class for startup
@@ -175,8 +175,10 @@ For seeing the command line use:"
         _ (doall (map #(.addArguments cmd-line (str %) false) java-args))
         #^DefaultExecutor executor (DefaultExecutor.)
         [out-pipe err-pipe] [(PipedOutputStream.) (PipedOutputStream.)]
-        out-pipe-reader (LineNumberReader. (InputStreamReader. (PipedInputStream. out-pipe)))
-        err-pipe-reader (LineNumberReader. (InputStreamReader. (PipedInputStream. err-pipe)))]
+        out-pipe-reader (LineNumberReader.
+                          (InputStreamReader. (PipedInputStream. out-pipe)))
+        err-pipe-reader (LineNumberReader.
+                          (InputStreamReader. (PipedInputStream. err-pipe)))]
     (.setStreamHandler executor (PumpStreamHandler. out-pipe err-pipe))
     (process-monitor-fn
       #(.readLine out-pipe-reader)

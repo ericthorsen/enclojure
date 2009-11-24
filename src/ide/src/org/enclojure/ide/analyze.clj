@@ -36,7 +36,6 @@
     (when (.exists jf)
         (find-ns-in (slurp (.getCanonicalPath jf))))))
 
-
 ;(defn anal
 ;  "Uses the Clojure compiler to analyze the given s-expr.  Returns
 ;  a map with keys :class and :primitive? indicating what the compiler

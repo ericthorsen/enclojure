@@ -67,59 +67,6 @@
   (or (Character/isJavaIdentifierPart c)
           (-clojure-syms- c)))
 
-;(defn add-parts [word-set new-word]
-;  (let [parts (.split new-word "[.-]+")
-;        part-count (dec (count parts))
-;        base (first parts)]
-;    (if (pos? part-count)
-;        (loop [parts (take (dec part-count) (rest parts))
-;               next-part base
-;               words word-set]
-;        (let [words (if (contains? words next-part)
-;                      words  (conj words next-part))]
-;            (if-let [f (first parts)]
-;                (let [inx (.indexOf new-word f (count next-part))
-;                      next-part (subs new-word 0 (+ inx (count f)))]
-;                  ;(logger/info "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
-;                    (recur (rest parts) next-part (conj words next-part)))
-;                words)))
-;      word-set)))
-
-;(defn add-all-parts [word-set new-word]
-;  (let [parts (.split new-word "[.-]+")
-;        part-count (dec (count parts))
-;        base (first parts)]
-;    (if (pos? part-count)
-;        (loop [parts (take (dec part-count) (rest parts))
-;               next-part base
-;               words word-set]
-;        (let [words (if (contains? words next-part)
-;                      words  (conj words next-part))]
-;            (if-let [f (first parts)]
-;                (let [inx (.indexOf new-word f (count next-part))
-;                      next-part (subs new-word 0 (+ inx (count f)))]
-;                  ;(logger/info "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
-;                    (recur (rest parts) next-part (conj words next-part)))
-;                words)))
-;      word-set)))
-;
-
-;(defn get-all-parts [new-word]
-;  (let [parts (.split new-word "[.-]+")
-;        part-count (dec (count parts))
-;        base (first parts)]
-;    (if (pos? part-count)
-;        (loop [parts (rest parts)
-;               next-part base
-;               words []]
-;        (let [words (conj words next-part)]
-;            (if-let [f (first parts)]
-;                (let [inx (.indexOf new-word f (count next-part))
-;                      next-part (subs new-word 0 (+ inx (count f)))]
-;                  ;(logger/info "cnt=" (count next-part) " inx=" inx " f = " f " next part " next-part)
-;                    (recur (rest parts) next-part (conj words next-part)))
-;                words)))))
-
 (defn add-word [word-set new-word]
   (let [start-with-clj-sym? (-clojure-syms- (.charAt new-word 0))
         len (count new-word)]
@@ -130,31 +77,6 @@
         (conj word-set new-word (subs new-word 1))
         word-set))))
 
-;(defn get-hippy-words
-;  "given a string, attempt to pull valid clojure identifiers for use in hippy completion."
-;  [#^java.io.Reader reader]
-;    (loop [c (.read reader) word nil words #{} in-word? nil]
-;      (if (= -1 c) ; finished
-;        (if in-word? (conj words (str word)) words)
-;        (let [cc (char c)
-;              valid? (clojure-id-part? cc)
-;              words (if (and (not valid?) in-word?)
-;                      (add-parts (add-word words (str word)) (str word))
-;                       words)
-;              word (cond (and valid? in-word?) word
-;                         (and valid? (not in-word?)) (StringBuilder.)
-;                         :else nil)]
-;            (recur (.read reader) (if (and valid? word)
-;                                    (.append word cc)) words valid?)))))
-
-;              word (cond (and valid? in-word?) word
-;                         (and valid? (not in-word?)) (StringBuilder.)
-;                         :else nil)
-
-;(let [cc (char c)
-;              valid? (clojure-id-part? cc)
-;              words (if (and (not valid?) in-word?) (inc words) words)
-;              ]
 
 (defn get-unique-words
   "given a reader, attempt to pull valid clojure identifiers for use in hippy completion.

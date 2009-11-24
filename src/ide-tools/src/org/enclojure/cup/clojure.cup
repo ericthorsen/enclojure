@@ -1,0 +1,324 @@
+package Example;
+
+import java_cup.runtime.*;
+import org.enclojure.flex._Lexer;
+import java.io.*;
+import org.enclojure.flex.*;
+import clojure.lang.*;
+
+parser code {:
+	public static void main(String args[]) throws Exception {
+		if (args.length==0) 
+		{
+		new ClojureParser(new _Lexer(System.in)).parse();
+		}
+		else
+		{ 
+		new ClojureParser(new _Lexer(new java.io.FileInputStream(args[0]))).parse();
+		}
+	}
+
+:}
+
+terminal NEWLINE
+		,WHITESPACE
+		,COMMA
+		,HEX_DIGIT
+		,DIGIT
+		,BIG_SUFFIX
+		,FLOAT_SUFFIX
+		,LONG_SUFFIX
+		,INT_SUFFIX
+		,DOUBLE_SUFFIX
+		,EXPONENT
+		,NUM_INT_PART
+		,NUM_INT
+		,NUM_LONG
+		,NUM_BIG_INT
+		,NUM_FLOAT
+		,NUM_DOUBLE
+		,NUM_BIG_DECIMAL
+		,LEFT_PAREN 
+		,RIGHT_PAREN
+		,LEFT_SQUARE
+		,RIGHT_SQUARE
+		,LEFT_CURLY
+		,RIGHT_CURLY
+                ,DISPATCH
+                ,DISP_META
+                ,DISP_VAR
+                ,DISP_REGEX
+                ,DISP_FN
+                ,DISP_SET
+                ,DISP_EVAL
+                ,DISP_COMMENT
+                ,DISP_UNREADABLE
+                ,DISP_DISCARD_FORM
+		,QUOTE
+
+                ,DEF
+                ,DEFN
+                ,FN
+                ,LOOP
+                ,RECUR
+                ,DO
+                ,IF
+                ,NS
+                ,LET
+                ,LET_STAR
+                ,LETFN 
+
+		,BACKQUOTE
+		,SHARP_HAT
+		,HAT
+		,IMPLICIT_ARG
+		,TILDA
+		,AT
+		,TILDAAT
+		,ONE_NL
+		,CHAR
+		,STRING_ESC
+		,STRING_CONTENT
+		,STRING
+		,WRONG_STRING
+		,LINE_COMMENT
+		,LETTER
+		,SLASH_LETTER
+		,OTHER
+		,NoDigit
+		,OTHER_REDUCED
+		,NoDigit1
+		,IDENT
+		,KEYWORD
+		,NIL
+		,TRUE
+		,FALSE
+		,BAD_CHARACTER
+		,COLON
+                ,SYMBOL
+		,symDOT
+		,symNS_SEP
+		,symATOM
+		,symIMPLICIT_ARG
+		;
+
+terminal INTEGER_LITERAL;
+terminal BIG_INT_LITERAL;
+terminal LONG_LITERAL;
+terminal FLOAT_LITERAL;
+terminal DOUBLE_LITERAL;
+terminal BIG_DECIMAL_LITERAL;
+terminal RATIO;
+terminal CHAR_LITERAL;
+terminal STRING_LITERAL;
+terminal WRONG_STRING_LITERAL;
+terminal NULL_LITERAL;
+
+nonterminal Object s_expr;
+nonterminal Object expr_part;
+nonterminal Object map;
+nonterminal Object map_entry;
+nonterminal Object map_entries;
+nonterminal Object vector;
+nonterminal Object set;
+nonterminal Object list;
+nonterminal Object empty_list;
+nonterminal Object expression;
+nonterminal Object literal;
+nonterminal Object series,empty;
+nonterminal Object atom;
+nonterminal Object operands;
+nonterminal Object operand;
+nonterminal Object symbol;
+nonterminal Object symbol_part;
+nonterminal Object q_name;
+nonterminal Object q_name_part;
+nonterminal Object type_hint;
+
+start with s_expr;	   
+	
+s_expr ::= expr_part:e
+		{: RESULT = e; :}
+		;
+		
+expr_part ::= expr_part:e1 atom:e2
+			{:
+			if (e1 instanceof IPersistentCollection)
+				RESULT = RT.conj((IPersistentCollection)e1,e2);
+			RESULT = RT.vector(e1,e2); 
+			:} 
+  			| atom:e
+			{: RESULT = e; :}
+			;
+
+series ::=      list:e
+		{: RESULT = e; :} 
+		| vector:e 
+		{: RESULT = e; :}
+		| map:e
+		{: RESULT = e; :}
+		| set:e
+		{: RESULT = e; :}
+		;
+
+	
+operand ::= atom:e
+		{:RESULT = e; :}
+		;
+
+operands
+	::= operands:e1 operand:e2
+	{:
+	if (e1 instanceof IPersistentCollection)
+	{
+		System.out.println("operands:conj " + e1 + "," + e2);
+		RESULT = RT.conj((IPersistentCollection)e1,e2);
+	} else
+	{
+	System.out.println("operands:vec " + e1 + "," + e2);
+	RESULT = RT.vector(e1,e2);
+	} 
+	:} 
+	|   operand:e
+		{: 
+		System.out.println("operand " + e ); 
+		RESULT = e; 
+		:}
+	;
+
+list    ::=  LEFT_PAREN operands:e RIGHT_PAREN
+		{: 
+		System.out.println("list [" + e +"]");
+		RESULT = RT.list (e); 
+		:}
+                | LEFT_PAREN RIGHT_PAREN
+                {: RESULT = RT.list(); :}
+		;
+		
+vector  ::= LEFT_SQUARE operands:e RIGHT_SQUARE
+        {:
+ 		RESULT = RT.vector(e);
+		System.out.println("vector [" + e +"]"); 
+	:}
+        | LEFT_SQUARE RIGHT_SQUARE
+        {: RESULT = RT.vector(); :}
+        ;
+
+set     ::= DISP_SET operands:e RIGHT_CURLY
+        {: 
+		RESULT = RT.set (e); 
+		System.out.println("set #{" + e +"}"); 
+	:}
+        | DISP_SET RIGHT_CURLY
+        {: RESULT = RT.set(); :}
+        ;
+
+map_entry ::= operand:e1 operand:e2
+    {: 	RESULT = RT.map(e1,e2); :}
+        ;
+
+map_entries ::= map_entries:e1 map_entry:e2
+    {: 	RESULT = RT.map(e1,e2); :}
+    | map_entry:e
+    {: RESULT = e; :}
+        ;
+map     ::= LEFT_CURLY map_entries:e RIGHT_CURLY
+     	{:
+ 		RESULT = e;
+		System.out.println("map " + e );
+        :}
+        |
+         LEFT_CURLY RIGHT_CURLY
+        {: RESULT = RT.map(); :}
+   	;
+
+literal ::= 
+       INTEGER_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+ 	|  BIG_INT_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	|  LONG_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	|  FLOAT_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	|  DOUBLE_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	|  BIG_DECIMAL_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	|  RATIO:e
+		{: RESULT = RT.readString((String)e); :}
+	|  CHAR_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	|  STRING_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	|  WRONG_STRING_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	|  KEYWORD:e        
+		{: RESULT = RT.readString((String)e); :}
+	|  NULL_LITERAL:e
+		{: RESULT = RT.readString((String)e); :}
+	;
+
+q_name_part ::= symATOM:e
+    {: RESULT = e; :}
+    ;
+
+q_name ::= q_name:e1 symDOT q_name_part:e2
+        {: RESULT = ((String)e1) + "." + ((String)e2); :}
+        |
+        q_name_part:e
+        {: RESULT = e; :}
+        ;
+                
+symbol_part ::= q_name:ns symNS_SEP symATOM:sym
+		{:
+		RESULT = clojure.lang.Symbol.create((String)ns,(String)sym);
+		System.out.println("symbol " + ns + "/" + sym);
+		:}
+ 		| q_name:sym
+		{:
+		RESULT = clojure.lang.Symbol.create((String)sym);
+		System.out.println("symbol "+ sym);
+		:}
+		;
+
+type_hint ::= DISP_META:m STRING_LITERAL:e
+                {:
+		RESULT = e;
+		System.out.println("DISP_META STRING_LITERAL " + m + " " + e);
+		:}
+                |
+                DISP_META symbol_part:e
+                {:
+		RESULT = e;
+		System.out.println("DISP_META symbol_part " + e);
+		:}
+                ;
+
+symbol ::= type_hint:hint symbol_part:e
+                {:
+                clojure.lang.Symbol t = clojure.lang.Symbol.create("user",(String)e);                
+                t = (clojure.lang.Symbol)t.withMeta (RT.map(Keyword.intern("tag"),hint));
+		RESULT = t;
+		System.out.println("DISP_META STRING_LITERAL " + e);
+		:}
+        | symbol_part:e
+        {:
+        RESULT = e;
+        :}
+        ;
+
+atom ::= AT series:e
+	{: RESULT = e; :}
+        | series:e
+	{: RESULT = e; :}
+	| literal:e
+	{: RESULT = e; :}
+	| AT symbol:e
+	{: RESULT = e; :}
+        | symbol:e
+	{: RESULT = e; :}
+	;
+	
+empty ::= /* empty */
+    ;
