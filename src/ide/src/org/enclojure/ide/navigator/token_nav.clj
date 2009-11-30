@@ -76,12 +76,21 @@
             (if (end-token? ts) (recur (dec token-counter))
               (recur token-counter))))))))
 
-(defn count-leading-spaces [ts]
-  (let [token-text (-> ts .token .text)]
-    (loop [count 0]
-      (if (= (.charAt token-text count) \space)
-        (recur (inc count))
-        count))))
+;(defn count-leading-spaces [ts]
+;  (let [token-text (-> ts .token .text)]
+;    (loop [count 0]
+;      (if (= (.charAt token-text count) \space)
+;        (recur (inc count))
+;        count))))
+
+; patch from Dar’o Macchi - 2009-11-17
+ (defn count-leading-spaces [ts]
+   (let [token-text (-> ts .token .text)]
+     (loop [count 0]
+    (let [count-char (.charAt token-text count)]
+        (if (or (= count-char \space) (= count-char \newline))
+          (recur (inc count))
+          count)))))
 
 (defn get-enclosing-form [#^TokenSequence ts offset]
   (.move ts offset)
