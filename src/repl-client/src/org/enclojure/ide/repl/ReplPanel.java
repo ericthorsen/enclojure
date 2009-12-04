@@ -405,7 +405,7 @@ public class ReplPanel extends javax.swing.JPanel {
         replTooBar.setOrientation(1);
         replTooBar.setRollover(true);
 
-        prettyPrintToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/subtypehierarchy.gif"))); // NOI18N
+        prettyPrintToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/toggle_pprint.png"))); // NOI18N
         prettyPrintToggleButton.setSelected(true);
         prettyPrintToggleButton.setToolTipText("Toggle Pretty Print");
         prettyPrintToggleButton.setFocusable(false);
@@ -418,7 +418,7 @@ public class ReplPanel extends javax.swing.JPanel {
         });
         replTooBar.add(prettyPrintToggleButton);
 
-        printStackTraceToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/atom.png"))); // NOI18N
+        printStackTraceToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/toggle_print_stacktrace.png"))); // NOI18N
         printStackTraceToggleButton.setToolTipText("Toggle Print Stacktrace");
         printStackTraceToggleButton.setFocusable(false);
         printStackTraceToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -430,7 +430,7 @@ public class ReplPanel extends javax.swing.JPanel {
         });
         replTooBar.add(printStackTraceToggleButton);
 
-        printStackTraceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/macro.png"))); // NOI18N
+        printStackTraceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/print_last_stacktrace.png"))); // NOI18N
         printStackTraceButton.setToolTipText("Print stack trace of last error.");
         printStackTraceButton.setFocusable(false);
         printStackTraceButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -443,7 +443,7 @@ public class ReplPanel extends javax.swing.JPanel {
         });
         replTooBar.add(printStackTraceButton);
 
-        replHistoryButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/comment.png"))); // NOI18N
+        replHistoryButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/repl_history.png"))); // NOI18N
         replHistoryButton.setToolTipText("Show Repl History");
         replHistoryButton.setFocusable(false);
         replHistoryButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -456,7 +456,7 @@ public class ReplPanel extends javax.swing.JPanel {
         });
         replTooBar.add(replHistoryButton);
 
-        clearReplHistoryButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/filterHideFields.gif"))); // NOI18N
+        clearReplHistoryButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/clear_repl_history.png"))); // NOI18N
         clearReplHistoryButton.setToolTipText("Clear Repl History");
         clearReplHistoryButton.setFocusable(false);
         clearReplHistoryButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -481,7 +481,7 @@ public class ReplPanel extends javax.swing.JPanel {
         });
         replTooBar.add(replStartupSettingsButton);
 
-        replResetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/back.png"))); // NOI18N
+        replResetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/reset_repl.png"))); // NOI18N
         replResetButton.setToolTipText("Reset REPL");
         replResetButton.setFocusable(false);
         replResetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

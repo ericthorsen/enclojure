@@ -102,7 +102,7 @@
         <Component class="javax.swing.JToggleButton" name="prettyPrintToggleButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/enclojure/ide/resources/subtypehierarchy.gif"/>
+              <Image iconType="3" name="/org/enclojure/ide/resources/toggle_pprint.png"/>
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="toolTipText" type="java.lang.String" value="Toggle Pretty Print"/>
@@ -117,7 +117,7 @@
         <Component class="javax.swing.JToggleButton" name="printStackTraceToggleButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/enclojure/ide/resources/atom.png"/>
+              <Image iconType="3" name="/org/enclojure/ide/resources/toggle_print_stacktrace.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Toggle Print Stacktrace"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -131,7 +131,7 @@
         <Component class="javax.swing.JButton" name="printStackTraceButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/enclojure/ide/resources/macro.png"/>
+              <Image iconType="3" name="/org/enclojure/ide/resources/print_last_stacktrace.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Print stack trace of last error."/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -148,7 +148,7 @@
         <Component class="javax.swing.JButton" name="replHistoryButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/enclojure/ide/resources/comment.png"/>
+              <Image iconType="3" name="/org/enclojure/ide/resources/repl_history.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Show Repl History"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -165,7 +165,7 @@
         <Component class="javax.swing.JButton" name="clearReplHistoryButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/enclojure/ide/resources/filterHideFields.gif"/>
+              <Image iconType="3" name="/org/enclojure/ide/resources/clear_repl_history.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Clear Repl History"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -196,7 +196,7 @@
         <Component class="javax.swing.JButton" name="replResetButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/enclojure/ide/resources/back.png"/>
+              <Image iconType="3" name="/org/enclojure/ide/resources/reset_repl.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Reset REPL"/>
             <Property name="focusable" type="boolean" value="false"/>

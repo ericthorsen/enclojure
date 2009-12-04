@@ -461,29 +461,6 @@ Returns a vector of items"
                       (if grp (conj matches f) matches)))
               matches)))))
 
-;;---------------- Original re search -----------------------
-;(defn build-search-anchors
-;  "Builds the incremental search portion of a regular expression"
-;  [upper-chars]
-;  (apply str
-;    (reduce
-;        (fn [v c]
-;            (let [lc (regex-escape (str (Character/toLowerCase c)))
-;                  uc (regex-escape (str (Character/toUpperCase c)))]
-;                (conj v (str "([a-z,A-Z]*[.-]+[" lc uc "]+|[a-z]*" uc ")"))))
-;    [] upper-chars)))
-;
-;(defn search-pattern
-;  "Pattern for doing searches across camel case and -. separated tokens"
-;  [start-text]
-;  (when (> (count start-text) 1)
-;    (let [[substr upper-chars] (split-with #(not
-;                                    (Character/isUpperCase %)) start-text)
-;          search-anchors (build-search-anchors (apply str upper-chars))
-;          subsearch (apply str substr)]
-;      (logger/info (str "^" subsearch search-anchors))
-;        (re-pattern (str "^" subsearch search-anchors)))))
-
 (defn do-search
   "worker function to do the actual search"  
   [search-token forms pred? info]
@@ -492,23 +469,6 @@ Returns a vector of items"
               (when (and (not= (str name) "") (not= "" search-token)
                     (pos? (count search-token)) (pos? (count (str name))))
                    (pred? name search-token))) forms))
-
-;(defn do-regex-search
-;  "does a regular expression search for token walking. Returns the shortest group match
-;   as the replacement input string."
-;  [search-token forms]
-;  (when (and (not= "" search-token) (pos? (count search-token)))
-;    (when-let [pattern (search-pattern search-token)]
-;        (loop [forms (filter
-;                        (fn [{name :name}]
-;                          (and (not= (str name) "")  (pos? (count (str name)))))
-;                       forms)
-;               matches []]
-;            (if-let [{tag :name :as f} (first forms)]
-;                (recur (rest forms)
-;                    (let [grp (re-find pattern (str tag))]
-;                      (if grp (conj matches f) matches)))
-;              matches)))))
 
 (defn do-search-strategy [search-token forms]
   (logger/info "do-search-strategy token:{}  len(search-token) {}" search-token ""

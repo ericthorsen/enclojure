@@ -21,6 +21,17 @@
                [document char-pairs start-offset]
                [document char-pairs start-offset limit])))
 
+(def -PATH-TYPES- #{:source :compile :exec :debug :boot})
 
+(defprotocol path-manager
+  "protocol for managing source root paths and classpaths"
+  (get-source-roots [this])
+  (get-classpath-for [this cp-type]
+        "get the classpath for one of:
+        :source
+        :boot
+        :compile
+        :exec
+        :debug"))
 
 

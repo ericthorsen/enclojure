@@ -24,6 +24,7 @@
       (javax.swing JFrame JScrollPane WindowConstants JEditorPane SwingUtilities)
       (javax.swing.text PlainDocument Document GapContent)))
 
+
 ; For testing basic brace matching/corretion.
 (def -char-pairs-
   {
