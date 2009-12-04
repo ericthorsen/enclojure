@@ -37,8 +37,10 @@
        where you can set the function to be called in your client application.
        "}
   org.enclojure.repl.main
-  (:use clojure.contrib.pprint clojure.main)
-  (:require [clojure.contrib.pprint :as pprint])  
+  (:refer-clojure :exclude (with-bindings))
+  (:use clojure.contrib.pprint)
+  (:require [clojure.contrib.pprint :as pprint]
+    [clojure.main :exclude (with-binding)])
   (:import (java.net Socket ServerSocket)
     (java.util.logging Level Logger)
     (java.io InputStreamReader DataOutputStream DataInputStream

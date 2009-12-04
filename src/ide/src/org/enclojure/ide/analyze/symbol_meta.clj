@@ -16,7 +16,7 @@
 )
 
 (ns org.enclojure.ide.analyze.symbol-meta
-  (:use clojure.main)
+  (:use [clojure.main :exclude (with-bindings)])
   (:import (java.util.logging Level))
   (:require
     [clojure.set :as set]

@@ -16,7 +16,7 @@
 )
 
 (ns org.enclojure.ide.nb.editor.completion.symbol-caching
-  (:use clojure.main)
+  (:use [clojure.main :exclude (with-bindings)])
   (:require [clojure.set :as set]
     [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.ide.analyze.symbol-meta :as symbol-meta]

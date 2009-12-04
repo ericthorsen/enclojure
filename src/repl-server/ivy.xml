@@ -2,7 +2,7 @@
 <ivy-module version="2.0">
     <info organisation="org.enclojure" module="repl-server"/>
     <dependencies>
-        <dependency org="Clojure" name="clojure" rev="1.0.0-2009-11-13"/>
-        <dependency org="Clojure-contrib" name="clojure-contrib" rev="1.0.0-2009-11-13"/>
+        <dependency org="Clojure" name="clojure" rev="1.0.0-2009-10-28"/>
+        <dependency org="Clojure-contrib" name="clojure-contrib" rev="1.0.0-2009-10-28"/>
     </dependencies>
 </ivy-module>

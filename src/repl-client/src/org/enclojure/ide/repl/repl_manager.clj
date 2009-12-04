@@ -12,6 +12,7 @@
 )
 
 (ns org.enclojure.ide.repl.repl-manager
+  (:refer-clojure :exclude (with-bindings))
   (:use org.enclojure.repl.main)
   (:require [org.enclojure.commons.c-slf4j :as logger]
         [org.enclojure.commons.validation :as validation]

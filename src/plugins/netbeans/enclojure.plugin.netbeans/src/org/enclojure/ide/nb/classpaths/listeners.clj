@@ -16,7 +16,7 @@
 )
 
 (ns org.enclojure.ide.nb.classpaths.listeners
-  (:use clojure.main)
+  (:use [clojure.main :exclude (with-bindings)])
   (:require
     [clojure.set :as set]
     [org.enclojure.ide.navigator.parser :as parser]

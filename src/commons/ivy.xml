@@ -2,8 +2,8 @@
 <ivy-module version="2.0">
     <info organisation="org.enclojure" module="commons"/>
     <dependencies>
-        <dependency org="Clojure" name="clojure" rev="1.0.0-2009-11-13"/>
-        <dependency org="Clojure-contrib" name="clojure-contrib" rev="1.0.0-2009-11-13"/>
+        <dependency org="Clojure" name="clojure" rev="1.0.0-2009-10-28"/>
+        <dependency org="Clojure-contrib" name="clojure-contrib" rev="1.0.0-2009-10-28"/>
         <dependency org="Apache" name="commons-exec" rev="1.0.0"/>
         <dependency org="Apache" name="commons-io" rev="1.4"/>
         <dependency org="Apache" name="commons-logging" rev="1.1.1"/>

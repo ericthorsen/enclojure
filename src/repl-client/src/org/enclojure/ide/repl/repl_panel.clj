@@ -12,13 +12,14 @@
 )
 
 (ns org.enclojure.ide.repl.repl-panel
- (:use org.enclojure.repl.main
-       org.enclojure.ide.repl.repl-manager
+ (:refer-clojure :exclude (with-bindings))
+ (:use org.enclojure.ide.repl.repl-manager
        org.enclojure.ide.repl.repl-history
+       org.enclojure.repl.main
        )
  (:require [org.enclojure.ide.repl.repl-history-browse :as repl-history-browse]
             [org.enclojure.commons.meta-utils :as meta-utils]
-            [org.enclojure.commons.c-slf4j :as logger]
+            [org.enclojure.commons.c-slf4j :as logger]            
    )
  (:import (java.util.logging Logger Level)
       (org.enclojure.ide.repl ReplPanel)

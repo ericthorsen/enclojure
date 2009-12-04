@@ -16,7 +16,8 @@
 )
 
 (ns org.enclojure.ide.analyze.files
-  (:use clojure.main)
+  (:refer-clojure :exclude (with-bindings))
+  (:use [clojure.main :exclude (with-bindings)])
   (:require [clojure.set :as set]
     [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.ide.analyze.core :as analyze.core]
