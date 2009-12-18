@@ -91,13 +91,13 @@ inserting matching pairs.  Works within comments as well by design"
     (find-matching-pairs-in-doc document char-pairs 0)))
 
 
-(deftype editor-doc-listener
-  [editor-pane doc-event] [clojure.lang.IPersistentMap])
+;(deftype editor-doc-listener
+;  [editor-pane doc-event] [clojure.lang.IPersistentMap])
 
-(extend ::editor-doc-listener
-  enclojure.protocols/brace-matcher
-  {:find-match find-matching-pairs-in-doc}
-  )
+;(extend ::editor-doc-listener
+;  enclojure.protocols/brace-matcher
+;  {:find-match find-matching-pairs-in-doc}
+;  )
 
 (defn check-pair-for-doc
   "Meant to be plugged into a document event listener for an editor pane for

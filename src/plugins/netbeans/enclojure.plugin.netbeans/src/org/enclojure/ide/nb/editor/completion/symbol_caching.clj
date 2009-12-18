@@ -36,7 +36,7 @@
     (org.enclojure.ide.asm ClassReader ClassVisitor Type)
     (org.enclojure.ide.asm.tree ClassNode)
     ; Netbeans dependancies
-    (org.netbeans.api.java.classpath ClassPath$Entry ClassPath)
+    (org.netbeans.api.java.classpath ClassPath$Entry ClassPath GlobalPathRegistry)
     (org.openide.filesystems FileObject FileStateInvalidException
       FileUtil JarFileSystem URLMapper)
     ))
