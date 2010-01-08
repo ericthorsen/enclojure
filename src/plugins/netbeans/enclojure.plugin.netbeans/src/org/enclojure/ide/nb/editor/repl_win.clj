@@ -145,7 +145,8 @@
             :host host :port port)
           -get-repl-window-factory-)]
     (try
-      (-> irepl .getReplWindow .getComponent)
+      (-> irepl .getReplWindow .open)
+      (-> irepl .getReplWindow .makeActive)
     (catch Exception e
       (error-reporting/report-error        
         (format "Error starting REPL %s using host %s with port %s. Make sure
