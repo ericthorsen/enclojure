@@ -21,6 +21,7 @@
             [org.enclojure.ide.navigator.token-nav :as token-nav]
             [org.enclojure.ide.nb.editor.completion.file-mapping :as file-mapping]
             clojure.inspector clojure.set
+            [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
             [org.enclojure.commons.c-slf4j :as logger])
   (:import
     (java.util.logging Level)
@@ -44,7 +45,10 @@
   (when (and (= oldValue true) (= newValue false))
     (let [f (-> data-object .getPrimaryEntry .getFile)]
         (logger/info "data-object-listener updating file " f)
-        (file-mapping/refresh-completion-cache-data  (FileUtil/toFile f)))))
+        (file-mapping/refresh-completion-cache-data  (FileUtil/toFile f))
+      ; This needs to be called explicitly here only the first time.
+      ; On first load the navigator window gets called before the symbols are loaded
+      (symbol-caching/get-nav-data-for (FileUtil/toFile f)))))
 
 (defn get-property-listener [obj]
   (proxy [PropertyChangeListener] []

@@ -37,8 +37,9 @@ public class ClojureEditorKit extends NbEditorKit {
 
     public static synchronized ClojureEditorKit create(Map<?,?> args) throws Exception {
         Object mimetype = args.get("mime-type");
-        if(mimetype == null || !((String)mimetype).contains("text/x-clojure"))
+        if(mimetype == null || !((String)mimetype).contains("text/x-clojure")) {
             throw new Exception("mime-type passed must contain 'text/x-clojure' in the string");
+        }
         return new ClojureEditorKit((String)mimetype);
     }
 

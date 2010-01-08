@@ -85,6 +85,8 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
         jvmAdditionArgsTextField = new javax.swing.JTextField();
         printRadixCheckBox = new javax.swing.JCheckBox();
         enableLogging = new javax.swing.JCheckBox();
+        jSeparator3 = new javax.swing.JSeparator();
+        enableIDEReplCheckBox = new javax.swing.JCheckBox();
         jPanelSettings = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         platformScrollPane = new javax.swing.JScrollPane();
@@ -225,7 +227,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(jLabel11, org.openide.util.NbBundle.getMessage(EnclojurePreferencesPanel.class, "Settings_uses_pprint_label")); // NOI18N
         jLabel11.setToolTipText(org.openide.util.NbBundle.getMessage(EnclojurePreferencesPanel.class, "Settings_REPL_JAR_FileLocation")); // NOI18N
 
-        jLabel12.setFont(new java.awt.Font("Lucida Grande", 1, 13));
+        jLabel12.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel12, org.openide.util.NbBundle.getMessage(EnclojurePreferencesPanel.class, "Settings_for_standalone_repl_label")); // NOI18N
         jLabel12.setToolTipText(org.openide.util.NbBundle.getMessage(EnclojurePreferencesPanel.class, "Settings_REPL_JAR_FileLocation")); // NOI18N
 
@@ -260,6 +262,16 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
         enableLogging.setActionCommand("*print-stack-trace-on-error*");
         enableLogging.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        enableIDEReplCheckBox.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(enableIDEReplCheckBox, "Enable IDE Repl");
+        enableIDEReplCheckBox.setToolTipText("Enable the IDE REPL in the Window Menu");
+        enableIDEReplCheckBox.setActionCommand("*print-stack-trace-on-error*");
+        enableIDEReplCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enableIDEReplCheckBoxActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -279,7 +291,9 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
                             .add(jPanel2Layout.createSequentialGroup()
                                 .add(jLabel13)
                                 .add(18, 18, 18)
-                                .add(clojurePlatformsComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 251, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                                .add(clojurePlatformsComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 251, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(includeAllClasspathsCheckBox))))
                     .add(jPanel2Layout.createSequentialGroup()
                         .add(30, 30, 30)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -330,9 +344,6 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
                                 .add(90, 90, 90))))
                     .add(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .add(includeAllClasspathsCheckBox))
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jSeparator2)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
@@ -340,6 +351,14 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(jvmAdditionArgsTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 556, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
                 .add(244, 244, 244))
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
+                .add(488, 488, 488))
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(enableIDEReplCheckBox)
+                .addContainerGap(1044, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -389,7 +408,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jLabel3)
                             .add(printLevelTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel15)
                     .add(jvmAdditionArgsTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -402,10 +421,13 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel13)
-                    .add(clojurePlatformsComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(includeAllClasspathsCheckBox)
-                .add(36, 36, 36))
+                    .add(clojurePlatformsComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(includeAllClasspathsCheckBox))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jSeparator3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(enableIDEReplCheckBox)
+                .add(39, 39, 39))
         );
 
         jTabbedPane1.addTab("REPL Settings", jPanel2);
@@ -540,7 +562,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
                         .add(jPanelSettingsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(removePlatformButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(addPlatformButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                    .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                     .add(jPanelSettingsLayout.createSequentialGroup()
                         .addContainerGap()
                         .add(errorLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -552,7 +574,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel7)
                         .add(4, 4, 4)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(jPanelSettingsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(addClasspathButton)
@@ -695,6 +717,10 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_printRadixCheckBoxActionPerformed
 
+    private void enableIDEReplCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enableIDEReplCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enableIDEReplCheckBoxActionPerformed
+
                                                       
     private void jCheckBoxUseEmbeddedClojureActionPerformed(java.awt.event.ActionEvent evt) {                                                            
         // TODO add your handling code here:
@@ -711,6 +737,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
     public javax.swing.JButton addPlatformButton;
     public javax.swing.JList classPathList;
     public javax.swing.JComboBox clojurePlatformsComboBox;
+    public javax.swing.JCheckBox enableIDEReplCheckBox;
     public javax.swing.JCheckBox enableLogging;
     public javax.swing.JLabel errorLabel;
     public javax.swing.JCheckBox includeAllClasspathsCheckBox;
@@ -737,6 +764,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     public javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
     public javax.swing.JTextField jvmAdditionArgsTextField;
