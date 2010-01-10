@@ -220,7 +220,7 @@ platforms list"
   (dosync
     (let [{index :index} (platform-and-index
                            @*clojure-platforms*
-                           (:key platform))
+                                (:key platform))
           ccount (count @*clojure-platforms* )]
       (logger/info "do-remove-platform k={} i={} p={}" k index platform)
       (when index
@@ -405,7 +405,7 @@ This is only doing a text search on the names...should do something more."
              (not is-adjusting?)
              (>= selected 0))
       (let [inx-to-update (if (= s-inx selected) e-inx s-inx)]
-        ; poosible that a deletion has occured.
+        ; possible that a deletion has occured.
         (when (> (count @*clojure-platforms*) inx-to-update)
           (let [platform (assoc
                        (get-platform pane)
@@ -472,7 +472,13 @@ This is only doing a text search on the names...should do something more."
                        ;[(assoc (get-embedded-platform) :default true :index 0)]
                        (get-defined-platforms)
                        c)]
-          (dosync
+;          start-vals
+;            (vec (vals
+;                    (merge (reduce (fn [m {:keys [name] :as p}]
+;                                     (assoc m name p)) {} (get-defined-platforms))
+;                           (reduce (fn [m {:keys [name] :as p}]
+;                                     (assoc m name p)) {} c))))]
+      (dosync
             (alter *clojure-platforms*
                 (fn [_] start-vals)))
       (when new-init?

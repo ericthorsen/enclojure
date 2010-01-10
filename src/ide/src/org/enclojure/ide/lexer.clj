@@ -135,7 +135,7 @@
       (throw (IllegalArgumentException. (str "Invalid character length: " i ", should be: " len))))
     uc))
 
-(defn read-unicode-char-token [token offset len base])
+;(defn read-unicode-char-token [token offset len base])
 ;static private int readUnicodeChar(String token, int offset, int length, int base) throws Exception{
 ;	if(token.length() != offset + length)
 ;		throw new IllegalArgumentException("Invalid unicode character: \\" + token);
@@ -149,6 +149,20 @@
 ;		}
 ;	return (char) uc;
 ;}
+
+(defn read-unicode-char-token [token offset len base])
+;  (logger/info "token {} offset {} len {}" token offset len)
+;	(when (not= (.length token) (+ offset len))
+;   		(throw (IllegalArgumentException.
+;                        (str "Invalid unicode character: \\"  token))))
+;	(loop [uc 0 i offset]
+;            (if (< i (+ offset len))
+;              (let [d (Character/digit (.charAt token i) base)]
+;                (when (= -1 (int d))
+;                  (throw (IllegalArgumentException.
+;                           (str "Invalid digit: " (char d)))))
+;                (recur (+ (* uc base) d) (inc i)))
+;                (char uc))))
 
 (defn read-char-token [rdr initch]
   (let [sb (StringBuilder.)]
@@ -173,15 +187,18 @@
 	     (= "newline" tk) (.append sb "\n")
 	     (= "space" tk) (.append sb " ")
 	     (= "tab" tk) (.append sb "\t")
-    	 (= "backspace" tk) (.append sb "\b")
+             (= "backspace" tk) (.append sb "\b")
 	     (= "formfeed" tk) (.append sb "\f")
-    	 (= "return" tk) (.append sb "\r")
-	     (.startsWith tk "u") (let [ch (read-unicode-char-token tk 1 4 16)]
-	    			(if (and (>= ch 0xD800)
-	    				 (<= ch 0xDFFF))  ;surrogate code unit?
-	    			  (throw (Exception. (str "Invalid character constant: \\u"  (Integer/toString (char ch) 16)))))
-	    			  (.append sb (char ch)))
-    	 (.startsWith tk "o") (let [len (dec (.length tk))
+             (= "return" tk) (.append sb "\r")
+	     (.startsWith tk "u")
+                (let [ch (read-unicode-char-token tk 1 4 16)]
+                  (logger/info "char is {}" ch)
+                    (if (and (>= ch 0xD800)
+                            (<= ch 0xDFFF))  ;surrogate code unit?
+                	  (throw (Exception. (str "Invalid character constant: \\u"  (Integer/toString (char ch) 16)))))
+      		  (.append sb (char ch)))
+    	 (.startsWith tk "o")
+            (let [len (dec (.length tk))
 	    			    _ (when (> 3 len)
 	    				(throw (Exception. (str "Invalid octal escape sequence length: " len))))
 	    			    uc (read-unicode-char-token tk 1 len 8)]
