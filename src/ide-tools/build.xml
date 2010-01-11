@@ -8,7 +8,7 @@
     <cup srcfile="${src.dir}${file.separator}org${file.separator}enclojure${file.separator}cup${file.separator}clojure.cup"
       destdir="${src.dir}${file.separator}"
         interface="true"
-        force="true"
+        force="false"
         parser="ClojureParser"
         symbols="ClojureSym"        
         />    
