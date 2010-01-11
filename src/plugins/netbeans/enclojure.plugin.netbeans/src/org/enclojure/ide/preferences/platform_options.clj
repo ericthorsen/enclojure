@@ -48,7 +48,6 @@
 (def -system-folder-for-platforms- "ClojurePlatforms")
 (def -default-platform- "Clojure-1.0.0")
 
-
 (defstruct platform :name :classpaths :default :key)
 
 (def -clojure-default-platform-name- -default-platform-)
@@ -141,7 +140,6 @@ as the identity of the platform."
   (struct platform n cp default 
     (str (UUID/randomUUID))))
 
-
 (def
    #^{:doc "sequence of platforms"
       :prefs-category (str *ns*)}
@@ -169,6 +167,13 @@ as the identity of the platform."
 
 (set-validator! *clojure-platforms* validate-platforms)
 
+(defn save-preferences []
+  ; make sure the current platform is saved before flushing to disk.
+  (logger/info "---------- Preferences being saved : {}" @*clojure-platforms*)
+    (pref-utils/put-prefs -prefs-category-
+      (sort -platform-name-comp-
+            @*clojure-platforms*)))
+
 (defn next-new-platform-name
   "Given a seed name, return a unique platform name for adding a new platform"
   [seed-name]
@@ -190,7 +195,8 @@ platforms list"
       (dosync
         (alter *clojure-platforms*
             conj new-platform))
-    new-platform))
+    (save-preferences)
+        new-platform))
 
 (defn ensure-default-platform-is-set
   "If there are no platforms marked as default, sets the first one to be the default."
@@ -220,33 +226,35 @@ platforms list"
 
 
 (defn do-remove-platform
-  "Removes the given platform from the seq using the :key"
+  "Removes the given platform from the seq using the :key and saves the settings"
   [{k :key :as platform}]
   (dosync
-    (let [{index :index} (platform-and-index
+    (let [{index :index p :platform} (platform-and-index
                            @*clojure-platforms*
                                 (:key platform))
           ccount (count @*clojure-platforms* )]
-      (logger/info "do-remove-platform k={} i={} p={}" k index platform)
+      (logger/info "-----------do-remove-platform k={} i={} p={}" k index p)
       (when index
         (alter *clojure-platforms*
           #(let [[x xs] (split-at index %)]
+             (logger/info "-----------split left {} right {}" x xs)
              (ensure-default-platform-is-set
-               (apply vector (concat x (rest xs))))))))))
+               (apply vector (concat x (rest xs)))))))))
+        (save-preferences))
 
 (defn update-platform
   "Updates the given platform using the :key to look up the platform in the seq"
   [{k :key :as platform}]
   (logger/info "update-platform looking for key {}" k)
-  (let [{index :index} (platform-and-index
-                         @*clojure-platforms* k)]
-  (logger/info "update-platform {} {}" (or index "nil!") platform)
+  (let [{index :index p :platform}
+        (platform-and-index @*clojure-platforms* k)]
+  (logger/info "update-platform {} {}" (or index "nil!") p)
   (when index
     (dosync
         (alter *clojure-platforms*
              #(let [[x xs] (split-at index %)]
                 (ensure-default-platform-is-set
-                    (apply vector (concat x [platform] (rest xs)))))))
+                    (apply vector (concat x [p] (rest xs)))))))
     (logger/info "update-platform: after trans {}" (@*clojure-platforms* index)))))
 
 
@@ -329,7 +337,6 @@ and the data from the ui-fields"
   (let [{:keys [key name]} (do-add-platform)]
     (println @*clojure-platforms* )
     (pop-dialog pane @*clojure-platforms* key)))
-
 
 (defn remove-platform
   [pane action-event]
@@ -430,13 +437,17 @@ This is only doing a text search on the names...should do something more."
   (logger/info "classpath-list-changed")
   (.setEnabled (.removeClasspathButton pane)
     (pos? (count (.getSelectedValues (.classPathList pane)))))
-   (if-let [msg (validate-platform (get-platform pane))]
+  (let [platform (get-platform pane)]
+   (if-let [msg (validate-platform platform)]
      (do
         (.setText (.errorLabel pane) (str "Platform invalid! " msg))
         (.setEnabled (.setAsDefaultCheckBoxGuy pane) false))
      (do
         (.setText (.errorLabel pane) "")
-        (.setEnabled (.setAsDefaultCheckBoxGuy pane) true))))
+        (.setEnabled (.setAsDefaultCheckBoxGuy pane) true)))
+  ; If it changed, update the platform and store it to disk...
+  (update-platform platform)
+  (save-preferences)))
 
 (defn platform-key-typed
   [pane #^java.awt.event.KeyEvent event]
@@ -464,12 +475,6 @@ This is only doing a text search on the names...should do something more."
           (assoc (get-platform pane)
             :key (:key (@*clojure-platforms* selected)))))))
 
-(defn save-preferences []
-  ; make sure the current platform is saved before flushing to disk.
-  (logger/info "Preferences being saved : {}" @*clojure-platforms*)
-    (pref-utils/put-prefs -prefs-category-
-      (sort -platform-name-comp-
-            @*clojure-platforms*)))
 
 ;(defn load-preferences []
 ;    (let [c (pref-utils/get-prefs -prefs-category-)
@@ -495,11 +500,12 @@ This is only doing a text search on the names...should do something more."
         missing (clojure.set/difference
                   (set (keys shipped-platforms-map))
                   (set (keys current-platforms-map)))]
-    (vec (if (pos? (count missing))
+    (vec (filter #(pos? (count (:name %)))
+           (if (pos? (count missing))
               (sort -platform-name-comp-
                 (reduce (fn [v k]
                           (conj v (shipped-platforms-map k))) current-platforms missing))
-              current-platforms))))
+              current-platforms)))))
 
 (defn load-preferences []
     (let [current-platforms (sort -platform-name-comp-
