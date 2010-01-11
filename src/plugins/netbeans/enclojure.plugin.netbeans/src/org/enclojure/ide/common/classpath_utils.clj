@@ -43,8 +43,8 @@
     (java.io File FileWriter IOException StringReader StringWriter
       PrintStream PrintWriter OutputStream ByteArrayOutputStream)
     (java.net JarURLConnection URL URI)
-    (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType
-      ClassType)))
+    ;(com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType ClassType)
+    ))
 
 ; setup logging
 (logger/ensure-logger)
@@ -185,6 +185,16 @@
 (defn get-all-classpaths []
     (set (apply concat (map #(.getPaths (GlobalPathRegistry/getDefault) %)
                             ["classpath/source" "classpath/compile"]))))
+
+(defn get-all-project-classpaths
+  "Puts all the source roots first so clojure will be able to find the source files.
+After that follows the compile dependant classpaths for each of the projects."
+  []
+  (let [[src compile]
+        (map #(ClassPathSupport/createProxyClassPath
+                (into-array (.getPaths (GlobalPathRegistry/getDefault) %)))
+          ["classpath/source" "classpath/compile"])]
+    (str src File/pathSeparator compile)))
 
 (defn get-all-classpaths-launch-string []
     (build-launcher-cp-string (get-all-classpaths)))

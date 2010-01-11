@@ -189,19 +189,24 @@ and port settings." repl-id) e)))))
   "Top level function that grabs the preferences and starts a stand alone repl"
   [action]
   (try
-    (let [prefs (enclojure-options-category/get-stand-alone-settings)]
+    (let [{:keys [include-all-project-classpaths jvm-additional-args] :as prefs}
+            (enclojure-options-category/get-stand-alone-settings)]
       (start-stand-alone-repl
         "Stand-alone REPL"
-        (:jvm-additional-args prefs)
+        jvm-additional-args
         (apply str (classpath-utils/classpath-for-repl)
           java.io.File/pathSeparator
           (interpose java.io.File/pathSeparator
-            (:classpaths (:platform  prefs))))))
+            (:classpaths (:platform  prefs)))
+          (when include-all-project-classpaths
+            (str java.io.File/pathSeparator
+              (classpath-utils/get-all-classpaths))))))
     (catch Exception e
       (error-reporting/report-error        
         (str "Stand alone repl failed to start.  Make sure you have Clojure
 and Clojure.contrib jars in assigned Clojure Platform for the standalone REPL.
-See the Enclojure category under preferences to view your settings" (.getMessage e)) e))))
+See the Enclojure category under preferences to view your settings"
+          (.getMessage e)) e))))
 
 
 (declare reset-repl)
