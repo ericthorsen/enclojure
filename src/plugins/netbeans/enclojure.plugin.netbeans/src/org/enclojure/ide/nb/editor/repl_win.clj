@@ -204,7 +204,8 @@ and port settings." repl-id) e)))))
       (error-reporting/report-error        
         (str "Stand alone repl failed to start.  Make sure you have Clojure
 and Clojure.contrib jars in assigned Clojure Platform for the standalone REPL.
-See the Enclojure category under preferences to view your settings" (.getMessage e)) e))))
+See the Enclojure category under preferences to view your settings"
+          (.getMessage e)) e))))
 
 
 (declare reset-repl)

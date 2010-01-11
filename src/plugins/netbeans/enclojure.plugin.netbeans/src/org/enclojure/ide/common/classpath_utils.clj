@@ -43,8 +43,8 @@
     (java.io File FileWriter IOException StringReader StringWriter
       PrintStream PrintWriter OutputStream ByteArrayOutputStream)
     (java.net JarURLConnection URL URI)
-    (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType
-      ClassType)))
+    ;(com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType ClassType)
+    ))
 
 ; setup logging
 (logger/ensure-logger)
