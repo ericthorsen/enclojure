@@ -76,7 +76,7 @@
                 <include name="clojure-1.1.0-rc2.jar" />
             </fileset>
             <fileset dir="${shared.libs}Clojure-contrib">
-                <include name="clojure-1.1.0-rc2.jar" />
+                <include name="clojure-contrib-1.1.0-rc2.jar" />
             </fileset>
             </zip>
     </target>

@@ -54,6 +54,11 @@
 (def -clojure-default-platform-name- -default-platform-)
 (def #^{:private true} -prefs-category- "platforms")
 
+(def -platform-name-comp-
+  (proxy [java.util.Comparator] []
+    (compare [x y]
+      (compare (:name x) (:name y)))))
+
 (defn create-library 
   "Create a library in the netbeans library manager."
   [name classpaths]
@@ -463,25 +468,47 @@ This is only doing a text search on the names...should do something more."
   ; make sure the current platform is saved before flushing to disk.
   (logger/info "Preferences being saved : {}" @*clojure-platforms*)
     (pref-utils/put-prefs -prefs-category-
-      @*clojure-platforms*))
+      (sort -platform-name-comp-
+            @*clojure-platforms*)))
+
+;(defn load-preferences []
+;    (let [c (pref-utils/get-prefs -prefs-category-)
+;          new-init? (zero? (count c))
+;          start-vals (if new-init?
+;                       ;[(assoc (get-embedded-platform) :default true :index 0)]
+;                       (get-defined-platforms)
+;                       c)]
+;      (dosync
+;            (alter *clojure-platforms*
+;                (fn [_] start-vals)))
+;      (when new-init?
+;          (save-preferences))))
+
+(defn ensure-shipped-platforms
+  [current-platforms]
+  (let [shipped-platforms-map
+            (reduce (fn [m e]
+                      (assoc m (:name e) e)) {} (get-defined-platforms))
+        current-platforms-map
+            (reduce (fn [m e]
+                      (assoc m (:name e) e)) {} current-platforms)
+        missing (clojure.set/difference
+                  (set (keys shipped-platforms-map))
+                  (set (keys current-platforms-map)))]
+    (vec (if (pos? (count missing))
+              (sort -platform-name-comp-
+                (reduce (fn [v k]
+                          (conj v (shipped-platforms-map k))) current-platforms missing))
+              current-platforms))))
 
 (defn load-preferences []
-    (let [c (pref-utils/get-prefs -prefs-category-)
-          new-init? (zero? (count c))
-          start-vals (if new-init?
-                       ;[(assoc (get-embedded-platform) :default true :index 0)]
-                       (get-defined-platforms)
-                       c)]
-;          start-vals
-;            (vec (vals
-;                    (merge (reduce (fn [m {:keys [name] :as p}]
-;                                     (assoc m name p)) {} (get-defined-platforms))
-;                           (reduce (fn [m {:keys [name] :as p}]
-;                                     (assoc m name p)) {} c))))]
+    (let [current-platforms (sort -platform-name-comp-
+                              (pref-utils/get-prefs -prefs-category-))
+          start-vals (ensure-shipped-platforms current-platforms)]
       (dosync
             (alter *clojure-platforms*
                 (fn [_] start-vals)))
-      (when new-init?
+      (when (not= current-platforms start-vals)
           (save-preferences))))
 
 (defn get-clojure-default-lib []
