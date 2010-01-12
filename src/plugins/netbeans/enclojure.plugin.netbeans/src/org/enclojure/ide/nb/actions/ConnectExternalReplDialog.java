@@ -13,7 +13,6 @@ package org.enclojure.ide.nb.actions;
 
 import clojure.lang.RT;
 import clojure.lang.Var;
-import org.openide.util.Exceptions;
 
 /**
  *
@@ -140,7 +139,7 @@ public class ConnectExternalReplDialog extends javax.swing.JDialog {
 
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         try {
-            //Connect - if failed to connet - display red error on the dalog box
+            //Connect - if failed to connect - display red error on the dalog box
             connectExternalRepl.invoke(this.replName.getText(),
                     this.replServerHost.getText(),
                     Integer.parseInt(this.replServerPort.getText()));

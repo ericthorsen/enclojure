@@ -13,7 +13,8 @@
 
 (ns org.enclojure.ide.debugger.jdi-eval
   (:use org.enclojure.ide.repl.repl-manager)
-  (:import (com.sun.jdi ThreadReference StackFrame LocalVariable Value ClassType)
+  (:import
+    (com.sun.jdi ThreadReference StackFrame LocalVariable Value ClassType)
     (org.netbeans.api.debugger DebuggerEngine DebuggerManager)
     (org.netbeans.api.debugger.jpda JPDADebugger CallStackFrame)
     ))

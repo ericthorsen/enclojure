@@ -63,7 +63,7 @@
       FileUtil JarFileSystem URLMapper)
     (java.io File FileWriter IOException StringReader StringWriter
       PrintStream PrintWriter OutputStream ByteArrayOutputStream)
-    (com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType ClassType)
+    ;(com.sun.jdi VirtualMachine VirtualMachineManager ReferenceType ClassType)
     ))
 
 ; setup logging

@@ -124,6 +124,7 @@ public class ClojureNavigatorPanel implements NavigatorPanel {
                 FileObject fileObject = (FileObject)object;
                 File file = FileUtil.toFile(fileObject);
                 try {
+
                     if (_contextChanged != null)
                     {
                         Object sampleData = _getDataForFileFn.invoke(file);

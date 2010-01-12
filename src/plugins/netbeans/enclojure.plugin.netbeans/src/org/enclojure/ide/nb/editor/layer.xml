@@ -3,7 +3,12 @@
 <filesystem>
     <folder name="ClojurePlatforms">
         <file name="Clojure-1.0.0" url="platforms/clojure-1.0.0-platform.zip"/>
-        <file name="clojure-1.0.0-2009-10-28" url="platforms/clojure-1.0.0-2009-10-28-platform.zip"/>
+        <file name="clojure-1.1.0-new-SNAPSHOT"
+                url="platforms/clojure-1.1.0-new-SNAPSHOT-platform.zip"/>
+        <file name="clojure-1.1.0-rc2-platform"
+                url="platforms/clojure-1.1.0-rc2-platform.zip"/>
+        <file name="clojure-1.0.1-alpha-SNAPSHOT-platform"
+                url="platforms/clojure-1.0.1-alpha-SNAPSHOT-platform.zip"/>
     </folder>
     <folder name="Navigator">
         <folder name="Panels">

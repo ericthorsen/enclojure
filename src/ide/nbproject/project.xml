@@ -3,6 +3,9 @@
     <type>org.netbeans.modules.ant.freeform</type>
     <configuration>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>org.enclojure.ide</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
             <!-- Do not use Project Properties customizer when editing this file manually. -->
             <name>org.enclojure.ide</name>
             <properties/>
@@ -11,11 +14,18 @@
                     <label>src</label>
                     <type>java</type>
                     <location>src</location>
+                    <encoding>UTF-8</encoding>
                 </source-folder>
                 <source-folder>
                     <label>test</label>
                     <type>java</type>
                     <location>test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>org.enclojure.ide</label>
+                    <location>.</location>
+                    <encoding>UTF-8</encoding>
                 </source-folder>
             </folders>
             <ide-actions>

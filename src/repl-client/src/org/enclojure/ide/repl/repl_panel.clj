@@ -79,7 +79,7 @@
                     (.setCaretPosition this doc-length))
                   (proxy-super paste)))))]
                   (doto editor-pane
-                    (.setContentType "text/x-clojurerepl")
+                    (.setContentType "text/x-clojurerepl;charset=UTF-8")
                     (.setName "Repl editor pane")
                     (.setDoubleBuffered true))))
 

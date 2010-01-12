@@ -72,7 +72,8 @@
         'warnOnReflectionCheckBox  false 'clojure.core/*warn-on-reflection*
         'includeAllClasspathsCheckBox  true :include-all-project-classpaths
         'enableLogging  true :enable-logging
-          ]
+        'enableIDEReplCheckBox  false :enable-ide-repl
+         ]
        ))))
     
 

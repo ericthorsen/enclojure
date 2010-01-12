@@ -113,9 +113,5 @@ ReplPanel to each one"
 (deftest test-repl-startup
   (testing "Testing repl startup functions"
     (is (create-inproc-repl)
-
-    
-         (cleanup-onclose frame)))))
-
-
+        (cleanup-onclose frame)))))
 

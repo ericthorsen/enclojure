@@ -29,20 +29,27 @@
     </target>
 
 
-	<!--
-	################################################################################
-	      target: init-deps - Pulls the deps.zip from github and unpack it
-	################################################################################
-	-->
-	<target name="init-deps" unless="dependancies.downloaded">
-		<mkdir dir="${bld-dir}" />
-		<echo message="Downloading dependancies from http://cloud.github.com/downloads/EricThorsen/enclojure/${deps-zip}" />
-		<get src="http://cloud.github.com/downloads/EricThorsen/enclojure/${deps-zip}"
-			dest="${bld-dir}${deps-zip}" 
-			verbose="false" />
-		<unzip src="${bld-dir}${deps-zip}"	dest="${bld-dir}" />
-	</target>        	
-	
+    <!--
+    ################################################################################
+          target: init-deps - Pulls the deps.zip from github and unpack it
+    ################################################################################
+    -->
+    <target name="init-deps" unless="dependancies.downloaded">
+            <mkdir dir="${bld-dir}" />
+            <echo message="Downloading dependancies from http://cloud.github.com/downloads/EricThorsen/enclojure/${deps-zip}" />
+            <get src="http://cloud.github.com/downloads/EricThorsen/enclojure/${deps-zip}"
+                    dest="${bld-dir}${deps-zip}"
+                    verbose="false" />
+            <unzip src="${bld-dir}${deps-zip}"	dest="${bld-dir}" />
+    </target>
+
+    <target name="remove-deps" >
+            <delete includeemptydirs="true">
+                <fileset dir="${bld-dir}/libs"  includes="**/*"/>
+            </delete> 
+            <delete file="${bld-dir}${deps-zip}" />
+    </target>
+
     <target name="buildlist" depends="load-ivy,init-deps">			
         <ivy:buildlist reference="build-path">
             <fileset dir="src" includes="**/build.xml"/>
