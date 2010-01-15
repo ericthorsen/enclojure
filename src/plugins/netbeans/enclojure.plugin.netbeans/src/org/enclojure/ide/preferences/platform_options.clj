@@ -1,4 +1,4 @@
-(comment
+(comme
 ;*******************************************************************************
 ;*    Copyright (c) ThorTech, L.L.C.. All rights reserved.
 ;*    The use and distribution terms for this software are covered by the
@@ -134,6 +134,22 @@ and creates entries in the local preferences path."
                                            (hash pname)))))))
           pforms)))))
 
+(defn is-shipped-platform? [platform]
+    (let [shipped-platforms-map
+            (reduce (fn [m e]
+                      (assoc m (:name e) e)) {} (get-defined-platforms))]
+      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
+        (:name platform) (keys shipped-platforms-map))
+      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
+        (:name platform) (keys shipped-platforms-map))
+      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
+        (:name platform) (keys shipped-platforms-map))
+      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
+        (:name platform) (keys shipped-platforms-map))
+      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
+        (:name platform) (keys shipped-platforms-map))
+      (shipped-platforms-map (:name platform))))
+
 (defn new-platform
   "This functions sets the key for the platform struct which should be used
 as the identity of the platform."
@@ -174,9 +190,9 @@ as the identity of the platform."
   ; make sure the current platform is saved before flushing to disk.
   (logger/info "---------- Preferences being saved : count {} data {}"
         (count @*clojure-platforms*) @*clojure-platforms*)
-    (pref-utils/put-prefs -prefs-category-
-      (sort -platform-name-comp-
-            @*clojure-platforms*)))
+    (pref-utils/put-prefs -prefs-category- @*clojure-platforms*))
+;      (sort -platform-name-comp-
+;            @*clojure-platforms*)))
 
 (defn next-new-platform-name
   "Given a seed name, return a unique platform name for adding a new platform"
@@ -249,17 +265,20 @@ platforms list"
 (defn update-platform
   "Updates the given platform using the :key to look up the platform in the seq"
   [{k :key :as platform}]
-  (logger/info "update-platform looking for key {} from {}" k)
+  (logger/info "update-platform looking for key {} from {}" k platform)
   (let [{index :index p :platform}
         (platform-and-index @*clojure-platforms* k)]
   (logger/info "update-platform {} {}" (or index "nil!") p)
+    (when (not= (:key platform) (:key p))
+      (throw (Exception. (format "keys not= %s %s passed:%s found:%s"
+                           k (:key p) platform p))))
   (when index
     (dosync
         (alter *clojure-platforms*
              #(let [[x xs] (split-at index %)]
                 (ensure-default-platform-is-set
                     (apply vector 
-                      (concat x [p] (rest xs)))))))
+                      (concat x [(merge p platform)] (rest xs)))))))
     (logger/info "update-platform: after trans {}" (@*clojure-platforms* index)))))
 
 
@@ -352,14 +371,21 @@ and the data from the ui-fields"
         (NbBundle/getMessage EnclojurePreferencesPanel "Platform_settings_At_One_Platform_Msg")
         "Alert"
         JOptionPane/ERROR_MESSAGE)
-      (when (= JOptionPane/YES_OPTION (JOptionPane/showConfirmDialog
-                pane "Are you sure you want to remove platform?"))
-        (let [selected (.getSelectedIndex (.platformList pane))]
-          (do-remove-platform (@*clojure-platforms* selected))
-          (pop-dialog pane @*clojure-platforms*
-            (:key (@*clojure-platforms* (if (zero? selected) 1 (dec selected)))))
-          (logger/info "remove-platform after do-remove count {}" (count @*clojure-platforms*))
-          ))))
+      (let [selected (.getSelectedIndex (.platformList pane))
+            to-remove (@*clojure-platforms* selected)]
+        (if (is-shipped-platform? to-remove)
+          (JOptionPane/showMessageDialog pane
+            "This is one of the pre-packaged platforms and cannot be removed."
+            "Alert"
+            JOptionPane/PLAIN_MESSAGE)
+            (when (= JOptionPane/YES_OPTION (JOptionPane/showConfirmDialog
+                    pane "Are you sure you want to remove platform?"))
+                (let [selected (.getSelectedIndex (.platformList pane))]
+                  (do-remove-platform (@*clojure-platforms* selected))
+                  (pop-dialog pane @*clojure-platforms*
+                    (:key (@*clojure-platforms* (if (zero? selected) 1 (dec selected)))))
+            (logger/info "remove-platform after do-remove count {}"
+              (count @*clojure-platforms*))))))))
 
 (defn- get-file-filter
   "return an implementation of a file filter using the predicate function for the accept call."
@@ -520,20 +546,20 @@ This is only doing a text search on the names...should do something more."
                   (set (keys shipped-platforms-map))
                   (set (keys current-platforms-map)))]
     (vec (filter #(pos? (count (:name %)))
-           (if (pos? (count missing))
-              (sort -platform-name-comp-
+           (if (pos? (count missing))              
                 (reduce (fn [v k]
-                          (conj v (shipped-platforms-map k))) current-platforms missing))
+                          (conj v (shipped-platforms-map k)))
+                    current-platforms missing)
               current-platforms)))))
 
 (defn load-preferences []
-    (let [current-platforms (sort -platform-name-comp-
-                              (pref-utils/get-prefs -prefs-category-))
+    (let [current-platforms (pref-utils/get-prefs -prefs-category-)
           start-vals (ensure-shipped-platforms current-platforms)]
       (dosync
             (alter *clojure-platforms*
                 (fn [_] start-vals)))
       (when (not= current-platforms start-vals)
+        (logger/info "Added shipped platforms...saving them...")
           (save-preferences)))
   @*clojure-platforms*)
 
