@@ -45,6 +45,7 @@
 ; setup logging
 (logger/ensure-logger)
 
+(def -meta-map- (ref {}))
 (def -system-folder-for-platforms- "ClojurePlatforms")
 (def -default-platform- "Clojure-1.0.0")
 
@@ -248,7 +249,7 @@ platforms list"
 (defn update-platform
   "Updates the given platform using the :key to look up the platform in the seq"
   [{k :key :as platform}]
-  (logger/info "update-platform looking for key {}" k)
+  (logger/info "update-platform looking for key {} from {}" k)
   (let [{index :index p :platform}
         (platform-and-index @*clojure-platforms* k)]
   (logger/info "update-platform {} {}" (or index "nil!") p)
@@ -258,7 +259,7 @@ platforms list"
              #(let [[x xs] (split-at index %)]
                 (ensure-default-platform-is-set
                     (apply vector 
-                      (concat x [(merge p platform)] (rest xs)))))))
+                      (concat x [p] (rest xs)))))))
     (logger/info "update-platform: after trans {}" (@*clojure-platforms* index)))))
 
 
@@ -469,11 +470,15 @@ This is only doing a text search on the names...should do something more."
   (if (= -clojure-default-platform-name-
         (.getText (.platformNameTextField pane)))
     (.consume event)
-    (.setElementAt (.getModel (.platformList pane))
-      (str
+    (do
+        (.setElementAt (.getModel (.platformList pane))
+          (str
         (.getText (.platformNameTextField pane))
         (.getKeyChar event))
-      (.getSelectedIndex (.platformList pane)))))
+      (.getSelectedIndex (.platformList pane)))
+      (update-platform (get-platform pane))
+      (save-preferences))))
+
 
 (defn platform-changed
   [pane event]

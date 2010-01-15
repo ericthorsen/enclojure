@@ -449,6 +449,20 @@
                     </run-dependency>
                 </dependency>
             </module-dependencies>
+            <test-dependencies>
+                <test-type>
+                    <name>unit</name>
+                    <test-dependency>
+                        <code-name-base>org.netbeans.libs.junit4</code-name-base>
+                        <compile-dependency/>
+                    </test-dependency>
+                    <test-dependency>
+                        <code-name-base>org.netbeans.modules.nbjunit</code-name-base>
+                        <recursive/>
+                        <compile-dependency/>
+                    </test-dependency>
+                </test-type>
+            </test-dependencies>
             <public-packages>
                 <package>clojure</package>
                 <package>clojure.asm</package>
@@ -487,7 +501,7 @@
                 <runtime-relative-path>ext/org.enclojure.repl-server.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/org.enclojure.repl-server.jar</binary-origin>
             </class-path-extension>
-           <class-path-extension>
+            <class-path-extension>
                 <runtime-relative-path>ext/org.enclojure.repl-client.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/org.enclojure.repl-client.jar</binary-origin>
             </class-path-extension>
@@ -506,6 +520,10 @@
             <class-path-extension>
                 <runtime-relative-path>ext/slf4j-jdk14-1.5.8.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/slf4j-jdk14-1.5.8.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/uispec4j-2.1-jdk15.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/uispec4j-2.1-jdk15.jar</binary-origin>
             </class-path-extension>
             <!--
             <class-path-extension>

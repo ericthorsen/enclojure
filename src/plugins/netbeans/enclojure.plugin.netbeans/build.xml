@@ -20,8 +20,8 @@
    	<property name="projects.root" value="${workdir}${file.separator}src${file.separator}" />
 	<property file="${workdir}build-support${file.separator}build.properties"/> 
 <!--	<import file="${workdir}build${file.separator}common.xml"/> -->
-	
- 	<target name="copylibs" >
+
+        <target name="copylibs" >
             <copy  file="${java.home}${file.separator}..${file.separator}lib${file.separator}tools.jar"
                 tofile="release/modules/ext/tools.jar" failonerror="false" />
             <copy file="${shared.libs}Clojure${file.separator}clojure${clojure-version}.jar"
@@ -40,59 +40,61 @@
                 tofile="release/modules/ext/org.enclojure.repl-server.jar" />
             <copy file="${projects.root}repl-client${file.separator}${dist.path}${file.separator}org.enclojure.repl-client.jar"
                 tofile="release/modules/ext/org.enclojure.repl-client.jar" />
-	</target>
+            <copy  file="${shared.libs}uispec4j${file.separator}uispec4j-2.1-jdk15.jar"
+                tofile="release/modules/ext/uispec4j-2.1-jdk15.jar"  />
+        </target>
 
-    <target name="zip.project.template">
-	 <zip destfile="./src/org/enclojure/ide/nb/editor/ClojureProjectTemplate.zip"
-            basedir="${workdir}templates${file.separator}netbeans${file.separator}ClojureProjectTemplate/"
-            excludes="build/**,**/.DS_Store,**/private/**,**/dist/**" />
-    </target>
-    <target name="zip.clojure.1.0.platform">
-	 <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.0.0-platform.zip"
-            basedir="${shared.libs}" update="no" excludes="**">
-            <fileset dir="${shared.libs}Clojure">
-                <include name="clojure-1.0.0.jar" />
-            </fileset>
-            <fileset dir="${shared.libs}Clojure-contrib">
-                <include name="clojure-contrib-1.0.0.jar" />
-            </fileset>
-            </zip>
-    </target>
-    <target name="clojure-1.0.1-alpha-SNAPSHOT.platform">
-	 <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.0.1-alpha-SNAPSHOT-platform.zip"
-            basedir="${shared.libs}" update="no" excludes="**">
-            <fileset dir="${shared.libs}Clojure">
-                <include name="clojure-1.0.1-alpha-SNAPSHOT.jar" />
-            </fileset>
-            <fileset dir="${shared.libs}Clojure-contrib">
-                <include name="clojure-contrib-1.1.0-new-SNAPSHOT.jar" />
-            </fileset>
-            </zip>
-    </target>
-    <target name="zip.clojure.1.1.platform">
-	 <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.1.0-rc2-platform.zip"
-            basedir="${shared.libs}" update="no" excludes="**">
-            <fileset dir="${shared.libs}Clojure">
-                <include name="clojure-1.1.0-rc2.jar" />
-            </fileset>
-            <fileset dir="${shared.libs}Clojure-contrib">
-                <include name="clojure-contrib-1.1.0-rc2.jar" />
-            </fileset>
-            </zip>
-    </target>
-    <target name="zip.clojure${clojure-version}.platform">
-	 <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure${clojure-version}-platform.zip"
+        <target name="zip.project.template">
+             <zip destfile="./src/org/enclojure/ide/nb/editor/ClojureProjectTemplate.zip"
+                basedir="${workdir}templates${file.separator}netbeans${file.separator}ClojureProjectTemplate/"
+                excludes="build/**,**/.DS_Store,**/private/**,**/dist/**" />
+        </target>
+        <target name="zip.clojure.1.0.platform">
+             <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.0.0-platform.zip"
                 basedir="${shared.libs}" update="no" excludes="**">
-            <fileset dir="${shared.libs}Clojure">
-                <include name="clojure${clojure-version}.jar" />
-            </fileset>
-            <fileset dir="${shared.libs}Clojure-contrib">
-                <include name="clojure-contrib${clojure-version}.jar" />
-            </fileset>
-         </zip>
-    </target>
-    <target name="init"
-        depends="copylibs,zip.project.template,zip.clojure.1.0.platform,clojure-1.0.1-alpha-SNAPSHOT.platform,zip.clojure.1.1.platform,zip.clojure${clojure-version}.platform,harness.init">
-    </target>
-    <target name="default" depends="init,nbm" />
+                <fileset dir="${shared.libs}Clojure">
+                    <include name="clojure-1.0.0.jar" />
+                </fileset>
+                <fileset dir="${shared.libs}Clojure-contrib">
+                    <include name="clojure-contrib-1.0.0.jar" />
+                </fileset>
+                </zip>
+        </target>
+        <target name="clojure-1.0.1-alpha-SNAPSHOT.platform">
+             <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.0.1-alpha-SNAPSHOT-platform.zip"
+                basedir="${shared.libs}" update="no" excludes="**">
+                <fileset dir="${shared.libs}Clojure">
+                    <include name="clojure-1.0.1-alpha-SNAPSHOT.jar" />
+                </fileset>
+                <fileset dir="${shared.libs}Clojure-contrib">
+                    <include name="clojure-contrib-1.1.0-new-SNAPSHOT.jar" />
+                </fileset>
+                </zip>
+        </target>
+        <target name="zip.clojure.1.1.platform">
+             <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.1.0-rc2-platform.zip"
+                basedir="${shared.libs}" update="no" excludes="**">
+                <fileset dir="${shared.libs}Clojure">
+                    <include name="clojure-1.1.0-rc2.jar" />
+                </fileset>
+                <fileset dir="${shared.libs}Clojure-contrib">
+                    <include name="clojure-contrib-1.1.0-rc2.jar" />
+                </fileset>
+                </zip>
+        </target>
+        <target name="zip.clojure${clojure-version}.platform">
+             <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure${clojure-version}-platform.zip"
+                    basedir="${shared.libs}" update="no" excludes="**">
+                <fileset dir="${shared.libs}Clojure">
+                    <include name="clojure${clojure-version}.jar" />
+                </fileset>
+                <fileset dir="${shared.libs}Clojure-contrib">
+                    <include name="clojure-contrib${clojure-version}.jar" />
+                </fileset>
+             </zip>
+        </target>
+        <target name="init"
+            depends="copylibs,zip.project.template,zip.clojure.1.0.platform,clojure-1.0.1-alpha-SNAPSHOT.platform,zip.clojure.1.1.platform,zip.clojure${clojure-version}.platform,harness.init">
+        </target>
+        <target name="default" depends="init,nbm" />
 </project>

@@ -76,7 +76,6 @@
          ]
        ))))
     
-
 (defn save-preferences []
     (pref-utils/put-prefs -prefs-category-
       @*repl-settings*))
@@ -163,7 +162,7 @@
     (valueChanged [event]
       (logger/info "list-listener.........")
       (update-plaforms-combobox pane))))
-           
+
 (defn create-enclojure-preferences-pane
   [this]
   (let [p (org.enclojure.ide.preferences.EnclojurePreferencesPanel/create
@@ -176,11 +175,10 @@
   (fn [this]
     (when-not @panel
       (sync nil
-        (alter panel 
+        (alter panel
           (fn[_]
             (create-enclojure-preferences-pane this)))
-        (alter pcs (fn [_](new PropertyChangeSupport this))))
-      )
+        (alter pcs (fn [_](new PropertyChangeSupport this)))))
     @panel))
 
 (defn get-options-controller []
@@ -199,14 +197,13 @@
     (getComponent [masterLookup]
         (get-panel this))
     (getHelpCtx [])
-      (isValid [] true)
-        ;(.valid (get-panel this)))
+    (isValid [] true)
     (isChanged [] true)
     (removePropertyChangeListener [#^java.beans.PropertyChangeListener l]
         (. @pcs removeProperyChangeListener l))
-    (update []        
+    (update []
           (load-settings (get-panel this))))))
-    
+
 (defn get-stand-alone-settings
   []
   (platform-options/load-preferences)
@@ -233,4 +230,4 @@
     (.setSize (java.awt.Dimension. 800 500))
     (.setVisible true))
     {:frame frame :options options :pane pane}))
-
+  

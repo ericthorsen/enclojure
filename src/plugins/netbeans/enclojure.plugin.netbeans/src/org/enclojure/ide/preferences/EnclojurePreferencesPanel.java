@@ -227,7 +227,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(jLabel11, org.openide.util.NbBundle.getMessage(EnclojurePreferencesPanel.class, "Settings_uses_pprint_label")); // NOI18N
         jLabel11.setToolTipText(org.openide.util.NbBundle.getMessage(EnclojurePreferencesPanel.class, "Settings_REPL_JAR_FileLocation")); // NOI18N
 
-        jLabel12.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Lucida Grande", 1, 13));
         org.openide.awt.Mnemonics.setLocalizedText(jLabel12, org.openide.util.NbBundle.getMessage(EnclojurePreferencesPanel.class, "Settings_for_standalone_repl_label")); // NOI18N
         jLabel12.setToolTipText(org.openide.util.NbBundle.getMessage(EnclojurePreferencesPanel.class, "Settings_REPL_JAR_FileLocation")); // NOI18N
 
@@ -408,7 +408,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jLabel3)
                             .add(printLevelTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 9, Short.MAX_VALUE)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel15)
                     .add(jvmAdditionArgsTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -435,6 +435,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(jLabel4, "Clojure Platforms");
 
         platformList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        platformList.setName("plaftormList"); // NOI18N
         platformList.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 platformListPropertyChange(evt);
@@ -471,6 +472,7 @@ public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
             }
         });
 
+        classPathList.setName("classPathList"); // NOI18N
         classPathList.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 classPathListPropertyChange(evt);
