@@ -86,7 +86,7 @@
         (assoc
           (controls/get-default-settings *edit-map*)
           :stand-alone-repl-platform
-          (:key (first @platform-options/*clojure-platforms*)))))
+          (:key (first (filter :default @platform-options/*clojure-platforms*))))))
 
 (defn load-preferences []
     (let [c (pref-utils/get-prefs -prefs-category-)

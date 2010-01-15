@@ -1,4 +1,4 @@
-(comme
+(comment
 ;*******************************************************************************
 ;*    Copyright (c) ThorTech, L.L.C.. All rights reserved.
 ;*    The use and distribution terms for this software are covered by the
@@ -47,7 +47,7 @@
 
 (def -meta-map- (ref {}))
 (def -system-folder-for-platforms- "ClojurePlatforms")
-(def -default-platform- "Clojure-1.0.0")
+(def -default-platform- "Clojure-1.1.0")
 
 (defstruct platform :name :classpaths :default :key)
 

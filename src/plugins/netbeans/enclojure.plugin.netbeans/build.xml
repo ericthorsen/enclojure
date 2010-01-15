@@ -60,25 +60,14 @@
                 </fileset>
                 </zip>
         </target>
-        <target name="clojure-1.0.1-alpha-SNAPSHOT.platform">
-             <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.0.1-alpha-SNAPSHOT-platform.zip"
-                basedir="${shared.libs}" update="no" excludes="**">
-                <fileset dir="${shared.libs}Clojure">
-                    <include name="clojure-1.0.1-alpha-SNAPSHOT.jar" />
-                </fileset>
-                <fileset dir="${shared.libs}Clojure-contrib">
-                    <include name="clojure-contrib-1.1.0-new-SNAPSHOT.jar" />
-                </fileset>
-                </zip>
-        </target>
         <target name="zip.clojure.1.1.platform">
-             <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.1.0-rc2-platform.zip"
+             <zip destfile="./src/org/enclojure/ide/nb/editor/platforms/clojure-1.1.0-platform.zip"
                 basedir="${shared.libs}" update="no" excludes="**">
                 <fileset dir="${shared.libs}Clojure">
-                    <include name="clojure-1.1.0-rc2.jar" />
+                    <include name="clojure-1.1.0.jar" />
                 </fileset>
                 <fileset dir="${shared.libs}Clojure-contrib">
-                    <include name="clojure-contrib-1.1.0-rc2.jar" />
+                    <include name="clojure-contrib-1.1.0.jar" />
                 </fileset>
                 </zip>
         </target>
@@ -94,7 +83,7 @@
              </zip>
         </target>
         <target name="init"
-            depends="copylibs,zip.project.template,zip.clojure.1.0.platform,clojure-1.0.1-alpha-SNAPSHOT.platform,zip.clojure.1.1.platform,zip.clojure${clojure-version}.platform,harness.init">
+            depends="copylibs,zip.project.template,zip.clojure.1.0.platform,zip.clojure.1.1.platform,zip.clojure${clojure-version}.platform,harness.init">
         </target>
         <target name="default" depends="init,nbm" />
 </project>
