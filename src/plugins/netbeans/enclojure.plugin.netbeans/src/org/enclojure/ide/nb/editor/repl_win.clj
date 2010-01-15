@@ -49,7 +49,6 @@
     )
   )
 
-
 ; setup logging
 (logger/ensure-logger)
 
@@ -77,6 +76,36 @@
         NotifyDescriptor/YES_NO_OPTION
         NotifyDescriptor/ERROR_MESSAGE
           )) 0))
+
+(defn verify-classpath-use-default
+  "Checks to see if there is a clojure and clojure-contrib jar in the classpath.
+If not, allows the user to add the default platform to the classpath of their project"
+  [classpath]
+  (if-let [{[clojure clojure-exists?] :clojure
+            [clojure-contrib contrib-exists?] :contrib}
+            (repl-manager/bad-classpath? classpath)]
+    (let [_ (platform-options/load-preferences)
+          default-platform (platform-options/get-default-platform)]
+      (if (zero?
+            (.notify (DialogDisplayer/getDefault)
+              (NotifyDescriptor$Confirmation.
+                (str
+                "There did not appear to be both valid clojure and clojure-contrib jars present in the classpath.  "
+                  "For clojure.jar => " (if clojure (format "\"%s\"" clojure) " no reference to a clojure jar found in classpath.")
+                    (when clojure (if clojure-exists? " possibly valid clojure file." " file not found."))
+                  "\nFor clojure-contrib.jar => " (if clojure-contrib
+                                            (format "\"%s\"" clojure-contrib)
+                                            " no reference to a clojure-contrib jar found in classpath.")
+                    (when clojure-contrib (if contrib-exists?
+                                            " passibly valid clojure-contrib file." " file not found."))
+                  "\nThese are both required to start a repl."
+                  (format "\nDo you want to use the default platform \"%s\" ?" (:name default-platform)))
+                "Possible problem with classpath for the REPL"
+                NotifyDescriptor/YES_NO_OPTION
+                NotifyDescriptor/WARNING_MESSAGE)))
+        (apply str (interpose java.io.File/pathSeparator
+                     (conj (:classpaths default-platform) classpath))) nil))
+    classpath))
 
 (def #^{:private true}
   -get-repl-window-factory-
@@ -167,8 +196,7 @@ and port settings." repl-id) e)))))
     (when curr-config ; Stop the repl if it is already running
       (repl-manager/stop-internal-repl repl-id))
     (println updated-config)
-      (when
-        (zero? (verify-classpath classpath))
+      (when-let [classpath (verify-classpath-use-default classpath)]
         (let [irepl (factory/create-managed-external-repl
                       (assoc updated-config :classpath classpath
                         :java-exe (get-default-java-exe))
@@ -222,8 +250,7 @@ See the Enclojure category under preferences to view your settings"
     (try
       (logger/info "For project {} Verifying classpath {} " p classpath)
       (logger/info "updated-config {} " updated-config)
-      (when
-        (zero? (verify-classpath classpath))
+      (when-let [classpath (verify-classpath-use-default classpath)]
         (let [irepl (factory/create-managed-external-repl
                       (assoc updated-config :classpath classpath
                         :java-exe (get-default-java-exe))
