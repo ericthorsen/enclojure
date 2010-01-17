@@ -10,6 +10,7 @@ src/plugins/netbeans/enclojure.plugin.netbeans/nbproject/private/*
 src/plugins/netbeans/enclojure.plugin.netbeans/nbproject/private/platform-private.properties
 build-support/libs/*
 build-support/deps*.zip
+build-support/libs.zip
 __MACOSX
 .ivy-cache
 ivy-cache
