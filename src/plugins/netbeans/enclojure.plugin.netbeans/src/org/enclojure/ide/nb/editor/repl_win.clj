@@ -238,10 +238,13 @@ See the Enclojure category under preferences to view your settings"
 
 
 (declare reset-repl)
+(def -project- (atom nil))
+
 ;========================================================================
 ; External managed project REPL startup 
 ;========================================================================
 (defn start-project-repl [#^Project p]
+  (swap! -project- (fn [_] p))
   (let [repl-id (repl-focus/get-project-name p)
         classpath (classpath-utils/get-repl-classpath p)
         curr-config (repl-manager/get-repl-config repl-id)
