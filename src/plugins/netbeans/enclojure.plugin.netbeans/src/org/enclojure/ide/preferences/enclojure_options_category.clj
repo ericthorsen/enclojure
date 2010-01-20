@@ -164,9 +164,8 @@
       (update-plaforms-combobox pane))))
 
 (defn create-enclojure-preferences-pane
-  [this]
-  (let [p (org.enclojure.ide.preferences.EnclojurePreferencesPanel/create
-            #^org.netbeans.spi.options.OptionsPanelController this)]
+  []
+  (let [p (org.enclojure.ide.preferences.EnclojurePreferencesPanel/create)]
     (.setRenderer (.clojurePlatformsComboBox p) (map-cell-renderer :name))
     (.addListSelectionListener (.platformList p) (platform-list-listener p))
     p))
@@ -177,7 +176,7 @@
       (sync nil
         (alter panel
           (fn[_]
-            (create-enclojure-preferences-pane this)))
+            (create-enclojure-preferences-pane)))
         (alter pcs (fn [_](new PropertyChangeSupport this)))))
     @panel))
 

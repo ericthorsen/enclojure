@@ -20,24 +20,26 @@ package org.enclojure.ide.preferences;
 
 import clojure.lang.IFn;
 import clojure.lang.RT;
-import org.netbeans.spi.options.OptionsPanelController;
+//import org.netbeans.spi.options.OptionsPanelController;
 import org.openide.util.Exceptions;
 
 public final class EnclojurePreferencesPanel extends javax.swing.JPanel {
 
-    private final OptionsPanelController controller;
+    //private final OptionsPanelController controller;
     IFn dispatcherFn = RT.var("org.enclojure.ide.preferences.platform-options","disp-hack");
     IFn startNonProjectREPLFn = RT.var("org.enclojure.ide.nb.editor.repl-win","start-stand-alone-repl-action");
     IFn tabbedStateChangedFn = RT.var("org.enclojure.ide.preferences.enclojure-options-category"
                                      ,"tabbed-panel-changed");
-    public EnclojurePreferencesPanel(OptionsPanelController controller) {
-        this.controller = controller;
+    //public EnclojurePreferencesPanel(OptionsPanelController controller) {
+    public EnclojurePreferencesPanel() {
+        //this.controller = controller;
         initComponents();
         // TODO listen to changes in form fields and call controller.changed()
     }
     
-    public static EnclojurePreferencesPanel create(OptionsPanelController controller) {
-        return new EnclojurePreferencesPanel(controller);
+    //public static EnclojurePreferencesPanel create(OptionsPanelController controller) {
+    public static EnclojurePreferencesPanel create() {
+        return new EnclojurePreferencesPanel();
     }
 
    /** This method is called from within the constructor to
