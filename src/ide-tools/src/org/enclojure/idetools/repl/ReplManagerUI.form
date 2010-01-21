@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[32000, 32000]"/>
+    </Property>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1150, 850]"/>
+    </Property>
+  </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -16,12 +24,20 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="topLevelSplitPane" alignment="0" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="topLevelSplitPane" min="-2" pref="1120" max="-2" attributes="0"/>
+              <EmptySpace pref="31" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="topLevelSplitPane" alignment="0" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="topLevelSplitPane" min="-2" pref="811" max="-2" attributes="0"/>
+              <EmptySpace pref="93" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -29,7 +45,13 @@
     <Container class="javax.swing.JSplitPane" name="topLevelSplitPane">
       <Properties>
         <Property name="dividerLocation" type="int" value="300"/>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[1147, 1147]"/>
+        </Property>
         <Property name="oneTouchExpandable" type="boolean" value="true"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[1415, 1288]"/>
+        </Property>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -41,6 +63,9 @@
           <Properties>
             <Property name="dividerLocation" type="int" value="300"/>
             <Property name="orientation" type="int" value="0"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[1147, 1147]"/>
+            </Property>
             <Property name="oneTouchExpandable" type="boolean" value="true"/>
           </Properties>
           <AuxValues>
@@ -56,8 +81,8 @@
           <SubComponents>
             <Container class="javax.swing.JPanel" name="topRightPanel">
               <Properties>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[1000, 420]"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[1276, 1276]"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -72,10 +97,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                          <Component id="replTitleLabel" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="replTitleLabel" min="-2" max="-2" attributes="0"/>
                       <Component id="jSeparator2" min="-2" pref="1161" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <EmptySpace min="20" pref="20" max="20" attributes="0"/>
@@ -88,7 +110,7 @@
                               <Component id="jvmAdditionalArgsLabel" min="-2" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Component id="jvmListToolBar" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                                  <EmptySpace min="60" pref="60" max="60" attributes="0"/>
                                   <Component id="jvmArgsScrollPane" min="-2" pref="493" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -112,10 +134,10 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="replTitleLabel" min="-2" pref="22" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          <Component id="replTitleLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="12" pref="12" max="12" attributes="0"/>
                           <Component id="jSeparator2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          <EmptySpace min="12" pref="12" max="12" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -125,21 +147,21 @@
                                       </Group>
                                       <Component id="clojurePlatformsComboBox" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  <EmptySpace min="6" pref="6" max="6" attributes="0"/>
                                   <Component id="jvmAdditionalArgsLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                  <EmptySpace min="8" pref="8" max="8" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jvmListToolBar" min="-2" pref="87" max="-2" attributes="0"/>
-                                      <Component id="jvmArgsScrollPane" pref="229" max="32767" attributes="0"/>
+                                      <Component id="jvmArgsScrollPane" min="-2" pref="237" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jSeparator1" min="-2" pref="286" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Component id="defaultStartupAttribsLabel" min="-2" pref="22" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                  <EmptySpace min="8" pref="8" max="8" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="clojureStartupListToolBar" min="-2" pref="87" max="-2" attributes="0"/>
-                                      <Component id="defaultStartupScrollPane" pref="256" max="32767" attributes="0"/>
+                                      <Component id="defaultStartupScrollPane" min="-2" pref="264" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -347,31 +369,41 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="bottomRightPanel">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[327, 327]"/>
+                </Property>
+              </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
               </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                  <JSplitPaneConstraints position="right"/>
+                  <JSplitPaneConstraints position="bottom"/>
                 </Constraint>
               </Constraints>
 
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="12" pref="12" max="12" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
                           <Component id="classpathsLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="1142" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="classpathTabbedPane" pref="1242" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="23" pref="23" max="23" attributes="0"/>
+                          <Component id="classpathTabbedPane" pref="1188" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="classpathsLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                          <Component id="classpathTabbedPane" pref="2452" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="classpathTabbedPane" pref="381" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -386,116 +418,26 @@
                   </AuxValues>
                 </Component>
                 <Container class="javax.swing.JTabbedPane" name="classpathTabbedPane">
+                  <Properties>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[1276, 1276]"/>
+                    </Property>
+                  </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
                   <SubComponents>
-                    <Container class="javax.swing.JPanel" name="selectFromProjectsPanel">
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                      </AuxValues>
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                          <JTabbedPaneConstraints tabName="Select from Projects">
-                            <Property name="tabTitle" type="java.lang.String" value="Select from Projects"/>
-                          </JTabbedPaneConstraints>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="selectFromProjectsToolBar" min="-2" pref="34" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                  <Component id="projectListScrollPane" pref="1181" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="selectFromProjectsToolBar" min="-2" pref="267" max="-2" attributes="0"/>
-                                  <EmptySpace pref="2139" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="projectListScrollPane" alignment="0" pref="2406" max="32767" attributes="0"/>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
-                      <SubComponents>
-                        <Container class="javax.swing.JToolBar" name="selectFromProjectsToolBar">
-                          <Properties>
-                            <Property name="orientation" type="int" value="1"/>
-                            <Property name="rollover" type="boolean" value="true"/>
-                          </Properties>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JButton" name="setProjectsSearchPathButton">
-                              <Properties>
-                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                  <Image iconType="3" name="/org/enclojure/idetools/resources/Pinion.png"/>
-                                </Property>
-                                <Property name="mnemonic" type="int" value="960"/>
-                                <Property name="toolTipText" type="java.lang.String" value="Project Paths"/>
-                                <Property name="actionCommand" type="java.lang.String" value="project-search-patterns"/>
-                                <Property name="focusable" type="boolean" value="false"/>
-                                <Property name="horizontalTextPosition" type="int" value="0"/>
-                                <Property name="verticalTextPosition" type="int" value="3"/>
-                              </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                              </AuxValues>
-                            </Component>
-                            <Component class="javax.swing.JButton" name="setSearchLibrarySpecButton">
-                              <Properties>
-                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                  <Image iconType="3" name="/org/enclojure/idetools/resources/Tune.png"/>
-                                </Property>
-                                <Property name="mnemonic" type="int" value="172"/>
-                                <Property name="toolTipText" type="java.lang.String" value="Lib Search Patterns"/>
-                                <Property name="actionCommand" type="java.lang.String" value="lib-search-patterns"/>
-                                <Property name="focusable" type="boolean" value="false"/>
-                                <Property name="horizontalTextPosition" type="int" value="0"/>
-                                <Property name="verticalTextPosition" type="int" value="3"/>
-                              </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                              </AuxValues>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                        <Container class="javax.swing.JScrollPane" name="projectListScrollPane">
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JTable" name="classpathSelectedProjectsTable">
-                              <Properties>
-                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                                  <Table columnCount="3" rowCount="0">
-                                    <Column editable="true" title="Use" type="java.lang.Boolean"/>
-                                    <Column editable="false" title="Name" type="java.lang.String"/>
-                                    <Column editable="true" title="Project Path" type="java.lang.String"/>
-                                  </Table>
-                                </Property>
-                              </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                              </AuxValues>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
                     <Container class="javax.swing.JPanel" name="classpathListPanel">
+                      <Properties>
+                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[1200, 1267]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[800, 671]"/>
+                        </Property>
+                      </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                       </AuxValues>
@@ -512,25 +454,18 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="classpathListToolBar" min="-2" pref="34" max="-2" attributes="0"/>
-                                  <EmptySpace pref="1187" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                      <Component id="classpathListScrollPane" pref="1186" max="32767" attributes="0"/>
-                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="classpathListScrollPane" pref="1123" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="classpathListToolBar" min="-2" pref="199" max="-2" attributes="0"/>
-                                  <EmptySpace pref="2207" max="32767" attributes="0"/>
+                                  <EmptySpace pref="136" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                                  <Component id="classpathListScrollPane" alignment="0" pref="2406" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="classpathListScrollPane" alignment="0" pref="335" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -633,6 +568,117 @@
                         </Container>
                       </SubComponents>
                     </Container>
+                    <Container class="javax.swing.JPanel" name="selectFromProjectsPanel">
+                      <Properties>
+                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[3276, 3276]"/>
+                        </Property>
+                      </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                      </AuxValues>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                          <JTabbedPaneConstraints tabName="Select from Projects">
+                            <Property name="tabTitle" type="java.lang.String" value="Select from Projects"/>
+                          </JTabbedPaneConstraints>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout>
+                        <DimensionLayout dim="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="selectFromProjectsToolBar" min="-2" pref="34" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="projectListScrollPane" pref="1103" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                        <DimensionLayout dim="1">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="selectFromProjectsToolBar" min="-2" pref="267" max="-2" attributes="0"/>
+                                      <Component id="projectListScrollPane" alignment="0" min="-2" pref="383" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                      </Layout>
+                      <SubComponents>
+                        <Container class="javax.swing.JToolBar" name="selectFromProjectsToolBar">
+                          <Properties>
+                            <Property name="orientation" type="int" value="1"/>
+                            <Property name="rollover" type="boolean" value="true"/>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                          </AuxValues>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JButton" name="setProjectsSearchPathButton">
+                              <Properties>
+                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                  <Image iconType="3" name="/org/enclojure/idetools/resources/Pinion.png"/>
+                                </Property>
+                                <Property name="mnemonic" type="int" value="960"/>
+                                <Property name="toolTipText" type="java.lang.String" value="Project Paths"/>
+                                <Property name="actionCommand" type="java.lang.String" value="project-search-patterns"/>
+                                <Property name="focusable" type="boolean" value="false"/>
+                                <Property name="horizontalTextPosition" type="int" value="0"/>
+                                <Property name="verticalTextPosition" type="int" value="3"/>
+                              </Properties>
+                              <AuxValues>
+                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                              </AuxValues>
+                            </Component>
+                            <Component class="javax.swing.JButton" name="setSearchLibrarySpecButton">
+                              <Properties>
+                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                  <Image iconType="3" name="/org/enclojure/idetools/resources/Tune.png"/>
+                                </Property>
+                                <Property name="mnemonic" type="int" value="172"/>
+                                <Property name="toolTipText" type="java.lang.String" value="Lib Search Patterns"/>
+                                <Property name="actionCommand" type="java.lang.String" value="lib-search-patterns"/>
+                                <Property name="focusable" type="boolean" value="false"/>
+                                <Property name="horizontalTextPosition" type="int" value="0"/>
+                                <Property name="verticalTextPosition" type="int" value="3"/>
+                              </Properties>
+                              <AuxValues>
+                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                              </AuxValues>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JScrollPane" name="projectListScrollPane">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                          </AuxValues>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JTable" name="classpathSelectedProjectsTable">
+                              <Properties>
+                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                                  <Table columnCount="3" rowCount="0">
+                                    <Column editable="true" title="Use" type="java.lang.Boolean"/>
+                                    <Column editable="false" title="Name" type="java.lang.String"/>
+                                    <Column editable="true" title="Project Path" type="java.lang.String"/>
+                                  </Table>
+                                </Property>
+                              </Properties>
+                              <AuxValues>
+                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                              </AuxValues>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                      </SubComponents>
+                    </Container>
                   </SubComponents>
                 </Container>
               </SubComponents>
@@ -640,6 +686,11 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="leftPanel">
+          <Properties>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[1276, 1276]"/>
+            </Property>
+          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
@@ -654,9 +705,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="replListToolBar" min="-2" pref="109" max="-2" attributes="0"/>
-                      <EmptySpace pref="27" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
-                  <Component id="replListScrollPane" alignment="0" pref="136" max="32767" attributes="0"/>
+                  <Component id="replListScrollPane" alignment="0" pref="129" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -664,7 +715,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="replListToolBar" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="replListScrollPane" pref="2795" max="32767" attributes="0"/>
+                      <Component id="replListScrollPane" min="-2" pref="735" max="-2" attributes="0"/>
+                      <EmptySpace pref="21" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

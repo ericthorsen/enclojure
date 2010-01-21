@@ -54,12 +54,6 @@ public class ReplManagerUI extends javax.swing.JPanel {
         bottomRightPanel = new javax.swing.JPanel();
         classpathsLabel = new javax.swing.JLabel();
         classpathTabbedPane = new javax.swing.JTabbedPane();
-        selectFromProjectsPanel = new javax.swing.JPanel();
-        selectFromProjectsToolBar = new javax.swing.JToolBar();
-        setProjectsSearchPathButton = new javax.swing.JButton();
-        setSearchLibrarySpecButton = new javax.swing.JButton();
-        projectListScrollPane = new javax.swing.JScrollPane();
-        classpathSelectedProjectsTable = new javax.swing.JTable();
         classpathListPanel = new javax.swing.JPanel();
         classpathListToolBar = new javax.swing.JToolBar();
         classpathListMoveUpButton = new javax.swing.JButton();
@@ -68,6 +62,12 @@ public class ReplManagerUI extends javax.swing.JPanel {
         classpathRemoveButton = new javax.swing.JButton();
         classpathListScrollPane = new javax.swing.JScrollPane();
         classpathPathTable = new javax.swing.JTable();
+        selectFromProjectsPanel = new javax.swing.JPanel();
+        selectFromProjectsToolBar = new javax.swing.JToolBar();
+        setProjectsSearchPathButton = new javax.swing.JButton();
+        setSearchLibrarySpecButton = new javax.swing.JButton();
+        projectListScrollPane = new javax.swing.JScrollPane();
+        classpathSelectedProjectsTable = new javax.swing.JTable();
         leftPanel = new javax.swing.JPanel();
         replListToolBar = new javax.swing.JToolBar();
         addReplButton = new javax.swing.JButton();
@@ -76,14 +76,20 @@ public class ReplManagerUI extends javax.swing.JPanel {
         replListScrollPane = new javax.swing.JScrollPane();
         replContextTable = new javax.swing.JTable();
 
+        setMaximumSize(new java.awt.Dimension(32000, 32000));
+        setPreferredSize(new java.awt.Dimension(1150, 850));
+
         topLevelSplitPane.setDividerLocation(300);
+        topLevelSplitPane.setMaximumSize(new java.awt.Dimension(1147, 1147));
         topLevelSplitPane.setOneTouchExpandable(true);
+        topLevelSplitPane.setPreferredSize(new java.awt.Dimension(1415, 1288));
 
         rightSplitPane.setDividerLocation(300);
         rightSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        rightSplitPane.setMaximumSize(new java.awt.Dimension(1147, 1147));
         rightSplitPane.setOneTouchExpandable(true);
 
-        topRightPanel.setPreferredSize(new java.awt.Dimension(1000, 420));
+        topRightPanel.setMaximumSize(new java.awt.Dimension(1276, 1276));
 
         startupAttributeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -173,9 +179,7 @@ public class ReplManagerUI extends javax.swing.JPanel {
         topRightPanel.setLayout(topRightPanelLayout);
         topRightPanelLayout.setHorizontalGroup(
             topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(topRightPanelLayout.createSequentialGroup()
-                .add(10, 10, 10)
-                .add(replTitleLabel))
+            .add(replTitleLabel)
             .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1161, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
             .add(topRightPanelLayout.createSequentialGroup()
                 .add(20, 20, 20)
@@ -187,7 +191,7 @@ public class ReplManagerUI extends javax.swing.JPanel {
                     .add(jvmAdditionalArgsLabel)
                     .add(topRightPanelLayout.createSequentialGroup()
                         .add(jvmListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(10, 10, 10)
+                        .add(60, 60, 60)
                         .add(jvmArgsScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 493, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .add(12, 12, 12)
                 .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -204,7 +208,7 @@ public class ReplManagerUI extends javax.swing.JPanel {
         topRightPanelLayout.setVerticalGroup(
             topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(topRightPanelLayout.createSequentialGroup()
-                .add(replTitleLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(replTitleLabel)
                 .add(12, 12, 12)
                 .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(12, 12, 12)
@@ -220,86 +224,28 @@ public class ReplManagerUI extends javax.swing.JPanel {
                         .add(8, 8, 8)
                         .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jvmListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jvmArgsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)))
+                            .add(jvmArgsScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 237, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                     .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 286, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(topRightPanelLayout.createSequentialGroup()
                         .add(defaultStartupAttribsLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(8, 8, 8)
                         .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(clojureStartupListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(defaultStartupScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)))))
+                            .add(defaultStartupScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 264, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
         );
 
         replTitleLabel.getAccessibleContext().setAccessibleName("Settings for REPL ");
 
         rightSplitPane.setTopComponent(topRightPanel);
 
+        bottomRightPanel.setMaximumSize(new java.awt.Dimension(327, 327));
+
         classpathsLabel.setText("Classpaths");
 
-        selectFromProjectsToolBar.setOrientation(1);
-        selectFromProjectsToolBar.setRollover(true);
+        classpathTabbedPane.setMaximumSize(new java.awt.Dimension(1276, 1276));
 
-        setProjectsSearchPathButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Pinion.png"))); // NOI18N
-        setProjectsSearchPathButton.setMnemonic('\u03c0');
-        setProjectsSearchPathButton.setToolTipText("Project Paths");
-        setProjectsSearchPathButton.setActionCommand("project-search-patterns");
-        setProjectsSearchPathButton.setFocusable(false);
-        setProjectsSearchPathButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        setProjectsSearchPathButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        selectFromProjectsToolBar.add(setProjectsSearchPathButton);
-
-        setSearchLibrarySpecButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Tune.png"))); // NOI18N
-        setSearchLibrarySpecButton.setMnemonic('\u00ac');
-        setSearchLibrarySpecButton.setToolTipText("Lib Search Patterns");
-        setSearchLibrarySpecButton.setActionCommand("lib-search-patterns");
-        setSearchLibrarySpecButton.setFocusable(false);
-        setSearchLibrarySpecButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        setSearchLibrarySpecButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        selectFromProjectsToolBar.add(setSearchLibrarySpecButton);
-
-        classpathSelectedProjectsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Use", "Name", "Project Path"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                true, false, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        projectListScrollPane.setViewportView(classpathSelectedProjectsTable);
-
-        org.jdesktop.layout.GroupLayout selectFromProjectsPanelLayout = new org.jdesktop.layout.GroupLayout(selectFromProjectsPanel);
-        selectFromProjectsPanel.setLayout(selectFromProjectsPanelLayout);
-        selectFromProjectsPanelLayout.setHorizontalGroup(
-            selectFromProjectsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(selectFromProjectsPanelLayout.createSequentialGroup()
-                .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(6, 6, 6)
-                .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1181, Short.MAX_VALUE))
-        );
-        selectFromProjectsPanelLayout.setVerticalGroup(
-            selectFromProjectsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(selectFromProjectsPanelLayout.createSequentialGroup()
-                .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 267, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(2139, Short.MAX_VALUE))
-            .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 2406, Short.MAX_VALUE)
-        );
-
-        classpathTabbedPane.addTab("Select from Projects", selectFromProjectsPanel);
+        classpathListPanel.setMaximumSize(new java.awt.Dimension(1200, 1267));
+        classpathListPanel.setPreferredSize(new java.awt.Dimension(800, 671));
 
         classpathListToolBar.setOrientation(1);
         classpathListToolBar.setRollover(true);
@@ -371,43 +317,114 @@ public class ReplManagerUI extends javax.swing.JPanel {
             classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(classpathListPanelLayout.createSequentialGroup()
                 .add(classpathListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1187, Short.MAX_VALUE))
-            .add(classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(classpathListPanelLayout.createSequentialGroup()
-                    .add(35, 35, 35)
-                    .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1123, Short.MAX_VALUE))
         );
         classpathListPanelLayout.setVerticalGroup(
             classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(classpathListPanelLayout.createSequentialGroup()
                 .add(classpathListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 199, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(2207, Short.MAX_VALUE))
-            .add(classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 2406, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
+            .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
         );
 
         classpathTabbedPane.addTab("Classpath List", classpathListPanel);
+
+        selectFromProjectsPanel.setMaximumSize(new java.awt.Dimension(3276, 3276));
+
+        selectFromProjectsToolBar.setOrientation(1);
+        selectFromProjectsToolBar.setRollover(true);
+
+        setProjectsSearchPathButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Pinion.png"))); // NOI18N
+        setProjectsSearchPathButton.setMnemonic('\u03c0');
+        setProjectsSearchPathButton.setToolTipText("Project Paths");
+        setProjectsSearchPathButton.setActionCommand("project-search-patterns");
+        setProjectsSearchPathButton.setFocusable(false);
+        setProjectsSearchPathButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        setProjectsSearchPathButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectFromProjectsToolBar.add(setProjectsSearchPathButton);
+
+        setSearchLibrarySpecButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Tune.png"))); // NOI18N
+        setSearchLibrarySpecButton.setMnemonic('\u00ac');
+        setSearchLibrarySpecButton.setToolTipText("Lib Search Patterns");
+        setSearchLibrarySpecButton.setActionCommand("lib-search-patterns");
+        setSearchLibrarySpecButton.setFocusable(false);
+        setSearchLibrarySpecButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        setSearchLibrarySpecButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectFromProjectsToolBar.add(setSearchLibrarySpecButton);
+
+        classpathSelectedProjectsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Use", "Name", "Project Path"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        projectListScrollPane.setViewportView(classpathSelectedProjectsTable);
+
+        org.jdesktop.layout.GroupLayout selectFromProjectsPanelLayout = new org.jdesktop.layout.GroupLayout(selectFromProjectsPanel);
+        selectFromProjectsPanel.setLayout(selectFromProjectsPanelLayout);
+        selectFromProjectsPanelLayout.setHorizontalGroup(
+            selectFromProjectsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(selectFromProjectsPanelLayout.createSequentialGroup()
+                .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1103, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        selectFromProjectsPanelLayout.setVerticalGroup(
+            selectFromProjectsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(selectFromProjectsPanelLayout.createSequentialGroup()
+                .add(selectFromProjectsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 267, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 383, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        classpathTabbedPane.addTab("Select from Projects", selectFromProjectsPanel);
 
         org.jdesktop.layout.GroupLayout bottomRightPanelLayout = new org.jdesktop.layout.GroupLayout(bottomRightPanel);
         bottomRightPanel.setLayout(bottomRightPanelLayout);
         bottomRightPanelLayout.setHorizontalGroup(
             bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(bottomRightPanelLayout.createSequentialGroup()
-                .add(12, 12, 12)
-                .add(classpathsLabel))
-            .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1242, Short.MAX_VALUE)
+                .add(classpathsLabel)
+                .addContainerGap(1142, Short.MAX_VALUE))
+            .add(bottomRightPanelLayout.createSequentialGroup()
+                .add(23, 23, 23)
+                .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1188, Short.MAX_VALUE))
         );
         bottomRightPanelLayout.setVerticalGroup(
             bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(bottomRightPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .add(classpathsLabel)
-                .add(3, 3, 3)
-                .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 2452, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        rightSplitPane.setRightComponent(bottomRightPanel);
+        rightSplitPane.setBottomComponent(bottomRightPanel);
 
         topLevelSplitPane.setRightComponent(rightSplitPane);
+
+        leftPanel.setMaximumSize(new java.awt.Dimension(1276, 1276));
 
         replListToolBar.setRollover(true);
 
@@ -469,15 +486,16 @@ public class ReplManagerUI extends javax.swing.JPanel {
             leftPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(leftPanelLayout.createSequentialGroup()
                 .add(replListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 109, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
-            .add(replListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(replListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
         );
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(leftPanelLayout.createSequentialGroup()
                 .add(replListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(replListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 2795, Short.MAX_VALUE))
+                .add(replListScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 735, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         topLevelSplitPane.setLeftComponent(leftPanel);
@@ -486,11 +504,17 @@ public class ReplManagerUI extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(topLevelSplitPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(topLevelSplitPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(topLevelSplitPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(topLevelSplitPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 811, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(93, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
