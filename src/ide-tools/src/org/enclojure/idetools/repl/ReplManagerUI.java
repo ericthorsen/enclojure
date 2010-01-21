@@ -30,7 +30,6 @@ public class ReplManagerUI extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         topLevelSplitPane = new javax.swing.JSplitPane();
         rightSplitPane = new javax.swing.JSplitPane();
@@ -126,14 +125,18 @@ public class ReplManagerUI extends javax.swing.JPanel {
         jvmListToolBar.setRollover(true);
 
         addJvmArgsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Create.png"))); // NOI18N
+        addJvmArgsButton.setMnemonic('\u2206');
         addJvmArgsButton.setToolTipText("Add Repl Context");
+        addJvmArgsButton.setActionCommand("add-jvm-arg");
         addJvmArgsButton.setFocusable(false);
         addJvmArgsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addJvmArgsButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jvmListToolBar.add(addJvmArgsButton);
 
         deleteJvmArgsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Delete.png"))); // NOI18N
+        deleteJvmArgsButton.setMnemonic('\u00ae');
         deleteJvmArgsButton.setToolTipText("Delete Repl Context");
+        deleteJvmArgsButton.setActionCommand("delete-jvm-arg");
         deleteJvmArgsButton.setFocusable(false);
         deleteJvmArgsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         deleteJvmArgsButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -145,14 +148,18 @@ public class ReplManagerUI extends javax.swing.JPanel {
         clojureStartupListToolBar.setRollover(true);
 
         addClojureStartupButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Create.png"))); // NOI18N
+        addClojureStartupButton.setMnemonic('\u221a');
         addClojureStartupButton.setToolTipText("Add Repl Context");
+        addClojureStartupButton.setActionCommand("add-clojure-attribute");
         addClojureStartupButton.setFocusable(false);
         addClojureStartupButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addClojureStartupButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         clojureStartupListToolBar.add(addClojureStartupButton);
 
         deleteClojureStartupButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Delete.png"))); // NOI18N
+        deleteClojureStartupButton.setMnemonic('\u0153');
         deleteClojureStartupButton.setToolTipText("Delete Repl Context");
+        deleteClojureStartupButton.setActionCommand("delete-clojure-attribute");
         deleteClojureStartupButton.setFocusable(false);
         deleteClojureStartupButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         deleteClojureStartupButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -233,14 +240,18 @@ public class ReplManagerUI extends javax.swing.JPanel {
         selectFromProjectsToolBar.setRollover(true);
 
         setProjectsSearchPathButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Pinion.png"))); // NOI18N
+        setProjectsSearchPathButton.setMnemonic('\u03c0');
         setProjectsSearchPathButton.setToolTipText("Project Paths");
+        setProjectsSearchPathButton.setActionCommand("project-search-patterns");
         setProjectsSearchPathButton.setFocusable(false);
         setProjectsSearchPathButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         setProjectsSearchPathButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         selectFromProjectsToolBar.add(setProjectsSearchPathButton);
 
         setSearchLibrarySpecButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Tune.png"))); // NOI18N
+        setSearchLibrarySpecButton.setMnemonic('\u00ac');
         setSearchLibrarySpecButton.setToolTipText("Lib Search Patterns");
+        setSearchLibrarySpecButton.setActionCommand("lib-search-patterns");
         setSearchLibrarySpecButton.setFocusable(false);
         setSearchLibrarySpecButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         setSearchLibrarySpecButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -278,14 +289,14 @@ public class ReplManagerUI extends javax.swing.JPanel {
             .add(selectFromProjectsPanelLayout.createSequentialGroup()
                 .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(6, 6, 6)
-                .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1104, Short.MAX_VALUE))
+                .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1181, Short.MAX_VALUE))
         );
         selectFromProjectsPanelLayout.setVerticalGroup(
             selectFromProjectsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(selectFromProjectsPanelLayout.createSequentialGroup()
                 .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 267, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
-            .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                .addContainerGap(2139, Short.MAX_VALUE))
+            .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 2406, Short.MAX_VALUE)
         );
 
         classpathTabbedPane.addTab("Select from Projects", selectFromProjectsPanel);
@@ -294,28 +305,36 @@ public class ReplManagerUI extends javax.swing.JPanel {
         classpathListToolBar.setRollover(true);
 
         classpathListMoveUpButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Up.png"))); // NOI18N
+        classpathListMoveUpButton.setMnemonic('\u00a8');
         classpathListMoveUpButton.setToolTipText("Move up");
+        classpathListMoveUpButton.setActionCommand("moveup-classpath");
         classpathListMoveUpButton.setFocusable(false);
         classpathListMoveUpButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         classpathListMoveUpButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         classpathListToolBar.add(classpathListMoveUpButton);
 
         classpathListMoveDownButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Down.png"))); // NOI18N
+        classpathListMoveDownButton.setMnemonic('\u00ac');
         classpathListMoveDownButton.setToolTipText("Move down");
+        classpathListMoveDownButton.setActionCommand("movedown-classpath");
         classpathListMoveDownButton.setFocusable(false);
         classpathListMoveDownButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         classpathListMoveDownButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         classpathListToolBar.add(classpathListMoveDownButton);
 
         classpathAddButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Create.png"))); // NOI18N
+        classpathAddButton.setMnemonic('\u00c5');
         classpathAddButton.setToolTipText("Add Path");
+        classpathAddButton.setActionCommand("add-classpath");
         classpathAddButton.setFocusable(false);
         classpathAddButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         classpathAddButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         classpathListToolBar.add(classpathAddButton);
 
         classpathRemoveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Delete.png"))); // NOI18N
+        classpathRemoveButton.setMnemonic('\u00ce');
         classpathRemoveButton.setToolTipText("Add Path");
+        classpathRemoveButton.setActionCommand("delete-classpath");
         classpathRemoveButton.setFocusable(false);
         classpathRemoveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         classpathRemoveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -352,19 +371,19 @@ public class ReplManagerUI extends javax.swing.JPanel {
             classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(classpathListPanelLayout.createSequentialGroup()
                 .add(classpathListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1110, Short.MAX_VALUE))
+                .addContainerGap(1187, Short.MAX_VALUE))
             .add(classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(classpathListPanelLayout.createSequentialGroup()
                     .add(35, 35, 35)
-                    .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1109, Short.MAX_VALUE)))
+                    .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE)))
         );
         classpathListPanelLayout.setVerticalGroup(
             classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(classpathListPanelLayout.createSequentialGroup()
                 .add(classpathListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 199, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(2207, Short.MAX_VALUE))
             .add(classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))
+                .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 2406, Short.MAX_VALUE))
         );
 
         classpathTabbedPane.addTab("Classpath List", classpathListPanel);
@@ -376,14 +395,14 @@ public class ReplManagerUI extends javax.swing.JPanel {
             .add(bottomRightPanelLayout.createSequentialGroup()
                 .add(12, 12, 12)
                 .add(classpathsLabel))
-            .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1165, Short.MAX_VALUE)
+            .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1242, Short.MAX_VALUE)
         );
         bottomRightPanelLayout.setVerticalGroup(
             bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(bottomRightPanelLayout.createSequentialGroup()
                 .add(classpathsLabel)
                 .add(3, 3, 3)
-                .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE))
+                .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 2452, Short.MAX_VALUE))
         );
 
         rightSplitPane.setRightComponent(bottomRightPanel);
@@ -393,21 +412,27 @@ public class ReplManagerUI extends javax.swing.JPanel {
         replListToolBar.setRollover(true);
 
         addReplButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Create.png"))); // NOI18N
+        addReplButton.setMnemonic('\u00e5');
         addReplButton.setToolTipText("Add Repl Context");
+        addReplButton.setActionCommand("add-repl");
         addReplButton.setFocusable(false);
         addReplButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addReplButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         replListToolBar.add(addReplButton);
 
         duplicateReplButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Copy.png"))); // NOI18N
+        duplicateReplButton.setMnemonic('\u00e7');
         duplicateReplButton.setToolTipText("Duplicate REPl Context");
+        duplicateReplButton.setActionCommand("copy-repl");
         duplicateReplButton.setFocusable(false);
         duplicateReplButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         duplicateReplButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         replListToolBar.add(duplicateReplButton);
 
         deleteReplButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/idetools/resources/Delete.png"))); // NOI18N
+        deleteReplButton.setMnemonic('\u2202');
         deleteReplButton.setToolTipText("Delete Repl Context");
+        deleteReplButton.setActionCommand("delete-repl");
         deleteReplButton.setFocusable(false);
         deleteReplButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         deleteReplButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -444,15 +469,15 @@ public class ReplManagerUI extends javax.swing.JPanel {
             leftPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(leftPanelLayout.createSequentialGroup()
                 .add(replListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 109, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(104, Short.MAX_VALUE))
-            .add(replListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addContainerGap(27, Short.MAX_VALUE))
+            .add(replListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
         );
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(leftPanelLayout.createSequentialGroup()
                 .add(replListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(replListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE))
+                .add(replListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 2795, Short.MAX_VALUE))
         );
 
         topLevelSplitPane.setLeftComponent(leftPanel);

@@ -9,6 +9,7 @@
         <dependency org="slf4j" name="slf4j-api" rev="1.5.8"/>
         <dependency org="slf4j" name="slf4j-jdk14" rev="1.5.8"/>
         <dependency org="java-cup" name="java-cup" rev="11a"/>
+        <dependency org="Netbeans" name="swing-layout" rev="1.0.3"/>
         <dependency org="jflex" name="jflex" rev="1.4.3"/>
     </dependencies>
 </ivy-module>

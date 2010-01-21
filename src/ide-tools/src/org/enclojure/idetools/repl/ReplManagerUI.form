@@ -244,7 +244,9 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/org/enclojure/idetools/resources/Create.png"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="8710"/>
                         <Property name="toolTipText" type="java.lang.String" value="Add Repl Context"/>
+                        <Property name="actionCommand" type="java.lang.String" value="add-jvm-arg"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -258,7 +260,9 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/org/enclojure/idetools/resources/Delete.png"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="174"/>
                         <Property name="toolTipText" type="java.lang.String" value="Delete Repl Context"/>
+                        <Property name="actionCommand" type="java.lang.String" value="delete-jvm-arg"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -293,7 +297,9 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/org/enclojure/idetools/resources/Create.png"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="8730"/>
                         <Property name="toolTipText" type="java.lang.String" value="Add Repl Context"/>
+                        <Property name="actionCommand" type="java.lang.String" value="add-clojure-attribute"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -307,7 +313,9 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/org/enclojure/idetools/resources/Delete.png"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="339"/>
                         <Property name="toolTipText" type="java.lang.String" value="Delete Repl Context"/>
+                        <Property name="actionCommand" type="java.lang.String" value="delete-clojure-attribute"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -355,7 +363,7 @@
                           <EmptySpace min="12" pref="12" max="12" attributes="0"/>
                           <Component id="classpathsLabel" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="classpathTabbedPane" pref="1165" max="32767" attributes="0"/>
+                      <Component id="classpathTabbedPane" pref="1242" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -363,7 +371,7 @@
                       <Group type="102" attributes="0">
                           <Component id="classpathsLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                          <Component id="classpathTabbedPane" pref="354" max="32767" attributes="0"/>
+                          <Component id="classpathTabbedPane" pref="2452" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -402,7 +410,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="selectFromProjectsToolBar" min="-2" pref="34" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                  <Component id="projectListScrollPane" pref="1104" max="32767" attributes="0"/>
+                                  <Component id="projectListScrollPane" pref="1181" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -410,9 +418,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="selectFromProjectsToolBar" min="-2" pref="267" max="-2" attributes="0"/>
-                                  <EmptySpace pref="41" max="32767" attributes="0"/>
+                                  <EmptySpace pref="2139" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="projectListScrollPane" alignment="0" pref="308" max="32767" attributes="0"/>
+                              <Component id="projectListScrollPane" alignment="0" pref="2406" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -433,7 +441,9 @@
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                   <Image iconType="3" name="/org/enclojure/idetools/resources/Pinion.png"/>
                                 </Property>
+                                <Property name="mnemonic" type="int" value="960"/>
                                 <Property name="toolTipText" type="java.lang.String" value="Project Paths"/>
+                                <Property name="actionCommand" type="java.lang.String" value="project-search-patterns"/>
                                 <Property name="focusable" type="boolean" value="false"/>
                                 <Property name="horizontalTextPosition" type="int" value="0"/>
                                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -447,7 +457,9 @@
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                   <Image iconType="3" name="/org/enclojure/idetools/resources/Tune.png"/>
                                 </Property>
+                                <Property name="mnemonic" type="int" value="172"/>
                                 <Property name="toolTipText" type="java.lang.String" value="Lib Search Patterns"/>
+                                <Property name="actionCommand" type="java.lang.String" value="lib-search-patterns"/>
                                 <Property name="focusable" type="boolean" value="false"/>
                                 <Property name="horizontalTextPosition" type="int" value="0"/>
                                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -500,12 +512,12 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="classpathListToolBar" min="-2" pref="34" max="-2" attributes="0"/>
-                                  <EmptySpace pref="1110" max="32767" attributes="0"/>
+                                  <EmptySpace pref="1187" max="32767" attributes="0"/>
                               </Group>
                               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                      <Component id="classpathListScrollPane" pref="1109" max="32767" attributes="0"/>
+                                      <Component id="classpathListScrollPane" pref="1186" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -514,10 +526,10 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="classpathListToolBar" min="-2" pref="199" max="-2" attributes="0"/>
-                                  <EmptySpace pref="109" max="32767" attributes="0"/>
+                                  <EmptySpace pref="2207" max="32767" attributes="0"/>
                               </Group>
                               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                                  <Component id="classpathListScrollPane" alignment="0" pref="308" max="32767" attributes="0"/>
+                                  <Component id="classpathListScrollPane" alignment="0" pref="2406" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -539,7 +551,9 @@
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                   <Image iconType="3" name="/org/enclojure/idetools/resources/Up.png"/>
                                 </Property>
+                                <Property name="mnemonic" type="int" value="168"/>
                                 <Property name="toolTipText" type="java.lang.String" value="Move up"/>
+                                <Property name="actionCommand" type="java.lang.String" value="moveup-classpath"/>
                                 <Property name="focusable" type="boolean" value="false"/>
                                 <Property name="horizontalTextPosition" type="int" value="0"/>
                                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -553,7 +567,9 @@
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                   <Image iconType="3" name="/org/enclojure/idetools/resources/Down.png"/>
                                 </Property>
+                                <Property name="mnemonic" type="int" value="172"/>
                                 <Property name="toolTipText" type="java.lang.String" value="Move down"/>
+                                <Property name="actionCommand" type="java.lang.String" value="movedown-classpath"/>
                                 <Property name="focusable" type="boolean" value="false"/>
                                 <Property name="horizontalTextPosition" type="int" value="0"/>
                                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -567,7 +583,9 @@
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                   <Image iconType="3" name="/org/enclojure/idetools/resources/Create.png"/>
                                 </Property>
+                                <Property name="mnemonic" type="int" value="197"/>
                                 <Property name="toolTipText" type="java.lang.String" value="Add Path"/>
+                                <Property name="actionCommand" type="java.lang.String" value="add-classpath"/>
                                 <Property name="focusable" type="boolean" value="false"/>
                                 <Property name="horizontalTextPosition" type="int" value="0"/>
                                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -581,7 +599,9 @@
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                   <Image iconType="3" name="/org/enclojure/idetools/resources/Delete.png"/>
                                 </Property>
+                                <Property name="mnemonic" type="int" value="206"/>
                                 <Property name="toolTipText" type="java.lang.String" value="Add Path"/>
+                                <Property name="actionCommand" type="java.lang.String" value="delete-classpath"/>
                                 <Property name="focusable" type="boolean" value="false"/>
                                 <Property name="horizontalTextPosition" type="int" value="0"/>
                                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -634,9 +654,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="replListToolBar" min="-2" pref="109" max="-2" attributes="0"/>
-                      <EmptySpace pref="104" max="32767" attributes="0"/>
+                      <EmptySpace pref="27" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="replListScrollPane" alignment="0" pref="213" max="32767" attributes="0"/>
+                  <Component id="replListScrollPane" alignment="0" pref="136" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -644,7 +664,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="replListToolBar" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="replListScrollPane" pref="697" max="32767" attributes="0"/>
+                      <Component id="replListScrollPane" pref="2795" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -665,7 +685,9 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/enclojure/idetools/resources/Create.png"/>
                     </Property>
+                    <Property name="mnemonic" type="int" value="229"/>
                     <Property name="toolTipText" type="java.lang.String" value="Add Repl Context"/>
+                    <Property name="actionCommand" type="java.lang.String" value="add-repl"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -679,7 +701,9 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/enclojure/idetools/resources/Copy.png"/>
                     </Property>
+                    <Property name="mnemonic" type="int" value="231"/>
                     <Property name="toolTipText" type="java.lang.String" value="Duplicate REPl Context"/>
+                    <Property name="actionCommand" type="java.lang.String" value="copy-repl"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
@@ -693,7 +717,9 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/enclojure/idetools/resources/Delete.png"/>
                     </Property>
+                    <Property name="mnemonic" type="int" value="8706"/>
                     <Property name="toolTipText" type="java.lang.String" value="Delete Repl Context"/>
+                    <Property name="actionCommand" type="java.lang.String" value="delete-repl"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
