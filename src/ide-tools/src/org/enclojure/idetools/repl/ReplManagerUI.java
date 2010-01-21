@@ -77,19 +77,19 @@ public class ReplManagerUI extends javax.swing.JPanel {
         replContextTable = new javax.swing.JTable();
 
         setMaximumSize(new java.awt.Dimension(32000, 32000));
-        setPreferredSize(new java.awt.Dimension(1150, 850));
+        setPreferredSize(new java.awt.Dimension(1250, 850));
+        setLayout(new java.awt.GridLayout());
 
         topLevelSplitPane.setDividerLocation(300);
-        topLevelSplitPane.setMaximumSize(new java.awt.Dimension(1147, 1147));
         topLevelSplitPane.setOneTouchExpandable(true);
-        topLevelSplitPane.setPreferredSize(new java.awt.Dimension(1415, 1288));
 
         rightSplitPane.setDividerLocation(300);
         rightSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        rightSplitPane.setMaximumSize(new java.awt.Dimension(1147, 1147));
+        rightSplitPane.setMinimumSize(new java.awt.Dimension(0, 0));
         rightSplitPane.setOneTouchExpandable(true);
+        rightSplitPane.setPreferredSize(new java.awt.Dimension(3284, 1538));
 
-        topRightPanel.setMaximumSize(new java.awt.Dimension(1276, 1276));
+        topRightPanel.setMinimumSize(new java.awt.Dimension(0, 0));
 
         startupAttributeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -179,31 +179,34 @@ public class ReplManagerUI extends javax.swing.JPanel {
         topRightPanel.setLayout(topRightPanelLayout);
         topRightPanelLayout.setHorizontalGroup(
             topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(replTitleLabel)
-            .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1161, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
             .add(topRightPanelLayout.createSequentialGroup()
-                .add(20, 20, 20)
                 .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(replTitleLabel)
+                    .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1161, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(topRightPanelLayout.createSequentialGroup()
-                        .add(clojurePlatformLabel)
-                        .add(47, 47, 47)
-                        .add(clojurePlatformsComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 237, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jvmAdditionalArgsLabel)
-                    .add(topRightPanelLayout.createSequentialGroup()
-                        .add(jvmListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(60, 60, 60)
-                        .add(jvmArgsScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 493, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(12, 12, 12)
-                .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(12, 12, 12)
-                .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(topRightPanelLayout.createSequentialGroup()
-                        .add(2, 2, 2)
-                        .add(defaultStartupAttribsLabel))
-                    .add(topRightPanelLayout.createSequentialGroup()
-                        .add(clojureStartupListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(1, 1, 1)
-                        .add(defaultStartupScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 529, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                        .add(20, 20, 20)
+                        .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(topRightPanelLayout.createSequentialGroup()
+                                .add(clojurePlatformLabel)
+                                .add(47, 47, 47)
+                                .add(clojurePlatformsComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 237, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(jvmAdditionalArgsLabel)
+                            .add(topRightPanelLayout.createSequentialGroup()
+                                .add(jvmListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(60, 60, 60)
+                                .add(jvmArgsScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 369, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(topRightPanelLayout.createSequentialGroup()
+                                .add(2, 2, 2)
+                                .add(defaultStartupAttribsLabel))
+                            .add(topRightPanelLayout.createSequentialGroup()
+                                .add(clojureStartupListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(defaultStartupScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 438, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                .add(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE))
         );
         topRightPanelLayout.setVerticalGroup(
             topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -211,9 +214,9 @@ public class ReplManagerUI extends javax.swing.JPanel {
                 .add(replTitleLabel)
                 .add(12, 12, 12)
                 .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(12, 12, 12)
-                .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(topRightPanelLayout.createSequentialGroup()
+                .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, topRightPanelLayout.createSequentialGroup()
+                        .add(12, 12, 12)
                         .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(topRightPanelLayout.createSequentialGroup()
                                 .add(4, 4, 4)
@@ -224,28 +227,26 @@ public class ReplManagerUI extends javax.swing.JPanel {
                         .add(8, 8, 8)
                         .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jvmListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jvmArgsScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 237, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 286, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jvmArgsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, topRightPanelLayout.createSequentialGroup()
+                        .add(3, 3, 3)
+                        .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 286, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .add(topRightPanelLayout.createSequentialGroup()
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(defaultStartupAttribsLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(8, 8, 8)
                         .add(topRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(clojureStartupListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(defaultStartupScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 264, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                            .add(defaultStartupScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                            .add(clojureStartupListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
         );
 
         replTitleLabel.getAccessibleContext().setAccessibleName("Settings for REPL ");
 
         rightSplitPane.setTopComponent(topRightPanel);
 
-        bottomRightPanel.setMaximumSize(new java.awt.Dimension(327, 327));
-
         classpathsLabel.setText("Classpaths");
-
-        classpathTabbedPane.setMaximumSize(new java.awt.Dimension(1276, 1276));
-
-        classpathListPanel.setMaximumSize(new java.awt.Dimension(1200, 1267));
-        classpathListPanel.setPreferredSize(new java.awt.Dimension(800, 671));
 
         classpathListToolBar.setOrientation(1);
         classpathListToolBar.setRollover(true);
@@ -318,7 +319,7 @@ public class ReplManagerUI extends javax.swing.JPanel {
             .add(classpathListPanelLayout.createSequentialGroup()
                 .add(classpathListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1123, Short.MAX_VALUE))
+                .add(classpathListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1030, Short.MAX_VALUE))
         );
         classpathListPanelLayout.setVerticalGroup(
             classpathListPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -329,8 +330,6 @@ public class ReplManagerUI extends javax.swing.JPanel {
         );
 
         classpathTabbedPane.addTab("Classpath List", classpathListPanel);
-
-        selectFromProjectsPanel.setMaximumSize(new java.awt.Dimension(3276, 3276));
 
         selectFromProjectsToolBar.setOrientation(1);
         selectFromProjectsToolBar.setRollover(true);
@@ -385,16 +384,16 @@ public class ReplManagerUI extends javax.swing.JPanel {
             .add(selectFromProjectsPanelLayout.createSequentialGroup()
                 .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1103, Short.MAX_VALUE)
-                .addContainerGap())
+                .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1030, Short.MAX_VALUE))
         );
         selectFromProjectsPanelLayout.setVerticalGroup(
             selectFromProjectsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(selectFromProjectsPanelLayout.createSequentialGroup()
-                .add(selectFromProjectsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 267, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 383, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(selectFromProjectsToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 267, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(68, Short.MAX_VALUE))
+            .add(selectFromProjectsPanelLayout.createSequentialGroup()
+                .add(20, 20, 20)
+                .add(projectListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
         );
 
         classpathTabbedPane.addTab("Select from Projects", selectFromProjectsPanel);
@@ -403,12 +402,16 @@ public class ReplManagerUI extends javax.swing.JPanel {
         bottomRightPanel.setLayout(bottomRightPanelLayout);
         bottomRightPanelLayout.setHorizontalGroup(
             bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(bottomRightPanelLayout.createSequentialGroup()
-                .add(classpathsLabel)
-                .addContainerGap(1142, Short.MAX_VALUE))
-            .add(bottomRightPanelLayout.createSequentialGroup()
-                .add(23, 23, 23)
-                .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1188, Short.MAX_VALUE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, bottomRightPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(bottomRightPanelLayout.createSequentialGroup()
+                        .add(classpathsLabel)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 1049, Short.MAX_VALUE))
+                    .add(bottomRightPanelLayout.createSequentialGroup()
+                        .add(23, 23, 23)
+                        .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1095, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         bottomRightPanelLayout.setVerticalGroup(
             bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -417,14 +420,12 @@ public class ReplManagerUI extends javax.swing.JPanel {
                 .add(classpathsLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(classpathTabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                .addContainerGap())
+                .add(15, 15, 15))
         );
 
         rightSplitPane.setBottomComponent(bottomRightPanel);
 
         topLevelSplitPane.setRightComponent(rightSplitPane);
-
-        leftPanel.setMaximumSize(new java.awt.Dimension(1276, 1276));
 
         replListToolBar.setRollover(true);
 
@@ -494,28 +495,12 @@ public class ReplManagerUI extends javax.swing.JPanel {
             .add(leftPanelLayout.createSequentialGroup()
                 .add(replListToolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(replListScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 735, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .add(replListScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE))
         );
 
         topLevelSplitPane.setLeftComponent(leftPanel);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(topLevelSplitPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(topLevelSplitPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 811, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
-        );
+        add(topLevelSplitPane);
     }// </editor-fold>//GEN-END:initComponents
 
     private void clojurePlatformsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clojurePlatformsComboBoxActionPerformed
