@@ -138,16 +138,6 @@ and creates entries in the local preferences path."
     (let [shipped-platforms-map
             (reduce (fn [m e]
                       (assoc m (:name e) e)) {} (get-defined-platforms))]
-      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
-        (:name platform) (keys shipped-platforms-map))
-      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
-        (:name platform) (keys shipped-platforms-map))
-      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
-        (:name platform) (keys shipped-platforms-map))
-      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
-        (:name platform) (keys shipped-platforms-map))
-      (logger/info "!#!@#!@#!@#!@#!#!@#******************looking for {} in {}"
-        (:name platform) (keys shipped-platforms-map))
       (shipped-platforms-map (:name platform))))
 
 (defn new-platform
