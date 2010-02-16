@@ -167,6 +167,8 @@ as the identity of the platform."
              platforms)))
     (some (fn [{n :name}]
             (or (nil? n) (= "" n))) platforms)
+;    (filter (fn [{n :name}]
+;            (and n (not= "" n))) platforms)
         (throw (Exception. (str "Platform names cannot be blank."
                     platforms)))
     (not= c (count (filter :key platforms)))
@@ -180,7 +182,10 @@ as the identity of the platform."
   ; make sure the current platform is saved before flushing to disk.
   (logger/info "---------- Preferences being saved : count {} data {}"
         (count @*clojure-platforms*) @*clojure-platforms*)
-    (pref-utils/put-prefs -prefs-category- @*clojure-platforms*))
+    (pref-utils/put-prefs -prefs-category- 
+(vec (filter (fn [{n :name}]
+                    (and n (not= "" n)))
+        @*clojure-platforms*))))
 ;      (sort -platform-name-comp-
 ;            @*clojure-platforms*)))
 
@@ -543,7 +548,10 @@ This is only doing a text search on the names...should do something more."
               current-platforms)))))
 
 (defn load-preferences []
-    (let [current-platforms (pref-utils/get-prefs -prefs-category-)
+    (let [current-platforms
+          (vec (filter (fn [{n :name}]
+                    (and n (not= "" n)))
+            (pref-utils/get-prefs -prefs-category-)))
           start-vals (ensure-shipped-platforms current-platforms)]
       (dosync
             (alter *clojure-platforms*

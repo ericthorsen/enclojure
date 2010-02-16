@@ -23,11 +23,11 @@
     [org.enclojure.ide.nb.classpaths.resource-tracking :as resource-tracking]    
     [org.enclojure.commons.c-slf4j :as logger]
     [org.enclojure.commons.meta-utils :as meta-utils]
-    [org.enclojure.ide.analyze.files :as analyze.files]    
+    [org.enclojure.ide.analyze.files :as analyze.files]
     )
   (:import
     ; Java dependancies
-    (java.util.logging Level Logger )
+    (java.util.logging  Level Logger)
     (java.io StringReader File StringWriter PrintWriter)
     (java.util.jar JarFile$JarFileEntry JarFile JarEntry)
     (java.net URL)
@@ -66,6 +66,7 @@
       ~@body
        (catch Throwable t#
         (publish-stack-trace t#))))
+
 
 ;------------------------------------------------------------------------------
 ; validators
