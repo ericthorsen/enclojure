@@ -8,6 +8,7 @@ src/plugins/netbeans/enclojure.plugin.netbeans/release/*
 src/plugins/netbeans/enclojure.plugin.netbeans/build/*
 src/plugins/netbeans/enclojure.plugin.netbeans/nbproject/private/*
 src/plugins/netbeans/enclojure.plugin.netbeans/nbproject/private/platform-private.properties
+templates/netbeans/ClojureProjectTemplate/nbproject/private/private.properties
 build-support/libs/*
 build-support/deps*.zip
 build-support/libs.zip

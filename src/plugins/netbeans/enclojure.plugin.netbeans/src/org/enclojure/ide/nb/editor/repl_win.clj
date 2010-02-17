@@ -240,6 +240,75 @@ See the Enclojure category under preferences to view your settings"
 (declare reset-repl)
 (def -project- (atom nil))
 
+(def -repl-props-format- "-Denclojure/%s='%s'")
+
+(defmulti as-str class)
+
+(defmethod as-str :default
+  [f] (str f))
+
+(defmethod as-str java.io.File
+  [f]
+  (.getCanonicalPath f))
+
+(defmethod as-str String
+  [f]
+  (.getCanonicalPath (File. f)))
+
+(defmethod as-str org.openide.filesystems.FileObject
+  [f]
+  (as-str (str f)))
+
+(defn- as-canonical-str
+  [s]
+  (.getCanonicalPath (File. (str s))))
+
+
+;(defn add-jvm-properties
+;  [#^Project p]
+;  (let [pbean (bean p)
+;        projectDirectory (pbean :projectDirectory)
+;        contentDirectory (when (contains?  pbean :webModule)
+;                            (:contentDirectory
+;                              (bean (:webModule pbean))))]
+;    (remove nil?
+;      [(format -repl-props-format- "projectDirectory" (as-canonical-str projectDirectory))
+;       (when contentDirectory (format -repl-props-format- "contentDirectory" (as-canonical-str contentDirectory)))])))
+
+(defn pull-props
+  "Given a map and a set of keys, applies 'as-str' to each of the values and returns the resulting map"
+  [m ks]
+    (when m
+      (let [selected (select-keys m ks)]
+      (zipmap (keys selected)
+        (map as-str (vals selected))))))
+
+(defn add-jvm-properties
+  "A different version of get-jvm-properties"
+  [#^Project p]
+  (let [pbean (into {} (bean p))
+        props (merge (pull-props pbean [:projectDirectory])
+                     (pull-props (when (pbean :webModule)
+                        (bean (pbean :webModule)))
+                                    [:contentDirectory]))
+         m (assoc props :project-properties (pr-str props))]
+    (map (fn [[k v]] (format -repl-props-format- (name k) v)) m)))
+
+(defn get-jvm-properties
+  "Using properties from the project, creates valid jvm arg strings to be used
+with java launcher."
+  [#^Project p]
+  (let [pbean (bean p)
+        projectDirectory (as-canonical-str (pbean :projectDirectory))
+        contentDirectory (when (contains?  pbean :webModule)
+                           (as-canonical-str (:contentDirectory
+                                               (bean (:webModule pbean)))))
+        props (into {} (remove #(nil? (val %))
+                         {:projectDirectory projectDirectory
+                          :contentDirectory contentDirectory}))
+        m (assoc props :project-properties (pr-str props))]
+    (map (fn [[k v]] (format -repl-props-format- (name k) v)) m)))
+
 ;========================================================================
 ; External managed project REPL startup 
 ;========================================================================
@@ -249,7 +318,11 @@ See the Enclojure category under preferences to view your settings"
         classpath (classpath-utils/get-repl-classpath p)
         curr-config (repl-manager/get-repl-config repl-id)
         updated-config (merge (or curr-config {:repl-id repl-id})
-                         (config-with-preferences))]
+                         (config-with-preferences))
+        updated-config (update-in updated-config [:jvm-additional-args]
+                         #(apply conj %1 %2)
+                         (get-jvm-properties @-project-))
+        ]
     (try
       (logger/info "For project {} Verifying classpath {} " p classpath)
       (logger/info "updated-config {} " updated-config)
