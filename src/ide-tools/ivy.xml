@@ -10,8 +10,5 @@
         <dependency org="slf4j" name="slf4j-jdk14" rev="1.5.8"/>
         <dependency org="java-cup" name="java-cup" rev="11a"/>
         <dependency org="jflex" name="jflex" rev="1.4.3"/>
-        <dependency org="jetty" name="jetty" rev="6.1.22"/>
-        <dependency org="jetty" name="jetty-util" rev="6.1.22"/>
-        <dependency org="jetty" name="servlet-api" rev="2.5-20081211"/>
     </dependencies>
 </ivy-module>

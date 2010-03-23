@@ -168,7 +168,7 @@ For seeing the command line use:"
                 org.enclojure.ide.repl.repl-panel/bind-editor-pane and
                 org.enclojure.ide.repl.repl-panel/bind-process-panel
   "
-  [repl-config complete-fn failed-fn process-monitor-fn]
+  [repl-config complete-fn failed-fn process-monitor-fn working-dir]
   (let [java-args (java-cmd-array repl-config)
         cmd-line (CommandLine/parse (or (:java-exe repl-config) "java"))
         _ (logger/info  "start java process with {}"
@@ -180,6 +180,8 @@ For seeing the command line use:"
                           (InputStreamReader. (PipedInputStream. out-pipe)))
         err-pipe-reader (LineNumberReader.
                           (InputStreamReader. (PipedInputStream. err-pipe)))]
+    (.setWorkingDirectory executor (if (instance? java.io.File working-dir)
+                                     working-dir (java.io.File. working-dir)))
     (.setStreamHandler executor (PumpStreamHandler. out-pipe err-pipe))
     (process-monitor-fn
       #(.readLine out-pipe-reader)
@@ -207,13 +209,16 @@ For seeing the command line use:"
 (defn create-internal-repl [repl-id
                             latest-classpath
                             process-monitor-fn
-                            repl-monitor-fn]
-  (update-repl repl-id :classpath latest-classpath :port 0 :ack-port (get-ack-port))
+                            repl-monitor-fn
+                            working-dir]
+  (update-repl repl-id :classpath latest-classpath :port 0 :ack-port (get-ack-port)
+    :working-dir working-dir)
   (let [repl-config (get-repl-config repl-id)
         {:keys [destroy-fn]} (launch-java-process repl-config
                                (partial process-completed repl-id)
                                (partial process-failed2 repl-id)
-                               process-monitor-fn)]
+                               process-monitor-fn
+                               working-dir)]
     (update-repl repl-id :destroy-fn destroy-fn)
     (if (await-till #(pos? (:port (get-repl-config repl-id))) 10000)
       (let [port (:port (get-repl-config repl-id))
