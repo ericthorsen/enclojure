@@ -16,7 +16,7 @@
         UTF-8
         </project.reporting.outputEncoding>
         <clojure.version>1.1.0</clojure.version>
-  </properties>
+    </properties>
 
   <!-- <parent>
     <artifactId>lib</artifactId>
@@ -36,7 +36,7 @@
         </repository>
     <repository>
       <id>clojure-releases</id>
-      <url>http://build.clojure.org/snapshots</url>
+      <url>http://build.clojure.org/releases</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -679,6 +679,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <descriptor>src/main/nbm/module.xml</descriptor>
+                    <brandingToken>Enclojure.org</brandingToken>
                 </configuration>
             </plugin>
             <!-- netbeans modules in 5.5+ are 1.5 compatible -->
