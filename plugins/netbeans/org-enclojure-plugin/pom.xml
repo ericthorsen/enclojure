@@ -15,7 +15,7 @@
         <project.reporting.outputEncoding>
         UTF-8
         </project.reporting.outputEncoding>
-        <clojure.version>1.2.0-master-SNAPSHOT</clojure.version>
+        <clojure.version>1.1.0</clojure.version>
   </properties>
 
   <!-- <parent>
@@ -34,16 +34,6 @@
             <name>repository hosting netbeans.org api artifacts</name>
             <url>http://bits.netbeans.org/maven2</url>
         </repository>
-        <repository>
-        <id>clojure-snapshots</id>
-        <url>http://build.clojure.org/snapshots</url>
-        <releases>
-         <enabled>false</enabled>
-        </releases>
-        <snapshots>
-         <enabled>true</enabled>
-        </snapshots>
-    </repository>
     <repository>
       <id>clojure-releases</id>
       <url>http://build.clojure.org/snapshots</url>

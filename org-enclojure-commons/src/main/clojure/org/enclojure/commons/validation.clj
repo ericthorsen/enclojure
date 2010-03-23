@@ -10,9 +10,7 @@
 ;*    Author: Eric Thorsen
 )
 
-(ns org.enclojure.commons.validation
-  (:require [clojure.contrib.pprint :as pprint])
-  )
+(ns org.enclojure.commons.validation)
 
 (defn validator
   "Given a list of single argument predicates, return a single arg function that
