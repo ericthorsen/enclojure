@@ -3,9 +3,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>lib</artifactId>
+    <artifactId>nb-enclojure-app</artifactId>
     <groupId>org.enclojure</groupId>
-    <version>1.1.0</version>
+    <version>1.1</version>
   </parent>
   <groupId>org.enclojure</groupId>
   <artifactId>org-enclojure-repl-client</artifactId>

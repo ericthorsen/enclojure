@@ -15,8 +15,8 @@
         <project.reporting.outputEncoding>
         UTF-8
         </project.reporting.outputEncoding>
-        <clojure.version>1.2.0-master-SNAPSHOT</clojure.version>
-  </properties>
+        <clojure.version>1.1.0</clojure.version>
+    </properties>
 
   <!-- <parent>
     <artifactId>lib</artifactId>
@@ -34,19 +34,9 @@
             <name>repository hosting netbeans.org api artifacts</name>
             <url>http://bits.netbeans.org/maven2</url>
         </repository>
-        <repository>
-        <id>clojure-snapshots</id>
-        <url>http://build.clojure.org/snapshots</url>
-        <releases>
-         <enabled>false</enabled>
-        </releases>
-        <snapshots>
-         <enabled>true</enabled>
-        </snapshots>
-    </repository>
     <repository>
       <id>clojure-releases</id>
-      <url>http://build.clojure.org/snapshots</url>
+      <url>http://build.clojure.org/releases</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -689,6 +679,8 @@
                 <extensions>true</extensions>
                 <configuration>
                     <descriptor>src/main/nbm/module.xml</descriptor>
+                    <brandingToken>Enclojure.org</brandingToken>
+                    <netbeansInstallation>/Applications/NetBeans/NetBeans 6.8.app/Content/Resrouces/Netbeans</netbeansInstallation>
                 </configuration>
             </plugin>
             <!-- netbeans modules in 5.5+ are 1.5 compatible -->

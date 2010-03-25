@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<nbm>
-<!--moduleType>autoload</moduleType-->
-<!--codeNameBase>org.enclojure.plugin/1</codeNameBase-->
-<licenseName>GPL-2.0 with  Classpath Exception</licenseName>
-<licenseFile>GPL-2.0+ClasspathException.txt</licenseFile>
-</nbm>
