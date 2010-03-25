@@ -141,7 +141,9 @@ using the claspath of the running JVM."
        (repl-manager/create-internal-repl repl-id
                     (:classpath repl-context)
                     (partial repl-panel/bind-process-panel repl-panel)
-                    (partial repl-panel/bind-repl-panel repl-panel))
+                    (partial repl-panel/bind-repl-panel repl-panel)
+                    (partial repl-panel/bind-repl-panel repl-panel)
+                        (or (:working-dir repl-context) "."))
       (.setResetReplFn
             (.getReplPanel irepl)
             #(do (repl-manager/stop-internal-repl repl-id)
