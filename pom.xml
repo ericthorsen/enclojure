@@ -3,13 +3,16 @@
   <properties>
     <clojure.version>1.1.0</clojure.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <netbeans.version>RELEASE68</netbeans.version>
+        <brandingToken>enclojure</brandingToken>
   </properties>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.enclojure</groupId>
-  <artifactId>lib</artifactId>
-  <version>1.1.0</version>
+  <artifactId>nb-enclojure-app</artifactId>
+  <version>1.1</version>
   <url>http://enclojure.org/</url>
   <description>Enclojure library.</description>
+	<name>Enclojure Tools</name>
   <packaging>pom</packaging>
   <licenses>
     <license>
@@ -118,6 +121,6 @@
     <module>org-enclojure-repl-client</module>
     <module>org-enclojure-repl-server</module>
     <module>org-enclojure-ide</module>
-    <module>plugins/netbeans/org-enclojure-plugin</module>
-   </modules>
+    <module>netbeans/plugins/org-enclojure-plugin</module>
+  </modules>
 </project>
