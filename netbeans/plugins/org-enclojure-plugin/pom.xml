@@ -490,175 +490,176 @@
             <version>RELEASE68</version>
         </dependency>
     </dependencies>
+
     <build>
       <resources>
         <resource>
-         <directory>src/main/clojure</directory>
+            <directory>src/main/clojure</directory>
         </resource>
 
         <resource>
-         <directory>src/main/resources</directory>
+            <directory>src/main/resources</directory>
         </resource>
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/nb/editor</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/nb/editor</targetPath>
-            </resource>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/nb/editor</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/nb/editor</targetPath>
+        </resource>
 
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/debugger</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/debugger</targetPath>
-            </resource>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/debugger</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/debugger</targetPath>
+        </resource>
 
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/debugger/actions</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/debugger/actions</targetPath>
-            </resource>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/debugger/actions</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/debugger/actions</targetPath>
+        </resource>
 
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/debugger/breakpoints</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/debugger/breakpoints</targetPath>
-            </resource>
-
-
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/debugger/resources</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/debugger/resources</targetPath>
-            </resource>
-
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/debugger/variablesFiltering</directory>
-                <includes>
-                    <include>Bundle.properties</include>
-                </includes>
-                <targetPath>org/enclojure/ide/debugger/variablesFiltering</targetPath>
-            </resource>
-
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/debugger/watchesFiltering</directory>
-                <includes>
-                    <include>Bundle.properties</include>
-                </includes>
-                <targetPath>org/enclojure/ide/debugger/watchesFiltering</targetPath>
-            </resource>
-
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/navigator/resources</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/navigator/resources</targetPath>
-            </resource>
-
-             <resource>
-               <directory>src/main/java/org/enclojure/ide/preferences</directory>
-                <includes>
-                    <include>Bundle.properties</include>
-                </includes>
-                <targetPath>org/enclojure/ide/preferences</targetPath>
-            </resource>
-
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/nb/actions</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/nb/actions</targetPath>
-            </resource>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/debugger/breakpoints</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/debugger/breakpoints</targetPath>
+        </resource>
 
 
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/nb/clojure/project</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/nb/clojure/project</targetPath>
-            </resource>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/debugger/resources</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/debugger/resources</targetPath>
+        </resource>
+
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/debugger/variablesFiltering</directory>
+            <includes>
+                <include>Bundle.properties</include>
+            </includes>
+            <targetPath>org/enclojure/ide/debugger/variablesFiltering</targetPath>
+        </resource>
+
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/debugger/watchesFiltering</directory>
+            <includes>
+                <include>Bundle.properties</include>
+            </includes>
+            <targetPath>org/enclojure/ide/debugger/watchesFiltering</targetPath>
+        </resource>
+
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/navigator/resources</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/navigator/resources</targetPath>
+        </resource>
+
+         <resource>
+           <directory>src/main/java/org/enclojure/ide/preferences</directory>
+            <includes>
+                <include>Bundle.properties</include>
+            </includes>
+            <targetPath>org/enclojure/ide/preferences</targetPath>
+        </resource>
+
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/nb/actions</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/nb/actions</targetPath>
+        </resource>
 
 
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/nb/editor</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.html</include>
-                    <include>Bundle.properties</include>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/nb/editor</targetPath>
-            </resource>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/nb/clojure/project</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/nb/clojure/project</targetPath>
+        </resource>
 
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/nb/editor/platforms</directory>
-                <includes>
-                    <include>**/*.zip</include>
-                </includes>
-                <targetPath>org/enclojure/ide/nb/editor/platforms</targetPath>
-            </resource>
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/nb/editor/resources</directory>
-                <includes>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/nb/editor/resources</targetPath>
-            </resource>
-            <resource>
-               <directory>src/main/java/org/enclojure/ide/nb/source</directory>
-                <includes>
-                    <include>**/*.png</include>
-                    <include>**/*.gif</include>
-                </includes>
-                <targetPath>org/enclojure/ide/nb/source</targetPath>
-            </resource>
 
-        </resources>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/nb/editor</directory>
+            <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/nb/editor</targetPath>
+        </resource>
+
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/nb/editor/platforms</directory>
+            <includes>
+                <include>**/*.zip</include>
+            </includes>
+            <targetPath>org/enclojure/ide/nb/editor/platforms</targetPath>
+        </resource>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/nb/editor/resources</directory>
+            <includes>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/nb/editor/resources</targetPath>
+        </resource>
+        <resource>
+           <directory>src/main/java/org/enclojure/ide/nb/source</directory>
+            <includes>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
+            </includes>
+            <targetPath>org/enclojure/ide/nb/source</targetPath>
+        </resource>
+
+    </resources>
         
         <plugins>
 	    <plugin>
