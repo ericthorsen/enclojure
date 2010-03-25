@@ -329,7 +329,8 @@ with java launcher."
       (when-let [classpath (verify-classpath-use-default classpath)]
         (let [irepl (factory/create-managed-external-repl
                       (assoc updated-config :classpath classpath
-                        :java-exe (get-default-java-exe))
+                                            :java-exe (get-default-java-exe)
+                        :working-dir (FileUtil/toFile (.getProjectDirectory p)))
                       -get-repl-window-factory-)]
           (.setResetReplFn (.getReplPanel irepl) (partial reset-repl p))
           (repl-panel/evaluate-in-repl repl-id
