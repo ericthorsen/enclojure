@@ -76,7 +76,8 @@
 
 (defn proper-libname
   [name]
-  (.replace name " " "-"))
+  (when name
+    (.replace name " " "-")))
 
 (defn ensure-libs [platforms]
   (let [lookup
@@ -237,6 +238,7 @@ platforms list"
 (defn get-default-platform
   "Returns the default platform"
   []
+  (ensure-default-platform-is-set @*clojure-platforms*)
   (first (filter :default @*clojure-platforms*)))
 
 

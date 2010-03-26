@@ -612,7 +612,7 @@
         <folder name="Project">
             <folder name="Clojure">
                 <attr name="position" intvalue="100"/>
-                <file name="Clojure Application" url="ClojureProjectTemplate.zip">
+                <file name="Clojure Application" url="nbresloc:/org/enclojure/ide/templates/project/ClojureProjectTemplate-1.1-distribution.zip">
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
                     <attr name="instantiatingWizardURL" urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/ClojureTemplateDescription.html"/>
                     <attr name="instantiatingIterator" methodvalue="org.enclojure.ide.nb.clojure.project.ClojureTemplateWizardIterator.createIterator"/>

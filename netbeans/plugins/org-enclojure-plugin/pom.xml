@@ -500,6 +500,15 @@
         <resource>
             <directory>src/main/resources</directory>
         </resource>
+        <!-- this is the project template from the templates directory -->
+        <resource>
+           <directory>../../../templates/netbeans/target</directory>
+            <includes>
+                <include>ClojureProjectTemplate-1.1-distribution.zip</include>
+            </includes>
+            <targetPath>org/enclojure/ide/templates/project</targetPath>
+        </resource>
+
         <resource>
            <directory>src/main/java/org/enclojure/ide/nb/editor</directory>
             <includes>
