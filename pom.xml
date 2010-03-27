@@ -121,6 +121,7 @@
     <module>org-enclojure-repl-client</module>
     <module>org-enclojure-repl-server</module>
     <module>org-enclojure-ide</module>
+    <module>templates/netbeans</module>
     <module>netbeans/plugins/org-enclojure-plugin</module>
   </modules>
 </project>
