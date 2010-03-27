@@ -6,7 +6,11 @@
   <url>http://enclojure.org/</url>
   <description>Clojure Project Template.</description>
 	<name>Clojure Project Template</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
     <build>
+        <defaultGoal>assembly:assembly</defaultGoal>
         <plugins>
           <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
