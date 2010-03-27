@@ -33,7 +33,7 @@
     </dependency>
   </dependencies>
   <repositories>
-	<repository>
+    <repository>
       <id>clojure-snapshots</id>
       <url>http://build.clojure.org/releases</url>
       <releases>
@@ -42,7 +42,13 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-    </repository><repository>
+    </repository>
+    <repository>
+        <id>maven2</id>
+        <name>maven2 repo</name>
+        <url>http://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
         <id>netbeans</id>
         <name>repository hosting netbeans.org api artifacts</name>
         <url>http://bits.netbeans.org/maven2</url>
