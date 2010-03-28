@@ -8,13 +8,8 @@
     <description>Enclojure plugin for Clojure development.</description>
     <name>Enclojure Clojure Plugin</name>
     <properties>
-        <project.build.sourceEncoding>
-        UTF-8
-        </project.build.sourceEncoding>
-
-        <project.reporting.outputEncoding>
-        UTF-8
-        </project.reporting.outputEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <clojure.version>1.1.0</clojure.version>
     </properties>
 
@@ -500,7 +495,7 @@
         <resource>
             <directory>src/main/resources</directory>
         </resource>
-        <!-- this is the project template from the templates directory -->
+        <!-- this is the project template from the templates directory
         <resource>
            <directory>../../../templates/netbeans/target</directory>
             <includes>
@@ -508,7 +503,7 @@
             </includes>
             <targetPath>org/enclojure/ide/templates/project</targetPath>
         </resource>
-
+        -->
         <resource>
            <directory>src/main/java/org/enclojure/ide/nb/editor</directory>
             <includes>

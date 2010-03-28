@@ -9,6 +9,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <packaging>zip</packaging>
     <build>
         <defaultGoal>assembly:assembly</defaultGoal>
         <plugins>
@@ -19,6 +20,14 @@
                 <descriptor>./assembly.xml</descriptor>
               </descriptors>             
             </configuration>
+                  <executions>
+                      <execution>
+                          <phase>compile</phase>
+                          <goals>
+                              <goal>assembly</goal>
+                          </goals>
+                      </execution>
+                  </executions>
           </plugin>
         </plugins>
         <outputDirectory>../../netbeans/plugins/org-enclojure-plugin/src/main/resources/org/enclojure/ide/nb/clojure/project</outputDirectory>
