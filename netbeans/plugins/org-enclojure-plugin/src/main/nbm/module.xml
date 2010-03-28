@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nbm>
-<codeNameBase>org.enclojure.plugin/1</codeNameBase>
+<codeNameBase>org.enclojure.plugin</codeNameBase>
 <licenseName>GPL-2.0 with  Classpath Exception</licenseName>
 <licenseFile>GPL-2.0+ClasspathException.txt</licenseFile>
 <distributionUrl>http://www.enclojure.org/file/detail</distributionUrl>
 <homepageUrl>http://www.enclojure.org</homepageUrl>
 <requiresRestart>true</requiresRestart>
-<moduleType>eager</moduleType>
 </nbm>

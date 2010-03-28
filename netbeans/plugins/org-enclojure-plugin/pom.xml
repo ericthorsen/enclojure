@@ -19,6 +19,7 @@
     <version>1.1.0</version>
   </parent>
   -->
+
     <repositories>
         <!-- this is a remote repository hosting the netbeans api artifacts.
          the versions of the artifacts are netbeans IDE release based, eg. RELEASE65.
@@ -695,7 +696,7 @@
                 <configuration>
                     <descriptor>src/main/nbm/module.xml</descriptor>
                     <brandingToken>Enclojure.org</brandingToken>
-                    <netbeansInstallation>/Applications/NetBeans/NetBeans 6.8.app/Content/Resrouces/Netbeans</netbeansInstallation>
+                    <!-- <netbeansInstallation>/Applications/NetBeans/NetBeans 6.8.app/Content/Resrouces/Netbeans</netbeansInstallation> -->
                 </configuration>
             </plugin>
             <!-- netbeans modules in 5.5+ are 1.5 compatible -->
@@ -747,7 +748,7 @@
                         <artifactId>nbm-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>updatesite</id>
+                                <id>extra</id>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>autoupdate</goal>
@@ -756,7 +757,7 @@
                             <!--distBase>central::default::http://repo1.maven.org/maven2</distBase-->
                                 </configuration>
                             </execution>
-						</executions>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

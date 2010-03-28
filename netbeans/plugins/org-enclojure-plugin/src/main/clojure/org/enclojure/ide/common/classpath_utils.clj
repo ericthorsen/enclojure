@@ -397,11 +397,11 @@ setup in Netbeans"
   
 
 (defn classpath-for-repl []
-    (let [l (org.openide.modules.InstalledFileLocator/getDefault)]
-                        (apply str (interpose java.io.File/pathSeparator
-                                     (map #(.locate l % nil false)
-                                       ["modules/ext/org.enclojure.repl-server.jar"                                        
-                                        ])))))
+    (let [l (org.openide.modules.InstalledFileLocator/getDefault)
+          repl-server-jar (.locate l
+                            "modules/ext/org-enclojure-repl-server-1.0-SNAPSHOT.jar"
+                            nil false)]
+      repl-server-jar))
 
 (defn get-repl-classpath [#^Project p]
   (let [cp (str (classpath-for-repl) java.io.File/pathSeparator (get-project-classpath p))]    
