@@ -642,13 +642,20 @@
         <resource>
            <directory>src/main/java/org/enclojure/ide/nb/editor/platforms</directory>
             <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
+                <include>**/*.png</include>
+                <include>**/*.gif</include>
                 <include>**/*.zip</include>
             </includes>
             <targetPath>org/enclojure/ide/nb/editor/platforms</targetPath>
         </resource>
         <resource>
            <directory>src/main/java/org/enclojure/ide/nb/editor/resources</directory>
-            <includes>
+            <includes>                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
                 <include>**/*.png</include>
                 <include>**/*.gif</include>
             </includes>
@@ -657,6 +664,9 @@
         <resource>
            <directory>src/main/java/org/enclojure/ide/nb/source</directory>
             <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>Bundle.properties</include>
                 <include>**/*.png</include>
                 <include>**/*.gif</include>
             </includes>
