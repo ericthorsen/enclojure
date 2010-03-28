@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.enclojure</groupId>
+    <packaging>pom</packaging>
+    <version>1.1</version>
+    <name>NetBeans 6.8 with Enclojure Packager</name>
+    <artifactId>netbeans-6_8-with-enclojure</artifactId>
+    <repositories>
+        <!-- this is a remote repository hosting the netbeans api artifacts.
+         the versions of the artifacts are netbeans IDE release based, eg. RELEASE65
+         You might want to use your own repository. To create one, use the nbm:populate-repository goal.
+          -->
+        <repository>
+            <id>netbeans</id>
+            <name>repository hosting netbeans.org api artifacts</name>
+            <url>http://bits.netbeans.org/maven2</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>nbm-maven-plugin</artifactId>
+                    <version>3.1</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <descriptor>src/main/nbm/module.xml</descriptor>
+                        <brandingToken>${brandingToken}</brandingToken>
+                    </configuration>
+                </plugin>
+
+                <!-- netbeans modules in 5.5+ are 1.5 compatible -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.0.2</version>
+                    <configuration>
+                        <source>1.5</source>
+                        <target>1.5</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <modules>
+        <module>plugins/org-enclojure-plugin</module>
+        <module>Netbeans 6.8</module>
+    </modules>
+    <properties>
+        <netbeans.version>RELEASE68</netbeans.version>
+        <brandingToken>netbeans68enclojure</brandingToken>
+    </properties>
+</project>
+
