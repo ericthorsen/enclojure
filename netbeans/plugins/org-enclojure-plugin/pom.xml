@@ -754,7 +754,7 @@
                                     <goal>autoupdate</goal>
                                 </goals>
                                 <configuration>
-                            <!--distBase>central::default::http://repo1.maven.org/maven2</distBase-->
+                            		<!-- ><distBase>central::default::http://thortech-solutions.com/org/enclojure</distBase> -->
                                 </configuration>
                             </execution>
                         </executions>
