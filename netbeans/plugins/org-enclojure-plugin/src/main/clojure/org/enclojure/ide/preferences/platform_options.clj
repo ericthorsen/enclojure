@@ -557,11 +557,11 @@ This is only doing a text search on the names...should do something more."
           start-vals (ensure-shipped-platforms current-platforms)]
       (dosync
             (alter *clojure-platforms*
-                (fn [_] start-vals)))
+                (fn [_]
+                  (ensure-default-platform-is-set start-vals))))
       (when (not= current-platforms start-vals)
         (logger/info "Added shipped platforms...saving them...")
-          (save-preferences)
-        (ensure-default-platform-is-set @*clojure-platforms*)))
+        (save-preferences)))
   @*clojure-platforms*)
 
 (defn get-clojure-default-lib []
