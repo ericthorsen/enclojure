@@ -11,8 +11,16 @@
             <useDefaultExcludes>false</useDefaultExcludes>
             <excludes>
                 <exclude>**/target/**</exclude>
+                <exclude>assembly.xml</exclude>
+                <exclude>pom.xml</exclude>
             </excludes>
-            <directory>ClojureProjectTemplate</directory>            
+            <includes>
+                <include>*.xml</include>
+                <include>*.mf</include>
+                <include>build/**</include>
+                <include>nbproject/**</include>
+                <include>src/**</include>
+            </includes>
       </fileSet>
   </fileSets>
 </assembly>

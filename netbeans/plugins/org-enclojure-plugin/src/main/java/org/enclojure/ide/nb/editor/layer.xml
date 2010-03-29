@@ -254,6 +254,18 @@
     </folder>
 
     <folder name="Projects">
+        <folder name="Archetypes">
+            <file name="clojure-quickstart-archetype">
+                <attr name="position" intvalue="120"/>
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.editor.Bundle"/>
+                <attr name="groupId" stringvalue="org.enclojure.maven.archetypes"/>
+                <attr name="artifactId" stringvalue="clojure-quickstart"/>
+                <attr name="version" stringvalue="1.0"/>
+                <!--attr name="repository" stringvalue=""/-->
+                <attr name="nameBundleKey" stringvalue="LBL_Maven_Quickstart_Archetype"/>
+                <attr name="descriptionBundleKey" stringvalue="HINT_MavenQuickStart"/>
+            </file>
+        </folder>
         <folder name="Actions">
             <file name="org-enclojure-nbmodule-separatorBefore.instance">
                 <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
@@ -611,14 +623,30 @@
         </folder>
         <folder name="Project">
             <folder name="Clojure">
-                <attr name="position" intvalue="100"/>
+                <attr name="position" intvalue="104"/>
                 <file name="Clojure Application" url="nbresloc:/org/enclojure/ide/templates/project/ClojureProjectTemplate-1.1-distribution.zip">
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
-                    <attr name="instantiatingWizardURL" urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/ClojureTemplateDescription.html"/>
-                    <attr name="instantiatingIterator" methodvalue="org.enclojure.ide.nb.clojure.project.ClojureTemplateWizardIterator.createIterator"/>
+                    <attr name="instantiatingWizardURL"
+                        urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/ClojureTemplateDescription.html"/>
+                    <attr name="instantiatingIterator"
+                        methodvalue="org.enclojure.ide.nb.clojure.project.ClojureTemplateWizardIterator.createIterator"/>
                     <attr name="template" boolvalue="true"/>
-                    <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
+                    <attr name="SystemFileSystem.icon"
+                        urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
                 </file>
+            </folder>
+            <folder name="Samples">
+                <folder name="Clojure">
+                    <file name="Relevance LabRepl Project" url="nbresloc:/org/enclojure/ide/templates/project/RelevanceLabReplProject.zip">
+                        <attr name="displayName"
+                            bundlevalue="org.enclojure.ide.project.samples.Bundle#Relevance.LabRepl.name"/>
+                        <attr name="instantiatingIterator"
+                            methodvalue="org.enclojure.ide.project.samples.RelevanceLabReplWizardIterator.createIterator"/>
+                        <attr name="instantiatingWizardURL"
+                            urlvalue="nbresloc:/org/enclojure/ide/project/samples/RelevanceLabReplDescription.html"/>
+                        <attr name="template" boolvalue="true"/>
+                    </file>
+                </folder>
             </folder>
         </folder>
     </folder>
