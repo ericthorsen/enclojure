@@ -37,7 +37,9 @@
   "given a repl-panel and editor pane and a result function, wire them up"
   [panel pane result-fn]
   (let [awt-fn #(EventQueue/invokeAndWait
-                  (fn [] (.resultReceived panel pane %)))]
+                  (fn [] 
+                    (logger/info "Rcved {}\n" %)
+                    (.resultReceived panel pane %)))]
         (start-io-thread
           #(awt-fn (result-fn))
           (fn [cause]

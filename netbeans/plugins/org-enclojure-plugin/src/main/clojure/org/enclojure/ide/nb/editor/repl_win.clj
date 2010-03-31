@@ -240,7 +240,7 @@ See the Enclojure category under preferences to view your settings"
 (declare reset-repl)
 (def -project- (atom nil))
 
-(def -repl-props-format- "-Denclojure/%s='%s'")
+(def -repl-props-format- "-Denclojure/%s=%s")
 
 (defmulti as-str class)
 
@@ -291,8 +291,13 @@ See the Enclojure category under preferences to view your settings"
                      (pull-props (when (pbean :webModule)
                         (bean (pbean :webModule)))
                                     [:contentDirectory]))
-         m (assoc props :project-properties (pr-str props))]
-    (map (fn [[k v]] (format -repl-props-format- (name k) v)) m)))
+         m (assoc props :project-properties  
+             (reduce (fn [m [k v]]
+                       (assoc m k (pr-str v))) {} props))]
+    (logger/info "Map1 count {}" (count m))
+    (logger/info "Map2 {}" props)
+    (logger/info "Map3 {}"  m)
+    (map (fn [[k v]] (format -repl-props-format- (name k)  v)) m)))
 
 (defn get-jvm-properties
   "Using properties from the project, creates valid jvm arg strings to be used
@@ -306,8 +311,8 @@ with java launcher."
         props (into {} (remove #(nil? (val %))
                          {:projectDirectory projectDirectory
                           :contentDirectory contentDirectory}))
-        m (assoc props :project-properties (pr-str props))]
-    (map (fn [[k v]] (format -repl-props-format- (name k) v)) m)))
+       ]
+    (map (fn [[k v]] (format -repl-props-format- (name k) (pr-str v))) props)))
 
 ;========================================================================
 ; External managed project REPL startup 

@@ -11,6 +11,7 @@ import clojure.lang.Symbol;
 import clojure.lang.Var;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.FileHandler;
 
 /**
  *
@@ -30,6 +31,8 @@ public class launcher {
             sb.append(" ");
         }
         try {
+             FileHandler fh = new FileHandler("%t" + java.io.File.separator + "repl%glog");
+             l.addHandler(fh);
             requireFn.invoke(Symbol.create("org.enclojure.repl.main"));
             if (args.length > 1) {
                 String[] _args = new String[args.length - 1];
@@ -37,6 +40,7 @@ public class launcher {
                 applyFn.invoke(setupTrackingFn ,args);
             }
         } catch (Exception ex) {
+
             Logger.getLogger(launcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     

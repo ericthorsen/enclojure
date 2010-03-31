@@ -137,7 +137,7 @@ For seeing the command line use:"
   ;(apply str (interpose \" \" (org.enclojure.repl.e-repl-startup/java-cmd-array org.enclojure.repl.e-repl-startup/@*default-config*)))"
   [{:keys [java-exe jvm-additional-args debug-port-arg classpath java-main repl-id port ack-port]}]
   (logger/info  "Arguments are .....{}" jvm-additional-args)
-  (apply conj jvm-additional-args
+  (apply conj jvm-additional-args "-DCOMMONS_EXEC_DEBUG=true"
     (map str
       (filter identity [debug-port-arg "-cp" (if classpath (str "\"" classpath "\"") "")
                         java-main (str "\"" repl-id "\"") port ack-port]))))
@@ -172,7 +172,8 @@ For seeing the command line use:"
   (let [java-args (java-cmd-array repl-config)
         cmd-line (CommandLine/parse (or (:java-exe repl-config) "java"))
         _ (logger/info  "start java process with {}"
-            (apply vector (or (:java-exe repl-config) "java") java-args))
+            (print-str
+                (apply vector (or (:java-exe repl-config) "java") java-args)))
         _ (doall (map #(.addArguments cmd-line (str %) false) java-args))
         #^DefaultExecutor executor (DefaultExecutor.)
         [out-pipe err-pipe] [(PipedOutputStream.) (PipedOutputStream.)]

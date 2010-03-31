@@ -3,7 +3,7 @@
 <codeNameBase>org.enclojure.plugin</codeNameBase>
 <licenseName>GPL-2.0 with  Classpath Exception</licenseName>
 <licenseFile>GPL-2.0+ClasspathException.txt</licenseFile>
-<distributionUrl>http://www.thortech-solutions.com/org/enclojure</distributionUrl>
+<distributionUrl>http://www.enclojure.org/file/view</distributionUrl>
 <homepageUrl>http://www.enclojure.org</homepageUrl>
 <requiresRestart>true</requiresRestart>
 </nbm>
