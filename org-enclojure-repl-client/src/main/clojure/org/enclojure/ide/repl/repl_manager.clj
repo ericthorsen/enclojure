@@ -26,6 +26,11 @@
 ; setup logging
 (logger/ensure-logger)
 
+(defn- find-versioned-jar-in-paths [jar-name paths]
+  "Finds a jar in a sequence of path strings, where the jar has the name <jar-name>(.*).jar"
+  (let [p (re-pattern (str ".*\\" File/separator jar-name "-.*\\.jar$"))]
+    (some #(when (re-matches p %) %) paths)))
+
 (defn bad-classpath?
   "Given a classpath string, attempt to locate a clojure.jar and a
 clojure-contrib.jar.  The function just looks for jars with these names in the file
@@ -38,11 +43,8 @@ In the above case, there was a clojure.jar reference found and the file exists.
 For clojure-contrib, no reference was found."
   [classpath]
   (let [paths (.split classpath java.io.File/pathSeparator)
-        contrib (some #(when (>= (.indexOf %
-                                   (str File/separator "clojure-contrib")) 0) %) paths)
-        clojure (some #(when (>= (.indexOf %
-                                   (str File/separator "clojure")) 0) %) 
-                  (filter #(not= contrib %) paths))
+        contrib (find-versioned-jar-in-paths "clojure-contrib" paths)
+        clojure (find-versioned-jar-in-paths "clojure" (filter #(not= contrib %) paths))
         clojure-exists? (and clojure (.exists (File. clojure)))
         contrib-exists? (and contrib (.exists (File. contrib)))]
     (when-not (and contrib clojure clojure-exists? contrib-exists?)
