@@ -4,7 +4,7 @@
     <groupId>org.enclojure</groupId>
     <artifactId>org-enclojure-plugin</artifactId>
     <packaging>nbm</packaging>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <description>Enclojure plugin for Clojure development.</description>
     <name>Enclojure Clojure Plugin</name>
     <properties>
@@ -675,7 +675,7 @@
         </resource>
 
     </resources>
-        
+
         <plugins>
 	    <plugin>
                     <groupId>com.theoryinpractise</groupId>
@@ -764,6 +764,7 @@
         </profile>
     </profiles>
 </project>
+
 
 
 
