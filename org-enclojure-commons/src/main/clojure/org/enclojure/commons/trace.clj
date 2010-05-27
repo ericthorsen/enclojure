@@ -26,7 +26,7 @@
   `(let [f# (fn ~@body)]
      (defn ~name [& args#]
        (if org.enclojure.commons.trace/*context*
-         (let [m# ^(var ~name)]
+         (let [m# (meta (var ~name))]
            (binding [org.enclojure.commons.trace/*context*
                      (conj org.enclojure.commons.trace/*context*
                        (assoc m# :ns (.getName (:ns m#))) {:args args# :body '~body})]

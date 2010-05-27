@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
   <properties>
-    <clojure.version>1.1.0</clojure.version>
+    <clojure.version>1.2.0</clojure.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <netbeans.version>RELEASE68</netbeans.version>
     <brandingToken>enclojure</brandingToken>
@@ -11,7 +11,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.enclojure</groupId>
   <artifactId>nb-enclojure-app</artifactId>
-  <version>1.1.1</version>
+  <version>1.1</version>
   <url>http://enclojure.org/</url>
   <description>Enclojure library.</description>
 	<name>Enclojure Tools</name>
@@ -26,12 +26,12 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>${clojure.version}</version>
+      <version>${clojure.version}-master-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure-contrib</artifactId>
-      <version>${clojure.version}</version>
+      <version>${clojure.version}-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <repositories>
