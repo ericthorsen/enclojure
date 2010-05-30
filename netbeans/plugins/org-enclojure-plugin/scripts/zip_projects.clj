@@ -99,6 +99,8 @@
   (doall (map #(zip-it *dest-project-samples-dir* %)
            (get-directories *src-project-samples-dir*))))
 
+(zip-project-templates)
+(zip-project-samples)
 
 ;(defn zip-dir [zip-dir out-zip file-name-fn list-fn]
 ;  (println "iam here " zip-dir)
