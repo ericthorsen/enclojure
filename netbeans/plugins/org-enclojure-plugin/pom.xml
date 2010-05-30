@@ -11,6 +11,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <clojure.version>1.1.0</clojure.version>
+        <templates.basedir>${basdir}../../../templates</templates.basedir>
+        <project.templates.source>${templates.basedir}/netbeans/ProjectTemplates</project.templates.source>
+        <project.templates.dest></project.templates.dest>
+        <sample.projects.source>${templates.basedir}/netbeans/SampleProjects</sample.projects.source>
+        <sample.projects.dest></sample.projects.dest>
     </properties>
 
   <!-- <parent>
@@ -40,7 +45,6 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-
     </repositories>
     <dependencies>
         <dependency>
@@ -675,19 +679,71 @@
         </resource>
 
     </resources>
+    <plugins>
 
-        <plugins>
-	    <plugin>
-                    <groupId>com.theoryinpractise</groupId>
-                    <artifactId>clojure-maven-plugin</artifactId>
-                    <version>1.3.1</version>
-                    <configuration>
-                      <compileDeclaredNamespaceOnly>true</compileDeclaredNamespaceOnly>
-                          <namespaces>
-                            <namespace>org.\enclojure\.ide\.common\.error-reporting</namespace>
-                      </namespaces>
-                    </configuration>
-            </plugin>
+        <!--<plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.4</version>
+            <executions>                
+              <execution>                  
+                <phase>validate</phase>
+                <configuration>
+                    <task>
+                        <echo message="whu cant i see this?????????" file="${basedir}echo.txt" />
+                        <echo message="whu cant i see this?????????" />
+                        <echo message="whu cant i see this?????????" />
+                        <echo message="whu cant i see this?????????" />
+                        <echo message="whu cant i see this?????????" />
+                        <java classname="clojure.main">
+                            <args>${basedir}/build-helper-scripts/zip_projects.clj</args>
+                            <classpath>
+                                <pathelement>org.clojure-${clojure.version}</pathelement>
+                                <pathelement>org.clojure.contrib-${clojure.version}</pathelement>
+                            </classpath>
+                        </java>
+                  </task>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+      </plugin>-->
+     <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>exec-zip-projects</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>java</executable>
+              <!-- optional -->
+              <arguments>
+                <argument>-cp</argument>
+                <classpath />
+                <argument>clojure.main</argument>
+                <argument>${basedir}/scripts/zip_projects.clj</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.theoryinpractise</groupId>
+        <artifactId>clojure-maven-plugin</artifactId>
+        <version>1.3.1</version>
+        <configuration>
+          <compileDeclaredNamespaceOnly>true</compileDeclaredNamespaceOnly>
+              <namespaces>
+                <namespace>org.\enclojure\.ide\.common\.error-reporting</namespace>
+          </namespaces>
+        </configuration>
+      </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
@@ -764,6 +820,7 @@
         </profile>
     </profiles>
 </project>
+
 
 
 
