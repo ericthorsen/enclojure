@@ -14,60 +14,64 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="1"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,117,0,0,2,-33"/>
   </AuxValues>
 
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-              <Component id="jLabelProcesses" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="87" pref="87" max="87" attributes="0"/>
-              <Component id="jLabelName" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="60" pref="60" max="60" attributes="0"/>
-              <Component id="jTextFieldName" min="-2" pref="364" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" attributes="0">
-              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-              <Component id="jScrollPaneProcesses" min="-2" pref="213" max="-2" attributes="0"/>
-              <EmptySpace min="30" pref="30" max="30" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelHost" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelPort" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelArguments" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelClasspath" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelTimeout" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelStartupScript" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelMainClass" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="16" pref="16" max="16" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jCheckBoxExternal" min="-2" pref="296" max="-2" attributes="0"/>
-                  <Component id="jTextFieldHost" min="-2" pref="364" max="-2" attributes="0"/>
-                  <Component id="jTextFieldPort" min="-2" pref="364" max="-2" attributes="0"/>
-                  <Component id="jTextFieldArguments" min="-2" pref="364" max="-2" attributes="0"/>
-                  <Component id="jTextFieldClasspath" min="-2" pref="364" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="170" pref="170" max="170" attributes="0"/>
-                      <Component id="jButtonUseProjectsClasspath" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                      <Component id="jLabelProcesses" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="87" pref="87" max="87" attributes="0"/>
+                      <Component id="jLabelName" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="60" pref="60" max="60" attributes="0"/>
+                      <Component id="jTextFieldName" min="-2" pref="364" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jTextFieldTimeout" min="-2" pref="364" max="-2" attributes="0"/>
-                  <Component id="jTextFieldStartupScript" min="-2" pref="364" max="-2" attributes="0"/>
-                  <Component id="jTextFieldMainClass" min="-2" pref="364" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                      <Component id="jScrollPaneProcesses" min="-2" pref="213" max="-2" attributes="0"/>
+                      <EmptySpace min="30" pref="30" max="30" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelHost" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelPort" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelArguments" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelClasspath" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelTimeout" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelStartupScript" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelMainClass" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="16" pref="16" max="16" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jCheckBoxExternal" min="-2" pref="296" max="-2" attributes="0"/>
+                          <Component id="jTextFieldHost" min="-2" pref="364" max="-2" attributes="0"/>
+                          <Component id="jTextFieldPort" min="-2" pref="364" max="-2" attributes="0"/>
+                          <Component id="jTextFieldArguments" min="-2" pref="364" max="-2" attributes="0"/>
+                          <Component id="jTextFieldClasspath" min="-2" pref="364" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="170" pref="170" max="170" attributes="0"/>
+                              <Component id="jButtonUseProjectsClasspath" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jTextFieldTimeout" min="-2" pref="364" max="-2" attributes="0"/>
+                          <Component id="jTextFieldStartupScript" min="-2" pref="364" max="-2" attributes="0"/>
+                          <Component id="jTextFieldMainClass" min="-2" pref="364" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="16" pref="16" max="16" attributes="0"/>
+                      <Component id="jButtonNew" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="5" pref="5" max="5" attributes="0"/>
+                      <Component id="jButtonRemove" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="164" pref="164" max="164" attributes="0"/>
+                      <Component id="jButtonSave" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                      <Component id="jToggleButtonActivate" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="5" pref="5" max="5" attributes="0"/>
+                      <Component id="jButtonStop" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-          </Group>
-          <Group type="102" attributes="0">
-              <EmptySpace min="16" pref="16" max="16" attributes="0"/>
-              <Component id="jButtonNew" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="5" pref="5" max="5" attributes="0"/>
-              <Component id="jButtonRemove" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="164" pref="164" max="164" attributes="0"/>
-              <Component id="jButtonSave" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-              <Component id="jToggleButtonActivate" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="5" pref="5" max="5" attributes="0"/>
-              <Component id="jButtonStop" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="42" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -133,6 +137,7 @@
                   <Component id="jToggleButtonActivate" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonStop" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
