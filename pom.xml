@@ -38,22 +38,10 @@
     <repository>
       <id>clojure-releases</id>
       <url>http://build.clojure.org/releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
     </repository>
     <repository>
       <id>clojure-snapshots</id>
       <url>http://build.clojure.org/snapshots</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
     </repository>
     <repository>
         <id>maven2</id>
