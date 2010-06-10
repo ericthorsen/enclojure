@@ -17,8 +17,10 @@
 (logger/ensure-logger)
 
 
-(def *src-base-dir* (str (System/getProperty "user.dir") "/../../../templates/netbeans"))
-(def *dest-base-dir* (str (System/getProperty "user.dir") "/src/main/resources/org/enclojure/ide"))
+(def *src-base-dir* (str (System/getProperty "user.dir")
+                      "/../../../templates/netbeans"))
+(def *dest-base-dir* (str (System/getProperty "user.dir")
+                       "/src/main/resources/org/enclojure/ide"))
 
 (def *src-project-templates-dir* (str *src-base-dir* "/ProjectTemplates"))
 (def *src-project-samples-dir* (str *src-base-dir* "/SampleProjects"))
@@ -38,7 +40,6 @@
   (println  (format "Process failed: %s %s" (.getMessage ex)
     (if-let [c (.getCause ex)]
       (.getMessage c)))))
-
 
 (defn monitor [stream read-fn]
     (repl.main/start-io-thread
