@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
   <properties>
-    <clojure.version>1.2.0</clojure.version>
+    <clojure.version>1.1.0</clojure.version>
+    <clojure.snaphot-name></clojure.snaphot-name>
+    <clojure-contrib.snaphot-name></clojure-contrib.snaphot-name>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <netbeans.version>RELEASE68</netbeans.version>
     <brandingToken>enclojure</brandingToken>
@@ -26,24 +28,22 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>${clojure.version}-master-SNAPSHOT</version>
+      <version>${clojure.version}${clojure.snaphot-name}</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure-contrib</artifactId>
-      <version>${clojure.version}-SNAPSHOT</version>
+      <version>${clojure.version}${clojure-contrib.snaphot-name}</version>
     </dependency>
   </dependencies>
   <repositories>
     <repository>
-      <id>clojure-snapshots</id>
+      <id>clojure-releases</id>
       <url>http://build.clojure.org/releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
+    </repository>
+    <repository>
+      <id>clojure-snapshots</id>
+      <url>http://build.clojure.org/snapshots</url>
     </repository>
     <repository>
         <id>maven2</id>
