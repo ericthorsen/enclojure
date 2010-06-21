@@ -16,7 +16,6 @@
 ; setup logging
 (logger/ensure-logger)
 
-
 (def *src-base-dir* (str (System/getProperty "user.dir")
                       "/../../../templates/netbeans"))
 (def *dest-base-dir* (str (System/getProperty "user.dir")
@@ -102,57 +101,3 @@
 
 (zip-project-templates)
 (zip-project-samples)
-
-;(defn zip-dir [zip-dir out-zip file-name-fn list-fn]
-;  (println "iam here " zip-dir)
-;  (flush)
-;  (let [zipf (java-utils/file zip-dir)
-;        dir-name (file-name-fn (.trim (.getName zipf)))]
-;    (println "putting " dir-name "/")
-;    (println "list is " (list-fn zipf))
-;    (flush)
-;    (.putNextEntry out-zip (ZipEntry. dir-name)) ; place an entry for the directory
-;    (loop [file-list (list-fn zipf)]
-;      (if-let [fentry (first file-list)]
-;        (let [f (java-utils/file fentry)]
-;          (println "class is " (class f) " " f)
-;          (if (.isDirectory f)
-;            (zip-dir f out-zip)
-;        (with-open [in (FileInputStream. f)]
-;          (println "opened  " f " " f)
-;          (.putNextEntry out-zip (ZipEntry. (file-name-fn (.getName f))))
-;          (loop [bytes (byte-array 1024) read-count (.read in bytes 1024)]
-;
-;            (duck-streams/copy in out-zip))))
-;        (recur (rest file-list))))))
-;
-;(defn zip-files [target-path target-file
-;                 src-base-dir filter-fn]
-;  (println "starting???????????")
-;  (when (.exists target-file)
-;    (println "deleting " target-file)
-;    (.delete target-file))
-;  (.mkdirs target-path)
-;     (println "opening " target-file)
-;  (let [out-zip (ZipOutputStream. (FileOutputStream. target-file))]
-;    (println "target file opened " target-file)
-;    (zip-dir src-base-dir out-zip
-;      #(if (.startsWith % (str src-base-dir))
-;         (subs % (count (str src-base-dir)))
-;         %)
-;      filter-fn)))
-;
-;(defn zip-and-copy-dir [src-dir dest-dir]
-;  (.mkdirs (File. dest-dir))
-;  (zip-files
-;    (File. (str dest-dir "/" (.getName src-dir)))
-;    (File. (str dest-dir "/" (.getName src-dir) "/" (.getName src-dir) ".zip"))
-;    src-dir
-;    (fn [path]
-;      (filter #(every? (fn [fexpr]
-;                         (and (not= (.getPath path) (str %))
-;                            (not (.contains (str %) fexpr))))
-;                   *filter-files*)
-;        (file-seq (java-utils/file path))))
-;  ))
-;
