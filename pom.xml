@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
   <properties>
     <clojure.version>1.1.0</clojure.version>
-    <clojure.snaphot-name></clojure.snaphot-name>
-    <clojure-contrib.snaphot-name></clojure-contrib.snaphot-name>
+    <clojure.snapshot.tag></clojure.snapshot.tag>
+    <clojure.contrib.snapshot.tag></clojure.contrib.snapshot.tag>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <netbeans.version>RELEASE68</netbeans.version>
     <brandingToken>enclojure</brandingToken>
@@ -28,12 +28,12 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>${clojure.version}${clojure.snaphot-name}</version>
+      <version>${clojure.version}${clojure.snapshot.tag}</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure-contrib</artifactId>
-      <version>${clojure.version}${clojure-contrib.snaphot-name}</version>
+      <version>${clojure.version}${clojure.contrib.snapshot.tag}</version>
     </dependency>
   </dependencies>
   <repositories>
