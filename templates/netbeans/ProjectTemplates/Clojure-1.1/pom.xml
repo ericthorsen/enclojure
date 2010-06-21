@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 <properties>
@@ -7,8 +8,8 @@
   <groupId>org.enclojure</groupId>
   <artifactId>sample</artifactId>
   <version>0.0.1</version>
-  <name>sample with Clojure 1.1.0</name>
-  <description>Clojure 1.2 SNAPSHOT project</description>
+  <name>ClojureProjectTemplate</name>
+  <description>ClojureProjectTemplate</description>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -36,7 +37,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.0.2</version>
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
@@ -94,3 +94,5 @@
     </dependency>
   </dependencies>
 </project>
+
+
