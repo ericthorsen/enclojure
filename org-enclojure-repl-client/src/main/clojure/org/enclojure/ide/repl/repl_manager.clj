@@ -182,10 +182,12 @@ For seeing the command line use:"
         out-pipe-reader (LineNumberReader.
                           (InputStreamReader. (PipedInputStream. out-pipe)))
         err-pipe-reader (LineNumberReader.
-                          (InputStreamReader. (PipedInputStream. err-pipe)))]
+                          (InputStreamReader. (PipedInputStream. err-pipe)))
+         stream-handler (PumpStreamHandler. out-pipe err-pipe)]
     (.setWorkingDirectory executor (if (instance? java.io.File working-dir)
                                      working-dir (java.io.File. working-dir)))
-    (.setStreamHandler executor (PumpStreamHandler. out-pipe err-pipe))
+    (.setStreamHandler executor stream-handler)
+    (.start stream-handler)
     (process-monitor-fn
       #(.readLine out-pipe-reader)
       #(.readLine err-pipe-reader))

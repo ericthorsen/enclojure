@@ -56,43 +56,43 @@
 
                     <file name="org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.instance"/>
-                        <attr name="position" intvalue="1805"/>
+                        <attr name="position" intvalue="1804"/>
                     </file>
                     <file name="org-enclojure-ide-nb-actions-UseFileNSInReplAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-UseFileNSInReplAction.instance"/>
-                        <attr name="position" intvalue="1806"/>
+                        <attr name="position" intvalue="1805"/>
                     </file>
                     <file name="org-enclojure-nbmodule-separatorBefore.instance">
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
-                        <attr name="position" intvalue="1810"/>
+                        <attr name="position" intvalue="1806"/>
                     </file>
                     <file name="org-enclojure-ide-nb-actions-GotoDeclaration.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-GotoDeclaration.instance"/>
-                        <attr name="position" intvalue="1811"/>
+                        <attr name="position" intvalue="1807"/>
                     </file>
                     <file name="org-enclojure-ide-nb-editor-ClojureReindentAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-editor-ClojureReindentAction.instance"/>
-                        <attr name="position" intvalue="1812"/>
+                        <attr name="position" intvalue="1808"/>
                     </file>
                     <file name="org-enclojure-ide-nb-actions-ToggleComment.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ToggleComment.instance"/>
-                        <attr name="position" intvalue="1813"/>
+                        <attr name="position" intvalue="1809"/>
                     </file>
                     <file name="org-enclojure-ide-nb-actions-SelectTopExpr.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-SelectTopExpr.instance"/>
-                        <attr name="position" intvalue="1814"/>
+                        <attr name="position" intvalue="1810"/>
                     </file>
                     <file name="org-enclojure-ide-nb-actions-SelectOuterExpr.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-SelectOuterExpr.instance"/>
-                        <attr name="position" intvalue="1815"/>
+                        <attr name="position" intvalue="1811"/>
                     </file>
                     <file name="org-enclojure-ide-nb-actions-NavByExprOut.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-NavByExprOut.instance"/>
-                        <attr name="position" intvalue="1816"/>
+                        <attr name="position" intvalue="1812"/>
                     </file>
                     <file name="org-enclojure-ide-nb-actions-NavByExprIn.shadow">
                         <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-NavByExprIn.instance"/>
-                        <attr name="position" intvalue="1817"/>
+                        <attr name="position" intvalue="1813"/>
                     </file>
 
                 </folder>
@@ -411,7 +411,7 @@
             </file>
             <file name="org-enclojure-ide-nb-actions-EvalExpressionInReplAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-EvalExpressionInReplAction.instance"/>
-                <attr name="position" intvalue="9030"/>
+                <attr name="position" intvalue="9035"/>
             </file>
             <file name="org-enclojure-ide-nb-actions-NavByExprIn.shadow">
                 <attr name="originalFile" stringvalue="Actions/Edit/org-enclojure-ide-nb-actions-NavByExprIn.instance"/>
@@ -451,10 +451,11 @@
             </file>
             <file name="org-enclojure-ide-nb-actions-CreateStandaloneReplAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-CreateStandaloneReplAction.instance"/>
-                <attr name="position" intvalue="-100"/>
+                <attr name="position" intvalue="100"/>
             </file>
             <file name="ReplAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/org-enclojure-ide-nb-editor-ReplAction.instance"/>
+                <attr name="position" intvalue="101"/>
             </file>
         </folder>
         <folder name="Edit">
@@ -634,10 +635,30 @@
                     <attr name="SystemFileSystem.icon"
                         urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
                 </file>
+                <file name="Clojure 1.1 Maven Project" url="nbresloc:/org/enclojure/ide/templates/project/Clojure-1.1/Clojure-1.1.zip">
+                    <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                    <attr name="instantiatingWizardURL"
+                        urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/ClojureTemplateDescription.html"/>
+                    <attr name="instantiatingIterator"
+                        methodvalue="org.enclojure.ide.nb.clojure.project.ClojureTemplateWizardIterator.createIterator"/>
+                    <attr name="template" boolvalue="true"/>
+                    <attr name="SystemFileSystem.icon"
+                        urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
+                </file>
+                <file name="Clojure 1.2-SNAPSHOT Maven Project" url="nbresloc:/org/enclojure/ide/templates/project/Clojure-1.2-SNAPSHOT/Clojure-1.2-SNAPSHOT.zip">
+                    <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                    <attr name="instantiatingWizardURL"
+                        urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/ClojureTemplateDescription.html"/>
+                    <attr name="instantiatingIterator"
+                        methodvalue="org.enclojure.ide.nb.clojure.project.ClojureTemplateWizardIterator.createIterator"/>
+                    <attr name="template" boolvalue="true"/>
+                    <attr name="SystemFileSystem.icon"
+                        urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
+                </file>
             </folder>
             <folder name="Samples">
                 <folder name="Clojure">
-                    <file name="Relevance LabRepl Project" url="nbresloc:/org/enclojure/ide/templates/project/RelevanceLabReplProject.zip">
+<!--                    <file name="Relevance LabRepl Project" url="nbresloc:/org/enclojure/ide/templates/project/RelevanceLabReplProject.zip">
                         <attr name="displayName"
                             bundlevalue="org.enclojure.ide.project.samples.Bundle#Relevance.LabRepl.name"/>
                         <attr name="instantiatingIterator"
@@ -645,7 +666,7 @@
                         <attr name="instantiatingWizardURL"
                             urlvalue="nbresloc:/org/enclojure/ide/project/samples/RelevanceLabReplDescription.html"/>
                         <attr name="template" boolvalue="true"/>
-                    </file>
+                    </file>-->
                 </folder>
             </folder>
         </folder>

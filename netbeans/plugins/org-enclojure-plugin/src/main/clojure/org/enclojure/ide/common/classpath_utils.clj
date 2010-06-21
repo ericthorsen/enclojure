@@ -302,6 +302,7 @@ use on a jvm startup."
   "For a given project we want a map of:
 {:source-roots :execute-paths}"
   ([#^Project p]
+    (logger/info "might be a sub-project call for " p)
     (when p
         (loop [sources (get-source-roots p) ret {}]
         (if-let [source (first sources)]
@@ -340,6 +341,7 @@ in order to promote clojure finding the source and loading that before anything 
     (loop [sub-projects 
            (when-let [subpp (-> p .getLookup
                          (.lookup org.netbeans.spi.project.SubprojectProvider))]
+             (logger/info "Found subproject..............")
              (.getSubprojects subpp))
            cps {}]
       (if-let [subp (first sub-projects)]
