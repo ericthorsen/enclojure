@@ -15,31 +15,31 @@
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
             <artifactId>websvccommon1</artifactId>
-            <version>${netbeans.version}</version>
+            <version>${netbeans.release}</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
             <artifactId>platform11</artifactId>
-            <version>${netbeans.version}</version>
+            <version>${netbeans.release}</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
             <artifactId>ide12</artifactId>
-            <version>${netbeans.version}</version>
+            <version>${netbeans.release}</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
             <artifactId>nb6.8</artifactId>
-            <version>${netbeans.version}</version>
+            <version>${netbeans.release}</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
             <artifactId>java</artifactId>
-            <version>${netbeans.version}</version>
+            <version>${netbeans.release}</version>
             <type>pom</type>
         </dependency>
         <dependency>

@@ -59,7 +59,7 @@
         <module>Netbeans 6.8</module>
     </modules>
     <properties>
-        <netbeans.version>RELEASE68</netbeans.version>
+        <netbeans.release>RELEASE68</netbeans.release>
         <brandingToken>netbeans68enclojure</brandingToken>
     </properties>
 </project>

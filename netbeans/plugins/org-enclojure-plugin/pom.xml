@@ -16,15 +16,8 @@
         <project.templates.dest></project.templates.dest>
         <sample.projects.source>${templates.basedir}/netbeans/SampleProjects</sample.projects.source>
         <sample.projects.dest></sample.projects.dest>
-        <netbeans.release>RELEASE68</netbeans.release>
+        <netbeans.release>RELEASE69</netbeans.release>
     </properties>
-
-  <!-- <parent>
-    <artifactId>lib</artifactId>
-    <groupId>org.enclojure</groupId>
-    <version>1.1.0</version>
-  </parent>
-  -->
 
     <repositories>
         <!-- this is a remote repository hosting the netbeans api artifacts.
@@ -35,6 +28,9 @@
             <id>netbeans</id>
             <name>repository hosting netbeans.org api artifacts</name>
             <url>http://bits.netbeans.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     <repository>
       <id>clojure-releases</id>
@@ -161,7 +157,7 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-loaders</artifactId>
-            <version>${netbeans.release}</version>
+            <version>RELEASE69</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -279,11 +275,6 @@
             <version>${netbeans.release}</version>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-modules-templates</artifactId>
-            <version>${netbeans.release}</version>
-        </dependency>
-        <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-editor-hints</artifactId>
             <version>${netbeans.release}</version>
@@ -341,16 +332,10 @@
             <version>${netbeans.release}</version>
         </dependency>
         <dependency>
-            <artifactId>swing-layout-1.0.4</artifactId>
-            <groupId>org.netbeans.external</groupId>
-            <type>jar</type>
-            <version>${netbeans.release}</version>
-        </dependency>
-        <dependency>
             <artifactId>script-api</artifactId>
             <groupId>org.netbeans.external</groupId>
             <type>jar</type>
-            <version>${netbeans.release}</version>
+            <version>RELEASE68</version>
         </dependency>
         <dependency>
             <artifactId>slf4j-api</artifactId>
@@ -393,11 +378,6 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-queries</artifactId>
-            <version>${netbeans.release}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-jdesktop-layout</artifactId>
             <version>${netbeans.release}</version>
         </dependency>
         <dependency>
@@ -487,8 +467,8 @@
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-libs-jsr223</artifactId>
-            <version>${netbeans.release}</version>
+            <artifactId>org-openide-util-lookup</artifactId>
+            <version>RELEASE69</version>
         </dependency>
     </dependencies>
 
@@ -748,11 +728,12 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.2</version>
                 <extensions>true</extensions>
                 <configuration>
                     <descriptor>src/main/nbm/module.xml</descriptor>
                     <brandingToken>Enclojure.org</brandingToken>
+                    <useOSGiDependencies>false</useOSGiDependencies>
                     <!-- <netbeansInstallation>/Applications/NetBeans/NetBeans 6.8.app/Content/Resrouces/Netbeans</netbeansInstallation> -->
                 </configuration>
             </plugin>

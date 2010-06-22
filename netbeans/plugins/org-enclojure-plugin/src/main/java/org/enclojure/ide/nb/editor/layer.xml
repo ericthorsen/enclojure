@@ -588,7 +588,6 @@
             <file name="ClojureMimeTypeResolver.xml" url="ClojureMimeTypeResolver.xml">
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
                 <attr name="position" intvalue="1234"/>
-
             </file>
         </folder>
     </folder>

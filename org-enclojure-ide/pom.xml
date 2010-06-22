@@ -13,11 +13,17 @@
   <name>org-enclojure-ide</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-	<dependency>
-      <groupId>org.swinglabs</groupId>
-      <artifactId>swing-layout</artifactId>
-      <version>1.0.3</version>
-    </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-jdesktop-layout</artifactId>
+            <version>${netbeans.release}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>swing-layout-1.0.4</artifactId>
+                    <groupId>org.netbeans.external</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 	<dependency>
       <groupId>org.enclojure</groupId>
       <artifactId>org-enclojure-commons</artifactId>
@@ -36,7 +42,7 @@
 	<dependency>
         <groupId>org.netbeans.api</groupId>
         <artifactId>org-netbeans-modules-lexer</artifactId>
-        <version>RELEASE68</version>
+        <version>${netbeans.release}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -44,6 +50,11 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>org.netbeans.api</groupId>
+          <artifactId>org-openide-util-lookup</artifactId>
+          <version>RELEASE69</version>
+      </dependency>
   </dependencies>
 </project>
 
