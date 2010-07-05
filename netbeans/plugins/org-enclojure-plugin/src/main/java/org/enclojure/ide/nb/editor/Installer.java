@@ -33,12 +33,14 @@ import org.openide.modules.ModuleInstall;
  * often not needed at all.
  */
 public class Installer extends ModuleInstall {
+
     final Var requireFn = RT.var("clojure.core","require");
     final IFn setupTrackingFn = (IFn)RT.var("org.enclojure.ide.nb.classpaths.listeners", "start-service");
 
     @Override
     public void restored() {
-
+//        final  Logger logger = Logger.getLogger("org.netbeans.modules");
+//       logger.setLevel(java.util.logging.Level.INFO );
         try {
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.classpaths.resource-tracking"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.completion.symbol-caching"));
@@ -89,7 +91,6 @@ public class Installer extends ModuleInstall {
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.repl-win"));
 
 //            Logger logger = Logger.getLogger("org.netbeans.modules.debugger.jpda.breakpoints");
-//            logger.setLevel(java.util.logging.Level.ALL );
 
         } catch (Exception ex) {
             Logger.getLogger(ReplPanel.class.getName()).log(Level.SEVERE, null, ex);

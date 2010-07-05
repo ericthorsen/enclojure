@@ -308,23 +308,29 @@
     </folder>
 
     <folder name="Actions">
-        <!--
-        <folder name="Edit">
-        </folder>
-        -->
         <folder name="Clojure">
             <file name="org-enclojure-ide-nb-actions-ConnectExternalReplAction.instance">
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
                 <attr name="delegate" newvalue="org.enclojure.ide.nb.actions.ConnectExternalReplAction"/>
                 <attr name="displayName" bundlevalue="org.enclojure.ide.nb.actions.Bundle#CTL_ConnectExternalReplAction"/>
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="iconBase" stringvalue="org/enclojure/ide/nb/editor/resources/enclojure 16x16.png"/>
                 <attr name="noIconInMenu" stringvalue="false"/>
             </file>
-            <file name="org-enclojure-ide-nb-actions-CreateStandaloneReplAction.instance">
+<!--            <file name="org-enclojure-ide-nb-actions-CreateStandaloneReplAction.instance">
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
                 <attr name="delegate" newvalue="org.enclojure.ide.nb.actions.CreateStandaloneReplAction"/>
                 <attr name="displayName" bundlevalue="org.enclojure.ide.nb.actions.Bundle#CTL_CreateStandaloneReplAction"/>
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="iconBase" stringvalue="org/enclojure/ide/nb/editor/resources/enclojure 16x16.png"/>
+                <attr name="noIconInMenu" stringvalue="false"/>
+            </file>-->
+            <file name="org-enclojure-ide-nb-editor-ReplAction.instance">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
+                <attr name="component" methodvalue="org.enclojure.ide.nb.editor.ReplTopComponent.findInstance"/>
+                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.editor.Bundle#CTL_EnclojureIDEReplAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
+                <attr name="iconBase" stringvalue="org/enclojure/ide/nb/editor/resources/enclojure 16x16.png"/>
                 <attr name="noIconInMenu" stringvalue="false"/>
             </file>
             <file name="org-enclojure-ide-nb-actions-LoadFile.instance"/>
@@ -347,15 +353,10 @@
                 <attr name="noIconInMenu" stringvalue="false"/>
             </file>
         </folder>
-        <!-- <folder name="Keymaps"/> -->
         <folder name="Edit">
             <file name="org-enclojure-ide-nb-actions-ChangeReplNamespaceAction.instance"/>
             <file name="org-enclojure-ide-nb-actions-SelectTopExpr.instance"/>
         </folder>
-        <!-- //?? Top level menu to start stop project repl under "Run" -->
-        <!--<folder name="Project">
-            <file name="org-enclojure-ide-nb-actions-RunProjectWithReplAction.instance"/>
-        </folder>-->
         <folder name="GlassFish">
             <file name="org-enclojure-ide-nb-actions-EvalExpressionInReplAction.instance"/>
         </folder>
@@ -370,22 +371,6 @@
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
                 <attr name="noIconInMenu" stringvalue="false"/>
             </file>
-        </folder>
-        <folder name="Window">
-            <file name="org-enclojure-ide-nb-editor-ReplAction.instance">
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
-                <attr name="component" methodvalue="org.enclojure.ide.nb.editor.ReplTopComponent.findInstance"/>
-                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.editor.Bundle#CTL_EnclojureIDEReplAction"/>
-                <attr name="iconBase" stringvalue="org/enclojure/ide/nb/editor/enclojure 16x16.png"/>
-                <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
-            </file>
-            <!--<file name="org-enclojure-ide-nb-editor-ClojureReplAction.instance">
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
-                <attr name="component" methodvalue="org.enclojure.ide.nb.editor.ReplTopComponent.findClojureReplInstance"/>
-                <attr name="displayName" bundlevalue="org.enclojure.ide.nb.editor.Bundle#CTL_ClojureReplAction"/>
-                <attr name="iconBase" stringvalue="org/enclojure/ide/nb/editor/enclojure 16x16.png"/>
-                <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
-            </file>-->
         </folder>
     </folder>
 
@@ -445,18 +430,30 @@
             </file>
         </folder>
         <folder name="Window">
-            <file name="org-enclojure-ide-nb-actions-ConnectExternalReplAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ConnectExternalReplAction.instance"/>
-                <attr name="position" intvalue="0"/>
-            </file>
-            <file name="org-enclojure-ide-nb-actions-CreateStandaloneReplAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-CreateStandaloneReplAction.instance"/>
-                <attr name="position" intvalue="100"/>
-            </file>
-            <file name="ReplAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/Window/org-enclojure-ide-nb-editor-ReplAction.instance"/>
-                <attr name="position" intvalue="101"/>
-            </file>
+<!--            <folder name="ClojureRepl">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.core.io.ui.Bundle"/>
+                <attr name="position" intvalue="1250"/> -->
+                <file name="org-enclojure-nbmodule-separatorBefore.instance">
+                    <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                    <attr name="position" intvalue="1775"/>
+                </file>
+                <file name="org-enclojure-ide-nb-actions-ConnectExternalReplAction.shadow">
+                    <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ConnectExternalReplAction.instance"/>
+                    <attr name="position" intvalue="1776"/>
+                </file>
+<!--                <file name="org-enclojure-ide-nb-actions-CreateStandaloneReplAction.shadow">
+                    <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-CreateStandaloneReplAction.instance"/>
+                    <attr name="position" intvalue="1777"/>
+                </file>-->
+                <file name="ReplAction.shadow">
+                    <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-editor-ReplAction.instance"/>
+                    <attr name="position" intvalue="1778"/>
+                </file>
+                <file name="SeparatorAfterToggle.instance">
+                    <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                    <attr name="position" intvalue="1779"/>
+                </file>
+  <!--          </folder> -->
         </folder>
         <folder name="Edit">
             <file name="org-enclojure-nbmodule-separatorBefore.instance">
@@ -575,13 +572,6 @@
         </folder>
     </folder>
 
-    <folder name="Menu">
-        <folder name="Window">
-            <!--<file name="ClojureReplAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/Window/org-enclojure-ide-nb-editor-ClojureReplAction.instance"/>
-            </file>-->
-        </folder>
-    </folder>
 
     <folder name="Services">
         <folder name="MIMEResolver">

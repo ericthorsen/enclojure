@@ -13,17 +13,6 @@
   <name>org-enclojure-repl-client</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-jdesktop-layout</artifactId>
-            <version>${netbeans.release}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>swing-layout-1.0.4</artifactId>
-                    <groupId>org.netbeans.external</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 	<dependency>
       <groupId>org.enclojure</groupId>
       <artifactId>org-enclojure-commons</artifactId>

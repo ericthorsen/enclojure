@@ -11,28 +11,48 @@
   <name>ClojureProjectTemplate</name>
   <description>ClojureProjectTemplate</description>
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <resources>
-        <resource>
-            <directory>resources</directory>
-            <includes>
-                <include>*</include>
-            </includes>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+            <include>**/*.clj</include>
+        </includes>
         </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
     </resources>
-    <!--<resourceDirectory>resources</resourceDirectory>-->
-    <testSourceDirectory>test</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>src/test/java</directory>
+        <includes>
+            <include>**/*.clj</include>
+        </includes>
+        </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>com.theoryinpractise</groupId>
         <artifactId>clojure-maven-plugin</artifactId>
         <version>1.3.2</version>
         <configuration>
-          <sourceDirectories>
-            <sourceDirectory>src</sourceDirectory>
+         <sourceDirectories>
+            <sourceDirectory>src/main/java</sourceDirectory>
           </sourceDirectories>
+          <testSourceDirectories>
+            <testSourceDirectory>src/test/java</testSourceDirectory>
+          </testSourceDirectories>
           <clojureOptions>-Xmx1G</clojureOptions>
         </configuration>
+        <executions>
+          <execution>
+            <id>compile-clojure</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
