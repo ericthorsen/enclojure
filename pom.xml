@@ -17,7 +17,7 @@
     <url>http://enclojure.org/</url>
     <description>Enclojure library.</description>
     <name>Enclojure Tools</name>
-  <packaging>pom</packaging>
+  	<packaging>pom</packaging>
   <licenses>
     <license>
       <name>Eclipse Public License 1.0</name>
