@@ -257,11 +257,12 @@ See the Enclojure category under preferences to view your settings"
 
 (defmethod as-str org.openide.filesystems.FileObject
   [f]
-  (as-str (str f)))
+  (as-str (str (.getPath f))))
 
 (defn- as-canonical-str
   [s]
-  (.getCanonicalPath (File. (str s))))
+  (as-str s))
+ ; (.getCanonicalPath (File. (str s))))
 
 
 ;(defn add-jvm-properties
@@ -304,6 +305,9 @@ See the Enclojure category under preferences to view your settings"
 with java launcher."
   [#^Project p]
   (let [pbean (bean p)
+        _ (logger/info "project bean: {}"
+            (apply str (interpose " " (keys pbean))))
+        _ (logger/info "project dir: {}" (str (pbean :projectDirectory)))
         projectDirectory (as-canonical-str (pbean :projectDirectory))
         contentDirectory (when (contains?  pbean :webModule)
                            (as-canonical-str (:contentDirectory
