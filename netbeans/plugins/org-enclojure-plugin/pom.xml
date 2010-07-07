@@ -52,6 +52,12 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+        <repository>
+            <url>http://download.java.net/maven/2/</url>
+            <id>beans-binding</id>
+            <layout>default</layout>
+            <name>Repository for library Library[beans-binding]</name>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -294,23 +300,25 @@
             <artifactId>org-openide-explorer</artifactId>
             <version>RELEASE69</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>beansbinding-1.2.1</artifactId>
             <version>RELEASE69</version>
         </dependency>
+        -->
         <dependency>
             <artifactId>org-netbeans-modules-project-libraries</artifactId>
             <groupId>org.netbeans.api</groupId>
             <type>jar</type>
             <version>RELEASE69</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <artifactId>mail</artifactId>
             <groupId>javax.mail</groupId>
             <type>jar</type>
             <version>1.4</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <artifactId>javac-api-nb-7.0-b07</artifactId>
             <groupId>org.netbeans.external</groupId>
@@ -479,6 +487,11 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util-lookup</artifactId>
             <version>RELEASE69</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jdesktop</groupId>
+            <artifactId>beansbinding</artifactId>
+            <version>1.2.1</version>
         </dependency>
     </dependencies>
 
