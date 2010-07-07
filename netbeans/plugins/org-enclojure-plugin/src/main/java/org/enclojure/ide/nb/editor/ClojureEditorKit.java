@@ -32,6 +32,10 @@ import org.openide.util.Lookup;
 import java.util.prefs.Preferences;
 import org.netbeans.api.editor.settings.SimpleValueNames;
 
+import javax.swing.Action;
+import javax.swing.text.TextAction;
+import org.netbeans.editor.ext.ExtKit;
+
 @SuppressWarnings("unchecked") 
 public class ClojureEditorKit extends NbEditorKit {
 
@@ -81,4 +85,19 @@ public class ClojureEditorKit extends NbEditorKit {
     public String getContentType() {
         return MIME_TYPE;
     }
+
+    @Override
+    protected Action[] createActions() {
+        Action[] superActions = super.createActions();
+
+        final String COMMENT_CHAR = ";";
+
+        return TextAction.augmentList(superActions, new Action[]{
+                    new ExtKit.ToggleCommentAction(COMMENT_CHAR),
+                    new ExtKit.CommentAction(COMMENT_CHAR),
+                    new ExtKit.UncommentAction(COMMENT_CHAR),
+        });
+    }
+
+
 }

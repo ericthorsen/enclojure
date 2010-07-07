@@ -317,7 +317,6 @@
             (dosync (alter -path-listener- (fn [_]))
                 (alter -reader-queues- (fn [_]))))))
 
-
 (defn start-service
   #^{:start true}
   []
@@ -327,8 +326,3 @@
       (alter -reader-queues- merge (new-reader-queues))
       (alter -path-listener- (fn [_] (start-path-listener)))))
 
-;      (future #(symbol-caching/reload-boot-path-all))
-      ; not sure about this?
-;      (let [c (.getPriority (Thread/currentThread))]
-;        (.setPriority (Thread/currentThread) (max 1 (- c 2)))
-;        (.setPriority (Thread/currentThread) c))))

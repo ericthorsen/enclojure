@@ -36,6 +36,7 @@ public class Installer extends ModuleInstall {
 
     final Var requireFn = RT.var("clojure.core","require");
     final IFn setupTrackingFn = (IFn)RT.var("org.enclojure.ide.nb.classpaths.listeners", "start-service");
+    final IFn stopTrackingFn = (IFn)RT.var("org.enclojure.ide.nb.classpaths.listeners", "stop-service");
 
     @Override
     public void restored() {
@@ -101,6 +102,7 @@ public class Installer extends ModuleInstall {
    @Override
    public boolean closing() {
        try {
+           stopTrackingFn.invoke();
            RT.var("org.enclojure.ide.repl.repl-manager", "stop-repl-servers").invoke();
        } catch (Throwable e) {
            Logger.getLogger(ReplPanel.class.getName()).log(Level.SEVERE, null, e);
