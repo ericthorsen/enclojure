@@ -33,10 +33,7 @@
 (defn get-pref-file-base
   "Given a config category, returns a path for storing/retrieving config data for the given category"
   []
-  (let [env (into {} (System/getenv))
-        home (or (env "USERPROFILE") (env "user.home") (env "netbeans.user")
-               (env "HOME") (env "HOMEPATH"))]
-        (str home (File/separator) ".netbeans" (File/separator) "enclojure-prefs")))
+  (str (System/getProperty "netbeans.user") (File/separator) "config" (File/separator) "enclojure-prefs"))
 
 (defn get-pref-file-path 
   "Given a config category, returns a path for storing/retrieving config data for the given category"
