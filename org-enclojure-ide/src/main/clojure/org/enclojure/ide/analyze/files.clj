@@ -75,10 +75,6 @@
             (. sb (append (char c)))
             (recur (. istream (read))))))))
 
-;(defmethod form-parse 'load [form]
-;  (conj (get-def-attribs-for-clojure-form form)
-;    :type :func :disp-value (nth form 2)
-;    :arglists (get-arglists form 3)))
 
 (defn skip-to-next-form [#^CharCountingPushbackReader is]
   (let [c (char (.read #^CharCountingPushbackReader is))]
@@ -87,11 +83,6 @@
         (= c \space))
         (recur #^CharCountingPushbackReader is)
      (.unread #^CharCountingPushbackReader is (int c)))))
-
-	;                            (catch Throwable t
-	;                                (println "Could not parse the " (inc (count forms))
-	;                                    " form in " additional-attribs " form:";
-	;                                    form " error:" (.getMessage t)))))
 
 (def #^{:private true} EOF (Object.))
 

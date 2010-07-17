@@ -83,7 +83,7 @@
 ;        (recur (inc count))
 ;        count))))
 
-; patch from Dar’o Macchi - 2009-11-17
+; patch from Darï¿½o Macchi - 2009-11-17
  (defn count-leading-spaces [ts]
    (let [token-text (-> ts .token .text)]
      (loop [count 0]
@@ -199,11 +199,14 @@
   (let [#^TokenSequence ts (.tokenSequence (TokenHierarchy/get document))
         ns-pred #(or (token-match :ns-publics "ns" %1)
                    (token-match :ns-publics "in-ns" %1))]
-    (.moveStart ts)
-    (when (move-next ns-pred ts)
-      (when-let [position (get-top-enclosing-form ts (.offset ts))]
-        (.getText document (:start position)
-          (- (:end position) (:start position)))))))
+    (if ts
+      (do
+        (.moveStart ts)
+        (when (move-next ns-pred ts)
+          (when-let [position (get-top-enclosing-form ts (.offset ts))]
+            (.getText document (:start position)
+              (- (:end position) (:start position))))))
+      (throw (Exception. (format "Enable for create TokenSequence for %s" document))))))
 
 (defn get-namespace [pane]
   (when-let [nsnode (get-namespace-node pane)]
