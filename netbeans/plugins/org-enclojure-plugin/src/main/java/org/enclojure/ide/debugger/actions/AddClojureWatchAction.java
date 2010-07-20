@@ -64,13 +64,15 @@ import org.openide.util.HelpCtx;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 
+import org.enclojure.ide.core.LogAdapter;
+import java.util.logging.Level;
 
 public class AddClojureWatchAction extends CallableSystemAction {
 
+    private static final LogAdapter LOG = new LogAdapter(AddClojureWatchAction.class.getName());
+    
     private static String watchHistory = ""; // NOI18N
    
-
-
     protected boolean asynchronous () {
         return false;
     }
@@ -121,11 +123,11 @@ public class AddClojureWatchAction extends CallableSystemAction {
 //        Utils.log("Watch: ELIdentifier = " + t);
         
         boolean isScriptlet = Utils.isScriptlet();
-        Utils.log("Watch: isScriptlet: " + isScriptlet);
+        LOG.log(Level.FINEST, "Watch: isScriptlet: " + isScriptlet);
         
         if ((t == null) && (isScriptlet)) {
             t = Utils.getJavaIdentifier();
-            Utils.log("Watch: javaIdentifier = " + t);
+            LOG.log(Level.FINEST, "Watch: javaIdentifier = " + t);
         }
         
         if (t != null) {

@@ -49,7 +49,7 @@
 package org.enclojure.ide.debugger;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,9 +71,9 @@ import org.openide.filesystems.FileObject;
 public class EngineContextProviderImpl extends SourcePathProvider {
     
     private static boolean verbose = 
-        System.getProperty ("netbeans.debugger.enginecontextproviderimpl") != null;
+    System.getProperty ("netbeans.debugger.enginecontextproviderimpl") != null;
     
-    private static Logger logger = Logger.getLogger("org.enclojure.clojure.debugger");
+    private static final LogAdapter LOG = new LogAdapter(EngineContextProviderImpl.class.getName());
 
     private static final Pattern thisDirectoryPattern = Pattern.compile("(/|\\A)\\./");
     private static final Pattern parentDirectoryPattern = Pattern.compile("(/|\\A)([^/]+?)/\\.\\./");
@@ -128,7 +128,7 @@ public class EngineContextProviderImpl extends SourcePathProvider {
         if(fo != null)
             return fo.getURL ().toString ();
         } catch(Exception e) {
-            logger.log(Level.WARNING,"cannot find URL for "+relativePath);
+            LOG.log(Level.WARNING,"cannot find URL for "+relativePath);
         } 
        } 
        return null;

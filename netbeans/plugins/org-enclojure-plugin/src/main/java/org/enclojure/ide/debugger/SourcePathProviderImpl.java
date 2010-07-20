@@ -58,7 +58,7 @@ import java.util.*;
 import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -81,7 +81,6 @@ import org.netbeans.api.project.SourceGroup;
 import org.netbeans.api.project.ui.OpenProjects;
 import org.netbeans.spi.java.classpath.support.ClassPathSupport;
 
-import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileStateInvalidException;
 import org.openide.filesystems.FileUtil;
@@ -92,9 +91,11 @@ import org.openide.util.WeakListeners;
 
 public class SourcePathProviderImpl extends SourcePathProvider {
 
+    private static final LogAdapter LOG = new LogAdapter(SourcePathProviderImpl.class.getName());
+
     private static boolean verbose =
             System.getProperty("netbeans.debugger.sourcepathproviderimpl") != null;
-    private static Logger logger = Logger.getLogger("org.netbeans.modules.debugger.jpda.projects");
+    
     private static final Pattern thisDirectoryPattern = Pattern.compile("(/|\\A)\\./");
     private static final Pattern parentDirectoryPattern = Pattern.compile("(/|\\A)([^/]+?)/\\.\\./");
     /** Contains all known source paths + jdk source path for JPDAStart task */
@@ -242,14 +243,13 @@ public class SourcePathProviderImpl extends SourcePathProvider {
         try {
             if (Utils.isClojure(relativePath)) {
                 File f = new File(relativePath);
-                logger.log(Level.ALL, " checkClojureFile " + relativePath);
+                LOG.log(Level.ALL, " checkClojureFile " + relativePath);
                 if (f.exists()) {
                     return f.toURL().toString();
                 }
             }
         } catch (Exception e) {
-            ErrorManager.getDefault().log(ErrorManager.WARNING,
-                    "checkClojureFile failed to resolve " + relativePath + " " + e.getMessage());
+            LOG.log(Level.WARNING, "checkClojureFile failed to resolve " + relativePath + " " + e.getMessage());
         }
         return null;
     }
@@ -274,7 +274,7 @@ public class SourcePathProviderImpl extends SourcePathProvider {
         }
         FileObject fo;
         try {
-            logger.log(Level.ALL, " SourcePathProviderImpl::getURL - " + relativePath);
+            LOG.log(Level.ALL, " SourcePathProviderImpl::getURL - " + relativePath);
 
             if (originalSourcePath == null) {
                 fo = GlobalPathRegistry.getDefault().findResource(relativePath);
@@ -294,7 +294,7 @@ public class SourcePathProviderImpl extends SourcePathProvider {
                 }
             }
             if (fo == null) {
-                logger.log(Level.ALL, " SourcePathProviderImpl::getURL - NO GO for: " + relativePath);
+                LOG.log(Level.ALL, " SourcePathProviderImpl::getURL - NO GO for: " + relativePath);
 
                 return null;
             }
@@ -376,7 +376,7 @@ public class SourcePathProviderImpl extends SourcePathProvider {
             System.out.println("SPPI: getRelativePath " + url);
         }
         try {
-            logger.log(Level.ALL, " SourcePathProviderImpl::getRelativePath - " + url);
+            LOG.log(Level.ALL, " SourcePathProviderImpl::getRelativePath - " + url);
 
             fo = URLMapper.findFileObject(theUrl=new URL(url));
             if (verbose) {
@@ -412,7 +412,7 @@ public class SourcePathProviderImpl extends SourcePathProvider {
                     includeExtension);
         }
         if (relativePath == null) {
-            logger.log(Level.ALL, " SourcePathProviderImpl::getRelativePath - NO GO! " + url);
+            LOG.log(Level.ALL, " SourcePathProviderImpl::getRelativePath - NO GO! " + url);
         }
         return relativePath;
     }
@@ -490,9 +490,9 @@ public class SourcePathProviderImpl extends SourcePathProvider {
      * @param sourceRoots a new array of sourceRoots
      */
     public void setSourceRoots(String[] sourceRoots) {
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("SourcePathProviderImpl.setSourceRoots(" + java.util.Arrays.asList(sourceRoots) + ")");
-        }
+
+        LOG.log(Level.FINE, "SourcePathProviderImpl.setSourceRoots(" + java.util.Arrays.asList(sourceRoots) + ")");
+
         Set<String> newRoots = new HashSet<String>(Arrays.asList(sourceRoots));
         ClassPath oldCP = null;
         ClassPath newCP = null;

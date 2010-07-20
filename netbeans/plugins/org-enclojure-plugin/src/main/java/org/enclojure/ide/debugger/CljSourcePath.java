@@ -70,10 +70,13 @@ import org.netbeans.api.debugger.jpda.JPDAThread;
 import org.netbeans.spi.debugger.jpda.EditorContext;
 import org.netbeans.spi.debugger.jpda.EditorContext.Operation;
 import org.netbeans.spi.debugger.jpda.SourcePathProvider;
-import org.openide.ErrorManager;
+import java.util.logging.Level;
+import org.enclojure.ide.core.LogAdapter;
 
 @SuppressWarnings("unchecked") 
 public class CljSourcePath {
+
+    private static final LogAdapter LOG = new LogAdapter(CljSourcePath.class.getName());
 
     private ContextProvider contextProvider;
     private SourcePathProvider sourcePathProvider;
@@ -283,7 +286,7 @@ public class CljSourcePath {
                         convertSlash(csf.getSourcePath(stratumn)), true);
             }
             if (url == null) {
-                ErrorManager.getDefault().log(ErrorManager.WARNING,
+                LOG.log(Level.WARNING,
                         "Show Source: No URL for source path " + csf.getSourcePath(stratumn) +
                         "\nThe reason is likely no opened project for this source file.");
                 return false;
@@ -300,7 +303,7 @@ public class CljSourcePath {
             String url = getURL(
                     convertClassNameToRelativePath(csf.getClassName()), true);
             if (url == null) {
-                ErrorManager.getDefault().log(ErrorManager.WARNING,
+                LOG.log(Level.WARNING,
                         "Show Source: No source URL for class " + csf.getClassName() +
                         "\nThe reason is likely no opened project for the source file.");
                 return false;
@@ -339,7 +342,7 @@ public class CljSourcePath {
 
     public static String convertClassNameToRelativePath(
             String className) {
-        ErrorManager.getDefault().log(ErrorManager.WARNING,
+        LOG.log(Level.WARNING,
                 "convertClassNameToRelativePath called for class " + className);
         return "";
     }

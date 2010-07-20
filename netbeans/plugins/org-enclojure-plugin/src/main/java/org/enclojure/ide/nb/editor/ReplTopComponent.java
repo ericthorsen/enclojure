@@ -19,7 +19,8 @@
 package org.enclojure.ide.nb.editor;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
+import java.util.logging.Level;
+import org.enclojure.ide.core.LogAdapter;
 import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
@@ -49,6 +50,8 @@ import org.netbeans.api.editor.settings.SimpleValueNames;
  */
 @SuppressWarnings("unchecked") 
 final public class ReplTopComponent extends TopComponent {
+
+    private static final LogAdapter LOG = new LogAdapter(ReplTopComponent.class.getName());
 
     private static ReplTopComponent instance;
     //??private static ReplTopComponent clojureInstance;
@@ -293,8 +296,8 @@ final public class ReplTopComponent extends TopComponent {
         String ideReplID = PREFERRED_ID_prefix + IDE_REPL;
         TopComponent win = WindowManager.getDefault().findTopComponent(ideReplID);
         if (win == null) {
-            Logger.getLogger(ReplTopComponent.class.getName()).warning(
-                    "Cannot find " + ideReplID + " component. It will not be located properly in the window system.");
+            LOG.log(Level.WARNING, "Cannot find " + ideReplID +
+                    " component. It will not be located properly in the window system.");
             return getDefault();
         }
 
@@ -302,7 +305,7 @@ final public class ReplTopComponent extends TopComponent {
             return (ReplTopComponent) win;
         }
 
-        Logger.getLogger(ReplTopComponent.class.getName()).warning(
+        LOG.log(Level.WARNING,
                 "There seem to be multiple components with the '" + ideReplID +
                 "' ID. That is a potential source of errors and unexpected behavior.");
         return getDefault();

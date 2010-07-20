@@ -60,15 +60,20 @@ import org.enclojure.ide.debugger.util.Utils;
 import org.netbeans.api.debugger.*;
 import org.netbeans.api.debugger.jpda.*;
 import org.openide.loaders.DataObject;
+import org.enclojure.ide.core.LogAdapter;
+import java.util.logging.Level;
+
 
 public class ClojureToolTipAnnotation extends Annotation implements Runnable {
+
+    private static final LogAdapter LOG = new LogAdapter(ClojureToolTipAnnotation.class.getName());
     
     private String toolTipText = null;
 
     private StyledDocument doc;
 
     public String getShortDescription() {
-        Utils.log("ClojureTooltip: getShortDescription");
+        LOG.log(Level.FINEST, "ClojureTooltip: getShortDescription");
         
         toolTipText = null;
         DebuggerEngine currentEngine = DebuggerManager.getDebuggerManager ().
@@ -96,7 +101,7 @@ public class ClojureToolTipAnnotation extends Annotation implements Runnable {
 
     public void run () {
 
-        Utils.log("ClojureTooltip: run");
+        LOG.log(Level.FINEST, "ClojureTooltip: run");
 
         //1) get tooltip text
         Line.Part lp = (Line.Part)getAttachedAnnotatable();
@@ -109,12 +114,12 @@ public class ClojureToolTipAnnotation extends Annotation implements Runnable {
         
         //first try EL
         String text = Utils.getELIdentifier(doc, ep,NbDocument.findLineOffset(doc, lp.getLine().getLineNumber()) + lp.getColumn());
-        Utils.log("JspToClojureTooltipoltip: ELIdentifier = " + text);
+        LOG.log(Level.FINEST, "JspToClojureTooltipoltip: ELIdentifier = " + text);
 
         boolean isScriptlet = Utils.isScriptlet(
             doc, ep, NbDocument.findLineOffset(doc, lp.getLine().getLineNumber()) + lp.getColumn()
         );
-        Utils.log("isScriptlet: " + isScriptlet);
+        LOG.log(Level.FINEST, "isScriptlet: " + isScriptlet);
         
         //if not, try Java
         if ((text == null) && (isScriptlet)) {
@@ -122,7 +127,7 @@ public class ClojureToolTipAnnotation extends Annotation implements Runnable {
                 doc, ep, NbDocument.findLineOffset(doc, lp.getLine().getLineNumber()) + lp.getColumn()
             );
             textForTooltip = text;
-            Utils.log("ClojureTooltip: javaIdentifier = " + text);
+            LOG.log(Level.FINEST, "ClojureTooltip: javaIdentifier = " + text);
             if (text == null) {
                 return;
             }
@@ -136,7 +141,7 @@ public class ClojureToolTipAnnotation extends Annotation implements Runnable {
                                 "\", java.lang.String.class, (javax.servlet.jsp.PageContext)pageContext, null)";
         }
         
-        Utils.log("JspTooltip: fullWatch = " + text);
+        LOG.log(Level.FINEST, "JspTooltip: fullWatch = " + text);
         
         //3) obtain text representation of value of watch
         String old = toolTipText;
@@ -157,7 +162,7 @@ public class ClojureToolTipAnnotation extends Annotation implements Runnable {
         } catch (InvalidExpressionException e) {
             toolTipText = text + " = >" + e.getMessage() + "<";
         }
-        Utils.log("ClojureTooltip: " + toolTipText);
+        LOG.log(Level.FINEST, "ClojureTooltip: " + toolTipText);
         firePropertyChange (PROP_SHORT_DESCRIPTION, old, toolTipText);       
     }
 

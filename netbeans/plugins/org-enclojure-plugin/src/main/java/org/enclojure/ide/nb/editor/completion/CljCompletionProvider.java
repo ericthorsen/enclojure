@@ -24,8 +24,7 @@ package org.enclojure.ide.nb.editor.completion;
  */
 import clojure.lang.IFn;
 import clojure.lang.RT;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.enclojure.ide.core.LogAdapter;
 import javax.swing.text.JTextComponent;
 import org.netbeans.spi.editor.completion.CompletionProvider;
 import org.netbeans.spi.editor.completion.CompletionTask;
@@ -33,7 +32,7 @@ import org.openide.util.Exceptions;
 
 @SuppressWarnings("unchecked")
 public class CljCompletionProvider implements CompletionProvider {
-    static Logger logger = Logger.getLogger("CljCompletionProvider");
+    private static final LogAdapter LOG = new LogAdapter(CljCompletionProvider.class.getName());
     
     final IFn createTaskFn = (IFn)RT.var("org.enclojure.ide.nb.editor.completion.completion-task"
                                     ,"get-completion-task");

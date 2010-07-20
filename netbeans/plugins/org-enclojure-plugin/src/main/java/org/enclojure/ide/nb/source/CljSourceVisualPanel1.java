@@ -7,14 +7,16 @@ package org.enclojure.ide.nb.source;
 
 import java.util.logging.Level;
 import javax.swing.JPanel;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 
 public final class CljSourceVisualPanel1 extends JPanel {
-private Logger logger = Logger.getLogger("CljSourceVisualPane1");
+
+    private static final LogAdapter LOG = new LogAdapter(CljSourceVisualPanel1.class.getName());
+
     /** Creates new form CljSourceVisualPanel1 */
     public CljSourceVisualPanel1() {
         initComponents();
-        logger.log(Level.INFO,"ctor");
+        LOG.log(Level.INFO,"ctor");
     }
 
     @Override

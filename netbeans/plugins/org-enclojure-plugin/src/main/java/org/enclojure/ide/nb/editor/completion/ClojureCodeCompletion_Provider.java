@@ -36,7 +36,6 @@ import org.netbeans.spi.editor.completion.CompletionResultSet;
 import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionQuery;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionTask;
-import org.openide.ErrorManager;
 import clojure.lang.RT;
 import clojure.lang.Var;
 import clojure.lang.Symbol;
@@ -51,9 +50,13 @@ import org.netbeans.editor.EditorUI;
 import org.netbeans.editor.WordMatch;
 import org.netbeans.api.project.Project;
 import org.enclojure.ide.nb.editor.ReplTopComponent;
+import java.util.logging.Level;
+import org.enclojure.ide.core.LogAdapter;
 
 @SuppressWarnings("unchecked") 
 public class ClojureCodeCompletion_Provider implements CompletionProvider {
+    
+ private static final LogAdapter LOG = new LogAdapter(ClojureCodeCompletion_Provider.class.getName());
 
  static {try {
             RT.var("clojure.core","require").invoke(Symbol.create("org.enclojure.ide.nb.editor.completion.cljcodecompletion"));
@@ -344,7 +347,7 @@ public static ArrayList<String> getAllHippieMatches(JTextComponent target) {
 
 
                     } catch (BadLocationException ex) {
-                        ErrorManager.getDefault().notify(ex);
+                        LOG.log(Level.FINEST, ex.getMessage());
                     }
                 }
 

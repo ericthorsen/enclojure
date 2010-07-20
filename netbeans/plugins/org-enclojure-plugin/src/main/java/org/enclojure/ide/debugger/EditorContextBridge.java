@@ -62,10 +62,13 @@ import org.netbeans.api.debugger.jpda.CallStackFrame;
 import org.netbeans.api.debugger.jpda.JPDAThread;
 import org.netbeans.spi.debugger.jpda.EditorContext;
 import org.netbeans.spi.debugger.jpda.EditorContext.Operation;
-import org.openide.ErrorManager;
+import java.util.logging.Level;
+import org.enclojure.ide.core.LogAdapter;
 
 
 public class EditorContextBridge {
+
+    private static final LogAdapter LOG = new LogAdapter(EditorContextBridge.class.getName());
 
     public static final String FIELD = "field";
     public static final String METHOD = "method";
@@ -159,11 +162,11 @@ public class EditorContextBridge {
             if (tex instanceof RuntimeException) {
                 throw (RuntimeException) tex;
             } else {
-                ErrorManager.getDefault().notify(tex);
+                LOG.log(Level.FINEST, tex.getMessage());
                 return 0;
             }
         } catch (Exception ex) {
-            ErrorManager.getDefault().notify(ex);
+            LOG.log(Level.FINEST, ex.getMessage());
             return 0;
         }
     }
@@ -236,12 +239,11 @@ public class EditorContextBridge {
                 if (tex instanceof RuntimeException) {
                     throw (RuntimeException) tex;
                 } else {
-                    ErrorManager.getDefault().notify(tex);
+                    LOG.log(Level.FINEST, tex.getMessage());
                     return 0;
                 }
             } catch (Exception ex) {
                 // Ignore, we have another attempt with cp2
-                //ErrorManager.getDefault().notify(ex);
             }
             if (i == null || i.intValue() < 1) {
                 try {
@@ -252,11 +254,11 @@ public class EditorContextBridge {
                     if (tex instanceof RuntimeException) {
                         throw (RuntimeException) tex;
                     } else {
-                        ErrorManager.getDefault().notify(tex);
+                        LOG.log(Level.FINEST, tex.getMessage());
                         return 0;
                     }
                 } catch (Exception ex) {
-                    ErrorManager.getDefault().notify(ex);
+                    LOG.log(Level.FINEST, ex.getMessage());
                     return 0;
                 }
             }

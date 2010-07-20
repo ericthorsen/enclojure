@@ -21,6 +21,7 @@ package org.enclojure.ide.nb.clojure.project;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
+import org.enclojure.ide.core.LogAdapter;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -34,8 +35,9 @@ import org.openide.util.Exceptions;
 
 public class ClojureTemplatePanelVisual extends JPanel implements DocumentListener {
 
-    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger("org.enclojure.ide.nb.clojure.project");
-    public static final IFn selectLocationFn = 
+    private static final LogAdapter LOG = new LogAdapter(ClojureTemplatePanelVisual.class.getName());
+
+    public static final IFn selectLocationFn =
             (IFn)RT.var("org.enclojure.ide.nb.clojure.project.create", "select-location");
     public static final String PROP_PROJECT_NAME = "projectName";
 

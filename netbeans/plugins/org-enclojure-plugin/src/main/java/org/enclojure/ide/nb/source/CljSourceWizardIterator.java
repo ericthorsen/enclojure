@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 import org.netbeans.api.java.project.JavaProjectConstants;
@@ -26,7 +26,8 @@ import org.openide.util.Exceptions;
 
 public final class CljSourceWizardIterator implements WizardDescriptor.InstantiatingIterator {
 
-    private Logger logger = Logger.getLogger("CljSourceWizardIterator");
+    private static final LogAdapter LOG = new LogAdapter(CljSourceWizardIterator.class.getName());
+    
     private int index;
     private WizardDescriptor wizard;
     private WizardDescriptor.Panel[] panels;
@@ -78,7 +79,7 @@ public final class CljSourceWizardIterator implements WizardDescriptor.Instantia
                 }
             }
         }
-        logger.log(Level.INFO,"Leaving getPanels");
+        LOG.log(Level.INFO,"Leaving getPanels");
         return panels;
     }
 
@@ -103,14 +104,14 @@ public final class CljSourceWizardIterator implements WizardDescriptor.Instantia
     public void initialize(WizardDescriptor wizard) {
         this.wizard = wizard;
         try {
-            logger.log(Level.INFO,"Calling clojure init code.");
+            LOG.log(Level.INFO,"Calling clojure init code.");
             this._validatorFunc =(IFn)this._setupWizard.invoke(this, wizard);
             if(current()!=null)
                 ((CljSourceWizardPanel1)current())._validatorFunc = this._validatorFunc;
         } catch (Exception ex) {
             Exceptions.printStackTrace(ex);
         }
-        logger.log(Level.INFO,"Calling setVisible");        
+        LOG.log(Level.INFO,"Calling setVisible");
     }
 
     public void uninitialize(WizardDescriptor wizard) {

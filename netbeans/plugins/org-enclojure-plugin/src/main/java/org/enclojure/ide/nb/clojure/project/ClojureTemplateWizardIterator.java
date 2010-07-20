@@ -39,7 +39,6 @@ import javax.swing.event.ChangeListener;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.spi.project.ui.support.ProjectChooser;
 import org.netbeans.spi.project.ui.templates.support.Templates;
-import org.openide.ErrorManager;
 import org.openide.WizardDescriptor;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
@@ -50,10 +49,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import java.util.logging.Level;
+import org.enclojure.ide.core.LogAdapter;
+
 
 public class ClojureTemplateWizardIterator implements WizardDescriptor./*Progress*/InstantiatingIterator {
-    private static Object RT;
 
+    private static final LogAdapter LOG = new LogAdapter(ClojureTemplateWizardIterator.class.getName());
+
+    private static Object RT;
     private int index;
     private WizardDescriptor.Panel[] panels;
     private WizardDescriptor wiz;
@@ -206,8 +210,7 @@ public class ClojureTemplateWizardIterator implements WizardDescriptor./*Progres
             clojure.lang.RT.var("org.enclojure.ide.nb.clojure.project.create","unzip-project-files")
                     .invoke(source,projectRoot,defPackage,projectName);
         } catch (Exception ex) {
-         
-          ErrorManager.getDefault().notify(ex);
+          LOG.log(Level.FINEST, ex.getMessage());
         } 
         finally {
             source.close();

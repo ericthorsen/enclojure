@@ -55,9 +55,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import org.netbeans.api.debugger.DebuggerManager;
-import org.openide.ErrorManager;
 import org.openide.cookies.EditorCookie;
 import org.openide.util.Lookup;
 import org.openide.util.RequestProcessor;
@@ -66,8 +65,7 @@ import org.netbeans.spi.debugger.jpda.EditorContext;
 @SuppressWarnings("unchecked") 
 public class CljEditorContextImpl extends EditorContext {
 
-    
-     private static Logger logger = Logger.getLogger("org.enclojure.clojure.debugger");
+    private static final LogAdapter LOG = new LogAdapter(CljEditorContextImpl.class.getName());
 
     private static String fronting =
             System.getProperty("netbeans.debugger.fronting");
@@ -148,7 +146,7 @@ public class CljEditorContextImpl extends EditorContext {
      */
     public boolean showSource(String url, int lineNumber, Object timeStamp) {
         if(url != null && url.endsWith(".clj"))
-            logger.log(Level.INFO,"Trying to show source for :"+url);
+            LOG.log(Level.INFO,"Trying to show source for :"+url);
         return proxy().showSource(url, lineNumber, timeStamp);
     }
 
@@ -611,7 +609,7 @@ public class CljEditorContextImpl extends EditorContext {
                 if (tex instanceof RuntimeException) {
                     throw (RuntimeException) tex;
                 } else {
-                    ErrorManager.getDefault().notify(tex);
+                    LOG.log(Level.FINEST, tex.getMessage());
                     return 0;
                 }
             } catch (Exception ex) {
@@ -627,11 +625,11 @@ public class CljEditorContextImpl extends EditorContext {
                     if (tex instanceof RuntimeException) {
                         throw (RuntimeException) tex;
                     } else {
-                        ErrorManager.getDefault().notify(tex);
+                        LOG.log(Level.FINEST, tex.getMessage());
                         return 0;
                     }
                 } catch (Exception ex) {
-                    ErrorManager.getDefault().notify(ex);
+                    LOG.log(Level.FINEST, ex.getMessage());
                     return 0;
                 }
             }

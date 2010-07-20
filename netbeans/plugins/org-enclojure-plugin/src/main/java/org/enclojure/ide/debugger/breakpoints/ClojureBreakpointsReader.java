@@ -49,15 +49,15 @@
 package org.enclojure.ide.debugger.breakpoints;
 
 import org.netbeans.api.debugger.*;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import java.util.logging.Level;
 
 public class ClojureBreakpointsReader implements Properties.Reader {
 
-    private final Logger logger = Logger.getLogger(ClojureBreakpointsReader.class.getName());
+    private static final LogAdapter LOG = new LogAdapter(ClojureBreakpointsReader.class.getName());
 
     private void log(Level lvl, String msg) {
-        logger.log(lvl, msg);
+        LOG.log(lvl, msg);
     }
     
     public String [] getSupportedClassNames () {

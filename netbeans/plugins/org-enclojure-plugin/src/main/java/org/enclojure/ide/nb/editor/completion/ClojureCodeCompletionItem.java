@@ -40,7 +40,6 @@ import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionQuery;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionTask;
 import org.netbeans.spi.editor.completion.support.CompletionUtilities;
-import org.openide.ErrorManager;
 import org.openide.text.NbDocument;
 import java.util.Hashtable;
 import clojure.lang.RT;
@@ -53,9 +52,14 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JViewport;
 import org.openide.util.Exceptions;
+import java.util.logging.Level;
+import org.enclojure.ide.core.LogAdapter;
+
 
 @SuppressWarnings("unchecked") 
 public class ClojureCodeCompletionItem implements CompletionItem {
+
+    private static final LogAdapter LOG = new LogAdapter(ClojureCodeCompletionItem.class.getName());
 
     final static Var getalljavaclassesfn = RT.var("org.enclojure.ide.nb.editor.completion.cljcodecompletion", "get-all-java-classes-with-ns");
     final static Var getallclojurenamespacesfn = RT.var("org.enclojure.ide.nb.editor.completion.cljcodecompletion", "get-all-clojure-namespaces-within-nsnode");
@@ -379,7 +383,7 @@ public class ClojureCodeCompletionItem implements CompletionItem {
                     component.setCaretPosition(component.getCaretPosition() - backOffset);
 
                 } catch (BadLocationException e) {
-                    ErrorManager.getDefault().notify(ErrorManager.INFORMATIONAL, e);
+                    LOG.log(Level.FINEST, e.getMessage());
                 }
 
             }
@@ -389,7 +393,7 @@ public class ClojureCodeCompletionItem implements CompletionItem {
             try {
                 NbDocument.runAtomicAsUser(doc, change);
             } catch (BadLocationException ex) {
-                ErrorManager.getDefault().notify(ex);
+                LOG.log(Level.FINEST, ex.getMessage());
             }
 
     }

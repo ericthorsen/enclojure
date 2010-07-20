@@ -26,16 +26,19 @@ import org.apache.tools.ant.module.api.support.ActionUtils;
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ActionProvider;
 import org.netbeans.spi.project.support.ant.PropertyUtils;
-import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.Lookup;
+import java.util.logging.Level;
+import org.enclojure.ide.core.LogAdapter;
 
 /**
  *
  * @author Frank Failla
  */
 public class ClojureActionProvider implements ActionProvider {
+
+    private static final LogAdapter LOG = new LogAdapter(ClojureActionProvider.class.getName());
 
     private static final String[] supportedActions = {
         ActionProvider.COMMAND_RUN,
@@ -83,7 +86,7 @@ public class ClojureActionProvider implements ActionProvider {
                     ActionUtils.runTarget(fo, commands.get(command), null);
                 }
                 catch (IOException e) {
-                    ErrorManager.getDefault().notify(e);
+                    LOG.log(Level.FINEST, e.getMessage());
                 }
             }
         };

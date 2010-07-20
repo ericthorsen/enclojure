@@ -19,11 +19,13 @@
 package org.enclojure.ide.debugger;
 
 import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
+import java.util.logging.Level;
 import org.openide.modules.ModuleInstall;
 
 public class Installer extends ModuleInstall {
     
-    final Logger cljLog = Logger.getLogger("org.enclojure.clojure.debugger");
+    private static final LogAdapter LOG = new LogAdapter(Installer.class.getName());
 
     @Override
     public void restored()  {
@@ -31,7 +33,7 @@ public class Installer extends ModuleInstall {
             Logger logger = Logger.getLogger("org.netbeans.modules.debugger.jpda.breakpoints");
             logger.setLevel(java.util.logging.Level.ALL );
      } catch(Exception e) {
-        cljLog.throwing("org.enclojure.clojure.debugger.Installer", "restored",e);
+        LOG.log(Level.SEVERE, "restored", e);
     }
   }
 }

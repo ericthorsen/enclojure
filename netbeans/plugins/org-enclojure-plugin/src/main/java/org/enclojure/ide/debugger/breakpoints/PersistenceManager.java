@@ -51,7 +51,7 @@ package org.enclojure.ide.debugger.breakpoints;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import org.netbeans.api.debugger.Breakpoint;
 import org.netbeans.api.debugger.DebuggerEngine;
 
@@ -64,13 +64,9 @@ import org.netbeans.api.debugger.Watch;
 @SuppressWarnings("unchecked") 
 public class PersistenceManager implements LazyDebuggerManagerListener {
     
+    private static final LogAdapter LOG = new LogAdapter(PersistenceManager.class.getName());
+
     private static final String CLOJURE_PROPERTY = "clj";
-
-    private final Logger logger = Logger.getLogger(PersistenceManager.class.getName());
-
-    private void log(Level lvl, String msg) {
-        logger.log(lvl, msg);
-    }
 
     public Breakpoint[] initBreakpoints () {
         try {
@@ -86,7 +82,7 @@ public class PersistenceManager implements LazyDebuggerManagerListener {
             }
             return breakpoints;
         } catch (Exception exc) {
-            log(Level.SEVERE, exc.getMessage());
+            LOG.log(Level.SEVERE, exc.getMessage());
             exc.printStackTrace();
         }
         return new Breakpoint[] {};

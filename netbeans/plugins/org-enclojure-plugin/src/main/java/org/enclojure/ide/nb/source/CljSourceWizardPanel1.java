@@ -9,7 +9,7 @@ import java.awt.Component;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -20,7 +20,9 @@ import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 
 public class CljSourceWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor>,DocumentListener {
-    private Logger logger = Logger.getLogger("CljSourceWizardPanel1");
+
+    private static final LogAdapter LOG = new LogAdapter(CljSourceWizardPanel1.class.getName());
+
     public boolean _isValid = true;
     /**
      * The visual component that displays this panel. If you need to access the

@@ -24,7 +24,7 @@ import clojure.lang.Var;
 import clojure.lang.Symbol;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import org.enclojure.ide.repl.ReplPanel;
 import org.openide.modules.ModuleInstall;
 
@@ -34,15 +34,18 @@ import org.openide.modules.ModuleInstall;
  */
 public class Installer extends ModuleInstall {
 
+    private static final LogAdapter LOG = new LogAdapter(Installer.class.getName());
+
     final Var requireFn = RT.var("clojure.core","require");
     final IFn setupTrackingFn = (IFn)RT.var("org.enclojure.ide.nb.classpaths.listeners", "start-service");
     final IFn stopTrackingFn = (IFn)RT.var("org.enclojure.ide.nb.classpaths.listeners", "stop-service");
 
     @Override
     public void restored() {
-//        final  Logger logger = Logger.getLogger("org.netbeans.modules");
-//       logger.setLevel(java.util.logging.Level.INFO );
         try {
+
+            LOG.log(Level.FINEST, "Enclojure module restored.");
+
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.classpaths.resource-tracking"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.completion.symbol-caching"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.classpaths.listeners"));
@@ -91,10 +94,8 @@ public class Installer extends ModuleInstall {
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.source.add-file"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.repl-win"));
 
-//            Logger logger = Logger.getLogger("org.netbeans.modules.debugger.jpda.breakpoints");
-
         } catch (Exception ex) {
-            Logger.getLogger(ReplPanel.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.log(Level.SEVERE, null, ex);
         }
   
     }
@@ -105,7 +106,7 @@ public class Installer extends ModuleInstall {
            stopTrackingFn.invoke();
            RT.var("org.enclojure.ide.repl.repl-manager", "stop-repl-servers").invoke();
        } catch (Throwable e) {
-           Logger.getLogger(ReplPanel.class.getName()).log(Level.SEVERE, null, e);
+           LOG.log(Level.SEVERE, null, e);
        }
        return true;
    }

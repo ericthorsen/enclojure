@@ -55,7 +55,12 @@ import org.netbeans.api.debugger.jpda.*;
 import org.enclojure.ide.debugger.util.Utils;
 import org.openide.util.NbBundle;
 
+import org.enclojure.ide.core.LogAdapter;
+import java.util.logging.Level;
+
 public class ClojureLineBreakpoint extends Breakpoint {
+
+    private static final LogAdapter LOG = new LogAdapter(ClojureLineBreakpoint.class.getName());
 
     /** Property name for enabled status of the breakpoint. */
     public static final String PROP_ENABLED = JPDABreakpoint.PROP_ENABLED;
@@ -98,7 +103,7 @@ public class ClojureLineBreakpoint extends Breakpoint {
 
         DebuggerManager d = DebuggerManager.getDebuggerManager();
 
-        Utils.log("clojure url: " + url);
+        LOG.log(Level.FINEST, "clojure url: " + url);
 
         javalb = LineBreakpoint.create(url, lineNumber);
         javalb.setStratum("Clojure");

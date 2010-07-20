@@ -52,7 +52,7 @@ import java.io.File;
 import java.net.*;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.enclojure.ide.core.LogAdapter;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -69,19 +69,7 @@ import org.openide.windows.TopComponent;
 
 public class Utils {
     
-    /** Logger for web.debug module. */
-    private static Logger err = Logger.getLogger("org.enclojure.clojure.debugger");   
-    private static final boolean LOG = err.isLoggable(Level.FINE);
-    
-    public static Logger getEM () {
-        return err;
-    }
-    
-    public static void log (String msg) {
-        if(LOG) {
-            err.log(Level.FINE, msg);
-        }
-    }
+    private static final LogAdapter LOG = new LogAdapter(Utils.class.getName());
 
     public static Set<ClassPath> getClasspathForSource()
     {
@@ -130,7 +118,7 @@ public class Utils {
         try {
             fo = URLMapper.findFileObject(new URL(url));
         } catch (MalformedURLException e) {
-         err.log(java.util.logging.Level.SEVERE,"Exception in getFileObjectFromUrl (" + url + ") " + e.getMessage()); 
+         LOG.log(java.util.logging.Level.SEVERE,"Exception in getFileObjectFromUrl (" + url + ") " + e.getMessage());
         }
         }
         return fo;
@@ -176,7 +164,7 @@ public class Utils {
     
     public static String getClojurePath(String url) {
 
-        err.log(Level.INFO,"getClojurePath for "+url.toString());
+        LOG.log(Level.INFO,"getClojurePath for "+url.toString());
         FileObject fo = getFileObjectFromUrl(url);
         if (fo != null) {
             return "/"+fo.getPath();
