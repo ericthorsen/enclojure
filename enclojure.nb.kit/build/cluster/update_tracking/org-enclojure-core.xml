@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module codename="org.enclojure.core">
+    <module_version install_time="1282522040462" last="true" origin="installer" specification_version="1.0">
+        <file crc="2561766646" name="config/Modules/org-enclojure-core.xml"/>
+        <file crc="870432458" name="modules/org-enclojure-core.jar"/>
+    </module_version>
+</module>

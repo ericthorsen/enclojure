@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mode version="2.3">
+    <module name="org.netbeans.spi.palette/0" spec="1.0" />
+    <name unique="commonpalette" />
+  <kind type="view" />
+  <state type="joined" />
+  <constraints>
+    <path orientation="horizontal" number="60" weight="0.7"/>
+    <path orientation="vertical" number="40" weight="0.7"/>
+    <path orientation="horizontal" number="80" weight="0.3"/>
+    <path orientation="vertical" number="40" weight="0.5"/>
+  </constraints>
+  <bounds x="1440" y="281" width="288" height="375" />
+  <frame state="0"/>
+    <empty-behavior permanent="true"/>
+</mode>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<group version="2.0">
+    <module name="org.netbeans.modules.profiler/1" spec="0.9.2" />
+    <name unique="LiveResultsGroup" />
+    <state opened="false" />
+</group>

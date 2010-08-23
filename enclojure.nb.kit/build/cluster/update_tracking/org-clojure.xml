@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module codename="org.clojure">
+    <module_version install_time="1282522039307" last="true" origin="installer" specification_version="1.0">
+        <file crc="2779532700" name="config/Modules/org-clojure.xml"/>
+        <file crc="3597551831" name="modules/ext/clojure-1.2.0.jar"/>
+        <file crc="3490428345" name="modules/ext/clojure-ant-tasks.jar"/>
+        <file crc="971164285" name="modules/ext/clojure-contrib-1.2.0.jar"/>
+        <file crc="1013166915" name="modules/org-clojure.jar"/>
+    </module_version>
+</module>

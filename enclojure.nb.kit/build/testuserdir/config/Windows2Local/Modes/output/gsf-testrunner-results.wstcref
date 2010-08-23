@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tc-ref version="2.2">
+    <module name="org.netbeans.modules.gsf.testrunner" />
+    <tc-id id="gsf-testrunner-results" />
+    <state opened="false" />
+</tc-ref>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tc-ref version="2.2">
+    <module name="org.netbeans.modules.cnd.navigation" spec="1.0" />
+    <tc-id id="HierarchyTopComponent" />
+    <state opened="false" />
+    <previousMode name="commonpalette"  index="0"  />
+</tc-ref>

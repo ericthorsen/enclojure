@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.enclojure.editor
+OpenIDE-Module-Install: org/enclojure/editor/Installer.class
+OpenIDE-Module-Layer: org/enclojure/editor/layer.xml
+OpenIDE-Module-Localizing-Bundle: org/enclojure/editor/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

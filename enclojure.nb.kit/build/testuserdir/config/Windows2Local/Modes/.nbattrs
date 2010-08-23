@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="CssPreviewTCWsmode">
+        <attr name="WinSys-TCRef-Order" stringvalue="CssPreviewTC"/>
+    </fileobject>
+    <fileobject name="bottomSlidingSide">
+        <attr name="WinSys-TCRef-Order" serialvalue="aced0005737200316f72672e6f70656e6964652e66696c6573797374656d732e4d756c746946696c654f626a65637424566f696456616c7565d9ec9c94d5fd3ca40c0000787077040000000178"/>
+    </fileobject>
+    <fileobject name="code_evaluator">
+        <attr name="WinSys-TCRef-Order" stringvalue="evaluator"/>
+    </fileobject>
+    <fileobject name="commonpalette">
+        <attr name="WinSys-TCRef-Order" stringvalue="CommonPalette"/>
+    </fileobject>
+    <fileobject name="editor">
+        <attr name="WinSys-TCRef-Order" stringvalue="kenaiProjectTopComponent/ThreadMapTopComponent/QueryTopComponent/dbgInstances/Welcome"/>
+    </fileobject>
+    <fileobject name="explorer">
+        <attr name="WinSys-TCRef-Order" stringvalue="projectTabLogical_tc/projectTab_tc/favorites/classview/KenaiTopComponent/services/debugging/profiler_cp/DLightToolsTopComponent/DLightIndicatorsTopComponent"/>
+    </fileobject>
+    <fileobject name="leftSlidingSide">
+        <attr name="WinSys-TCRef-Order" serialvalue="aced0005737200316f72672e6f70656e6964652e66696c6573797374656d732e4d756c746946696c654f626a65637424566f696456616c7565d9ec9c94d5fd3ca40c0000787077040000000178"/>
+    </fileobject>
+    <fileobject name="navigator">
+        <attr name="WinSys-TCRef-Order" stringvalue="navigatorTC/NavigatorTopComponent/GizmoIndicatorsTopComponent"/>
+    </fileobject>
+    <fileobject name="output">
+        <attr name="WinSys-TCRef-Order" stringvalue="watchesView/localsView/resultsView/callstackView/breakpointsView/classes/sources/sessionsView/threadsView/RegistersTopComponent/MemoryViewTopComponent/MacroExpansionTopComponent/profiler_to/profiler_pp/versioning_output/search-results/gsf-testrunner-results/refactoring-preview/find-usages/CallGraphTopComponent/CallHierarchyTopComponent/AnalyzerTopComponent/DeclarationTopComponent/JavadocTopComponent/StyleBuilderTC/TerminalContainerTopComponent/output/hgversioning/synchronize/svnversioning/TaskListTopComponent/ReporterResultTopComponent/VisualizerTopComponentTopComponent/CallStackTopComponent"/>
+    </fileobject>
+    <fileobject name="properties">
+        <attr name="WinSys-TCRef-Order" stringvalue="AnalyzeStackTopComponent/properties/ChatTopComponent"/>
+    </fileobject>
+    <fileobject name="rightSlidingSide">
+        <attr name="WinSys-TCRef-Order" stringvalue="HierarchyTopComponent/DLightSessionsTopComponent"/>
+    </fileobject>
+</attributes>

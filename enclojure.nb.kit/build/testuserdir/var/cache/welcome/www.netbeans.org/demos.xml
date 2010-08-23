@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<rss version="2.0">
+   <channel>
+      
+      <title>NetBeans Screencasts and Video Demos</title>
+      <link>http://netbeans.org/index.html</link>
+      <description>Screencasts that show you all the cool features of NetBeans, the free and open-source IDE for Java development and scripting.</description>
+      <language>en</language>
+      <webMaster>webmaster@netbeans.org (NetBeans webmaster)</webMaster>
+      <image>
+         <title>NetBeans Screencasts and Video Demos</title>
+         <url>http://netbeans.org/images_www/v5/nb-logo.gif</url>
+         <link>http://netbeans.org/index.html</link>
+         <width>110</width>
+         <height>30</height>
+      </image>
+
+
+<item>
+         <pubDate>Wed, 28 July 2010 23:46:21 +0200</pubDate>
+         <title>Using JavaFX Composer in NetBeans IDE 6.9</title>
+         <link>http://netbeans.org/kb/docs/javafx/composer-screencast.html</link>
+         <guid>http://netbeans.org/kb/docs/javafx/composer-screencast.html</guid>
+         <description>The JavaFX Composer is a visual layout tool for building JavaFX GUI applications, similar to the Swing GUI Builder for Java SE applications.</description>
+         <enclosure url="http://netbeans.org/images_www/demos/javafx-composer.png" type="image/png" length="35253" />
+      </item>
+
+      <item>
+         <pubDate>Wed, 16 Jun 2010 23:46:21 +0200</pubDate>
+         <title>NetBeans Platform 6.9</title>
+         <link>http://netbeans.org/kb/docs/ide/platform-screencast.html</link>
+         <guid>http://netbeans.org/kb/docs/ide/platform-screencast.html</guid>
+         <description>An overview of the NetBeans Platform, a Swing-based framework for developing desktop applications.</description>
+         <enclosure url="http://netbeans.org/images_www/demos/platform.png" type="image/png" length="35253" />
+      </item>
+   </channel>
+</rss>
+
+
