@@ -28,7 +28,11 @@ public class ClojureNavigatorPanel implements NavigatorPanel {
     private IFn _contextChanged = null;
     private IFn _openFileFn = (IFn)RT.var("org.enclojure.ide.nb.editor.utils"
                                             ,"open-editor-file");
-    private IFn _getDataForFileFn = 
+
+    private Var _checkNewContextFn =
+                    RT.var("org.enclojure.ide.navigator.views.navigator-panel",
+                            "new-context");
+    private IFn _getDataForFileFn =
             (IFn)RT.var("org.enclojure.ide.nb.editor.completion.symbol-caching"
                             , "get-nav-data-for");
 
@@ -100,40 +104,41 @@ public class ClojureNavigatorPanel implements NavigatorPanel {
     /************* non - public part ************/
 
     private void setNewContent (Collection newData) {
-//       Node[] activatedNodes = TopComponent.getRegistry().getActivatedNodes();
-//       if(activatedNodes != null && activatedNodes.length > 0)
-//       {
-//           EditorCookie ec = activatedNodes[0].getLookup().lookup(EditorCookie.class);
-//           if(ec != null)
-//           {
-//               Document document = ec.getDocument();
-//               DataObject dataObject = NbEditorUtilities.getDataObject(document);
-//               if(dataObject != null)
-//               {
-//                   FileObject fileObject = (FileObject) dataObject.files().toArray()[0];
-//                   int i;
-//                   i = 100;
-//               }
-//           }
-//       }
-
-        for(Object object : newData.toArray())
-        {
-            if(object instanceof FileObject)
-            {
-                FileObject fileObject = (FileObject)object;
-                File file = FileUtil.toFile(fileObject);
-                try {
-
-                    if (_contextChanged != null)
-                    {
-                        Object sampleData = _getDataForFileFn.invoke(file);
-                        _contextChanged.invoke(sampleData);
+        try {
+            //       Node[] activatedNodes = TopComponent.getRegistry().getActivatedNodes();
+            //       if(activatedNodes != null && activatedNodes.length > 0)
+            //       {
+            //           EditorCookie ec = activatedNodes[0].getLookup().lookup(EditorCookie.class);
+            //           if(ec != null)
+            //           {
+            //               Document document = ec.getDocument();
+            //               DataObject dataObject = NbEditorUtilities.getDataObject(document);
+            //               if(dataObject != null)
+            //               {
+            //                   FileObject fileObject = (FileObject) dataObject.files().toArray()[0];
+            //                   int i;
+            //                   i = 100;
+            //               }
+            //           }
+            //       }
+//            for (Object object : newData.toArray()) {
+//                if (object instanceof FileObject) {
+//                    FileObject fileObject = (FileObject) object;
+//                    File file = FileUtil.toFile(fileObject);
+                    try {
+                           FileObject f = (FileObject) ((IFn) _checkNewContextFn).invoke(newData);
+                           File file = FileUtil.toFile(f);
+                           if (_contextChanged != null) {
+                            Object sampleData = _getDataForFileFn.invoke(file);
+                            _contextChanged.invoke(sampleData);
+                        }
+                    } catch (Exception ex) {
+                        Exceptions.printStackTrace(ex);
                     }
-                } catch (Exception ex) {
-                    Exceptions.printStackTrace(ex);
-                }
-            }
+//                }
+//            }
+          } catch (Exception ex) {
+            Exceptions.printStackTrace(ex);
         }
     }
 

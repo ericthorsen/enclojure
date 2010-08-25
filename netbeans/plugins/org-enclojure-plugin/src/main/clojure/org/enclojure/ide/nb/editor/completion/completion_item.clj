@@ -44,10 +44,10 @@
 (defn encode-html [s]
   (let [reader (StringReader. s)]
   (loop [c (.read reader) buf (StringBuffer.)]
+    (if (= -1 c)
+      (str buf)
     (let [cc (char c)]
-      (if (= -1 c)
-         (str buf)
-        (recur (.read reader)
+       (recur (.read reader)
           (.append buf
             (if (or (> c 127) (#{\" \< \> \&} cc))
                 (str "&#" c ";")

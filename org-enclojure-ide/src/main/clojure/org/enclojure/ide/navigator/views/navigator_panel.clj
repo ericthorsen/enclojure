@@ -266,6 +266,7 @@
       [root (sort-by sort-fn leaves)])))
 
 (defn tree-model-3 [symbols sort-fn]
+  (logger/info "In tree-model " (apply str (interpose "," (keys symbols))))
   (let [tree (symbols-to-tree symbols sort-fn)]
     (proxy [TreeModel] []
       (getRoot []
@@ -346,8 +347,17 @@
         mypanel
         BorderLayout/CENTER))
     (fn [data]
-      (swap! data-ref (fn [_] data))
-      (.setModel jtree (tree-model-3 data -default-sort-)))))
+      (logger/info "Context changed {}" data)
+      (when data
+        (swap! data-ref (fn [_] data))
+        (.setModel jtree (tree-model-3 data -default-sort-))))))
+
+(def obj (atom nil))
+
+(defn new-context [context]
+  (swap! obj (fn [_] context))
+  (logger/info "Got new context {} str {}" (class context) (str context))
+  (.getPrimaryFile (first context)))
 
 (defn navigator
   [title data]

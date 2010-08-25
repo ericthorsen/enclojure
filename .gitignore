@@ -16,4 +16,4 @@ __MACOSX
 *.war
 build/*
 *.tmproj
-
+*~

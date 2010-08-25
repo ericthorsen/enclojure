@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xs
+d">
   <properties>
-    <clojure.version>1.1.0</clojure.version>
+    <clojure.version>1.2.0</clojure.version>
     <clojure.snapshot.tag></clojure.snapshot.tag>
     <clojure.contrib.snapshot.tag></clojure.contrib.snapshot.tag>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,6 +26,21 @@
     </license>
   </licenses>
   <dependencies>
+        <dependency>
+            <groupId>swank-clojure</groupId>
+            <artifactId>swank-clojure</artifactId>
+            <version>1.2.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.clojure</groupId>
+                    <artifactId>clojure</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.clojure</groupId>
+                    <artifactId>clojure-contrib</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>

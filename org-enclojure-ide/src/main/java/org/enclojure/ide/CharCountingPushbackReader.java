@@ -24,7 +24,8 @@ public int getLineNumber(){
 
 public int read() throws IOException{
     int c = super.read();
-    ++counter;
+    if(c!=-1)
+        ++counter;
     return c;
     }
 

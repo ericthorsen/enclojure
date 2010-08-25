@@ -22,9 +22,7 @@
     [clojure.set :as set]
     [org.enclojure.ide.navigator.parser :as parser]
     [org.enclojure.commons.c-slf4j :as logger]
-    )
-  (:import  (java.util.logging Level)))
-
+    ))
 ; setup logging
 (logger/ensure-logger)
 ;(def sample-ns-record
