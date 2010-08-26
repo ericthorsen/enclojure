@@ -316,13 +316,13 @@
             <artifactId>org-openide-explorer</artifactId>
             <version>RELEASE69</version>
         </dependency>
-        <!--
+        
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>beansbinding-1.2.1</artifactId>
             <version>RELEASE69</version>
         </dependency>
-        -->
+        
         <dependency>
             <artifactId>org-netbeans-modules-project-libraries</artifactId>
             <groupId>org.netbeans.api</groupId>
