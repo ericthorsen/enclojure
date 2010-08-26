@@ -153,7 +153,7 @@
     (if (pos? clsi) (subs full-classname (inc clsi)) full-classname)))
 
 (def -sym-cache-val-keys-
-  #{:super :package :symbols :access :orgname :lib :ext :source :source-file :orgname})
+  #{:super :package :symbols :access :orgname :lib :ext :source :source-file})
 
 (defn- all-string-keys?
   [m]

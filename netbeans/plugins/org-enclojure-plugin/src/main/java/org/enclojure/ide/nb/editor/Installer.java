@@ -58,7 +58,6 @@ public class Installer extends ModuleInstall {
             requireFn.invoke(Symbol.create("org.enclojure.repl.main"));
 
             setupTrackingFn.invoke();
-            
 
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.utils"));
             //requireFn.invoke(Symbol.create("org.enclojure.repl.repl-manager-ui"));

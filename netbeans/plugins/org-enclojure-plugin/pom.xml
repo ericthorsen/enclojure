@@ -14,7 +14,6 @@
         <version>1.5</version>
     </parent> -->
     <properties>
-        <clojure.version>1.1.0</clojure.version>
         <clojure.snapshot.tag></clojure.snapshot.tag>
         <clojure.contrib.snapshot.tag></clojure.contrib.snapshot.tag>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +23,7 @@
         <enclojure.version.release>1.4</enclojure.version.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <clojure.version>1.1.0</clojure.version>
+        <clojure.version>1.2.0</clojure.version>
         <templates.basedir>${basdir}../../../templates</templates.basedir>
         <project.templates.source>${templates.basedir}/netbeans/ProjectTemplates</project.templates.source>
         <project.templates.dest></project.templates.dest>
@@ -60,6 +59,23 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>swank-clojure</groupId>
+            <artifactId>swank-clojure</artifactId>
+            <version>1.2.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.clojure</groupId>
+                    <artifactId>clojure</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.clojure</groupId>
+                    <artifactId>clojure-contrib</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
         <dependency>
           <groupId>org.clojure</groupId>
           <artifactId>clojure</artifactId>
@@ -489,9 +505,9 @@
             <version>RELEASE69</version>
         </dependency>
         <dependency>
-            <groupId>org.jdesktop</groupId>
-            <artifactId>beansbinding</artifactId>
-            <version>1.2.1</version>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-jdesktop-beansbinding</artifactId>
+            <version>RELEASE691</version>
         </dependency>
     </dependencies>
 
@@ -824,21 +840,3 @@
         </profile>
     </profiles>
 </project>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

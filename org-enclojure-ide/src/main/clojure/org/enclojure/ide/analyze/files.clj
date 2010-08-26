@@ -81,19 +81,22 @@
 ;    :arglists (get-arglists form 3)))
 
 (defn skip-to-next-form [#^CharCountingPushbackReader is]
-  (let [c (char (.read #^CharCountingPushbackReader is))]
-    (if (or (= c \newline)
-        (= c \,)
-        (= c \space))
-        (recur #^CharCountingPushbackReader is)
-     (.unread #^CharCountingPushbackReader is (int c)))))
-
-	;                            (catch Throwable t
-	;                                (println "Could not parse the " (inc (count forms))
-	;                                    " form in " additional-attribs " form:";
-	;                                    form " error:" (.getMessage t)))))
-
+  (let [v (.read #^CharCountingPushbackReader is)]
+    (if (not= v -1)
+      (let [c (char v)]
+        (if (or (= c \newline)
+            (= c \,)
+            (= c \space))
+            (recur #^CharCountingPushbackReader is)
+         (.unread #^CharCountingPushbackReader is (int c))))
+                       v)))
+                       
 (def #^{:private true} EOF (Object.))
+
+(defn safe-hash-map [& keyvals]
+  (reduce (fn [m [k v]]
+            (assoc m k v)) {}
+    (partition 2 keyvals)))
 
 (defn readable-form?
   []
@@ -129,7 +132,7 @@
                               (logger/error
                                 "pull-forms: could not parse form attribs= "
                                     additional-attribs))))
-                    form-map (when parsed-form (apply hash-map parsed-form))
+                    form-map (when parsed-form (apply safe-hash-map parsed-form))
                     is-ns? (= (:type form-map) :namespace)
                     names (if is-ns? (swap! def-ns
                                          (fn [_] (:name form-map)))
@@ -143,7 +146,7 @@
                                               (:name form-map))
                                         (ns-resolve names (:name form-map)))]
                             (merge additional-attribs form-map
-                                (apply hash-map
+                                (apply safe-hash-map
                                         :namespace names
                                         :form form
                                         :line (inc (:line pos-info))
@@ -179,7 +182,8 @@
   (merge additional-attribs
     {:symbols
         (pull-forms istream additional-attribs)}))
-    
+
+
 (defn oi []
   (org.enclojure.ide.CharCountingPushbackReader.
                        (java.io.InputStreamReader.
@@ -297,5 +301,3 @@
           ))
       (catch Throwable t
         (publish-stack-trace t)))))
-
-

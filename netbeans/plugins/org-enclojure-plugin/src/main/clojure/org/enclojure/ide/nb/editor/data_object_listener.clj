@@ -37,10 +37,16 @@
   [data-object]
       (let [f (-> data-object .getPrimaryEntry .getFile)]
         (logger/info "data-object-listener updating file " f)
-        (file-mapping/refresh-completion-cache-data  (FileUtil/toFile f))
-      ; This needs to be called explicitly here only the first time.
+        (try
+	  (file-mapping/refresh-completion-cache-data  (FileUtil/toFile f))
+        (logger/info "data-object-listener completion info refreshed " f)
+          ; This needs to be called explicitly here only the first time.
       ; On first load the navigator window gets called before the symbols are loaded
-      (symbol-caching/get-nav-data-for (FileUtil/toFile f))))
+	  (symbol-caching/get-nav-data-for (FileUtil/toFile f))
+                 (logger/info "data-object-listener symbol caching updated " f)
+          (catch Throwable t
+            (logger/error "Exception refreshing completion cache for file {}, error {}"
+			  (str f) (.getMessage t))))))
 
 (defmulti data-obj-event 
   (fn [event data-obj]
@@ -63,3 +69,4 @@
     (propertyChange [#^PropertyChangeEvent e]
       (logger/info "data-object-listener {}" (bean e))
       (data-obj-event (bean e) obj))))
+
