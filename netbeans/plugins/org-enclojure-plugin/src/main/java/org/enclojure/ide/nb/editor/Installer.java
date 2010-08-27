@@ -51,6 +51,8 @@ public class Installer extends ModuleInstall {
 
             LOG.log(Level.INFO, "Enclojure module restored.");
 
+            requireFn.invoke(Symbol.create("org.enclojure.ide.navigator.CljClassVisitor"));
+           LOG.log(Level.INFO, "Enclojure CljClassVisitor.");
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.classpaths.resource-tracking"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.editor.completion.symbol-caching"));
             requireFn.invoke(Symbol.create("org.enclojure.ide.nb.classpaths.listeners"));

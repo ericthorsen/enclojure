@@ -47,7 +47,7 @@
   [classpath]
   (let [new-entries
           (reduce
-                #(assoc %1 (str %2) classpath) {} (.getRoots classpath))]
+                #(assoc %1 (.getPath %2) classpath) {} (.getRoots classpath))]
   (dosync
     (commute
       -source-roots-

@@ -9,33 +9,22 @@ import clojure.lang.IFn;
 import clojure.lang.RT;
 import clojure.lang.Var;
 import java.awt.BorderLayout;
-import java.io.File;
 import java.util.Collection;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import org.netbeans.spi.navigator.NavigatorPanel;
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import javax.swing.tree.DefaultTreeCellRenderer;
 
 @SuppressWarnings("unchecked") 
 public class ClojureNavigatorPanel implements NavigatorPanel {
 
-    private IFn _contextChanged = null;
-    private IFn _openFileFn = (IFn)RT.var("org.enclojure.ide.nb.editor.utils"
-                                            ,"open-editor-file");
 
     private Var _checkNewContextFn =
                     RT.var("org.enclojure.ide.navigator.views.navigator-panel",
                             "new-context");
-    private IFn _getDataForFileFn =
-            (IFn)RT.var("org.enclojure.ide.nb.editor.completion.symbol-caching"
-                            , "get-nav-data-for");
-
 
     /** holds UI of this panel */
     private JComponent panelUI;
@@ -61,17 +50,7 @@ public class ClojureNavigatorPanel implements NavigatorPanel {
 
     public JComponent getComponent() {
         if (panelUI == null) {
-            Var createNavigationTree =
-                    RT.var("org.enclojure.ide.navigator.views.navigator-panel",
-                            "create-navigator-tree");
             panelUI = new JPanel(new BorderLayout());
-            try {
-                _contextChanged = (IFn) createNavigationTree.invoke(panelUI,_openFileFn);
-                // You can override requestFocusInWindow() on the component if desired.
-            } catch (Exception ex) {
-                Exceptions.printStackTrace(ex);
-            }
-            // You can override requestFocusInWindow() on the component if desired.
         }
         return panelUI;
     }
@@ -104,42 +83,12 @@ public class ClojureNavigatorPanel implements NavigatorPanel {
     /************* non - public part ************/
 
     private void setNewContent (Collection newData) {
-        try {
-            //       Node[] activatedNodes = TopComponent.getRegistry().getActivatedNodes();
-            //       if(activatedNodes != null && activatedNodes.length > 0)
-            //       {
-            //           EditorCookie ec = activatedNodes[0].getLookup().lookup(EditorCookie.class);
-            //           if(ec != null)
-            //           {
-            //               Document document = ec.getDocument();
-            //               DataObject dataObject = NbEditorUtilities.getDataObject(document);
-            //               if(dataObject != null)
-            //               {
-            //                   FileObject fileObject = (FileObject) dataObject.files().toArray()[0];
-            //                   int i;
-            //                   i = 100;
-            //               }
-            //           }
-            //       }
-//            for (Object object : newData.toArray()) {
-//                if (object instanceof FileObject) {
-//                    FileObject fileObject = (FileObject) object;
-//                    File file = FileUtil.toFile(fileObject);
                     try {
-                           FileObject f = (FileObject) ((IFn) _checkNewContextFn).invoke(newData);
-                           File file = FileUtil.toFile(f);
-                           if (_contextChanged != null) {
-                            Object sampleData = _getDataForFileFn.invoke(file);
-                            _contextChanged.invoke(sampleData);
-                        }
+                            _checkNewContextFn.invoke(panelUI,newData);
+                        
                     } catch (Exception ex) {
                         Exceptions.printStackTrace(ex);
                     }
-//                }
-//            }
-          } catch (Exception ex) {
-            Exceptions.printStackTrace(ex);
-        }
     }
 
     /** Accessor for listener to context */

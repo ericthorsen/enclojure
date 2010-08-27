@@ -22,6 +22,8 @@
     )
   (:require
     [org.enclojure.commons.c-slf4j :as logger]
+    [org.enclojure.ide.nb.editor.completion.symbol-caching :as symbol-caching]
+    [org.enclojure.ide.nb.editor.utils :as editor-utils]
     )
   (:import (java.util.logging Level)
     (java.awt.event MouseAdapter ActionListener)
@@ -323,14 +325,20 @@
     (actionPerformed [action-event]
       (.setModel jtree (tree-model-3 @data sort-fn)))))
 
+; This is gross
+(def --nav-panel-fn-- (atom {}))
+(def --symbol-cache-fn-- (atom nil))
+
 (defn create-navigator-tree [jpanel open-file-fn]
+  (logger/info "Navigator create tree {} !!!!!!!!!!!" jpanel)
   (let [data-ref (atom {})
         jtree (get-tree-proxy)
         mypanel (CljNavigatorViewPanel.)
         alpha-sort-btn (.jToggleButtonAlphaSort mypanel)
         source-sort-btn (.jToggleButtonSortPos mypanel)
         expand-all-btn (.jToggleButtonExpandAll mypanel)]
-      (do
+    (logger/info "Navigator create tree calling the do section")
+    (do
         (.addActionListener alpha-sort-btn
           (add-action-listener-for-sort alpha-sort-btn jtree
             data-ref (get-sort-keyfn :name)))
@@ -346,18 +354,11 @@
       (.add
         mypanel
         BorderLayout/CENTER))
-    (fn [data]
-      (logger/info "Context changed {}" data)
-      (when data
-        (swap! data-ref (fn [_] data))
-        (.setModel jtree (tree-model-3 data -default-sort-))))))
-
-(def obj (atom nil))
-
-(defn new-context [context]
-  (swap! obj (fn [_] context))
-  (logger/info "Got new context {} str {}" (class context) (str context))
-  (.getPrimaryFile (first context)))
+        (fn [data]
+          (logger/info "Context changed {}" data)
+          (when data
+            (swap! data-ref (fn [_] data))
+            (.setModel jtree (tree-model-3 data -default-sort-))))))
 
 (defn navigator
   [title data]
@@ -405,6 +406,38 @@
       (.setSize 400 600)
       (.setVisible true))
   {:tree jtree :nav-panel mypanel}))
+
+(defn new-context [jpanel context]
+  (logger/info "Nav got {} {}" (class jpanel) (hash jpanel))
+    (let [nav-panel-fn (or (@--nav-panel-fn-- (hash jpanel))
+        (swap! --nav-panel-fn--
+          (fn [m] (assoc m (hash jpanel)
+                    (create-navigator-tree jpanel editor-utils/open-editor-file)))))]
+        (logger/info "Nav panel is now {}" nav-panel-fn)
+    (when context
+      (let [file (.getPrimaryFile (first context))
+	    _ (logger/info "Nav got file {}" file)
+	    _ (logger/info "Nav looking for file {}" (.getPath file))
+	    syms (symbol-caching/get-nav-data-for file)
+	    _ (logger/info "Nav got symbol count {}" (count syms))]
+	(nav-panel-fn syms)))))
+
+;  (let [nav-panel-fn (or (@--nav-panel-fn-- jpanel)
+;			 (first (vals
+;				 (swap! --nav-panel-fn--
+;					(fn [_] {jpanel
+;						 (create-navigator-tree
+;						  jpanel editor-utils/open-editor-file)})))))]
+ ;   (logger/info "Nav got new context {} str {}" (class (first context)) (str context))
+  ;  (logger/info "Nav nav-panel-fn {}" nav-panel-fn)
+   ; (when context
+    ;  (let [file (.getPrimaryFile (first context))
+;	    _ (logger/info "Nav got file {}" file)
+;	    _ (logger/info "Nav looking for file {}" (.getPath file))
+;	    syms (symbol-caching/get-nav-data-for file)
+;	    _ (logger/info "Nav got symbol count {}" (count syms))]
+;	(nav-panel-fn syms)))))
+
 
 ;(defn test-nav []
 ;  (navigator "Testing navigator"
