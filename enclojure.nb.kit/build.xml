@@ -5,4 +5,11 @@
 <project name="enclojure.nb.kit" basedir=".">
     <description>Builds the module suite enclojure.nb.kit.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="build-deps" depends="harness.init">
+    <exec dir="${basedir}/.." executable="mvn">
+      <arg value="clean" />
+      <arg value="install" />
+  </exec>
+  </target>
 </project>

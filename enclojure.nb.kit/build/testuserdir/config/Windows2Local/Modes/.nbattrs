@@ -14,24 +14,24 @@
         <attr name="WinSys-TCRef-Order" stringvalue="CommonPalette"/>
     </fileobject>
     <fileobject name="editor">
-        <attr name="WinSys-TCRef-Order" stringvalue="kenaiProjectTopComponent/ThreadMapTopComponent/QueryTopComponent/dbgInstances/Welcome"/>
+        <attr name="WinSys-TCRef-Order" stringvalue="kenaiProjectTopComponent/QueryTopComponent/dbgInstances/Welcome"/>
     </fileobject>
     <fileobject name="explorer">
-        <attr name="WinSys-TCRef-Order" stringvalue="projectTabLogical_tc/projectTab_tc/favorites/classview/KenaiTopComponent/services/debugging/profiler_cp/DLightToolsTopComponent/DLightIndicatorsTopComponent"/>
+        <attr name="WinSys-TCRef-Order" stringvalue="projectTabLogical_tc/projectTab_tc/favorites/KenaiTopComponent/services/debugging/profiler_cp"/>
     </fileobject>
     <fileobject name="leftSlidingSide">
         <attr name="WinSys-TCRef-Order" serialvalue="aced0005737200316f72672e6f70656e6964652e66696c6573797374656d732e4d756c746946696c654f626a65637424566f696456616c7565d9ec9c94d5fd3ca40c0000787077040000000178"/>
     </fileobject>
     <fileobject name="navigator">
-        <attr name="WinSys-TCRef-Order" stringvalue="navigatorTC/NavigatorTopComponent/GizmoIndicatorsTopComponent"/>
+        <attr name="WinSys-TCRef-Order" stringvalue="navigatorTC"/>
     </fileobject>
     <fileobject name="output">
-        <attr name="WinSys-TCRef-Order" stringvalue="watchesView/localsView/resultsView/callstackView/breakpointsView/classes/sources/sessionsView/threadsView/RegistersTopComponent/MemoryViewTopComponent/MacroExpansionTopComponent/profiler_to/profiler_pp/versioning_output/search-results/gsf-testrunner-results/refactoring-preview/find-usages/CallGraphTopComponent/CallHierarchyTopComponent/AnalyzerTopComponent/DeclarationTopComponent/JavadocTopComponent/StyleBuilderTC/TerminalContainerTopComponent/output/hgversioning/synchronize/svnversioning/TaskListTopComponent/ReporterResultTopComponent/VisualizerTopComponentTopComponent/CallStackTopComponent"/>
+        <attr name="WinSys-TCRef-Order" stringvalue="watchesView/localsView/resultsView/callstackView/breakpointsView/classes/sources/sessionsView/threadsView/profiler_to/profiler_pp/versioning_output/search-results/gsf-testrunner-results/refactoring-preview/find-usages/CallHierarchyTopComponent/AnalyzerTopComponent/DeclarationTopComponent/JavadocTopComponent/StyleBuilderTC/TerminalContainerTopComponent/output/hgversioning/synchronize/svnversioning/TaskListTopComponent/ReporterResultTopComponent"/>
     </fileobject>
     <fileobject name="properties">
         <attr name="WinSys-TCRef-Order" stringvalue="AnalyzeStackTopComponent/properties/ChatTopComponent"/>
     </fileobject>
     <fileobject name="rightSlidingSide">
-        <attr name="WinSys-TCRef-Order" stringvalue="HierarchyTopComponent/DLightSessionsTopComponent"/>
+        <attr name="WinSys-TCRef-Order" serialvalue="aced0005737200316f72672e6f70656e6964652e66696c6573797374656d732e4d756c746946696c654f626a65637424566f696456616c7565d9ec9c94d5fd3ca40c0000787077040000000178"/>
     </fileobject>
 </attributes>

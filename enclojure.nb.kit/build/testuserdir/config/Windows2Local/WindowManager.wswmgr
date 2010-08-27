@@ -39,7 +39,7 @@
   </constraints>
   <bounds x="633" y="281" width="806" height="516" />
     </editor-area>
-    <screen width="1920" height="1200"/>
+    <screen width="2048" height="1280"/>
     <active-mode name="editor"/>
     <toolbar configuration="Standard" preferred-icon-size="24"/>
     <tc-list>

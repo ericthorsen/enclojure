@@ -60,3 +60,65 @@
   <catalog>org.netbeans.core.ui.warmup.Bundle</catalog>
   <param>4</param>
 </record>
+<record>
+  <date>2010-08-27T08:40:44</date>
+  <millis>1282912844934</millis>
+  <sequence>86</sequence>
+  <level>FINEST</level>
+  <thread>10</thread>
+  <message>CPU INFO</message>
+  <param>4</param>
+</record>
+<record>
+  <date>2010-08-27T08:40:44</date>
+  <millis>1282912844941</millis>
+  <sequence>87</sequence>
+  <level>FINEST</level>
+  <thread>10</thread>
+  <message>SCREEN SIZE</message>
+  <param>2048</param>
+  <param>1280</param>
+  <param>2</param>
+</record>
+<record>
+  <date>2010-08-27T08:40:44</date>
+  <millis>1282912844941</millis>
+  <sequence>88</sequence>
+  <level>CONFIG</level>
+  <thread>10</thread>
+  <message>IDE_STARTUP</message>
+</record>
+<record>
+  <date>2010-08-27T08:40:50</date>
+  <millis>1282912850725</millis>
+  <sequence>96</sequence>
+  <level>INFO</level>
+  <thread>12</thread>
+  <message>MEMORY</message>
+  <key>MEMORY</key>
+  <catalog>&lt;null&gt;</catalog>
+  <param>17179869184</param>
+</record>
+<record>
+  <date>2010-08-27T08:42:23</date>
+  <millis>1282912943511</millis>
+  <sequence>99</sequence>
+  <logger>org.netbeans.ui.focus</logger>
+  <level>FINE</level>
+  <thread>14</thread>
+  <message>LOG_WINDOW_DEACTIVATED</message>
+  <key>LOG_WINDOW_DEACTIVATED</key>
+  <catalog>org.netbeans.core.ui.warmup.Bundle</catalog>
+</record>
+<record>
+  <date>2010-08-27T08:44:13</date>
+  <millis>1282913053576</millis>
+  <sequence>100</sequence>
+  <logger>org.netbeans.ui.focus</logger>
+  <level>FINE</level>
+  <thread>15</thread>
+  <message>LOG_WINDOW_ACTIVATED</message>
+  <key>LOG_WINDOW_ACTIVATED</key>
+  <catalog>org.netbeans.core.ui.warmup.Bundle</catalog>
+  <param>6</param>
+</record>
