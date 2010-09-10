@@ -2,46 +2,28 @@
 <!DOCTYPE fontscolors PUBLIC "-//NetBeans//DTD Editor Fonts and Colors settings 1.1//EN" "http://www.netbeans.org/dtds/EditorFontsColors-1_1.dtd">
 
 <fontscolors>
-    <fontcolor default="default" name="deref"/>
-    <fontcolor default="default" foreColor="ff000080" name="ns-imports">
-        <font style="bold"/>
-    </fontcolor>
-    <fontcolor default="default" foreColor="ff000080" name="ns-interns">
-        <font style="bold"/>
-    </fontcolor>
-    <fontcolor default="default" foreColor="ff000080" name="symbol"/>
-    <fontcolor default="default" name="error"/>
+    <fontcolor default="default" foreColor="ff008080" name="string"/>
+    <fontcolor default="default" foreColor="ff000000" name="symbol"/>
+    <fontcolor default="default" foreColor="ff1100dd" name="macro" />
+    <fontcolor default="default" foreColor="ffcc0099" name="keyword"/>
+    <fontcolor default="default" foreColor="ff990066" name="map-start"/>
+    <fontcolor default="map-start" name="map-end"/>
     <fontcolor default="default" name="list-start"/>
-    <fontcolor default="default" foreColor="ff008000" name="char">
-        <font style="bold"/>
-    </fontcolor>
-    <fontcolor default="default" foreColor="ff660e7a" name="keyword">
-        <font style="bold+italic"/>
-    </fontcolor>
+    <fontcolor default="list-start" name="list-end"/>
+    <fontcolor default="ff000066" name="vec-start"/>
+    <fontcolor default="vec-start" name="vec-end"/>
+    <fontcolor default="default" foreColor="ff110000" name="ns-publics"/>
+    <fontcolor default="default" foreColor="ff1100dd" name="ns-interns"/>
+    <fontcolor default="default" foreColor="ff1100ff" name="ns-imports"/>
+    <fontcolor default="default" name="deref"/>
+    <fontcolor default="default" name="error"/>
+    <fontcolor default="default" foreColor="ff008000" name="char"/>
     <fontcolor default="default" foreColor="blue" name="number"/>
-    <fontcolor default="default" name="map-end"/>
-    <fontcolor default="default" name="vec-end"/>
-    <fontcolor default="default" name="map-start"/>
-    <fontcolor default="default" name="list-end"/>
     <fontcolor default="default" name="meta"/>
-    <fontcolor default="default" foreColor="orange" name="function"/>
-    <fontcolor default="default" foreColor="ff000080" name="ns-publics">
-        <font style="bold"/>
-    </fontcolor>
-    <fontcolor default="default" foreColor="ff000080" name="macro">
-        <font style="bold"/>
-    </fontcolor>
+    <fontcolor default="default" foreColor="ff1100dd" name="function"/>
     <fontcolor default="default" name="unquote"/>
     <fontcolor default="default" name="quote"/>
-    <fontcolor default="default" name="vec-start"/>
-    <fontcolor default="default" foreColor="ff008000" name="string">
-        <font style="bold"/>
-    </fontcolor>
     <fontcolor default="default" name="any"/>
-    <fontcolor default="default" foreColor="ff000080" name="compiler-special">
-        <font style="bold"/>
-    </fontcolor>
-    <fontcolor default="default" foreColor="lightGray" name="comment">
-        <font style="italic"/>
-    </fontcolor>
+    <fontcolor default="default" foreColor="ff1100dd" name="compiler-special"/>
+    <fontcolor default="default" foreColor="lightGray" name="comment"/>
 </fontscolors>
