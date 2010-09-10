@@ -66,16 +66,16 @@
   </build>
   <repositories>
     <repository>
+      <id>central</id>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
       <id>clojure-releases</id>
       <url>http://build.clojure.org/releases</url>
     </repository>
     <repository>
       <id>incanter</id>
       <url>http://repo.incanter.org</url>
-    </repository>
-    <repository>
-      <id>central</id>
-      <url>http://repo1.maven.org/maven2</url>
     </repository>
     <repository>
       <id>clojure-snapshots</id>
