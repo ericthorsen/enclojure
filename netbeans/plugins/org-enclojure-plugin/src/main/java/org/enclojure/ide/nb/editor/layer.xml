@@ -21,6 +21,7 @@
     <folder name="Editors">
         <folder name="text">
             <folder name="x-clojure">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
                 <folder name="Toolbars">
                     <folder name="Default">
                         <file name="Separator-before-comment.instance">
@@ -207,6 +208,11 @@
     </folder>
 
     <folder name="OptionsDialog">
+        <folder name="PreviewExamples">
+            <folder name="text">
+                <file name="x-clojure" url="resources/SampleClojureFile.clj"/>
+            </folder>
+        </folder>
         <file name="org-enclojure-ide-preferences-EnclojureOptionsCategory.instance">
             <attr name="position" intvalue="690"/>
         </file>

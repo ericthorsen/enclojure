@@ -75,7 +75,7 @@
       ])
 
 (def token-ids 
-     (into {} (map #(vector %1 (make-tokenid %1 %2 "keyword")) 
+     (into {} (map #(vector %1 (make-tokenid %1 %2 (name %1)))
 		   token-names 
 		   (range (count token-names)))))
 
