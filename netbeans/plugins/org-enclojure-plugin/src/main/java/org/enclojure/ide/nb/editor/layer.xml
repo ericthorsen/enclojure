@@ -450,9 +450,6 @@
             </file>
         </folder>
         <folder name="Window">
-<!--            <folder name="ClojureRepl">
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.core.io.ui.Bundle"/>
-                <attr name="position" intvalue="1250"/> -->
                 <file name="org-enclojure-nbmodule-separatorBefore.instance">
                     <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
                     <attr name="position" intvalue="1775"/>
@@ -461,10 +458,6 @@
                     <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-ConnectExternalReplAction.instance"/>
                     <attr name="position" intvalue="1776"/>
                 </file>
-<!--                <file name="org-enclojure-ide-nb-actions-CreateStandaloneReplAction.shadow">
-                    <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-actions-CreateStandaloneReplAction.instance"/>
-                    <attr name="position" intvalue="1777"/>
-                </file>-->
                 <file name="ReplAction.shadow">
                     <attr name="originalFile" stringvalue="Actions/Clojure/org-enclojure-ide-nb-editor-ReplAction.instance"/>
                     <attr name="position" intvalue="1778"/>
@@ -473,7 +466,6 @@
                     <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
                     <attr name="position" intvalue="1779"/>
                 </file>
-  <!--          </folder> -->
         </folder>
         <folder name="Edit">
             <file name="org-enclojure-nbmodule-separatorBefore.instance">
@@ -605,14 +597,6 @@
     <folder name="Templates">
         <folder name="Clojure">
                    <attr name="position" intvalue="300"/>
-<!--            <file name="Clojure Source File" url="ClojureSourceTemplate.clj">
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
-                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/enclojure/ide/nb/editor/resources/Clojure file 16x16.png"/>
-                <attr name="template" boolvalue="true"/>
-                <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-                <attr name="instantiatingIterator" methodvalue="org.netbeans.spi.project.ui.templates.support.Templates.createSimpleTargetChooser"/>
-            </file>
--->
             <file name="Clojure File - Basic source (ns def only) " url="nbresloc:/org/enclojure/ide/nb/source/ClojureNamespaceTemplate.clj.template">
                 <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
@@ -634,7 +618,7 @@
         <folder name="Project">
             <folder name="Clojure">
                 <attr name="position" intvalue="104"/>
-                <file name="Clojure Application" url="nbresloc:/org/enclojure/ide/templates/project/ClojureProjectTemplate-1.1-distribution.zip">
+<!--                <file name="Clojure Application" url="nbresloc:/org/enclojure/ide/templates/project/ClojureProjectTemplate-1.1-distribution.zip">
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
                     <attr name="instantiatingWizardURL"
                         urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/ClojureTemplateDescription.html"/>
@@ -643,7 +627,7 @@
                     <attr name="template" boolvalue="true"/>
                     <attr name="SystemFileSystem.icon"
                         urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
-                </file>
+                </file>-->
                 <file name="Clojure 1.1 Maven Project" url="nbresloc:/org/enclojure/ide/templates/project/Clojure-1.1/Clojure-1.1.zip">
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
                     <attr name="instantiatingWizardURL"
@@ -654,7 +638,7 @@
                     <attr name="SystemFileSystem.icon"
                         urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
                 </file>
-                <file name="Clojure 1.2-SNAPSHOT Maven Project" url="nbresloc:/org/enclojure/ide/templates/project/Clojure-1.2-SNAPSHOT/Clojure-1.2-SNAPSHOT.zip">
+                <file name="Clojure 1.2 Maven Project" url="nbresloc:/org/enclojure/ide/templates/project/Clojure-1.2/Clojure-1.2.zip">
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="org.enclojure.ide.nb.editor.Bundle"/>
                     <attr name="instantiatingWizardURL"
                         urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/ClojureTemplateDescription.html"/>
@@ -665,9 +649,9 @@
                         urlvalue="nbresloc:/org/enclojure/ide/nb/clojure/project/enclojure 16x16.png"/>
                 </file>
             </folder>
-            <folder name="Samples">
+<!--            <folder name="Samples">
                 <folder name="Clojure">
-<!--                    <file name="Relevance LabRepl Project" url="nbresloc:/org/enclojure/ide/templates/project/RelevanceLabReplProject.zip">
+                    <file name="Relevance LabRepl Project" url="nbresloc:/org/enclojure/ide/templates/project/RelevanceLabReplProject.zip">
                         <attr name="displayName"
                             bundlevalue="org.enclojure.ide.project.samples.Bundle#Relevance.LabRepl.name"/>
                         <attr name="instantiatingIterator"
@@ -675,9 +659,9 @@
                         <attr name="instantiatingWizardURL"
                             urlvalue="nbresloc:/org/enclojure/ide/project/samples/RelevanceLabReplDescription.html"/>
                         <attr name="template" boolvalue="true"/>
-                    </file>-->
+                    </file>
                 </folder>
-            </folder>
+            </folder>-->
         </folder>
     </folder>
     

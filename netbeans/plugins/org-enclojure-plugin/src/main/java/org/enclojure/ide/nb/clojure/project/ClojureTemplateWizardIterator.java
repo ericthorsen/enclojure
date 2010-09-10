@@ -51,6 +51,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import java.util.logging.Level;
 import org.enclojure.ide.core.LogAdapter;
+import org.netbeans.api.project.Project;
 
 
 public class ClojureTemplateWizardIterator implements WizardDescriptor./*Progress*/InstantiatingIterator {
@@ -81,26 +82,31 @@ public class ClojureTemplateWizardIterator implements WizardDescriptor./*Progres
                 };
     }
 
+
     public Set/*<FileObject>*/ instantiate(/*ProgressHandle handle*/) throws IOException {
         Set<FileObject> resultSet = new LinkedHashSet<FileObject>();
-        File dirF = FileUtil.normalizeFile((File) wiz.getProperty("projdir"));
+//        File dirF = FileUtil.normalizeFile((File) wiz.getProperty("projdir"));
+//        dirF.mkdirs();
+//
+//        FileObject template = Templates.getTemplate(wiz);
+//        FileObject dir = FileUtil.toFileObject(dirF);
+        File dirF = (File) wiz.getProperty("projdir");
         dirF.mkdirs();
-
         FileObject template = Templates.getTemplate(wiz);
-        FileObject dir = FileUtil.toFileObject(dirF);
+        //FileObject dir = FileUtil.toFileObject(dirF);
         try {
 
             //FF - exclide thie lib/clojure.jar if the user selects another clojure reference
             //if(  dir.getPath().startsWith(ClojureTemplatePanelVisual.getDefaultClojureReferencePath()))
             ClojureTemplatePanelVisual component = (ClojureTemplatePanelVisual)current().getComponent();
             unZipFile(template.getInputStream()
-                    , dir
+                    , dirF
                     ,component.packageNameTextField.getText()
                     ,component.getProjectName());
         } catch (Exception ex) {
             Exceptions.printStackTrace(ex);
         }
-
+        FileObject dir = FileUtil.toFileObject(dirF);
         // Always open top dir as a project:
         resultSet.add(dir);
         // Look for nested projects to open as well:
@@ -116,12 +122,16 @@ public class ClojureTemplateWizardIterator implements WizardDescriptor./*Progres
         if (parent != null && parent.exists()) {
             ProjectChooser.setProjectsFolder(parent);
         }
-
-        //FF - change the project.properties file
-       // String projPropPath = dirF.getAbsolutePath() + File.separator + "nbproject" + File.separator + "project.properties";
-       //String cljRef = (String)wiz.getProperty("cljRef");
-       //replacePropertyFileValue(projPropPath, "file.reference.clojure.jar", cljRef);
-                
+//        //ET As a final step, see if saving all fixes the maven problem
+//        Project p = ProjectManager.getDefault().findProject(dir);
+//        if(p!=null)
+//        {
+//            ProjectManager.getDefault().saveProject(p);
+//        }
+//         else
+//        {
+////            throw new Exception("Unable to find project");
+//        }
         return resultSet;
     }
 
@@ -203,11 +213,11 @@ public class ClojureTemplateWizardIterator implements WizardDescriptor./*Progres
         props.store(new FileOutputStream(filePath), "Replaced [key=" + key +"] with [" + value + "].");
     }
     
-    private static void unZipFile(InputStream source, FileObject projectRoot,String defPackage,String projectName) throws IOException, Exception {
+    private static void unZipFile(InputStream source, File projectRoot,String defPackage,String projectName) throws IOException, Exception {
         try {
             //ET Temporary solution to make sure there is a clojure library setup in the users netbeans environment"
             //clojure.lang.RT.var("org.enclojure.ide.nb.editor.utils","ensure-clojure-lib").invoke("Clojure-1.0.0");
-            clojure.lang.RT.var("org.enclojure.ide.nb.clojure.project.create","unzip-project-files")
+            clojure.lang.RT.var("org.enclojure.ide.nb.clojure.project.create","unzip-create-and-reg-project")
                     .invoke(source,projectRoot,defPackage,projectName);
         } catch (Exception ex) {
           LOG.log(Level.FINEST, ex.getMessage());
@@ -222,6 +232,7 @@ public class ClojureTemplateWizardIterator implements WizardDescriptor./*Progres
         try {
             FileUtil.copy(str, out);
         } finally {
+            out.flush();
             out.close();
         }
     }
@@ -248,6 +259,7 @@ public class ClojureTemplateWizardIterator implements WizardDescriptor./*Progres
             try {
                 XMLUtil.write(doc, out, "UTF-8");
             } finally {
+                out.flush();
                 out.close();
             }
         } catch (Exception ex) {

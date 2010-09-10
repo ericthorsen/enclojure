@@ -70,7 +70,8 @@
 (defn filter-project-file [fo istr name]
   (with-open [o (.getOutputStream fo)]
     (binding [*out* o]
-      (emit (update-project-name (parse istr) name)))))
+      (emit (update-project-name (parse istr) name)))
+    (.flush o)))
 
 (defn filter-project-XML [fo istr name]
   (ClojureTemplateWizardIterator/filterProjectXML fo istr name))
@@ -107,20 +108,37 @@
       (loop [l (.readLine s)]
         (when l
           (.println t (transform-string l tag-map))
-          (recur (.readLine s)))))))
+          (recur (.readLine s)))))
+    (.flush t)))
+
+(defn transform-file2 [source target-ostr tag-map]
+  (with-open [t (PrintWriter. target-ostr)]
+    (let [s (LineNumberReader. (InputStreamReader. source))]
+      (loop [l (.readLine s)]
+        (when l
+          (.println t (transform-string l tag-map))
+          (recur (.readLine s)))))
+    (.flush t)))
+
 
 (defn file-tags [namespace]
-  {"src/default/" (str "src" (root-directory namespace))
-   "src/default/core.clj" (str "src" (root-resource namespace) ".clj")
-   "src/default/core" (str "src" (root-resource namespace))})
+  {"src/main/clojure/sample/" (str "src/main/clojure" (root-directory namespace))
+   "src/main/clojure/sample/core.clj" (str "src/main/clojure" (root-resource namespace) ".clj")
+   "src/main/clojure/sample" (str "src/main/clojure" (root-resource namespace))
+   "src/test/clojure/sample/" (str "src/test/clojure" (root-directory namespace))
+   "src/test/clojure/sample/core_test.clj" (str "src/test/clojure" (root-resource namespace) ".clj")
+   "src/test/clojure/sample" (str "src/test/clojure" (root-resource namespace))
+   })
 
 (defn package-tags [pkg project-name]
    {
     ;"default." (subs pkg 0 (.lastIndexOf pkg "."))
     "default.core" pkg
+    "sample.core" pkg
     "ClojureProjectTemplate" project-name
     "libs.Clojure.classpath"
-        (str "libs." (platform-options/get-clojure-default-lib) ".classpath")})
+        (str "libs." (platform-options/get-clojure-default-lib) ".classpath")
+    })
 
 (def *file-name-map* 
   {"src/main.clj" "~~CLJ-FILENAME~~.clj"
@@ -193,6 +211,8 @@
           {:root project-root :package package-name :istr istr :java-class java-class})
         (recur (.getNextEntry istr))))))
 
+(def --skip-these-- #{".DS_Store"})
+
 (defn unzip-project-files 
   "unzips project template"
  [source project-root package-name project-name]
@@ -204,7 +224,7 @@
               is-source (.startsWith temp-name "src/")
               ; Conversion of any file names are done here.
               entry-name (or (file-tags temp-name) temp-name)]
-          (println entry-name)
+          (println "Project creation " entry-name)
           (if (.isDirectory entry) 
             (FileUtil/createFolder project-root entry-name)
             (cond (= "nbproject/project.xml" entry-name)
@@ -218,6 +238,45 @@
                     (package-tags package-name project-name)))))
         (recur (.getNextEntry istr)))))))
 
+(defn unzip-and-create-project-files
+  "unzips project template"
+ [source project-root package-name project-name]
+  (with-open [istr (ZipInputStream. source)]
+    (let [file-tags (file-tags package-name)]
+;      (println file-tags)
+        (loop [entry (.getNextEntry istr) files []]
+ ;         (println (.getName entry))
+          (if entry
+            (let [temp-name (.getName entry)
+                  is-source (.startsWith temp-name "src/")
+                  ; Conversion of any file names are done here.
+                  entry-name (or (file-tags temp-name) temp-name)
+                  f (File. (str project-root) (str entry-name))]
+              (println "Project creation " entry-name)
+              (if (not (some #(.contains temp-name %) --skip-these--))
+                (do
+                  (if (.isDirectory entry)
+                    (.mkdirs f)
+                    (transform-file2 istr
+                      (FileOutputStream. f)
+                      (package-tags package-name project-name)))
+              (recur (.getNextEntry istr) (conj files f)))
+              (recur (.getNextEntry istr) files)))
+            files)))))
+
+(defn realize-files-in-nbs [files]
+      (doseq [f files]
+        (if (.isDirectory f)
+            (FileUtil/createFolder f)
+        (FileUtil/createData f)))
+  files)
+
+(defn unzip-create-and-reg-project
+ [source project-root package-name project-name]
+  (let [files (unzip-and-create-project-files
+                    source project-root package-name project-name)]
+    (realize-files-in-nbs files)))
+  
 (defn test-unzip []
   (let [z (FileInputStream. "/Users/ericthorsen/new-enclojure/src/enclojure/org.enclojure.ide.nb.clojure_plugin_suite/org.enclojure.ide.nb.editor/src/org/enclojure/ide/nb/editor/ClojureProjectTemplate.zip")
         f (when-let [f (File. "/Users/ericthorsen/aaaatesting2")]
@@ -227,6 +286,18 @@
         p "org.mycompany.defpackage"]
     (print "can u see this?")
     (unzip-project-files z f p)))
+
+(def --testzip--
+  "/Users/ericthor/Dev/enclojure-work/enclojure/netbeans/plugins/org-enclojure-plugin/src/main/resources/org/enclojure/ide/templates/project/Clojure-1.2/Clojure-1.2.zip")
+
+(defn test-unzip2 []
+  (let [z (FileInputStream. --testzip--)
+        f (when-let [f (File. "/Users/ericthor/nb-zip")]
+             (.mkdirs f) f)
+        proj-name "MyProject"
+        p "org.mycompany.different.package"]
+    (print "can u see this?")
+    (unzip-and-create-project-files z f p proj-name)))
 
 (defn select-location [panel path]
     (let [chooser (JFileChooser.)]
@@ -238,4 +309,3 @@
                 (.setSelectedFile chooser f)))
             (if (= JFileChooser/APPROVE_OPTION (.showOpenDialog chooser panel))
                (.getSelectedFile chooser))))
-
