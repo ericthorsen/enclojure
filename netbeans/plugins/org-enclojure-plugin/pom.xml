@@ -683,6 +683,7 @@
                 <include>Bundle.properties</include>
                 <include>**/*.png</include>
                 <include>**/*.gif</include>
+                <include>**/*.clj</include>
             </includes>
             <targetPath>org/enclojure/ide/nb/editor/resources</targetPath>
         </resource>

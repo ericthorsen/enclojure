@@ -1,34 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE fontscolors PUBLIC "-//NetBeans//DTD Editor Fonts and Colors settings 1.1//EN" "http://www.netbeans.org/dtds/EditorFontsColors-1_1.dtd">
 
-<!--
-.comment { color: gray; }
-.string {    color: teal; }
-.function { color: #00c; }
-.macro, .specialops { color: #60c; }
-.parens { color: #000; }
-.keyword { color: #c09; }
-.brackets { color: #006; }
-.curlybrackets { color: #906; }
--->
-
 <fontscolors>
-    <!--<fontcolor name="comment" foreColor="ff000000" default="default" />-->
-    <fontcolor name="any" foreColor="ff000000" default="default" />
-    <fontcolor name="char" foreColor="ff006600" default="default" />
-    <fontcolor name="symbol" foreColor="ff000000" default="default" />
-    <fontcolor name="string" foreColor="ff008080" default="keyword" />
-    <fontcolor name="list-start" foreColor="ff000000" default="keyword" />
-    <fontcolor name="list-end" foreColor="ff000000" default="keyword" />
-    <fontcolor name="keyword" foreColor="ffcc0099" default="keyword" />
-    <fontcolor name="vec-start" foreColor="ff000066" default="keyword" />
-    <fontcolor name="vec-end" foreColor="ff000066" default="keyword" />
-    <fontcolor name="map-start" foreColor="ff990066" default="keyword" />
-    <fontcolor name="map-end" foreColor="ff990066" default="keyword" />
-    <fontcolor name="function" foreColor="ff1100dd" default="keyword" />
-    <fontcolor name="macro" foreColor="ff1100dd" default="keyword" />
-    <fontcolor name="ns-publics" foreColor="ff110000" default="keyword" />
-    <fontcolor name="ns-interns" foreColor="ff1100dd" default="keyword" />
-    <fontcolor name="ns-imports" foreColor="ff1100ff" default="keyword" />
-    <fontcolor name="compiler-special" foreColor="ff1100dd" default="keyword" />
+    <fontcolor default="default" foreColor="ff008080" name="string"/>
+    <fontcolor default="default" foreColor="ff000000" name="symbol"/>
+    <fontcolor default="default" foreColor="ff1100dd" name="macro" />
+    <fontcolor default="default" foreColor="ffcc0099" name="keyword"/>
+    <fontcolor default="default" foreColor="ff990066" name="map-start"/>
+    <fontcolor default="map-start" name="map-end"/>
+    <fontcolor default="default" name="list-start"/>
+    <fontcolor default="list-start" name="list-end"/>
+    <fontcolor default="ff000066" name="vec-start"/>
+    <fontcolor default="vec-start" name="vec-end"/>
+    <fontcolor default="default" foreColor="ff110000" name="ns-publics"/>
+    <fontcolor default="default" foreColor="ff1100dd" name="ns-interns"/>
+    <fontcolor default="default" foreColor="ff1100ff" name="ns-imports"/>
+    <fontcolor default="default" name="deref"/>
+    <fontcolor default="default" name="error"/>
+    <fontcolor default="default" foreColor="ff008000" name="char"/>
+    <fontcolor default="default" foreColor="blue" name="number"/>
+    <fontcolor default="default" name="meta"/>
+    <fontcolor default="default" foreColor="ff1100dd" name="function"/>
+    <fontcolor default="default" name="unquote"/>
+    <fontcolor default="default" name="quote"/>
+    <fontcolor default="default" name="any"/>
+    <fontcolor default="default" foreColor="ff1100dd" name="compiler-special"/>
+    <fontcolor default="default" foreColor="lightGray" name="comment"/>
 </fontscolors>
