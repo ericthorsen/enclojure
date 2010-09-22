@@ -40,7 +40,8 @@
   (:refer-clojure :exclude (with-bindings))
   (:use clojure.contrib.pprint)
   (:require [clojure.contrib.pprint :as pprint]
-    [clojure.main :exclude (with-binding)])
+    [clojure.main :exclude (with-binding)]
+    [clojure.contrib.repl-utils :as repl-utils])
   (:import (java.net Socket ServerSocket)
     (java.util.logging Level Logger)
     (java.io InputStreamReader DataOutputStream DataInputStream
@@ -128,6 +129,7 @@
                                   *out* piped-out
                                   *err* (PrintWriter. *out*)]
                           (try
+                            (repl-utils/add-break-thread!)
                             (clojure.main/repl
                               :init (fn [] (in-ns 'user))
                               :read (fn [prompt exit]                                      
@@ -153,13 +155,11 @@
                             (catch java.nio.channels.ClosedByInterruptException ex)))]
     (.start (Thread. repl-thread-fn))
     {:repl-fn (fn [cmd]
-                (if (= cmd ":CLOSE-REPL")
-                  (do
-                    (.close cmd-wtr)
-                    (.close result-rdr))
-                  (do
-                    (.write cmd-wtr cmd)
-                    (.flush cmd-wtr))))
+                (cond
+                    (= cmd ":INTERRUPT") (sun.misc.Signal/raise (sun.misc.Signal. "INT"))
+                    (= cmd ":CLOSE-REPL") (do (.close cmd-wtr) (.close result-rdr))
+                    :else (do (.write cmd-wtr cmd) (.flush cmd-wtr))))
+     
      ;//??Using CharArrayWriter to build the string from each read of one byte
      ;Once there is nothing to read than this function returns the string read.
      ;Using partial so that CharArrayWriter is only created once and reused.

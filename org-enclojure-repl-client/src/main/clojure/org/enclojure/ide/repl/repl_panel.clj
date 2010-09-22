@@ -204,6 +204,8 @@
     (.setSelected (.printStackTraceToggleButton repl-pane) bv)
   (.setSelected (.stackTraceOnErrorMenu repl-pane) bv)))
 
+(defn interrupt-repl [repl-id]
+  ((:repl-fn (org.enclojure.ide.repl.repl-manager/get-repl-config repl-id)) ":INTERRUPT"))
 
 (defn check-repl-form?
   ([expr repl-id]
