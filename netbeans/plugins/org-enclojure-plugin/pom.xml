@@ -4,9 +4,9 @@
     <groupId>org.enclojure</groupId>
     <artifactId>org-enclojure-plugin</artifactId>
     <packaging>nbm</packaging>
-    <version>1.4.0</version>
-    <description>Enclojure plugin for Clojure development.</description>
-    <name>Enclojure Clojure Plugin</name>
+    <version>1.5.0</version>
+    <description>Enclojure plugin for Clojure development for NB 7.0</description>
+    <name>Enclojure Clojure Plugin for NB 7.0</name>
 <!--    <parent>
         <groupId>org.enclojure</groupId>
         <artifactId>nb-enclojure-app</artifactId>
@@ -17,7 +17,7 @@
         <clojure.snapshot.tag></clojure.snapshot.tag>
         <clojure.contrib.snapshot.tag></clojure.contrib.snapshot.tag>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <netbeans.release>RELEASE69</netbeans.release>
+        <netbeans.release>RELEASE70</netbeans.release>
         <brandingToken>enclojure</brandingToken>
         <enclojure.version.dev>1.0-SNAPSHOT</enclojure.version.dev>
         <enclojure.version.release>1.4</enclojure.version.release>
@@ -29,7 +29,7 @@
         <project.templates.dest></project.templates.dest>
         <sample.projects.source>${templates.basedir}/netbeans/SampleProjects</sample.projects.source>
         <sample.projects.dest></sample.projects.dest>
-        <netbeans.release>RELEASE69</netbeans.release>
+        <netbeans.release>RELEASE70</netbeans.release>
     </properties>
 
     <repositories>
@@ -109,225 +109,225 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-debugger</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-debugger-jpda</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-debugger-ui</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-java-classpath</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-java-platform</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-java-project</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-completion</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-filesystems</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-modules</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-viewmodel</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-awt</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-dialogs</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-nodes</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-windows</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-loaders</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-mimelookup</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-text</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-lib</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-fold</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-projectapi</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-projectuiapi</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-execution</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-apache-tools-ant-module</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-options-api</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-navigator</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-project-ant</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-indent</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-core-multiview</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-autoupdate-services</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-csl-api</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-bracesmatching</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-codetemplates</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-errorstripe-api</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-guards</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-lib2</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-java-source</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-java-sourceui</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-refactoring-api</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-editor-hints</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-explorer</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>beansbinding-1.2.1</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         
         <dependency>
             <artifactId>org-netbeans-modules-project-libraries</artifactId>
             <groupId>org.netbeans.api</groupId>
             <type>jar</type>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
 <!--        <dependency>
             <artifactId>mail</artifactId>
@@ -339,19 +339,19 @@
             <artifactId>javac-api-nb-7.0-b07</artifactId>
             <groupId>org.netbeans.external</groupId>
             <type>jar</type>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <artifactId>resolver-1.2</artifactId>
             <groupId>org.netbeans.external</groupId>
             <type>jar</type>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <artifactId>org-openidex-util</artifactId>
             <groupId>org.netbeans.api</groupId>
             <type>jar</type>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <artifactId>jh-2.0_05</artifactId>
@@ -363,7 +363,7 @@
             <artifactId>updater</artifactId>
             <groupId>org.netbeans.external</groupId>
             <type>jar</type>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <artifactId>script-api</artifactId>
@@ -392,122 +392,122 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-lexer</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-util</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-swing-outline</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-progress</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-queries</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-actions</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-settings</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-io</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-java</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-xml</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-quicksearch</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-annotations-common</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-classfile</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-xml-catalog</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-apache-xml-resolver</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-swing-tabcontrol</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-libs-lucene</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-javahelp</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-tasklist</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-libs-javacapi</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-java-lexer</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-parsing-api</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util-lookup</artifactId>
-            <version>RELEASE69</version>
+            <version>RELEASE70</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-jdesktop-beansbinding</artifactId>
-            <version>RELEASE691</version>
+            <version>RELEASE70</version>
         </dependency>
     </dependencies>
 
