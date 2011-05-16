@@ -5,4 +5,4 @@ AutoUpdate-Show-In-Client: true
 OpenIDE-Module: org.enclojure.clojure.plugin
 OpenIDE-Module-Install: org/enclojure/ide/nb/editor/Installer.class
 OpenIDE-Module-Needs: javax.script.ScriptEngine.freemarker
-OpenIDE-Module-Specification-Version: 1.4.0
+OpenIDE-Module-Specification-Version: 1.4.1

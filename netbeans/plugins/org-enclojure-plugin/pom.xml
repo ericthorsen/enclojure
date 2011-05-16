@@ -4,7 +4,7 @@
     <groupId>org.enclojure</groupId>
     <artifactId>org-enclojure-plugin</artifactId>
     <packaging>nbm</packaging>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <description>Enclojure plugin for Clojure development.</description>
     <name>Enclojure Clojure Plugin</name>
 <!--    <parent>

@@ -225,7 +225,7 @@ For seeing the command line use:"
                                process-monitor-fn
                                working-dir)]
     (update-repl repl-id :destroy-fn destroy-fn)
-    (if (await-till #(pos? (:port (get-repl-config repl-id))) 10000)
+    (if (await-till #(pos? (:port (get-repl-config repl-id))) 120000)
       (let [port (:port (get-repl-config repl-id))
             {:keys [repl-fn result-fn close-fn]}
             (create-repl-client-with-back-channel "127.0.0.1" port)]
