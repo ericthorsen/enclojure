@@ -45,6 +45,7 @@ import javax.swing.undo.UndoManager;
  */
 public class ReplPanel extends javax.swing.JPanel {
     public int _promptPos = 0;
+    volatile IFn _interruptReplFn = (IFn)RT.var("org.enclojure.ide.repl.repl-panel", "interrupt-repl");
     volatile IFn _evaluateInReplFn = (IFn)RT.var("org.enclojure.ide.repl.repl-panel", "evaluate-in-repl");
     volatile IFn _processKeyEventFunc = (IFn)RT.var("org.enclojure.ide.repl.repl-panel", "process-key-input");
     volatile IFn _dispShowHistoryEventsFunc = (IFn)RT.var("org.enclojure.ide.repl.repl-panel", "show-repl-history");
@@ -387,6 +388,7 @@ public class ReplPanel extends javax.swing.JPanel {
         clearReplHistoryButton = new javax.swing.JButton();
         replStartupSettingsButton = new javax.swing.JButton();
         replResetButton = new javax.swing.JButton();
+        replInterruptButton = new javax.swing.JButton();
 
         jToolBar1.setRollover(true);
 
@@ -493,6 +495,19 @@ public class ReplPanel extends javax.swing.JPanel {
         });
         replTooBar.add(replResetButton);
 
+        replInterruptButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/enclojure/ide/resources/interrupt.png"))); // NOI18N
+        replInterruptButton.setToolTipText("Interrupt Processing");
+        replInterruptButton.setFocusable(false);
+        replInterruptButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        replInterruptButton.setLabel("");
+        replInterruptButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        replInterruptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replInterruptButtonActionPerformed(evt);
+            }
+        });
+        replTooBar.add(replInterruptButton);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -500,12 +515,12 @@ public class ReplPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(replTooBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-            .addComponent(replTooBar, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+            .addComponent(replTooBar, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -545,6 +560,17 @@ public class ReplPanel extends javax.swing.JPanel {
         clearReplHistoryActionPerformed(evt);
     }//GEN-LAST:event_clearReplHistoryButtonActionPerformed
 
+    private void replInterruptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replInterruptButtonActionPerformed
+        try
+        {
+            _interruptReplFn.invoke(this._replID);
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(ReplPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_replInterruptButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JEditorPane _replErrorPane;
@@ -559,6 +585,7 @@ public class ReplPanel extends javax.swing.JPanel {
     public javax.swing.JButton printStackTraceButton;
     public javax.swing.JToggleButton printStackTraceToggleButton;
     public javax.swing.JButton replHistoryButton;
+    public javax.swing.JButton replInterruptButton;
     public javax.swing.JButton replResetButton;
     public javax.swing.JButton replStartupSettingsButton;
     public javax.swing.JToolBar replTooBar;
